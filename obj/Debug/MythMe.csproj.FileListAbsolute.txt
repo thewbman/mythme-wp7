@@ -1,0 +1,14 @@
+c:\users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\Bin\Debug\ApplicationIcon.png
+c:\users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\Bin\Debug\Background.png
+c:\users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\Bin\Debug\MythMe.dll
+c:\users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\Bin\Debug\MythMe.pdb
+c:\users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\Bin\Debug\AppManifest.xaml
+c:\users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\Bin\Debug\MythMe.xap
+c:\users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\obj\Debug\ResolveAssemblyReference.cache
+c:\users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\obj\Debug\App.g.i.cs
+c:\users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\obj\Debug\MainPage.g.i.cs
+c:\users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\obj\Debug\MythMe.g.resources
+c:\users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\obj\Debug\MythMe.dll
+c:\users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\obj\Debug\MythMe.pdb
+c:\users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\obj\Debug\XapCacheFile.xml
+c:\users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\Bin\Debug\FlurryWP7SDK.dll
