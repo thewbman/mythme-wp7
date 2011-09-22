@@ -47,7 +47,9 @@ namespace MythMe
 
         private void remoteButton_Tap(object sender, GestureEventArgs e)
         {
-            MessageBox.Show("Not yet implimented");
+            //MessageBox.Show("Not yet implimented");
+            NavigationService.Navigate(new Uri("/Remote.xaml", UriKind.Relative));
+
         }
 
         private void recordedButton_Tap(object sender, GestureEventArgs e)

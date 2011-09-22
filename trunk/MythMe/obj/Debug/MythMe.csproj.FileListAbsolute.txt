@@ -12,3 +12,6 @@ c:\users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\obj\Debug\MythM
 c:\users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\obj\Debug\MythMe.pdb
 c:\users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\obj\Debug\XapCacheFile.xml
 c:\users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\Bin\Debug\FlurryWP7SDK.dll
+C:\Users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\Bin\Debug\Microsoft.Phone.Controls.dll
+C:\Users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\Bin\Debug\Microsoft.Phone.Controls.xml
+C:\Users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\obj\Debug\Remote.g.i.cs
