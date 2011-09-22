@@ -53,14 +53,11 @@ namespace MythMe
 
         private string _slashes;
 
-        public string Slashes
+        public static string randText()
         {
-            get
-            {
-                //this._slashes += "/";
-                return this._slashes;
-            }
-            set { this._slashes = value; }
+            Random random = new Random();
+
+            return random.Next().ToString();
         }
 
         /// <summary>
