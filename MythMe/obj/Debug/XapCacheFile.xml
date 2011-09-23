@@ -1,10 +1,11 @@
-﻿<xapCache source="C:\Users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\Bin\Debug\MythMe.xap" wasSigned="False" certificateThumbprint="" TimeStampUrl="" lastWriteTime="9/21/2011 10:15:35 PM">
-  <file source="C:\Users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\Bin\Debug\WMAppManifest.xml" archivePath="WMAppManifest.xml" lastWriteTime="9/18/2011 6:06:19 PM" />
-  <file source="C:\Users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\Background.png" archivePath="Background.png" lastWriteTime="9/18/2011 6:05:20 PM" />
-  <file source="C:\Users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\ApplicationIcon.png" archivePath="ApplicationIcon.png" lastWriteTime="9/18/2011 6:05:20 PM" />
-  <file source="C:\Users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\obj\Debug\MythMe.dll" archivePath="MythMe.dll" lastWriteTime="9/21/2011 10:15:35 PM" />
-  <file source="C:\Users\wes\documents\My Dropbox\development\Flurry WindowsPhone SDK v1.0\FlurryWP7SDK.dll" archivePath="FlurryWP7SDK.dll" lastWriteTime="9/2/2011 4:03:42 PM" />
-  <file source="C:\Program Files (x86)\Microsoft SDKs\Windows Phone\v7.1\Libraries\Silverlight\Microsoft.Phone.Controls.dll" archivePath="Microsoft.Phone.Controls.dll" lastWriteTime="7/28/2011 8:20:42 PM" />
-  <file source="C:\Users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\SplashScreenImage.jpg" archivePath="SplashScreenImage.jpg" lastWriteTime="9/18/2011 6:05:20 PM" />
-  <file source="C:\Users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\Bin\Debug\AppManifest.xaml" archivePath="AppManifest.xaml" lastWriteTime="9/21/2011 7:48:15 PM" />
+﻿<xapCache source="C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\MythMe.xap" wasSigned="False" certificateThumbprint="" TimeStampUrl="" lastWriteTime="9/23/2011 1:50:40 AM">
+  <file source="C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\WMAppManifest.xml" archivePath="WMAppManifest.xml" lastWriteTime="9/22/2011 6:58:21 PM" />
+  <file source="C:\Users\wes\SVN\MythMe\MythMe\Background.png" archivePath="Background.png" lastWriteTime="9/22/2011 6:58:22 PM" />
+  <file source="C:\Users\wes\SVN\MythMe\MythMe\ApplicationIcon.png" archivePath="ApplicationIcon.png" lastWriteTime="9/22/2011 6:58:22 PM" />
+  <file source="C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\MythMe.dll" archivePath="MythMe.dll" lastWriteTime="9/23/2011 1:50:39 AM" />
+  <file source="C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\FlurryWP7SDK.dll" archivePath="FlurryWP7SDK.dll" lastWriteTime="9/22/2011 6:58:21 PM" />
+  <file source="C:\Program Files\Microsoft SDKs\Windows Phone\v7.1\Libraries\Silverlight\Microsoft.Phone.Controls.dll" archivePath="Microsoft.Phone.Controls.dll" lastWriteTime="7/28/2011 8:20:42 PM" />
+  <file source="C:\Program Files\Microsoft SDKs\Windows Phone\v7.1\Toolkit\Aug11\Bin\Microsoft.Phone.Controls.Toolkit.dll" archivePath="Microsoft.Phone.Controls.Toolkit.dll" lastWriteTime="8/12/2011 6:19:16 PM" />
+  <file source="C:\Users\wes\SVN\MythMe\MythMe\SplashScreenImage.jpg" archivePath="SplashScreenImage.jpg" lastWriteTime="9/22/2011 6:58:22 PM" />
+  <file source="C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\AppManifest.xaml" archivePath="AppManifest.xaml" lastWriteTime="9/22/2011 10:15:26 PM" />
 </xapCache>

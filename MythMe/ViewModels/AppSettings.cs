@@ -86,7 +86,8 @@ namespace MythMe
         // The default value of our settings
         const bool FirstRunDefault = true;
 
-        const string MasterBackendIpDefault = "master_backend";
+        //asdf - change this
+        const string MasterBackendIpDefault = "192.168.1.105";
         const int MasterBackendPortDefault = 6543;
         const int MasterBackendXmlPortDefault = 6544;
 

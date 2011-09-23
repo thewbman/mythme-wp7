@@ -35,9 +35,11 @@
                 <TextBlock x:Name="recordedButton" Text="recorded" Margin="50,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" Tap="recordedButton_Tap" />
                 <TextBlock x:Name="upcomingButton" Text="upcoming" Margin="50,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" Tap="upcomingButton_Tap" />
                 <TextBlock x:Name="guideButton" Text="guide" Margin="50,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" Tap="guideButton_Tap" />
+                <!--
                 <TextBlock x:Name="searchButton" Text="search" Margin="50,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" Tap="searchButton_Tap" />
                 <TextBlock x:Name="videosButton" Text="videos" Margin="50,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" Tap="videosButton_Tap" />
                 <TextBlock x:Name="musicButton" Text="music" Margin="50,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" Tap="musicButton_Tap" />
+                -->
                 <TextBlock x:Name="statusButton" Text="status" Margin="50,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" Tap="statusButton_Tap" />
                 <TextBlock x:Name="logButton" Text="log" Margin="50,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" Tap="logButton_Tap" />
                 <TextBlock x:Name="preferencesButton" Text="preferences" Margin="50,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" Tap="preferencesButton_Tap" />
