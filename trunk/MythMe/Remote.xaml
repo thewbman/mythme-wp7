@@ -32,17 +32,17 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock x:Name="escape" Text="escape" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="escape_Tap" />
-                    <TextBlock x:Name="up" Text="up" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="up_Tap" />
-                    <TextBlock x:Name="delete" Text="delete" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="delete_Tap" />
+                    <TextBlock x:Name="escape" Text="escape" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="escape_Tap" FontSize="40" />
+                    <TextBlock x:Name="up" Text="up" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="up_Tap" FontSize="40" />
+                    <TextBlock x:Name="delete" Text="delete" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="delete_Tap" FontSize="40" />
 
-                    <TextBlock x:Name="left" Text="left" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="left_Tap" />
-                    <TextBlock x:Name="enter" Text="enter" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="enter_Tap" />
-                    <TextBlock x:Name="right" Text="right" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="right_Tap" />
+                    <TextBlock x:Name="left" Text="left" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="left_Tap" FontSize="40" />
+                    <TextBlock x:Name="enter" Text="enter" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="enter_Tap" FontSize="40" />
+                    <TextBlock x:Name="right" Text="right" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="right_Tap" FontSize="40" />
 
-                    <TextBlock x:Name="menu" Text="menu" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="menu_Tap" />
-                    <TextBlock x:Name="down" Text="down" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="down_Tap" />
-                    <TextBlock x:Name="info" Text="info" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="info_Tap" />
+                    <TextBlock x:Name="menu" Text="menu" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="menu_Tap" FontSize="40" />
+                    <TextBlock x:Name="down" Text="down" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="down_Tap" FontSize="40" />
+                    <TextBlock x:Name="info" Text="info" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="info_Tap" FontSize="40" />
                 </Grid>
             </controls:PivotItem>
 
@@ -54,24 +54,52 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="152" />
-                        <ColumnDefinition Width="76" />
-                        <ColumnDefinition Width="76" />
-                        <ColumnDefinition Width="152" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock x:Name="previous" Text="previous" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="previous_Tap" />
-                    <TextBlock x:Name="pause" Text="pause" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="pause_Tap" Grid.ColumnSpan="2" />
-                    <TextBlock x:Name="next" Text="next" Grid.Column="3" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="next_Tap" />
-                    
-                    <TextBlock x:Name="livetv" Text="livetv" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="livetv_Tap" Grid.ColumnSpan="2"  />
-                    <TextBlock x:Name="recorded" Text="recorded" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="recorded_Tap" Grid.ColumnSpan="2"  />
-                    
-                    <TextBlock x:Name="video" Text="video" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="video_Tap" Grid.ColumnSpan="2" />
-                    <TextBlock x:Name="music" Text="music" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="music_Tap" Grid.ColumnSpan="2"  />
-                              
+                    <Grid ShowGridLines="True">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
                         
+                        <TextBlock x:Name="previous" Text="previous" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="previous_Tap" FontSize="40" />
+                        <TextBlock x:Name="pause" Text="pause" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="pause_Tap" FontSize="40" />
+                        <TextBlock x:Name="next" Text="next" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="next_Tap" FontSize="40" />
+                    </Grid>
+
+                    <Grid ShowGridLines="True" Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock x:Name="livetv" Text="livetv" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="livetv_Tap" FontSize="40"  />
+                    <TextBlock x:Name="recorded" Text="recorded" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="recorded_Tap" FontSize="40"  />
                 </Grid>
+                    
+                    <Grid ShowGridLines="True" Grid.Row="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock x:Name="video" Text="video" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="video_Tap" FontSize="40" />
+                    <TextBlock x:Name="music" Text="music" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="music_Tap" FontSize="40"  />
+    </Grid>
+
+
+    </Grid>
             </controls:PivotItem>
 
             <controls:PivotItem Header="query">
@@ -81,9 +109,9 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                        
-                    <TextBlock x:Name="location" Text="location" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="location_Tap" />
-                    <TextBlock x:Name="volume" Text="volume" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="volume_Tap" />
+
+                    <TextBlock x:Name="location" Text="location" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="location_Tap" FontSize="40" />
+                    <TextBlock x:Name="volume" Text="volume" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="volume_Tap" FontSize="40" />
                     <TextBlock x:Name="remoteResponse" Text="response" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" />
 
                 </Grid>

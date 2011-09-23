@@ -15,3 +15,23 @@ c:\users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\Bin\Debug\Flurr
 C:\Users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\Bin\Debug\Microsoft.Phone.Controls.dll
 C:\Users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\Bin\Debug\Microsoft.Phone.Controls.xml
 C:\Users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\obj\Debug\Remote.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\ApplicationIcon.png
+C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\Background.png
+C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\MythMe.dll
+C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\MythMe.pdb
+C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\AppManifest.xaml
+C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\MythMe.xap
+C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\Microsoft.Phone.Controls.dll
+C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\Microsoft.Phone.Controls.xml
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\App.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\MainPage.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\Remote.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\MythMe.g.resources
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\MythMe.dll
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\MythMe.pdb
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\XapCacheFile.xml
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\Recorded.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\Microsoft.Phone.Controls.Toolkit.dll
+C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\Microsoft.Phone.Controls.Toolkit.pdb
+C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\Microsoft.Phone.Controls.Toolkit.xml

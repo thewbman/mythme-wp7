@@ -27,7 +27,12 @@ namespace MythMe
         {
             this.Backends = new ObservableCollection<BackendsViewModel>();
             this.Frontends = new ObservableCollection<FrontendsViewModel>();
-           
+
+            this.Recorded = new ObservableCollection<ProgramViewModel>();
+            this.Upcoming = new ObservableCollection<ProgramViewModel>();
+
+            this.SelectedProgram = new ProgramViewModel();
+
             this.appSettings = new AppSettings();
 
             this.Connected = false;
@@ -42,7 +47,12 @@ namespace MythMe
         /// </summary>
         public ObservableCollection<BackendsViewModel> Backends { get; private set; }
         public ObservableCollection<FrontendsViewModel> Frontends { get; private set; }
-        
+
+        public ObservableCollection<ProgramViewModel> Recorded { get; private set; }
+        public ObservableCollection<ProgramViewModel> Upcoming { get; private set; }
+
+        public ProgramViewModel SelectedProgram;
+
         public AppSettings appSettings;
 
         public bool IsDataLoaded { get; private set; }
@@ -53,7 +63,12 @@ namespace MythMe
 
         private string _slashes;
 
-        public static string randText()
+        public string randText()
+        {
+            //return random.Next().ToString();
+            return myRandom();
+        }
+        private static string myRandom()
         {
             Random random = new Random();
 
@@ -92,7 +107,7 @@ namespace MythMe
                 foreach (var e in savedFrontendsList) this.Frontends.Add(e);
 
             }
-            
+
 
             //save hosts
             this.saveBackends();

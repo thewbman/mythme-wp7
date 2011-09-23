@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using System.Net.Sockets;
-using System.Net.NetworkInformation;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -35,12 +34,15 @@ namespace MythMe
             
         }
 
+        const int MAX_BUFFER_SIZE = 2048;
+
         private bool connected;
         private Socket remoteSocket;
         SocketAsyncEventArgs remoteSocketEventArg;
         private string remoteAddress;
         private int remotePort;
         private DnsEndPoint remoteEndPoint;
+
 
         public string responseText
         {
@@ -60,14 +62,15 @@ namespace MythMe
             remoteTitle.Title = "remote: " + remoteAddress;
 
             if(connected == false) {
-               remoteSocketEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(SocketEventArg_Completed);
+                remoteSocketEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(SocketEventArg_Completed);
                 
-               remoteSocketEventArg.RemoteEndPoint = remoteEndPoint;
-               remoteSocketEventArg.UserToken = remoteSocket;
+                remoteSocketEventArg.RemoteEndPoint = remoteEndPoint;
+                remoteSocketEventArg.UserToken = remoteSocket;
 
-               remoteSocket.ConnectAsync(remoteSocketEventArg);
+                remoteSocket.ConnectAsync(remoteSocketEventArg);
 
-               connected = true;
+
+                connected = true;
                
             }
         }
@@ -98,7 +101,6 @@ namespace MythMe
             byte[] buffer = Encoding.UTF8.GetBytes("key " + inValue + "\n");
             remoteSocketEventArg.SetBuffer(buffer, 0, buffer.Length);
 
-
             remoteSocket.SendAsync(remoteSocketEventArg);
         }
         void SendJump(string inValue)
@@ -128,13 +130,20 @@ namespace MythMe
                 //remoteSocket.ReceiveAsync(e);
                 //Read data sent from the server
                 //Socket sock = e.UserToken as Socket;
+
                 /*
                 bool willRaiseEvent = remoteSocket.ReceiveAsync(e);
                 if (!willRaiseEvent)
                 {
                     ProcessReceive(e);
                 }
-                 */
+                */
+
+                byte[] buffer = Encoding.UTF8.GetBytes("\n");
+                remoteSocketEventArg.SetBuffer(buffer, 0, buffer.Length);
+
+                remoteSocket.SendAsync(remoteSocketEventArg);
+                
             }
             else
             {
@@ -149,6 +158,8 @@ namespace MythMe
 
                 //Read data sent from the server
                 //Socket sock = e.UserToken as Socket;
+
+                e.SetBuffer(new Byte[MAX_BUFFER_SIZE], 0, MAX_BUFFER_SIZE);
                 bool willRaiseEvent = remoteSocket.ReceiveAsync(e);
                 if (!willRaiseEvent)
                 {
@@ -193,79 +204,79 @@ namespace MythMe
 
         //buttons
         //navigation
-        private void escape_Tap(object sender, GestureEventArgs e)
+        private void escape_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             SendKey("escape");
         }
-        private void up_Tap(object sender, GestureEventArgs e)
+        private void up_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             SendKey("up");
         }
-        private void delete_Tap(object sender, GestureEventArgs e)
+        private void delete_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             SendKey("d");
         }
-        private void left_Tap(object sender, GestureEventArgs e)
+        private void left_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             SendKey("left");
         }
-        private void enter_Tap(object sender, GestureEventArgs e)
+        private void enter_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             SendKey("enter");
         }
-        private void right_Tap(object sender, GestureEventArgs e)
+        private void right_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             SendKey("right");
         }
-        private void menu_Tap(object sender, GestureEventArgs e)
+        private void menu_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             SendKey("m");
         }
-        private void down_Tap(object sender, GestureEventArgs e)
+        private void down_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             SendKey("down");
         }
-        private void info_Tap(object sender, GestureEventArgs e)
+        private void info_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             SendKey("i");
         }
 
         //playback
-        private void previous_Tap(object sender, GestureEventArgs e)
+        private void previous_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             SendKey("q");
         }
-        private void pause_Tap(object sender, GestureEventArgs e)
+        private void pause_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             SendKey("p");
         }
-        private void next_Tap(object sender, GestureEventArgs e)
+        private void next_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             SendKey("z");
         }
-        private void livetv_Tap(object sender, GestureEventArgs e)
+        private void livetv_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             SendJump("livetv");
         }
-        private void recorded_Tap(object sender, GestureEventArgs e)
+        private void recorded_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             SendJump("playbackbox");
         }
-        private void video_Tap(object sender, GestureEventArgs e)
+        private void video_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             SendJump("mythvideo");
         }
-        private void music_Tap(object sender, GestureEventArgs e)
+        private void music_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             SendJump("playmusic");
         }
 
         //query
-        private void location_Tap(object sender, GestureEventArgs e)
+        private void location_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             SendQuery("location");
         }
-        private void volume_Tap(object sender, GestureEventArgs e)
+        private void volume_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             SendQuery("volume");
         }

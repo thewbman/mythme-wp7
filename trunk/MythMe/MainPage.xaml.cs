@@ -45,68 +45,69 @@ namespace MythMe
             MasterBackendTitle.Text = App.ViewModel.appSettings.MasterBackendIpSetting;
         }
 
-        private void remoteButton_Tap(object sender, GestureEventArgs e)
+        private void remoteButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             //MessageBox.Show("Not yet implimented");
             NavigationService.Navigate(new Uri("/Remote.xaml", UriKind.Relative));
 
         }
 
-        private void recordedButton_Tap(object sender, GestureEventArgs e)
+        private void recordedButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            //MessageBox.Show("Not yet implimented");
+            NavigationService.Navigate(new Uri("/Recorded.xaml", UriKind.Relative));
+
+        }
+
+        private void upcomingButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             MessageBox.Show("Not yet implimented");
 
         }
 
-        private void upcomingButton_Tap(object sender, GestureEventArgs e)
+        private void guideButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             MessageBox.Show("Not yet implimented");
 
         }
 
-        private void guideButton_Tap(object sender, GestureEventArgs e)
+        private void searchButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             MessageBox.Show("Not yet implimented");
 
         }
 
-        private void searchButton_Tap(object sender, GestureEventArgs e)
+        private void videosButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             MessageBox.Show("Not yet implimented");
 
         }
 
-        private void videosButton_Tap(object sender, GestureEventArgs e)
+        private void musicButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             MessageBox.Show("Not yet implimented");
 
         }
 
-        private void musicButton_Tap(object sender, GestureEventArgs e)
+        private void statusButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             MessageBox.Show("Not yet implimented");
 
         }
 
-        private void statusButton_Tap(object sender, GestureEventArgs e)
+        private void logButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             MessageBox.Show("Not yet implimented");
 
         }
 
-        private void logButton_Tap(object sender, GestureEventArgs e)
+        private void preferencesButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             MessageBox.Show("Not yet implimented");
 
         }
 
-        private void preferencesButton_Tap(object sender, GestureEventArgs e)
-        {
-            MessageBox.Show("Not yet implimented");
-
-        }
-
-        private void helpButton_Tap(object sender, GestureEventArgs e)
+        private void helpButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             MessageBox.Show("Not yet implimented");
 
