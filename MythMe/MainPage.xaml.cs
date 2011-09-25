@@ -35,6 +35,7 @@ namespace MythMe
 
                 App.ViewModel.appSettings.FirstRunSetting = false;
 
+
             }
             else
             {

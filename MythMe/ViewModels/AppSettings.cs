@@ -46,7 +46,8 @@ namespace MythMe
 
         //remotePane: "Navigation",
 		//recGroup: "Default",
-        //recSort: "Date [Desc][]:[]Original Airdate [Asc]",
+        const string RecSortName = "RecSort";
+        const string RecSortAscName = "RecSortAsc";
 		//upcomingGroup: "Upcoming",
 		//guideSort: "Default",	//asdf
 		//searchSort: "Date [Asc]",
@@ -120,7 +121,8 @@ namespace MythMe
 
         //remotePane: "Navigation",
         //recGroup: "Default",
-        //recSort: "Date [Desc][]:[]Original Airdate [Asc]",
+        const string RecSortDefault = "date";
+        const bool RecSortAscDefault = false;
         //upcomingGroup: "Upcoming",
         //guideSort: "Default",	//asdf
         //searchSort: "Date [Asc]",
@@ -377,7 +379,17 @@ namespace MythMe
 
         //remotePane: "Navigation",
         //recGroup: "Setting",
-        //recSort: "Date [Desc][]:[]Original Airdate [Asc]",
+
+        public string RecSortSetting
+        {
+            get { return GetValueOrDefault<string>(RecSortName, RecSortDefault); }
+            set { if (AddOrUpdateValue(RecSortName, value)) { Save(); } }
+        }
+        public bool RecSortAscSetting
+        {
+            get { return GetValueOrDefault<bool>(RecSortAscName, RecSortAscDefault); }
+            set { if (AddOrUpdateValue(RecSortAscName, value)) { Save(); } }
+        }
         //upcomingGroup: "Upcoming",
         //guideSort: "Setting",	//asdf
         //searchSort: "Date [Asc]",

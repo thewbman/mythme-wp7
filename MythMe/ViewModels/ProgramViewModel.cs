@@ -72,6 +72,8 @@ namespace MythMe
 
         public string screenshot { get; set; }
 
+        public string recsort { get; set; }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(String propertyName)
