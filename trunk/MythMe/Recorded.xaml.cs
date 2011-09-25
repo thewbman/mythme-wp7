@@ -31,7 +31,7 @@ namespace MythMe
 
             DataContext = App.ViewModel;
 
-            AllRecordedListBox.ItemsSource = App.ViewModel.Recorded;
+            AllRecordedListBox.ItemsSource = AllRecorded;
             DefaultRecordedListBox.ItemsSource = DefaultRecorded;
             DeletedRecordedListBox.ItemsSource = DeletedRecorded;
             LiveTVRecordedListBox.ItemsSource = LiveTVRecorded;
@@ -40,6 +40,7 @@ namespace MythMe
         private string getRecorded25String = "http://{0}:{1}/Dvr/GetRecorded?random={2}";
         private string getRecordedString = "http://{0}:{1}/Myth/GetRecorded?random={2}";
 
+        ObservableCollection<ProgramViewModel> AllRecorded = new ObservableCollection<ProgramViewModel>();
         ObservableCollection<ProgramViewModel> DefaultRecorded = new ObservableCollection<ProgramViewModel>();
         ObservableCollection<ProgramViewModel> DeletedRecorded = new ObservableCollection<ProgramViewModel>();
         ObservableCollection<ProgramViewModel> LiveTVRecorded = new ObservableCollection<ProgramViewModel>();
@@ -50,7 +51,8 @@ namespace MythMe
             if (App.ViewModel.Recorded.Count == 0) this.Perform(() => GetRecorded(), 5000);
             else
             {
-
+                /*
+                AllRecorded.Clear();
                 DefaultRecorded.Clear();
                 DeletedRecorded.Clear();
                 LiveTVRecorded.Clear();
@@ -71,19 +73,27 @@ namespace MythMe
                 DefaultRecordedListBox.ItemsSource = DefaultRecorded;
                 DeletedRecordedListBox.ItemsSource = DeletedRecorded;
                 LiveTVRecordedListBox.ItemsSource = LiveTVRecorded;
+                 */
 
-                performanceProgressBarCustomized.IsIndeterminate = false;
+                SortAndDisplay();
+
             }
         }
 
-        void GetRecorded()
+        private void GetRecorded()
         {
 
+            performanceProgressBarCustomized.IsIndeterminate = true;
+
+            AllTitle.Header = "All";
+            DefaultTitle.Header = "Default";
+            DeletedTitle.Header = "Deleted";
+            LiveTVTitle.Header = "LiveTV";
+
+            AllRecorded.Clear();
             DefaultRecorded.Clear();
             DeletedRecorded.Clear();
             LiveTVRecorded.Clear();
-
-            performanceProgressBarCustomized.IsIndeterminate = true;
 
             if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
             {
@@ -194,7 +204,7 @@ namespace MythMe
                     //replace with real logic and function
                     //singleRecorded.screenshot = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Myth/GetPreviewImage?ChanId=";
                     //singleRecorded.screenshot += singleRecorded.chanid + "&StartTime=" + singleRecorded.recstartts.Replace("T", " ");
-                    singleRecorded.screenshot = "http://192.168.1.105/cgi-bin/webmyth.py?op=getPremadeImage&chanid=";
+                    singleRecorded.screenshot = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + "/cgi-bin/webmyth.py?op=getPremadeImage&chanid=";
                     singleRecorded.screenshot += singleRecorded.chanid + "&starttime=" + singleRecorded.recstartts.Replace("T", " ");
 
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
@@ -202,29 +212,30 @@ namespace MythMe
                         //programlist.Add(singleRecorded);
                         App.ViewModel.Recorded.Add(singleRecorded);
 
-                        if (singleRecorded.recgroup == "Default") DefaultRecorded.Add(singleRecorded);
-                        else if (singleRecorded.recgroup == "Deleted") DeletedRecorded.Add(singleRecorded);
-                        else if (singleRecorded.recgroup == "LiveTV") LiveTVRecorded.Add(singleRecorded);
+                        /*
+                        if (singleRecorded.recgroup == "Default")
+                        {
+                            DefaultRecorded.Add(singleRecorded);
+                           // DefaultRecorded.OrderBy(p => p.title);
+                        }
+                        else if (singleRecorded.recgroup == "Deleted")
+                        {
+                            DeletedRecorded.Add(singleRecorded);
+                            //DeletedRecorded.OrderBy(p => p.title);
+                        }
+                        else if (singleRecorded.recgroup == "LiveTV")
+                        {
+                            LiveTVRecorded.Add(singleRecorded);
+                            //LiveTVRecorded.OrderBy(p => p.title);
+                        }
+                         */
                     });
                 }
 
 
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
-                    AllTitle.Header = "All (" + App.ViewModel.Recorded.Count + ")";
-                    DefaultTitle.Header = "Default (" + DefaultRecorded.Count + ")";
-                    DeletedTitle.Header = "Deleted (" + DeletedRecorded.Count + ")";
-                    LiveTVTitle.Header = "LiveTV (" + LiveTVRecorded.Count + ")";
-
-                    performanceProgressBarCustomized.IsIndeterminate = false;
-                    
-                    //MessageBox.Show("Found recorded qty: " + xdoc.Element("GetRecordedResponse").Element("Recorded").Element("Programs").Descendants("Program").Count(), "Recorded", MessageBoxButton.OK);
-                    //MessageBox.Show("Found recorded qty: " + recordedCount, "Recorded", MessageBoxButton.OK);
-
-                    //App.ViewModel.Recorded = programlist;
-
-                    //AllRecordedListBox.ItemsSource = App.ViewModel.Recorded;
-                    //AllRecordedListBox.ItemsSource = programlist;
+                    SortAndDisplay();
                 });
 
             }
@@ -241,6 +252,83 @@ namespace MythMe
             }
         }
 
+        private void SortAndDisplay()
+        {
+
+            AllRecorded.Clear();
+            DefaultRecorded.Clear();
+            DeletedRecorded.Clear();
+            LiveTVRecorded.Clear();
+
+            switch (App.ViewModel.appSettings.RecSortSetting)
+            {
+                case "date":
+                    foreach (var item in App.ViewModel.Recorded)
+                    {
+                        item.recsort = item.starttime;
+                    }
+                    break;
+                case "airdate":
+                    foreach (var item in App.ViewModel.Recorded)
+                    {
+                        item.recsort = item.airdate;
+                    }
+                    break;
+                case "title":
+                    foreach (var item in App.ViewModel.Recorded)
+                    {
+                        item.recsort = item.title;
+                    }
+                    break;
+                default:
+                    foreach (var item in App.ViewModel.Recorded)
+                    {
+                        item.recsort = item.title;
+                    }
+                    break;
+            }
+
+            var arr = App.ViewModel.Recorded.OrderBy(x => x.recsort).ToArray();
+
+            switch (App.ViewModel.appSettings.RecSortAscSetting)
+            {
+                case true:
+                    //arr = App.ViewModel.Recorded.OrderBy(x => x.recsort).ToArray();
+                    break;
+                case false:
+                    arr = App.ViewModel.Recorded.OrderByDescending(x => x.recsort).ToArray();
+                    break;
+            }
+
+            App.ViewModel.Recorded.Clear();
+            foreach (var item in arr)
+            {
+                App.ViewModel.Recorded.Add(item);
+
+                AllRecorded.Add(item);
+
+                if (item.recgroup == "Default")
+                {
+                    DefaultRecorded.Add(item);
+                }
+                else if (item.recgroup == "Deleted")
+                {
+                    DeletedRecorded.Add(item);
+                }
+                else if (item.recgroup == "LiveTV")
+                {
+                    LiveTVRecorded.Add(item);
+                }
+            }
+
+            AllTitle.Header = "All (" + AllRecorded.Count + ")";
+            DefaultTitle.Header = "Default (" + DefaultRecorded.Count + ")";
+            DeletedTitle.Header = "Deleted (" + DeletedRecorded.Count + ")";
+            LiveTVTitle.Header = "LiveTV (" + LiveTVRecorded.Count + ")";
+
+            performanceProgressBarCustomized.IsIndeterminate = false;
+
+        }
 
         private void Perform(Action myMethod, int delayInMilliseconds)
         {
@@ -253,5 +341,56 @@ namespace MythMe
             worker.RunWorkerAsync();
         }
 
+        private void appbarRefresh_Click(object sender, EventArgs e)
+        {
+            GetRecorded();
+        }
+
+        private void appbarSort_Click(object sender, EventArgs e)
+        {
+            if (this.SortPopup.Parent == null)
+            {
+                this.SortPopup.IsOpen = true;
+            }
+        }
+
+        private void SortItem_Click(object sender, RoutedEventArgs e)
+        {
+            string header = (sender as MenuItem).Header.ToString();
+
+            switch (header)
+            {
+                case "Date, Asc":
+                    App.ViewModel.appSettings.RecSortSetting = "date";
+                    App.ViewModel.appSettings.RecSortAscSetting = true;
+                    break;
+                case "Date, Desc":
+                    App.ViewModel.appSettings.RecSortSetting = "date";
+                    App.ViewModel.appSettings.RecSortAscSetting = false;
+                    break;
+                case "Original airdate, Asc":
+                    App.ViewModel.appSettings.RecSortSetting = "airdate";
+                    App.ViewModel.appSettings.RecSortAscSetting = true;
+                    break;
+                case "Original airdate, Desc":
+                    App.ViewModel.appSettings.RecSortSetting = "airdate";
+                    App.ViewModel.appSettings.RecSortAscSetting = false;
+                    break;
+                case "Title, Asc":
+                    App.ViewModel.appSettings.RecSortSetting = "title";
+                    App.ViewModel.appSettings.RecSortAscSetting = true;
+                    break;
+                case "Title, Desc":
+                    App.ViewModel.appSettings.RecSortSetting = "title";
+                    App.ViewModel.appSettings.RecSortAscSetting = false;
+                    break;
+                default:
+                    App.ViewModel.appSettings.RecSortSetting = "date";
+                    App.ViewModel.appSettings.RecSortAscSetting = false;
+                    break;
+            }
+
+            SortAndDisplay();
+        }
     }
 }
