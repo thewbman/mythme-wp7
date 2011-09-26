@@ -27,7 +27,7 @@ namespace MythMe
         public string channame { get; set; }
 
         public string filename { get; set; }
-        public int filesize { get; set; }
+        public Int64 filesize { get; set; }
         public int starttimeint { get; set; }
         public string starttime { get; set; }
         public string starttimespace { get; set; }
@@ -71,6 +71,9 @@ namespace MythMe
         //public string year { get; set; }
 
         public string screenshot { get; set; }
+
+        public string recordedfourthline { get; set; }
+        public string upcomingfourthline { get; set; }
 
         public string recsort { get; set; }
 
