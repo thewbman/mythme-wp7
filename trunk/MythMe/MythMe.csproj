@@ -76,6 +76,9 @@
     <Compile Include="Recorded.xaml.cs">
       <DependentUpon>Recorded.xaml</DependentUpon>
     </Compile>
+    <Compile Include="RecordedDetails.xaml.cs">
+      <DependentUpon>RecordedDetails.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Remote.xaml.cs">
       <DependentUpon>Remote.xaml</DependentUpon>
     </Compile>
@@ -95,6 +98,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Recorded.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RecordedDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

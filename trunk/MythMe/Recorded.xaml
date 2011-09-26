@@ -36,7 +36,7 @@
         <controls:Pivot Title="recorded">
             <controls:PivotItem x:Name="DefaultTitle" Header="Default" Visibility="Collapsed">
                 <Grid>
-                    <ListBox x:Name="DefaultRecordedListBox" >
+                    <ListBox x:Name="DefaultRecordedListBox" SelectionChanged="DefaultRecordedListBox_SelectionChanged">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -46,11 +46,7 @@
                                         <TextBlock Text="{Binding subtitle}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
                                         <TextBlock Text="{Binding starttimespace}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
                                         <TextBlock Text="{Binding category}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                                        <StackPanel Orientation="Horizontal" Margin="12,-6,0,0">
-                                            <TextBlock Text="{Binding channum}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="0" />
-                                            <TextBlock Text=" - "  Style="{StaticResource PhoneTextSubtleStyle}" Margin="0" />
-                                            <TextBlock Text="{Binding channame}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="0" />
-                                        </StackPanel>
+                                        <TextBlock Text="{Binding recordedfourthline}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
                                     </StackPanel>
                                 </StackPanel>
                             </DataTemplate>
@@ -61,7 +57,7 @@
 
             <controls:PivotItem x:Name="DeletedTitle" Header="Deleted" Visibility="Collapsed">
                 <Grid>
-                    <ListBox x:Name="DeletedRecordedListBox" >
+                    <ListBox x:Name="DeletedRecordedListBox" SelectionChanged="DeletedRecordedListBox_SelectionChanged">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -71,11 +67,7 @@
                                         <TextBlock Text="{Binding subtitle}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
                                         <TextBlock Text="{Binding starttimespace}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
                                         <TextBlock Text="{Binding category}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                                        <StackPanel Orientation="Horizontal" Margin="12,-6,0,0">
-                                            <TextBlock Text="{Binding channum}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="0" />
-                                            <TextBlock Text=" - "  Style="{StaticResource PhoneTextSubtleStyle}" Margin="0" />
-                                            <TextBlock Text="{Binding channame}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="0" />
-                                        </StackPanel>
+                                        <TextBlock Text="{Binding recordedfourthline}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
                                     </StackPanel>
                                 </StackPanel>
                             </DataTemplate>
@@ -86,7 +78,7 @@
 
             <controls:PivotItem x:Name="LiveTVTitle" Header="LiveTV" Visibility="Collapsed">
                 <Grid>
-                    <ListBox x:Name="LiveTVRecordedListBox" >
+                    <ListBox x:Name="LiveTVRecordedListBox" SelectionChanged="LiveTVRecordedListBox_SelectionChanged">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -96,11 +88,7 @@
                                         <TextBlock Text="{Binding subtitle}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
                                         <TextBlock Text="{Binding starttimespace}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
                                         <TextBlock Text="{Binding category}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                                        <StackPanel Orientation="Horizontal" Margin="12,-6,0,0">
-                                            <TextBlock Text="{Binding channum}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="0" />
-                                            <TextBlock Text=" - "  Style="{StaticResource PhoneTextSubtleStyle}" Margin="0" />
-                                            <TextBlock Text="{Binding channame}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="0" />
-                                        </StackPanel>
+                                        <TextBlock Text="{Binding recordedfourthline}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
                                     </StackPanel>
                                 </StackPanel>
                             </DataTemplate>
@@ -111,7 +99,7 @@
 
             <controls:PivotItem x:Name="AllTitle" Header="All" Visibility="Collapsed">
                 <Grid>
-                    <ListBox x:Name="AllRecordedListBox" ItemsSource="{Binding Recorded}">
+                    <ListBox x:Name="AllRecordedListBox" SelectionChanged="AllRecordedListBox_SelectionChanged">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -121,11 +109,7 @@
                                         <TextBlock Text="{Binding subtitle}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
                                         <TextBlock Text="{Binding starttimespace}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
                                         <TextBlock Text="{Binding category}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                                        <StackPanel Orientation="Horizontal" Margin="12,-6,0,0">
-                                            <TextBlock Text="{Binding channum}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="0" />
-                                            <TextBlock Text=" - "  Style="{StaticResource PhoneTextSubtleStyle}" Margin="0" />
-                                            <TextBlock Text="{Binding channame}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="0" />
-                                        </StackPanel>
+                                        <TextBlock Text="{Binding recordedfourthline}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
                                     </StackPanel>
                                 </StackPanel>
                             </DataTemplate>

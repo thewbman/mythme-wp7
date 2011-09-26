@@ -171,7 +171,7 @@ namespace MythMe
 
                     //singleRecorded.programflags = (string)singleRecordedElement.Attribute("programFlags").Value;
                     singleRecorded.category = (string)singleRecordedElement.Attribute("category").Value;
-                    //singleRecorded.filesize = int.Parse((string)singleRecordedElement.Attribute("fileSize").Value);
+                    if (singleRecordedElement.Attributes("fileSize").Count() > 0) singleRecorded.filesize = Int64.Parse((string)singleRecordedElement.Attribute("fileSize").Value);
                     singleRecorded.seriesid = (string)singleRecordedElement.Attribute("seriesId").Value;
                     singleRecorded.hostname = (string)singleRecordedElement.Attribute("hostname").Value;
                     //singleRecorded.cattype = (string)singleRecordedElement.Attribute("catType").Value;
@@ -198,14 +198,25 @@ namespace MythMe
                     singleRecorded.recstatus = int.Parse((string)singleRecordedElement.Element("Recording").Attribute("recStatus").Value);
                     singleRecorded.recgroup = (string)singleRecordedElement.Element("Recording").Attribute("recGroup").Value;
                     singleRecorded.recstartts = (string)singleRecordedElement.Element("Recording").Attribute("recStartTs").Value;
+                    singleRecorded.recendts = (string)singleRecordedElement.Element("Recording").Attribute("recEndTs").Value;
                     singleRecorded.recordid = int.Parse((string)singleRecordedElement.Element("Recording").Attribute("recordId").Value);
 
+                    singleRecorded.description = (string)singleRecordedElement.FirstNode.ToString();
 
                     //replace with real logic and function
                     //singleRecorded.screenshot = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Myth/GetPreviewImage?ChanId=";
                     //singleRecorded.screenshot += singleRecorded.chanid + "&StartTime=" + singleRecorded.recstartts.Replace("T", " ");
                     singleRecorded.screenshot = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + "/cgi-bin/webmyth.py?op=getPremadeImage&chanid=";
                     singleRecorded.screenshot += singleRecorded.chanid + "&starttime=" + singleRecorded.recstartts.Replace("T", " ");
+
+                    if (singleRecorded.recstatus == -2)
+                    {
+                        singleRecorded.recordedfourthline = "Currently recording (" + singleRecorded.channum + " - " + singleRecorded.channame+")";
+                    }
+                    else
+                    {
+                        singleRecorded.recordedfourthline = singleRecorded.channum+" - "+singleRecorded.channame;
+                    }
 
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {   
@@ -391,6 +402,58 @@ namespace MythMe
             }
 
             SortAndDisplay();
+        }
+
+
+        private void DefaultRecordedListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (DefaultRecordedListBox.SelectedItem == null)
+                return;
+
+            App.ViewModel.SelectedProgram = (ProgramViewModel)DefaultRecordedListBox.SelectedItem;
+
+            NavigationService.Navigate(new Uri("/RecordedDetails.xaml", UriKind.Relative));
+
+            DefaultRecordedListBox.SelectedItem = null;
+        }
+
+        private void DeletedRecordedListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (DeletedRecordedListBox.SelectedItem == null)
+                return;
+
+            App.ViewModel.SelectedProgram = (ProgramViewModel)DeletedRecordedListBox.SelectedItem;
+
+            NavigationService.Navigate(new Uri("/RecordedDetails.xaml", UriKind.Relative));
+
+            DeletedRecordedListBox.SelectedItem = null;
+
+        }
+
+        private void LiveTVRecordedListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (LiveTVRecordedListBox.SelectedItem == null)
+                return;
+
+            App.ViewModel.SelectedProgram = (ProgramViewModel)LiveTVRecordedListBox.SelectedItem;
+
+            NavigationService.Navigate(new Uri("/RecordedDetails.xaml", UriKind.Relative));
+
+            LiveTVRecordedListBox.SelectedItem = null;
+
+        }
+
+        private void AllRecordedListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (AllRecordedListBox.SelectedItem == null)
+                return;
+
+            App.ViewModel.SelectedProgram = (ProgramViewModel)AllRecordedListBox.SelectedItem;
+
+            NavigationService.Navigate(new Uri("/RecordedDetails.xaml", UriKind.Relative));
+
+            AllRecordedListBox.SelectedItem = null;
+
         }
     }
 }
