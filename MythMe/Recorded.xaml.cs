@@ -48,7 +48,7 @@ namespace MythMe
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
 
-            if (App.ViewModel.Recorded.Count == 0) this.Perform(() => GetRecorded(), 5000);
+            if (App.ViewModel.Recorded.Count == 0) this.Perform(() => GetRecorded(), 100);
             else
             {
                 /*
@@ -196,6 +196,7 @@ namespace MythMe
 
                     singleRecorded.recpriority = int.Parse((string)singleRecordedElement.Element("Recording").Attribute("recPriority").Value);
                     singleRecorded.recstatus = int.Parse((string)singleRecordedElement.Element("Recording").Attribute("recStatus").Value);
+                    singleRecorded.recstatustext = App.ViewModel.functions.RecStatusDecode(singleRecorded.recstatus);
                     singleRecorded.recgroup = (string)singleRecordedElement.Element("Recording").Attribute("recGroup").Value;
                     singleRecorded.recstartts = (string)singleRecordedElement.Element("Recording").Attribute("recStartTs").Value;
                     singleRecorded.recendts = (string)singleRecordedElement.Element("Recording").Attribute("recEndTs").Value;
@@ -205,7 +206,7 @@ namespace MythMe
 
                     //replace with real logic and function
                     //singleRecorded.screenshot = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Myth/GetPreviewImage?ChanId=";
-                    //singleRecorded.screenshot += singleRecorded.chanid + "&StartTime=" + singleRecorded.recstartts.Replace("T", " ");
+                    //singleRecorded.screenshot += singleRecorded.chanid + "&StartTime=" + singleRecorded.recstartts.Replace("T", " ";
                     singleRecorded.screenshot = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + "/cgi-bin/webmyth.py?op=getPremadeImage&chanid=";
                     singleRecorded.screenshot += singleRecorded.chanid + "&starttime=" + singleRecorded.recstartts.Replace("T", " ");
 

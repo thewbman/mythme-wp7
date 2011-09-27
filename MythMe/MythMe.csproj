@@ -82,9 +82,16 @@
     <Compile Include="Remote.xaml.cs">
       <DependentUpon>Remote.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Upcoming.xaml.cs">
+      <DependentUpon>Upcoming.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UpcomingDetails.xaml.cs">
+      <DependentUpon>UpcomingDetails.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\AppSettings.cs" />
     <Compile Include="ViewModels\BackendsViewModel.cs" />
     <Compile Include="ViewModels\FrontendsViewModel.cs" />
+    <Compile Include="ViewModels\FunctionsModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ProgramViewModel.cs" />
   </ItemGroup>
@@ -106,6 +113,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Remote.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Upcoming.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UpcomingDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
