@@ -16,27 +16,20 @@ using Microsoft.Phone.Controls;
 
 namespace MythMe
 {
-    public partial class RecordedDetails : PhoneApplicationPage
+    public partial class UpcomingDetails : PhoneApplicationPage
     {
-        public RecordedDetails()
+        public UpcomingDetails()
         {
             InitializeComponent();
 
             DataContext = App.ViewModel.SelectedProgram;
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            //text1.Text = App.ViewModel.SelectedProgram.description;
-
-            //BitmapImage bitmapImage = new BitmapImage(new Uri(App.ViewModel.SelectedProgram.screenshot));
-            //panoramaBackground.ImageSource = bitmapImage;
-        }
 
         private void scheduleButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             DateTime dateResult;
-            DateTime.TryParse(App.ViewModel.SelectedProgram.recstartts, out dateResult);
+            DateTime.TryParse(App.ViewModel.SelectedProgram.starttime, out dateResult);
 
             //TimeSpan s = (DateTime.Now - new DateTime(1970, 1, 1, ));
             TimeSpan t = (dateResult - new DateTime(1970, 1, 1));
@@ -49,6 +42,5 @@ namespace MythMe
             webopen.Uri = new Uri("http://" + App.ViewModel.appSettings.MasterBackendIpSetting + "/mythweb/tv/detail/" + App.ViewModel.SelectedProgram.chanid + "/" + timestamp);
             webopen.Show();
         }
-
     }
 }

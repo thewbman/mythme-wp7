@@ -28,10 +28,10 @@ namespace MythMe
 
         public string filename { get; set; }
         public Int64 filesize { get; set; }
-        public int starttimeint { get; set; }
+        public Int64 starttimeint { get; set; }
         public string starttime { get; set; }
         public string starttimespace { get; set; }
-        public int endtimeint { get; set; }
+        public Int64 endtimeint { get; set; }
         public string endtime { get; set; }
         public string endtimespace { get; set; }
         public string findid { get; set; }
@@ -42,15 +42,15 @@ namespace MythMe
         public int inputid { get; set; }
         public int recpriority { get; set; }
         public int recstatus { get; set; }
-        public int recstatustext { get; set; }
+        public string recstatustext { get; set; }
         public int recordid { get; set; }
-        public string rectype { get; set; }
+        public int rectype { get; set; }
         //public string dupin { get; set; }
         //public string dupmethod { get; set; }
-        public int recstarttsint { get; set; }
+        public Int64 recstarttsint { get; set; }
         public string recstartts { get; set; }
 
-        public int recendtsint { get; set; }
+        public Int64 recendtsint { get; set; }
         public string recendts { get; set; }
         //public string programflags { get; set; }
         public string recgroup { get; set; }
@@ -71,6 +71,7 @@ namespace MythMe
         //public string year { get; set; }
 
         public string screenshot { get; set; }
+        public string chanicon { get; set; }
 
         public string recordedfourthline { get; set; }
         public string upcomingfourthline { get; set; }

@@ -35,6 +35,8 @@ namespace MythMe
 
             this.appSettings = new AppSettings();
 
+            this.functions = new FunctionsModel();
+
             this.Connected = false;
 
             this.prefs = IsolatedStorageSettings.ApplicationSettings;
@@ -54,6 +56,8 @@ namespace MythMe
         public ProgramViewModel SelectedProgram;
 
         public AppSettings appSettings;
+
+        public FunctionsModel functions;
 
         public bool IsDataLoaded { get; private set; }
 
