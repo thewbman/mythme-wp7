@@ -48,6 +48,19 @@
                 </ScrollViewer>
             </controls:PanoramaItem>
 
+            <controls:PanoramaItem Header="channel">
+                <ScrollViewer>
+                    <StackPanel>
+                        <TextBlock Text="channel number" Style="{StaticResource PhoneTextSubtleStyle}" />
+                        <TextBlock Text="{Binding channum}" />
+                        <TextBlock Text="channel name" Style="{StaticResource PhoneTextSubtleStyle}" />
+                        <TextBlock Text="{Binding channame}" />
+                        <TextBlock Text="chanid" Style="{StaticResource PhoneTextSubtleStyle}" />
+                        <TextBlock Text="{Binding chanid}" />
+                    </StackPanel>
+                </ScrollViewer>
+            </controls:PanoramaItem>
+
             <controls:PanoramaItem Header="recording">
                 <ScrollViewer>
                     <StackPanel>
@@ -61,19 +74,6 @@
                         <TextBlock Text="{Binding hostname}" />
                         <TextBlock Text="recording group" Style="{StaticResource PhoneTextSubtleStyle}" />
                         <TextBlock Text="{Binding recgroup}" />
-                    </StackPanel>
-                </ScrollViewer>
-            </controls:PanoramaItem>
-
-            <controls:PanoramaItem Header="channel">
-                <ScrollViewer>
-                    <StackPanel>
-                        <TextBlock Text="channel number" Style="{StaticResource PhoneTextSubtleStyle}" />
-                        <TextBlock Text="{Binding channum}" />
-                        <TextBlock Text="channel name" Style="{StaticResource PhoneTextSubtleStyle}" />
-                        <TextBlock Text="{Binding channame}" />
-                        <TextBlock Text="chanid" Style="{StaticResource PhoneTextSubtleStyle}" />
-                        <TextBlock Text="{Binding chanid}" />
                     </StackPanel>
                 </ScrollViewer>
             </controls:PanoramaItem>
