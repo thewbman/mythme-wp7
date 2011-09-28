@@ -48,6 +48,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Coding4Fun.Phone.Controls">
+      <HintPath>..\..\..\Documents\Visual Studio 2010\Projects\Coding4Fun.Phone.Controls\Coding4Fun.Phone.Controls.dll</HintPath>
+    </Reference>
     <Reference Include="FlurryWP7SDK">
       <HintPath>..\..\..\..\My Dropbox\development\Flurry WindowsPhone SDK v1.0\FlurryWP7SDK.dll</HintPath>
     </Reference>
@@ -82,6 +85,9 @@
     <Compile Include="Remote.xaml.cs">
       <DependentUpon>Remote.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Status.xaml.cs">
+      <DependentUpon>Status.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Upcoming.xaml.cs">
       <DependentUpon>Upcoming.xaml</DependentUpon>
     </Compile>
@@ -93,6 +99,7 @@
     <Compile Include="ViewModels\FrontendsViewModel.cs" />
     <Compile Include="ViewModels\FunctionsModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\NameContentViewModel.cs" />
     <Compile Include="ViewModels\ProgramViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -113,6 +120,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Remote.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Status.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

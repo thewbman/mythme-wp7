@@ -48,7 +48,7 @@ namespace MythMe
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
 
-            if (App.ViewModel.Recorded.Count == 0) this.Perform(() => GetRecorded(), 100);
+            if (App.ViewModel.Recorded.Count == 0) this.Perform(() => GetRecorded(), 50);
             else
             {
                 /*
@@ -109,6 +109,7 @@ namespace MythMe
 
         private void Recorded25Callback(IAsyncResult asynchronousResult)
         {
+            MessageBox.Show("not yet supported");
         }
 
         private void RecordedCallback(IAsyncResult asynchronousResult)

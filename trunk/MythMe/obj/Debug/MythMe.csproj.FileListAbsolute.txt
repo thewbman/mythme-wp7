@@ -38,3 +38,5 @@ C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\Microsoft.Phone.Controls.Toolkit.xml
 C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\RecordedDetails.g.i.cs
 C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\Upcoming.g.i.cs
 C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\UpcomingDetails.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\Coding4Fun.Phone.Controls.dll
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\Status.g.i.cs

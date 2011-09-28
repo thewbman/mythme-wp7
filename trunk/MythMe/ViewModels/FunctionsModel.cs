@@ -165,5 +165,149 @@ namespace MythMe
 
             return response;
         }
+
+        public string EncoderStateDecode(string inState)
+        {
+            string response;
+
+            switch (int.Parse(inState))
+            {
+		        case -1:
+			        response = "Disconnected";
+			        break;
+		        case 0:
+			        response = "Idle";
+			        break;
+		        case 1:
+			        response = "Watching Live TV";
+			        break;
+		        case 2:
+			        response = "Watching Pre-Recorded";
+			        break;
+		        case 3:
+			        response = "Watching Video";
+			        break;
+		        case 4:
+			        response = "Watching DVD";
+			        break;
+		        case 5:
+			        response = "Watching BD";
+			        break;
+		        case 6:
+			        response = "Recording";
+			        break;
+		        case 7:
+			        response = "Recording";
+			        break;
+		        case 8:
+			        response = "Unknown Status 8";
+			        break;
+		        case 9:
+			        response = "Unknown Status 9";
+			        break;
+                //
+		        default:
+			        response = "Unknown";
+			        break;
+            }
+
+            return response;
+        }
+
+
+        public string JobqueueTypeDecode(string inType)
+        {
+	        string jobType = "Unknown";
+
+	        switch(int.Parse(inType)) {
+		        case 0:
+			        jobType = "System Job";
+			        break;
+		        case 1:
+			        jobType = "Transcode";
+			        break;
+		        case 2:
+			        jobType = "Commercial Flagging";
+			        break;
+		        case 256:
+			        jobType = App.ViewModel.appSettings.UserJobDesc1Setting;
+			        break;
+                case 512:
+                    jobType = App.ViewModel.appSettings.UserJobDesc2Setting;
+			        break;
+                case 1024:
+                    jobType = App.ViewModel.appSettings.UserJobDesc3Setting;
+			        break;
+                case 2048:
+                    jobType = App.ViewModel.appSettings.UserJobDesc4Setting;
+			        break;
+		        default:
+			        jobType = "Unknown Job Type";
+			        break;
+	        };
+	
+	        return jobType;
+        }
+
+        public string JobqueueStatusDecode(string inStatus)
+        {
+            string statusText = "Unknown";
+
+	        switch(int.Parse(inStatus)) {
+		        case -100:
+			        statusText = "";
+			        break;
+		        case 0:
+			        statusText = "Unknown";
+			        break;
+		        case 1:
+			        statusText = "Queued";
+			        break;
+		        case 2:
+			        statusText = "Pending";
+			        break;
+		        case 3:
+			        statusText = "Starting";
+			        break;
+		        case 4:
+			        statusText = "Running";
+			        break;
+		        case 5:
+			        statusText = "Stopped";
+			        break;
+		        case 6:
+			        statusText = "Paused";
+			        break;
+		        case 7:
+			        statusText = "Retry";
+			        break;
+		        case 8:
+			        statusText = "Erroring";
+			        break;
+		        case 9:
+			        statusText = "Aborting";
+			        break;
+		        case 256:
+			        statusText = "Done";
+			        break;
+		        case 272:
+			        statusText = "Finished";
+			        break;
+		        case 288:
+			        statusText = "Aborted";
+			        break;
+		        case 304:
+			        statusText = "Errored";
+			        break;
+		        case 320:
+			        statusText = "Cancelled";
+			        break;
+		        default:
+			        statusText = "Unknown";
+			        break;
+	        };
+	
+	        return statusText;
+        }
     }
 }

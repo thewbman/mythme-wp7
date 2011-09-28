@@ -93,7 +93,8 @@ namespace MythMe
 
         private void statusButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            MessageBox.Show("Not yet implimented");
+            //MessageBox.Show("Not yet implimented");
+            NavigationService.Navigate(new Uri("/Status.xaml", UriKind.Relative));
 
         }
 

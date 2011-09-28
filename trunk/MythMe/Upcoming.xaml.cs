@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -21,6 +22,7 @@ using Microsoft.Phone;
 using Microsoft.Phone.Controls;
 using System.Xml.Linq;
 using System.Security.Cryptography;
+using Coding4Fun.Phone.Controls;
 
 namespace MythMe
 {
@@ -40,7 +42,7 @@ namespace MythMe
             UpcomingUpcomingListBox.ItemsSource = UpcomingUpcoming;
         }
 
-        const int MAX_BUFFER_SIZE = 2024;
+        const int MAX_BUFFER_SIZE = 1460;   //this is the payload size sent from my backend 0.24.1+fixes
 
         private int protocolStatus;
         private int protocolResponseLength;
@@ -58,7 +60,7 @@ namespace MythMe
             else
             {
 
-                SortAndDisplay();
+                SortAndDisplay("");
 
             }
 
@@ -230,6 +232,10 @@ namespace MythMe
                         {
                             //MessageBox.Show("ready to parse upcoming");
                             ProcessSend(e);
+                            //this.Perform(() => ProcessSend(e), 5);
+                            //byte[] buffer = Encoding.UTF8.GetBytes(" ");
+                            //e.SetBuffer(buffer, 0, buffer.Length);
+
                         }
                         else
                         {
@@ -473,16 +479,16 @@ namespace MythMe
 
                 }
 
-                MessageBox.Show("Finished parsing programs: " + App.ViewModel.Upcoming.Count + " view model, " + programIndex + " program index, " + responseArray[1] + " protocol");
+                //MessageBox.Show("Finished parsing programs: " + App.ViewModel.Upcoming.Count + " view model, " + programIndex + " program index, " + responseArray[1] + " protocol");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Problems reading upcoming, please try again", "Error", MessageBoxButton.OK);
+                MessageBox.Show("Problems reading upcoming, not all upcoming programs will be visible", "Error", MessageBoxButton.OK);
             }
-            
-            upcomingHeader.Title = "upcoming: " + App.ViewModel.Upcoming.Count + " " + programIndex + " " + responseArray[1]+" "+responseArray.Length;
-            
-            SortAndDisplay();
+
+            //upcomingHeader.Title = "upcoming: " + App.ViewModel.Upcoming.Count + " " + programIndex + " " + responseArray[1] + " " + responseArray.Length + " " + (Int64.Parse(responseArray[1])*41+2);
+
+            SortAndDisplay(responseArray[0].Substring(8).Trim());
         }
         private void ParseUpcoming41()
         {
@@ -506,7 +512,7 @@ namespace MythMe
         }
 
 
-        private void SortAndDisplay()
+        private void SortAndDisplay(string inConflicting)
         {
 
             AllUpcoming.Clear();
@@ -543,6 +549,9 @@ namespace MythMe
             UpcomingTitle.Header = "Upcoming (" + UpcomingUpcoming.Count + ")";
 
             performanceProgressBarCustomized.IsIndeterminate = false;
+
+            if (inConflicting == "1") BannerMessage("There are conflicting scheduled recordings");
+            
         }
 
 
@@ -552,6 +561,16 @@ namespace MythMe
             GetUpcoming();
         }
             
+        private void BannerMessage(string inMessage)
+        {
+            ToastPrompt toast = new ToastPrompt();
+
+            toast.Title = inMessage;
+            toast.TextOrientation = System.Windows.Controls.Orientation.Horizontal;
+
+            toast.Show();
+        }
+
         private void Perform(Action myMethod, int delayInMilliseconds)
         {
             BackgroundWorker worker = new BackgroundWorker();
