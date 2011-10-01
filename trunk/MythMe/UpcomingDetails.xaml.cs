@@ -42,5 +42,13 @@ namespace MythMe
             webopen.Uri = new Uri("http://" + App.ViewModel.appSettings.MasterBackendIpSetting + "/mythweb/tv/detail/" + App.ViewModel.SelectedProgram.chanid + "/" + timestamp);
             webopen.Show();
         }
+
+        private void guideButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            App.ViewModel.GuideTime = App.ViewModel.SelectedProgram.starttime;
+
+            NavigationService.Navigate(new Uri("/Guide.xaml?SelectedTime=" + App.ViewModel.SelectedProgram.starttime, UriKind.Relative));
+
+        }
     }
 }

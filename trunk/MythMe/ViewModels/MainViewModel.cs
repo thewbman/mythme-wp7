@@ -55,6 +55,8 @@ namespace MythMe
 
         public ProgramViewModel SelectedProgram;
 
+        public string GuideTime { get; set; }
+
         public AppSettings appSettings;
 
         public FunctionsModel functions;
@@ -112,6 +114,7 @@ namespace MythMe
 
             }
 
+            this.GuideTime = "none";
 
             //save hosts
             this.saveBackends();

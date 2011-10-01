@@ -483,7 +483,7 @@ namespace MythMe
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Problems reading upcoming, not all upcoming programs will be visible", "Error", MessageBoxButton.OK);
+                MessageBox.Show("Problems reading upcoming, not all upcoming programs will be visible.  There should have been "+responseArray[1]+" scheduled recordings listed.", "Error", MessageBoxButton.OK);
             }
 
             //upcomingHeader.Title = "upcoming: " + App.ViewModel.Upcoming.Count + " " + programIndex + " " + responseArray[1] + " " + responseArray.Length + " " + (Int64.Parse(responseArray[1])*41+2);
