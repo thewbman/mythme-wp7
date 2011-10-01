@@ -41,7 +41,9 @@
                 <TextBlock x:Name="musicButton" Text="music" Margin="50,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" Tap="musicButton_Tap" />
                 -->
                 <TextBlock x:Name="statusButton" Text="status" Margin="50,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" Tap="statusButton_Tap" />
+                <!--
                 <TextBlock x:Name="logButton" Text="log" Margin="50,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" Tap="logButton_Tap" />
+                -->
                 <TextBlock x:Name="preferencesButton" Text="preferences" Margin="50,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" Tap="preferencesButton_Tap" />
                 <TextBlock x:Name="helpButton" Text="help" Margin="50,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" Tap="helpButton_Tap" />
             </StackPanel>

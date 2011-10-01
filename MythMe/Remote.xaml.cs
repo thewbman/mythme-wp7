@@ -24,8 +24,8 @@ namespace MythMe
             InitializeComponent();
 
             connected = false;
-            remoteSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            remoteSocketEventArg = new SocketAsyncEventArgs();
+            //remoteSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            //remoteSocketEventArg = new SocketAsyncEventArgs();
             remoteAddress = "192.168.1.104";
             remotePort = 6546; 
             remoteEndPoint = new DnsEndPoint(remoteAddress, remotePort);
@@ -56,12 +56,18 @@ namespace MythMe
         }
 
 
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
 
             remoteTitle.Title = "remote: " + remoteAddress;
 
+            remoteSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp); 
+            remoteSocketEventArg = new SocketAsyncEventArgs();
+            
+
             if(connected == false) {
+
                 remoteSocketEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(SocketEventArg_Completed);
                 
                 remoteSocketEventArg.RemoteEndPoint = remoteEndPoint;
@@ -73,6 +79,17 @@ namespace MythMe
                 connected = true;
                
             }
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            remoteSocket.Close();
+
+            remoteSocket.Dispose();
+
+            connected = false;
+            
+            base.OnNavigatedFrom(e);
         }
 
         private void SocketEventArg_Completed(object sender, SocketAsyncEventArgs e)

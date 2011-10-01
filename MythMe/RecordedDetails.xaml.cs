@@ -50,5 +50,12 @@ namespace MythMe
             webopen.Show();
         }
 
+        private void guideButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            App.ViewModel.GuideTime = App.ViewModel.SelectedProgram.recstartts;
+
+            NavigationService.Navigate(new Uri("/Guide.xaml?SelectedTime="+App.ViewModel.SelectedProgram.recstartts, UriKind.Relative));
+        }
+
     }
 }
