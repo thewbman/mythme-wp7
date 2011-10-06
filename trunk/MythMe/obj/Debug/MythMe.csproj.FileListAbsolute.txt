@@ -41,3 +41,4 @@ C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\UpcomingDetails.g.i.cs
 C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\Coding4Fun.Phone.Controls.dll
 C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\Status.g.i.cs
 C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\FlurryWP7SDK.dll
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\Guide.g.i.cs
