@@ -87,9 +87,13 @@
                         <TextBlock x:Name="deleteButton" Text="delete" />
                         <TextBlock x:Name="undeleteButton" Text="undelete" />
                         <TextBlock x:Name="jobsButton" Text="jobs" />
-                        -->
+                        
                         <TextBlock x:Name="scheduleButton" Text="schedule" Tap="scheduleButton_Tap" />
                         <TextBlock x:Name="guideButton" Text="guide" Tap="guideButton_Tap" />
+                        -->
+                        <Button x:Name="mythwebButton" Content="mythweb"  Tap="scheduleButton_Tap" />
+                        <Button x:Name="guidebutton" Content="program guide"  Tap="guideButton_Tap" />
+
                     </StackPanel>
                 </ScrollViewer>
             </controls:PanoramaItem>

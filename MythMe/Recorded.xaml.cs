@@ -109,7 +109,7 @@ namespace MythMe
 
         private void Recorded25Callback(IAsyncResult asynchronousResult)
         {
-            MessageBox.Show("not yet supported");
+            Deployment.Current.Dispatcher.BeginInvoke(() => { MessageBox.Show("not yet supported"); });
         }
 
         private void RecordedCallback(IAsyncResult asynchronousResult)

@@ -31,6 +31,8 @@ namespace MythMe
             this.Recorded = new ObservableCollection<ProgramViewModel>();
             this.Upcoming = new ObservableCollection<ProgramViewModel>();
 
+            this.Channels = new ObservableCollection<ChannelViewModel>();
+
             this.SelectedProgram = new ProgramViewModel();
 
             this.appSettings = new AppSettings();
@@ -41,7 +43,6 @@ namespace MythMe
 
             this.prefs = IsolatedStorageSettings.ApplicationSettings;
 
-            this._slashes = "/";
         }
 
         /// <summary>
@@ -52,6 +53,8 @@ namespace MythMe
 
         public ObservableCollection<ProgramViewModel> Recorded { get; private set; }
         public ObservableCollection<ProgramViewModel> Upcoming { get; private set; }
+
+        public ObservableCollection<ChannelViewModel> Channels { get; private set; }
 
         public ProgramViewModel SelectedProgram;
 
@@ -66,8 +69,6 @@ namespace MythMe
         public bool Connected { get; set; }
 
         private IsolatedStorageSettings prefs;
-
-        private string _slashes;
 
         public string randText()
         {
