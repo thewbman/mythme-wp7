@@ -51,7 +51,7 @@ namespace MythMe
 				    newStatusText = "Will Record";
 			    break;
 			    case 0:		
-				    newStatusText = " "+"No matching recording rule";
+				    newStatusText = "No matching recording rule";
 			    break;
 			    case 1:		
 				    newStatusText = "Force Don't Record";
@@ -93,7 +93,7 @@ namespace MythMe
 			    break;
 			
 			    default:
-				    newStatusText = " No matching recording rule";
+				    newStatusText = "No matching recording rule";
 			    break;
             }
 

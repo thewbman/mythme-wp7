@@ -24,9 +24,9 @@ using System.Security.Cryptography;
 
 namespace MythMe
 {
-    public partial class UpcomingDetails : PhoneApplicationPage
+    public partial class GuideDetails : PhoneApplicationPage
     {
-        public UpcomingDetails()
+        public GuideDetails()
         {
             InitializeComponent();
 
@@ -59,7 +59,7 @@ namespace MythMe
             }
         }
 
-        
+
         private void Details25Callback(IAsyncResult asynchronousResult)
         {
             Deployment.Current.Dispatcher.BeginInvoke(() => { MessageBox.Show("not yet supported"); });
@@ -83,8 +83,6 @@ namespace MythMe
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
                     MessageBox.Show("Failed to get details data: " + ex.ToString(), "Error", MessageBoxButton.OK);
-                    App.ViewModel.Connected = false;
-                    NavigationService.GoBack();
                 });
 
                 return;
@@ -153,11 +151,12 @@ namespace MythMe
                     }
 
                     App.ViewModel.SelectedProgram.recstatustext = App.ViewModel.functions.RecStatusDecode(App.ViewModel.SelectedProgram.recstatus);
-                        
+
+                    
                 }
 
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
-                {
+                
+                Deployment.Current.Dispatcher.BeginInvoke(() => { 
                     //MessageBox.Show("Done updating");
 
                     DataContext = App.ViewModel.SelectedProgram;
@@ -189,7 +188,7 @@ namespace MythMe
             }
             catch (Exception ex)
             {
-                Deployment.Current.Dispatcher.BeginInvoke(() => { MessageBox.Show("Error parsing details: "+ex.ToString()); });
+                Deployment.Current.Dispatcher.BeginInvoke(() => { MessageBox.Show("Error parsing details: " + ex.ToString()); });
             }
 
         }
@@ -220,14 +219,6 @@ namespace MythMe
 
             webopen.Uri = new Uri("http://" + App.ViewModel.appSettings.MasterBackendIpSetting + "/mythweb/tv/detail/" + App.ViewModel.SelectedProgram.chanid + "/" + timestamp);
             webopen.Show();
-        }
-
-        private void guideButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            App.ViewModel.GuideTime = App.ViewModel.SelectedProgram.starttime;
-
-            NavigationService.Navigate(new Uri("/Guide.xaml?SelectedTime=" + App.ViewModel.SelectedProgram.starttime, UriKind.Relative));
-
         }
     }
 }

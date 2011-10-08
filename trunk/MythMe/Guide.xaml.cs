@@ -43,21 +43,27 @@ namespace MythMe
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            performanceProgressBarCustomized.IsIndeterminate = true;
-            
             string SelectedTime;
             if (NavigationContext.QueryString.TryGetValue("SelectedTime", out SelectedTime))
             {
+                performanceProgressBarCustomized.IsIndeterminate = true;
+
                 //MessageBox.Show("have time: "+SelectedTime);
                 string newSelectedTime = SelectedTime.Substring(0, 17) + "01";
                 this.Perform(() => GetGuide(newSelectedTime, newSelectedTime, "10000", ""), 50);
-            } 
-            else 
+            }
+            else if (NavigationContext.QueryString.TryGetValue("SelectedNow", out SelectedTime))
             {
+                performanceProgressBarCustomized.IsIndeterminate = true;
+
                 //MessageBox.Show("did not have time, do now");
                 SelectedTime = DateTime.Now.ToString("s");
                 string newSelectedTime = SelectedTime.Substring(0, 17) + "01";
                 this.Perform(() => GetGuide(newSelectedTime, newSelectedTime, "10000", ""), 50);
+            }
+            else
+            {
+                performanceProgressBarCustomized.IsIndeterminate = false;
             }
         }
 
@@ -174,7 +180,25 @@ namespace MythMe
                         singleProgram.callsign = singleChannel.callsign;
 
                         singleProgram.chanicon = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Myth/GetChannelIcon?ChanId=" + singleProgram.chanid;
-                            
+
+                        if (singleProgramElement.Descendants("Recording").Count() > 0)
+                        {
+                            singleProgram.recpriority = int.Parse((string)singleProgramElement.Element("Recording").Attribute("recPriority").Value);
+                            singleProgram.recstatus = int.Parse((string)singleProgramElement.Element("Recording").Attribute("recStatus").Value);
+                            //singleProgram.recstatustext = App.ViewModel.functions.RecStatusDecode(App.ViewModel.SelectedProgram.recstatus);
+                            //singleProgram.recgroup = (string)singleProgramElement.Element("Recording").Attribute("recGroup").Value;
+                            singleProgram.recstartts = (string)singleProgramElement.Element("Recording").Attribute("recStartTs").Value;
+                            singleProgram.recendts = (string)singleProgramElement.Element("Recording").Attribute("recEndTs").Value;
+                            //singleProgram.recordid = int.Parse((string)singleProgramElement.Element("Recording").Attribute("recordId").Value);
+
+                        }
+                        else
+                        {
+                            singleProgram.recstatus = -20;
+                        }
+
+                        singleProgram.recstatustext = App.ViewModel.functions.RecStatusDecode(singleProgram.recstatus);
+
 
                         Deployment.Current.Dispatcher.BeginInvoke(() => { Programs.Add(singleProgram); });
 
@@ -211,6 +235,18 @@ namespace MythMe
             worker.RunWorkerCompleted += (s, e) => myMethod.Invoke();
 
             worker.RunWorkerAsync();
+        }
+
+        private void GuideNowListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (GuideNowListBox.SelectedItem == null)
+                return;
+
+            App.ViewModel.SelectedProgram = (ProgramViewModel)GuideNowListBox.SelectedItem;
+
+            NavigationService.Navigate(new Uri("/GuideDetails.xaml", UriKind.Relative));
+
+            GuideNowListBox.SelectedItem = null;
         }
     }
 }
