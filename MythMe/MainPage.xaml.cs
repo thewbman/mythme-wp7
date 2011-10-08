@@ -70,7 +70,7 @@ namespace MythMe
         private void guideButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             //MessageBox.Show("Not yet implimented");
-            NavigationService.Navigate(new Uri("/Guide.xaml", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/Guide.xaml?SelectedNow=asdf", UriKind.Relative));
 
         }
 

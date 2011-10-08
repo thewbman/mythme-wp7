@@ -18,13 +18,13 @@
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         
-        <toolkit:PerformanceProgressBar x:Name="performanceProgressBarCustomized" Foreground="Red" Background="Red" IsIndeterminate="True"/>
+        <toolkit:PerformanceProgressBar x:Name="performanceProgressBarCustomized" Foreground="Red" Background="Red" IsIndeterminate="False"/>
 
         <controls:Pivot Title="guide">
             <!--Pivot item one-->
             <controls:PivotItem Header="Now">
                 <Grid>
-                    <ListBox x:Name="GuideNowListBox" >
+                    <ListBox x:Name="GuideNowListBox" SelectionChanged="GuideNowListBox_SelectionChanged">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
