@@ -43,3 +43,4 @@ C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\Status.g.i.cs
 C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\FlurryWP7SDK.dll
 C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\Guide.g.i.cs
 C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\GuideDetails.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\Preferences.g.i.cs

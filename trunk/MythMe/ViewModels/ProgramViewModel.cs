@@ -73,6 +73,7 @@ namespace MythMe
         public string upcomingfourthline { get; set; }
 
         public string recsort { get; set; }
+        public string recsortdisplay { get; set; }
 
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -36,10 +36,10 @@ namespace MythMe
 
             //AllUpcomingListBox.ItemsSource = App.ViewModel.Upcoming;
 
-            AllUpcomingListBox.ItemsSource = AllUpcoming;
-            ConflictingUpcomingListBox.ItemsSource = ConflictingUpcoming;
-            OverridesUpcomingListBox.ItemsSource = OverridesUpcoming;
-            UpcomingUpcomingListBox.ItemsSource = UpcomingUpcoming;
+            //AllUpcomingListBox.ItemsSource = AllUpcoming;
+            //ConflictingUpcomingListBox.ItemsSource = ConflictingUpcoming;
+            //OverridesUpcomingListBox.ItemsSource = OverridesUpcoming;
+            //UpcomingUpcomingListBox.ItemsSource = UpcomingUpcoming;
         }
 
         const int MAX_BUFFER_SIZE = 1460;   //this is the payload size sent from my backend 0.24.1+fixes
@@ -55,13 +55,16 @@ namespace MythMe
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            
+            //performanceProgressBarCustomized.IsIndeterminate = true;
 
-            if (App.ViewModel.Upcoming.Count == 0) this.Perform(() => GetUpcoming(), 100);
+
+            if (App.ViewModel.Upcoming.Count == 0) this.Perform(() => GetUpcoming(), 50);
             else
             {
 
-                SortAndDisplay("");
-
+                this.Perform(() => SortAndDisplay(""), 50);
+                
             }
 
         }
@@ -71,10 +74,20 @@ namespace MythMe
 
             performanceProgressBarCustomized.IsIndeterminate = true;
 
+            AllTitle.Header = "All";
+            ConflictingTitle.Header = "Conflicting";
+            OverridesTitle.Header = "Overrides";
+            UpcomingTitle.Header = "Upcoming";
+
             AllUpcoming.Clear();
             ConflictingUpcoming.Clear();
             OverridesUpcoming.Clear();
             UpcomingUpcoming.Clear();
+
+            AllUpcomingLL.ItemsSource = null;
+            ConflictingUpcomingLL.ItemsSource = null;
+            OverridesUpcomingLL.ItemsSource = null;
+            UpcomingUpcomingLL.ItemsSource = null;
 
             App.ViewModel.Upcoming.Clear();
 
@@ -359,6 +372,7 @@ namespace MythMe
                             //st.Add(new TimeSpan(singleProgram.starttimeint * 10000000));
                             //st.AddSeconds(singleProgram.starttimeint);
                             singleProgram.starttime = st.ToString("s");
+                            singleProgram.starttimespace = singleProgram.starttime.Replace("T", " ");
                             break;
                         case 11:
                             singleProgram.endtimeint = Int64.Parse(responseArray[i]);
@@ -483,7 +497,7 @@ namespace MythMe
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Problems reading upcoming, not all upcoming programs will be visible.  There should have been "+responseArray[1]+" scheduled recordings listed.", "Error", MessageBoxButton.OK);
+                MessageBox.Show("Problems reading upcoming, not all upcoming programs will be visible.  There should have been "+responseArray[1]+" scheduled recordings listed instead of just "+App.ViewModel.Upcoming.Count+".", "Error", MessageBoxButton.OK);
             }
 
             //upcomingHeader.Title = "upcoming: " + App.ViewModel.Upcoming.Count + " " + programIndex + " " + responseArray[1] + " " + responseArray.Length + " " + (Int64.Parse(responseArray[1])*41+2);
@@ -543,6 +557,35 @@ namespace MythMe
                 }
             }
 
+
+            var GroupedUpcomingUpcoming = from t in UpcomingUpcoming
+                                          //group t by t.starttime.Substring(0, 10) into c
+                                          group t by DateTime.Parse(t.starttime).ToString("dddd, MMMM dd") into c
+                                          //orderby c.Key
+                                          select new Group<ProgramViewModel>(c.Key, c);
+            var GroupedAllUpcoming = from t in AllUpcoming
+                                          //group t by t.starttime.Substring(0, 10) into c
+                                          group t by DateTime.Parse(t.starttime).ToString("dddd, MMMM dd") into c
+                                          //orderby c.Key
+                                          select new Group<ProgramViewModel>(c.Key, c);
+            var GroupedConflictingUpcoming = from t in ConflictingUpcoming
+                                          //group t by t.starttime.Substring(0, 10) into c
+                                          group t by DateTime.Parse(t.starttime).ToString("dddd, MMMM dd") into c
+                                          //orderby c.Key
+                                          select new Group<ProgramViewModel>(c.Key, c);
+            var GroupedOverridesUpcoming = from t in OverridesUpcoming
+                                          //group t by t.starttime.Substring(0, 10) into c
+                                          group t by DateTime.Parse(t.starttime).ToString("dddd, MMMM dd") into c
+                                          //orderby c.Key
+                                          select new Group<ProgramViewModel>(c.Key, c);
+
+
+            UpcomingUpcomingLL.ItemsSource = GroupedUpcomingUpcoming;
+            AllUpcomingLL.ItemsSource = GroupedAllUpcoming;
+            ConflictingUpcomingLL.ItemsSource = GroupedConflictingUpcoming;
+            OverridesUpcomingLL.ItemsSource = GroupedOverridesUpcoming;
+
+
             AllTitle.Header = "All (" + AllUpcoming.Count + ")";
             ConflictingTitle.Header = "Conflicting (" + ConflictingUpcoming.Count + ")";
             OverridesTitle.Header = "Overrides (" + OverridesUpcoming.Count + ")";
@@ -550,7 +593,9 @@ namespace MythMe
 
             performanceProgressBarCustomized.IsIndeterminate = false;
 
-            if (inConflicting == "1") BannerMessage("There are conflicting scheduled recordings");
+            if ((inConflicting == "1") || (ConflictingUpcoming.Count > 0)) BannerMessage("There are conflicting scheduled recordings");
+
+            performanceProgressBarCustomized.IsIndeterminate = false;
             
         }
 
@@ -571,6 +616,52 @@ namespace MythMe
             toast.Show();
         }
 
+        public class Group<T> : IEnumerable<T>
+        {
+            public Group(string name, IEnumerable<T> items)
+            {
+                this.Title = name;
+                this.Items = new List<T>(items);
+            }
+
+            public override bool Equals(object obj)
+            {
+                Group<T> that = obj as Group<T>;
+
+                return (that != null) && (this.Title.Equals(that.Title));
+            }
+
+            public string Title
+            {
+                get;
+                set;
+            }
+
+            public IList<T> Items
+            {
+                get;
+                set;
+            }
+
+            #region IEnumerable<T> Members
+
+            public IEnumerator<T> GetEnumerator()
+            {
+                return this.Items.GetEnumerator();
+            }
+
+            #endregion
+
+            #region IEnumerable Members
+
+            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+            {
+                return this.Items.GetEnumerator();
+            }
+
+            #endregion
+        }
+
         private void Perform(Action myMethod, int delayInMilliseconds)
         {
             BackgroundWorker worker = new BackgroundWorker();
@@ -584,7 +675,7 @@ namespace MythMe
 
         private void UpcomingUpcomingListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+/*
             if (UpcomingUpcomingListBox.SelectedItem == null)
                 return;
 
@@ -593,12 +684,12 @@ namespace MythMe
             NavigationService.Navigate(new Uri("/UpcomingDetails.xaml", UriKind.Relative));
 
             UpcomingUpcomingListBox.SelectedItem = null;
-
+*/
         }
 
         private void AllUpcomingListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            /*
             if (AllUpcomingListBox.SelectedItem == null)
                 return;
 
@@ -607,12 +698,12 @@ namespace MythMe
             NavigationService.Navigate(new Uri("/UpcomingDetails.xaml", UriKind.Relative));
 
             AllUpcomingListBox.SelectedItem = null;
-
+            */
         }
 
         private void ConflictingUpcomingListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            /*
             if (ConflictingUpcomingListBox.SelectedItem == null)
                 return;
 
@@ -621,12 +712,12 @@ namespace MythMe
             NavigationService.Navigate(new Uri("/UpcomingDetails.xaml", UriKind.Relative));
 
             ConflictingUpcomingListBox.SelectedItem = null;
-
+            */
         }
 
         private void OverridesUpcomingListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            /*
             if (OverridesUpcomingListBox.SelectedItem == null)
                 return;
 
@@ -635,6 +726,59 @@ namespace MythMe
             NavigationService.Navigate(new Uri("/UpcomingDetails.xaml", UriKind.Relative));
 
             OverridesUpcomingListBox.SelectedItem = null;
+             */
+        }
+
+        private void UpcomingUpcomingLL_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            if (UpcomingUpcomingLL.SelectedItem == null)
+                return;
+
+            App.ViewModel.SelectedProgram = (ProgramViewModel)UpcomingUpcomingLL.SelectedItem;
+
+            NavigationService.Navigate(new Uri("/UpcomingDetails.xaml", UriKind.Relative));
+
+            UpcomingUpcomingLL.SelectedItem = null;
+        }
+
+        private void AllUpcomingLL_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            if (AllUpcomingLL.SelectedItem == null)
+                return;
+
+            App.ViewModel.SelectedProgram = (ProgramViewModel)AllUpcomingLL.SelectedItem;
+
+            NavigationService.Navigate(new Uri("/UpcomingDetails.xaml", UriKind.Relative));
+
+            AllUpcomingLL.SelectedItem = null;
+        }
+
+        private void ConflictingUpcomingLL_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            if (ConflictingUpcomingLL.SelectedItem == null)
+                return;
+
+            App.ViewModel.SelectedProgram = (ProgramViewModel)ConflictingUpcomingLL.SelectedItem;
+
+            NavigationService.Navigate(new Uri("/UpcomingDetails.xaml", UriKind.Relative));
+
+            ConflictingUpcomingLL.SelectedItem = null;
+        }
+
+        private void OverridesUpcomingLL_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            if (OverridesUpcomingLL.SelectedItem == null)
+                return;
+
+            App.ViewModel.SelectedProgram = (ProgramViewModel)OverridesUpcomingLL.SelectedItem;
+
+            NavigationService.Navigate(new Uri("/UpcomingDetails.xaml", UriKind.Relative));
+
+            OverridesUpcomingLL.SelectedItem = null;
         }
     }
 }

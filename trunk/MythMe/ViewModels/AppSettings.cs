@@ -88,7 +88,7 @@ namespace MythMe
         const bool FirstRunDefault = true;
 
         //asdf - change this
-        const string MasterBackendIpDefault = "192.168.1.105";
+        const string MasterBackendIpDefault = "";
         const int MasterBackendPortDefault = 6543;
         const int MasterBackendXmlPortDefault = 6544;
 
