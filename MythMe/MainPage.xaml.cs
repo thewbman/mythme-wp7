@@ -31,10 +31,14 @@ namespace MythMe
             {
                 App.ViewModel.LoadData();
 
-                if (App.ViewModel.appSettings.FirstRunSetting) MessageBox.Show("Welcome to MythMe.", "MythMe", MessageBoxButton.OK);
+                if ((App.ViewModel.appSettings.FirstRunSetting) || (false))
+                {
+                    MessageBox.Show("Welcome to MythMe.  This is an app for controlling a MythTV DVR system.  If you do not know what that means this app is not for you.  You will need to enter your master backend address in the preferences to get started.", "MythMe", MessageBoxButton.OK);
 
-                App.ViewModel.appSettings.FirstRunSetting = false;
+                    App.ViewModel.appSettings.FirstRunSetting = false;
 
+                    NavigationService.Navigate(new Uri("/Preferences.xaml", UriKind.Relative));
+                }
 
             }
             else
@@ -70,7 +74,7 @@ namespace MythMe
         private void guideButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             //MessageBox.Show("Not yet implimented");
-            NavigationService.Navigate(new Uri("/Guide.xaml?SelectedNow=asdf", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/Guide.xaml?SelectedNow=true", UriKind.Relative));
 
         }
 
@@ -107,7 +111,8 @@ namespace MythMe
 
         private void preferencesButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            MessageBox.Show("Not yet implimented");
+            //MessageBox.Show("Not yet implimented");
+            NavigationService.Navigate(new Uri("/Preferences.xaml", UriKind.Relative));
 
         }
 

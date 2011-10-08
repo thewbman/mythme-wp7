@@ -31,19 +31,19 @@ namespace MythMe
 
             DataContext = App.ViewModel;
 
-            AllRecordedListBox.ItemsSource = AllRecorded;
-            DefaultRecordedListBox.ItemsSource = DefaultRecorded;
-            DeletedRecordedListBox.ItemsSource = DeletedRecorded;
-            LiveTVRecordedListBox.ItemsSource = LiveTVRecorded;
+            //AllRecordedListBox.ItemsSource = AllRecorded;
+            //DefaultRecordedListBox.ItemsSource = DefaultRecorded;
+            //DeletedRecordedListBox.ItemsSource = DeletedRecorded;
+            //LiveTVRecordedListBox.ItemsSource = LiveTVRecorded;
         }
 
         private string getRecorded25String = "http://{0}:{1}/Dvr/GetRecorded?random={2}";
         private string getRecordedString = "http://{0}:{1}/Myth/GetRecorded?random={2}";
 
-        ObservableCollection<ProgramViewModel> AllRecorded = new ObservableCollection<ProgramViewModel>();
-        ObservableCollection<ProgramViewModel> DefaultRecorded = new ObservableCollection<ProgramViewModel>();
-        ObservableCollection<ProgramViewModel> DeletedRecorded = new ObservableCollection<ProgramViewModel>();
-        ObservableCollection<ProgramViewModel> LiveTVRecorded = new ObservableCollection<ProgramViewModel>();
+        List<ProgramViewModel> AllRecorded = new List<ProgramViewModel>();
+        List<ProgramViewModel> DefaultRecorded = new List<ProgramViewModel>();
+        List<ProgramViewModel> DeletedRecorded = new List<ProgramViewModel>();
+        List<ProgramViewModel> LiveTVRecorded = new List<ProgramViewModel>();
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -51,31 +51,8 @@ namespace MythMe
             if (App.ViewModel.Recorded.Count == 0) this.Perform(() => GetRecorded(), 50);
             else
             {
-                /*
-                AllRecorded.Clear();
-                DefaultRecorded.Clear();
-                DeletedRecorded.Clear();
-                LiveTVRecorded.Clear();
-
-                foreach (ProgramViewModel singleProgram in App.ViewModel.Recorded)
-                {
-                    if (singleProgram.recgroup == "Default") DefaultRecorded.Add(singleProgram);
-                    else if (singleProgram.recgroup == "Deleted") DeletedRecorded.Add(singleProgram);
-                    else if (singleProgram.recgroup == "LiveTV") LiveTVRecorded.Add(singleProgram);
-                }
                 
-                AllTitle.Header = "All (" + App.ViewModel.Recorded.Count + ")";
-                DefaultTitle.Header = "Default (" + DefaultRecorded.Count + ")";
-                DeletedTitle.Header = "Deleted (" + DeletedRecorded.Count + ")";
-                LiveTVTitle.Header = "LiveTV (" + LiveTVRecorded.Count + ")";
-
-                AllRecordedListBox.ItemsSource = App.ViewModel.Recorded;
-                DefaultRecordedListBox.ItemsSource = DefaultRecorded;
-                DeletedRecordedListBox.ItemsSource = DeletedRecorded;
-                LiveTVRecordedListBox.ItemsSource = LiveTVRecorded;
-                 */
-
-                SortAndDisplay();
+                this.Perform(() => SortAndDisplay(), 50);
 
             }
         }
@@ -89,6 +66,11 @@ namespace MythMe
             DefaultTitle.Header = "Default";
             DeletedTitle.Header = "Deleted";
             LiveTVTitle.Header = "LiveTV";
+
+            AllRecordedLL.ItemsSource = null;
+            DefaultRecordedLL.ItemsSource = null;
+            DeletedRecordedLL.ItemsSource = null;
+            LiveTVRecordedLL.ItemsSource = null;
 
             AllRecorded.Clear();
             DefaultRecorded.Clear();
@@ -220,6 +202,8 @@ namespace MythMe
                         singleRecorded.recordedfourthline = singleRecorded.channum+" - "+singleRecorded.channame;
                     }
 
+                    if (singleRecorded.subtitle == "") singleRecorded.subtitle = ".";
+
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {   
                         //programlist.Add(singleRecorded);
@@ -273,35 +257,48 @@ namespace MythMe
             DeletedRecorded.Clear();
             LiveTVRecorded.Clear();
 
+            DateTime airdateDisplay;
+            bool succesAirdate;
+
             switch (App.ViewModel.appSettings.RecSortSetting)
             {
                 case "date":
                     foreach (var item in App.ViewModel.Recorded)
                     {
-                        item.recsort = item.starttime;
+                        item.recsort = item.starttimespace;
+                        item.recsortdisplay = DateTime.Parse(item.starttime).ToString("dddd, MMMM dd, yyyy");
                     }
                     break;
                 case "airdate":
                     foreach (var item in App.ViewModel.Recorded)
                     {
                         item.recsort = item.airdate;
+                        succesAirdate = DateTime.TryParse(item.airdate, out airdateDisplay);
+
+                        if(succesAirdate)
+                            item.recsortdisplay = airdateDisplay.ToString("MMMM dd, yyyy");
+                        else
+                            item.recsortdisplay = DateTime.Parse("1900-01-01").ToString("MMMM dd, yyyy");
                     }
                     break;
                 case "title":
                     foreach (var item in App.ViewModel.Recorded)
                     {
                         item.recsort = item.title;
+                        item.recsortdisplay = item.title;
                     }
                     break;
                 default:
                     foreach (var item in App.ViewModel.Recorded)
                     {
                         item.recsort = item.title;
+                        item.recsortdisplay = item.title;
                     }
                     break;
             }
 
-            var arr = App.ViewModel.Recorded.OrderBy(x => x.recsort).ToArray();
+            
+            var arr = App.ViewModel.Recorded.OrderBy(x => x.starttime).ToArray();
 
             switch (App.ViewModel.appSettings.RecSortAscSetting)
             {
@@ -333,6 +330,35 @@ namespace MythMe
                     LiveTVRecorded.Add(item);
                 }
             }
+
+
+            var GroupedDefaultRecorded = from t in DefaultRecorded
+                                          //group t by t.starttime.Substring(0, 10) into c
+                                          group t by t.recsortdisplay into c
+                                          //orderby c.Key
+                                         select new Group<ProgramViewModel>(c.Key, c);
+            var GroupedDeletedRecorded = from t in DeletedRecorded
+                                         //group t by t.starttime.Substring(0, 10) into c
+                                         group t by t.recsortdisplay into c
+                                         //orderby c.Key
+                                         select new Group<ProgramViewModel>(c.Key, c);
+            var GroupedLiveTVRecorded = from t in LiveTVRecorded
+                                         //group t by t.starttime.Substring(0, 10) into c
+                                         group t by t.recsortdisplay into c
+                                         //orderby c.Key
+                                         select new Group<ProgramViewModel>(c.Key, c);
+            var GroupedAllRecorded = from t in AllRecorded
+                                         //group t by t.starttime.Substring(0, 10) into c
+                                         group t by t.recsortdisplay into c
+                                         //orderby c.Key
+                                         select new Group<ProgramViewModel>(c.Key, c);
+
+
+            DefaultRecordedLL.ItemsSource = GroupedDefaultRecorded;
+            DeletedRecordedLL.ItemsSource = GroupedDeletedRecorded;
+            LiveTVRecordedLL.ItemsSource = GroupedLiveTVRecorded;
+            AllRecordedLL.ItemsSource = GroupedAllRecorded;
+
 
             AllTitle.Header = "All (" + AllRecorded.Count + ")";
             DefaultTitle.Header = "Default (" + DefaultRecorded.Count + ")";
@@ -407,8 +433,56 @@ namespace MythMe
         }
 
 
+        public class Group<T> : IEnumerable<T>
+        {
+            public Group(string name, IEnumerable<T> items)
+            {
+                this.Title = name;
+                this.Items = new List<T>(items);
+            }
+
+            public override bool Equals(object obj)
+            {
+                Group<T> that = obj as Group<T>;
+
+                return (that != null) && (this.Title.Equals(that.Title));
+            }
+
+            public string Title
+            {
+                get;
+                set;
+            }
+
+            public IList<T> Items
+            {
+                get;
+                set;
+            }
+
+            #region IEnumerable<T> Members
+
+            public IEnumerator<T> GetEnumerator()
+            {
+                return this.Items.GetEnumerator();
+            }
+
+            #endregion
+
+            #region IEnumerable Members
+
+            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+            {
+                return this.Items.GetEnumerator();
+            }
+
+            #endregion
+        }
+
+
         private void DefaultRecordedListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            /*
             if (DefaultRecordedListBox.SelectedItem == null)
                 return;
 
@@ -417,10 +491,12 @@ namespace MythMe
             NavigationService.Navigate(new Uri("/RecordedDetails.xaml", UriKind.Relative));
 
             DefaultRecordedListBox.SelectedItem = null;
+             */
         }
 
         private void DeletedRecordedListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            /*
             if (DeletedRecordedListBox.SelectedItem == null)
                 return;
 
@@ -429,11 +505,12 @@ namespace MythMe
             NavigationService.Navigate(new Uri("/RecordedDetails.xaml", UriKind.Relative));
 
             DeletedRecordedListBox.SelectedItem = null;
-
+            */
         }
 
         private void LiveTVRecordedListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            /*
             if (LiveTVRecordedListBox.SelectedItem == null)
                 return;
 
@@ -442,11 +519,12 @@ namespace MythMe
             NavigationService.Navigate(new Uri("/RecordedDetails.xaml", UriKind.Relative));
 
             LiveTVRecordedListBox.SelectedItem = null;
-
+            */
         }
 
         private void AllRecordedListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            /*
             if (AllRecordedListBox.SelectedItem == null)
                 return;
 
@@ -455,7 +533,59 @@ namespace MythMe
             NavigationService.Navigate(new Uri("/RecordedDetails.xaml", UriKind.Relative));
 
             AllRecordedListBox.SelectedItem = null;
+            */
+        }
 
+        private void DefaultRecordedLL_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            if (DefaultRecordedLL.SelectedItem == null)
+                return;
+
+            App.ViewModel.SelectedProgram = (ProgramViewModel)DefaultRecordedLL.SelectedItem;
+
+            NavigationService.Navigate(new Uri("/RecordedDetails.xaml", UriKind.Relative));
+
+            DefaultRecordedLL.SelectedItem = null;
+        }
+
+        private void DeletedRecordedLL_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            if (DeletedRecordedLL.SelectedItem == null)
+                return;
+
+            App.ViewModel.SelectedProgram = (ProgramViewModel)DeletedRecordedLL.SelectedItem;
+
+            NavigationService.Navigate(new Uri("/RecordedDetails.xaml", UriKind.Relative));
+
+            DeletedRecordedLL.SelectedItem = null;
+        }
+
+        private void LiveTVRecordedLL_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            if (LiveTVRecordedLL.SelectedItem == null)
+                return;
+
+            App.ViewModel.SelectedProgram = (ProgramViewModel)LiveTVRecordedLL.SelectedItem;
+
+            NavigationService.Navigate(new Uri("/RecordedDetails.xaml", UriKind.Relative));
+
+            LiveTVRecordedLL.SelectedItem = null;
+        }
+
+        private void AllRecordedLL_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            if (AllRecordedLL.SelectedItem == null)
+                return;
+
+            App.ViewModel.SelectedProgram = (ProgramViewModel)AllRecordedLL.SelectedItem;
+
+            NavigationService.Navigate(new Uri("/RecordedDetails.xaml", UriKind.Relative));
+
+            AllRecordedLL.SelectedItem = null;
         }
     }
 }
