@@ -13,7 +13,7 @@ using System.Windows.Shapes;
 
 namespace MythMe
 {
-    public class FrontendsViewModel : INotifyPropertyChanged
+    public class FrontendViewModel : INotifyPropertyChanged
     {
         private string _name;
         public string Name
@@ -29,16 +29,16 @@ namespace MythMe
             }
         }
 
-        private string _host;
-        public string Host
+        private string _address;
+        public string Address
         {
-            get { return _host; }
+            get { return _address; }
             set
             {
-                if (value != _host)
+                if (value != _address)
                 {
-                    _host = value;
-                    NotifyPropertyChanged("Host");
+                    _address = value;
+                    NotifyPropertyChanged("Address");
                 }
             }
         }

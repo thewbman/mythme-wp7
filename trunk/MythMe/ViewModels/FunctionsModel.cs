@@ -51,7 +51,7 @@ namespace MythMe
 				    newStatusText = "Will Record";
 			    break;
 			    case 0:		
-				    newStatusText = "No matching recording rule";
+				    newStatusText = " No matching recording rule";
 			    break;
 			    case 1:		
 				    newStatusText = "Force Don't Record";
@@ -93,7 +93,7 @@ namespace MythMe
 			    break;
 			
 			    default:
-				    newStatusText = "No matching recording rule";
+				    newStatusText = " No matching recording rule";
 			    break;
             }
 
@@ -308,6 +308,65 @@ namespace MythMe
 	        };
 	
 	        return statusText;
+        }
+
+        public bool IntToBool(string inValue)
+        {
+            if (inValue == "0")
+                return false;
+            else
+                return true;
+        }
+
+        public void FrontendsFromBackends()
+        {
+
+            App.ViewModel.Frontends.Clear();
+
+            foreach (BackendViewModel backend in App.ViewModel.Backends)
+            {
+                if (backend.NetworkControlEnabled)
+                {
+                    FrontendViewModel newFrontend = new FrontendViewModel();
+
+                    newFrontend.Name = backend.Name;
+                    newFrontend.Port = backend.NetworkControlPort;
+                    newFrontend.Address = backend.Address;
+
+                    App.ViewModel.Frontends.Add(newFrontend);
+                }
+            }
+        }
+
+        public string CreateScreenshotUrl(ProgramViewModel inProgram)
+        {
+            string screenshot;
+
+            if (App.ViewModel.appSettings.UseScriptScreenshotsSetting)
+            {
+                screenshot = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + "/cgi-bin/webmyth.py?op=getPremadeImage&chanid=";
+                screenshot += inProgram.chanid + "&starttime=" + inProgram.recstartts.Replace("T", " ");
+            }
+            else
+            {
+                string hostaddress = App.ViewModel.appSettings.MasterBackendIpSetting;
+                int hostport = App.ViewModel.appSettings.MasterBackendXmlPortSetting;
+
+                foreach (BackendViewModel backend in App.ViewModel.Backends)
+                {
+                    if (backend.Name == inProgram.hostname) 
+                    {
+                        hostaddress = backend.Address;
+                        hostport = backend.XmlPort;
+                    }
+                }
+
+                screenshot = "http://"+hostaddress+":"+hostport+ "/Myth/GetPreviewImage?ChanId=";
+                screenshot += inProgram.chanid+ "&StartTime=" + inProgram.recstartts.Replace("T", " ");
+            }
+
+            return screenshot;
+
         }
     }
 }

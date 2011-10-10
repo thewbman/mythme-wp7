@@ -14,6 +14,7 @@ namespace MythMe
         const string FirstRunName = "FirstRun";
 
         const string MasterBackendIpName = "MasterBackendIp";
+        const string MasterBackendIpSettingName = "MasterBackendIpSetting";
         const string MasterBackendPortName = "MasterBackendPort";
         const string MasterBackendXmlPortName = "MasterBackendXmlPort"; 
         
@@ -38,6 +39,8 @@ namespace MythMe
         const string VideoDetailsImageName = "VideoDetailsImage";
         const string UseScriptScreenshotsName = "UserScriptScreenshots";
 
+        const string RemoteIndexName = "RemoteIndex";
+
 		const string RemoteHeaderName = "RemoteHeader";
         const string RemoteVibrateName = "RemoteVibrate";
 		const string RemoteFullscreenName = "RemoteFullscreen";
@@ -49,7 +52,8 @@ namespace MythMe
         const string RecSortName = "RecSort";
         const string RecSortAscName = "RecSortAsc";
 		//upcomingGroup: "Upcoming",
-		//guideSort: "Default",	//asdf
+        const string GuideSortName = "GuideSort";
+        const string GuideSortAscName = "GuideSortAsc";
 		//searchSort: "Date [Asc]",
 		//searchPeopleSort: "Date [Asc]",
 		//videosSort: "Title [Asc][]:[]Season [Asc]",
@@ -87,8 +91,9 @@ namespace MythMe
         // The default value of our settings
         const bool FirstRunDefault = true;
 
-        //asdf - change this
+
         const string MasterBackendIpDefault = "";
+        const string MasterBackendIpSettingDefault = "";
         const int MasterBackendPortDefault = 6543;
         const int MasterBackendXmlPortDefault = 6544;
 
@@ -113,6 +118,8 @@ namespace MythMe
         const bool VideoDetailsImageDefault = true;
         const bool UseScriptScreenshotsDefault = false;
 
+        const int RemoteIndexDefault = 0;
+
         const string RemoteHeaderDefault = "None";
         const bool RemoteVibrateDefault = false;
         const bool RemoteFullscreenDefault = false;
@@ -124,6 +131,8 @@ namespace MythMe
         const string RecSortDefault = "date";
         const bool RecSortAscDefault = false;
         //upcomingGroup: "Upcoming",
+        const string GuideSortDefault = "recstatus";
+        const bool GuideSortAscDefault = false;
         //guideSort: "Default",	//asdf
         //searchSort: "Date [Asc]",
         //searchPeopleSort: "Date [Asc]",
@@ -247,6 +256,11 @@ namespace MythMe
             get { return GetValueOrDefault<string>(MasterBackendIpName, MasterBackendIpDefault); }
             set { if (AddOrUpdateValue(MasterBackendIpName, value)) { Save(); } }
         }
+        public string MasterBackendIpSettingSetting
+        {
+            get { return GetValueOrDefault<string>(MasterBackendIpSettingName, MasterBackendIpSettingDefault); }
+            set { if (AddOrUpdateValue(MasterBackendIpSettingName, value)) { Save(); } }
+        }
         public int MasterBackendPortSetting
         {
             get { return GetValueOrDefault<int>(MasterBackendPortName, MasterBackendPortDefault); }
@@ -351,6 +365,12 @@ namespace MythMe
             set { if (AddOrUpdateValue(UseScriptScreenshotsName, value)) { Save(); } }
         }
 
+        public int RemoteIndexSetting
+        {
+            get { return GetValueOrDefault<int>(RemoteIndexName, RemoteIndexDefault); }
+            set { if (AddOrUpdateValue(RemoteIndexName, value)) { Save(); } }
+        }
+
         public string RemoteHeaderSetting
         {
             get { return GetValueOrDefault<string>(RemoteHeaderName, RemoteHeaderDefault); }
@@ -379,7 +399,6 @@ namespace MythMe
 
         //remotePane: "Navigation",
         //recGroup: "Setting",
-
         public string RecSortSetting
         {
             get { return GetValueOrDefault<string>(RecSortName, RecSortDefault); }
@@ -391,7 +410,16 @@ namespace MythMe
             set { if (AddOrUpdateValue(RecSortAscName, value)) { Save(); } }
         }
         //upcomingGroup: "Upcoming",
-        //guideSort: "Setting",	//asdf
+        public string GuideSortSetting
+        {
+            get { return GetValueOrDefault<string>(GuideSortName, GuideSortDefault); }
+            set { if (AddOrUpdateValue(GuideSortName, value)) { Save(); } }
+        }
+        public bool GuideSortAscSetting
+        {
+            get { return GetValueOrDefault<bool>(GuideSortAscName, GuideSortAscDefault); }
+            set { if (AddOrUpdateValue(GuideSortAscName, value)) { Save(); } }
+        }
         //searchSort: "Date [Asc]",
         //searchPeopleSort: "Date [Asc]",
         //videosSort: "Title [Asc][]:[]Season [Asc]",

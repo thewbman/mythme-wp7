@@ -6,6 +6,7 @@ using System.Text;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -187,11 +188,7 @@ namespace MythMe
 
                     singleRecorded.description = (string)singleRecordedElement.FirstNode.ToString();
 
-                    //replace with real logic and function
-                    //singleRecorded.screenshot = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Myth/GetPreviewImage?ChanId=";
-                    //singleRecorded.screenshot += singleRecorded.chanid + "&StartTime=" + singleRecorded.recstartts.Replace("T", " ";
-                    singleRecorded.screenshot = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + "/cgi-bin/webmyth.py?op=getPremadeImage&chanid=";
-                    singleRecorded.screenshot += singleRecorded.chanid + "&starttime=" + singleRecorded.recstartts.Replace("T", " ");
+                    singleRecorded.screenshot = App.ViewModel.functions.CreateScreenshotUrl(singleRecorded);
 
                     if (singleRecorded.recstatus == -2)
                     {
@@ -297,8 +294,8 @@ namespace MythMe
                     break;
             }
 
-            
-            var arr = App.ViewModel.Recorded.OrderBy(x => x.starttime).ToArray();
+
+            var arr = App.ViewModel.Recorded.OrderBy(x => x.recsort).ToArray();
 
             switch (App.ViewModel.appSettings.RecSortAscSetting)
             {
@@ -387,49 +384,7 @@ namespace MythMe
 
         private void appbarSort_Click(object sender, EventArgs e)
         {
-            if (this.SortPopup.Parent == null)
-            {
-                this.SortPopup.IsOpen = true;
-            }
-        }
-
-        private void SortItem_Click(object sender, RoutedEventArgs e)
-        {
-            string header = (sender as MenuItem).Header.ToString();
-
-            switch (header)
-            {
-                case "Date, Asc":
-                    App.ViewModel.appSettings.RecSortSetting = "date";
-                    App.ViewModel.appSettings.RecSortAscSetting = true;
-                    break;
-                case "Date, Desc":
-                    App.ViewModel.appSettings.RecSortSetting = "date";
-                    App.ViewModel.appSettings.RecSortAscSetting = false;
-                    break;
-                case "Original airdate, Asc":
-                    App.ViewModel.appSettings.RecSortSetting = "airdate";
-                    App.ViewModel.appSettings.RecSortAscSetting = true;
-                    break;
-                case "Original airdate, Desc":
-                    App.ViewModel.appSettings.RecSortSetting = "airdate";
-                    App.ViewModel.appSettings.RecSortAscSetting = false;
-                    break;
-                case "Title, Asc":
-                    App.ViewModel.appSettings.RecSortSetting = "title";
-                    App.ViewModel.appSettings.RecSortAscSetting = true;
-                    break;
-                case "Title, Desc":
-                    App.ViewModel.appSettings.RecSortSetting = "title";
-                    App.ViewModel.appSettings.RecSortAscSetting = false;
-                    break;
-                default:
-                    App.ViewModel.appSettings.RecSortSetting = "date";
-                    App.ViewModel.appSettings.RecSortAscSetting = false;
-                    break;
-            }
-
-            SortAndDisplay();
+            SortPopup.IsOpen = true;
         }
 
 
@@ -479,62 +434,6 @@ namespace MythMe
             #endregion
         }
 
-
-        private void DefaultRecordedListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            /*
-            if (DefaultRecordedListBox.SelectedItem == null)
-                return;
-
-            App.ViewModel.SelectedProgram = (ProgramViewModel)DefaultRecordedListBox.SelectedItem;
-
-            NavigationService.Navigate(new Uri("/RecordedDetails.xaml", UriKind.Relative));
-
-            DefaultRecordedListBox.SelectedItem = null;
-             */
-        }
-
-        private void DeletedRecordedListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            /*
-            if (DeletedRecordedListBox.SelectedItem == null)
-                return;
-
-            App.ViewModel.SelectedProgram = (ProgramViewModel)DeletedRecordedListBox.SelectedItem;
-
-            NavigationService.Navigate(new Uri("/RecordedDetails.xaml", UriKind.Relative));
-
-            DeletedRecordedListBox.SelectedItem = null;
-            */
-        }
-
-        private void LiveTVRecordedListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            /*
-            if (LiveTVRecordedListBox.SelectedItem == null)
-                return;
-
-            App.ViewModel.SelectedProgram = (ProgramViewModel)LiveTVRecordedListBox.SelectedItem;
-
-            NavigationService.Navigate(new Uri("/RecordedDetails.xaml", UriKind.Relative));
-
-            LiveTVRecordedListBox.SelectedItem = null;
-            */
-        }
-
-        private void AllRecordedListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            /*
-            if (AllRecordedListBox.SelectedItem == null)
-                return;
-
-            App.ViewModel.SelectedProgram = (ProgramViewModel)AllRecordedListBox.SelectedItem;
-
-            NavigationService.Navigate(new Uri("/RecordedDetails.xaml", UriKind.Relative));
-
-            AllRecordedListBox.SelectedItem = null;
-            */
-        }
 
         private void DefaultRecordedLL_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -587,5 +486,68 @@ namespace MythMe
 
             AllRecordedLL.SelectedItem = null;
         }
+
+        private void PopupDateAsc_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            App.ViewModel.appSettings.RecSortSetting = "date";
+            App.ViewModel.appSettings.RecSortAscSetting = true;
+
+            SortPopup.IsOpen = false;
+
+            SortAndDisplay();
+        }
+
+        private void PopupDateDesc_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            App.ViewModel.appSettings.RecSortSetting = "date";
+            App.ViewModel.appSettings.RecSortAscSetting = false;
+
+            SortPopup.IsOpen = false;
+
+            SortAndDisplay();
+        }
+
+        private void PopupAirateAsc_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            App.ViewModel.appSettings.RecSortSetting = "airdate";
+            App.ViewModel.appSettings.RecSortAscSetting = true;
+
+            SortPopup.IsOpen = false;
+
+            SortAndDisplay();
+        }
+
+        private void PopupAirdateDesc_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            App.ViewModel.appSettings.RecSortSetting = "airdate";
+            App.ViewModel.appSettings.RecSortAscSetting = false;
+
+            SortPopup.IsOpen = false;
+
+            SortAndDisplay();
+        }
+
+        private void PopupTitleAsc_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
+            App.ViewModel.appSettings.RecSortSetting = "title";
+            App.ViewModel.appSettings.RecSortAscSetting = true;
+
+            SortPopup.IsOpen = false;
+
+            SortAndDisplay();
+        }
+
+        private void PopupTitleDesc_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
+            App.ViewModel.appSettings.RecSortSetting = "title";
+            App.ViewModel.appSettings.RecSortAscSetting = false;
+
+            SortPopup.IsOpen = false;
+
+            SortAndDisplay();
+        }
+
     }
 }

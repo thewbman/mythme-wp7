@@ -25,8 +25,8 @@ namespace MythMe
     {
         public MainViewModel()
         {
-            this.Backends = new ObservableCollection<BackendsViewModel>();
-            this.Frontends = new ObservableCollection<FrontendsViewModel>();
+            this.Backends = new ObservableCollection<BackendViewModel>();
+            this.Frontends = new ObservableCollection<FrontendViewModel>();
 
             this.Recorded = new ObservableCollection<ProgramViewModel>();
             this.Upcoming = new ObservableCollection<ProgramViewModel>();
@@ -48,8 +48,8 @@ namespace MythMe
         /// <summary>
         /// A collection of objects.
         /// </summary>
-        public ObservableCollection<BackendsViewModel> Backends { get; private set; }
-        public ObservableCollection<FrontendsViewModel> Frontends { get; private set; }
+        public ObservableCollection<BackendViewModel> Backends { get; private set; }
+        public ObservableCollection<FrontendViewModel> Frontends { get; private set; }
 
         public ObservableCollection<ProgramViewModel> Recorded { get; private set; }
         public ObservableCollection<ProgramViewModel> Upcoming { get; private set; }
@@ -89,12 +89,12 @@ namespace MythMe
         {
             
             //load backends
-            var savedBackendsList = StorageLoad<List<BackendsViewModel>>("Backends");
+            var savedBackendsList = StorageLoad<List<BackendViewModel>>("Backends");
 
             if (savedBackendsList.Count < 1)
             {
-                this.Backends.Add(new BackendsViewModel() { Name = "wes-htpc", Host = "192.168.1.105", ProtoPort = 6543, XmlPort = 6544, Master = true });
-                this.Backends.Add(new BackendsViewModel() { Name = "wes-desktop", Host = "192.168.1.110", ProtoPort = 6543, XmlPort = 6544, Master = false });
+                //this.Backends.Add(new BackendViewModel() { Name = "wes-htpc", Host = "192.168.1.105", ProtoPort = 6543, XmlPort = 6544, Master = true });
+                //this.Backends.Add(new BackendViewModel() { Name = "wes-desktop", Host = "192.168.1.110", ProtoPort = 6543, XmlPort = 6544, Master = false });
             }
             else
             {
@@ -103,11 +103,11 @@ namespace MythMe
             }
 
             //load frontends
-            var savedFrontendsList = StorageLoad<List<FrontendsViewModel>>("Frontends");
+            var savedFrontendsList = StorageLoad<List<FrontendViewModel>>("Frontends");
 
             if (savedFrontendsList.Count < 1)
             {
-                this.Frontends.Add(new FrontendsViewModel() { Name = "wes-ion", Host = "192.168.1.104", Port = 6546 });
+                //this.Frontends.Add(new FrontendViewModel() { Name = "wes-ion", Address = "192.168.1.104", Port = 6546 });
             }
             else
             {
@@ -136,10 +136,10 @@ namespace MythMe
 
         public void saveBackends()
         {
-            List<BackendsViewModel> hostsList = new List<BackendsViewModel>(this.Backends);
-            StorageSave<List<BackendsViewModel>>("Backends", hostsList);
+            List<BackendViewModel> hostsList = new List<BackendViewModel>(this.Backends);
+            StorageSave<List<BackendViewModel>>("Backends", hostsList);
         }
-        public void deleteBackend(BackendsViewModel inHost)
+        public void deleteBackend(BackendViewModel inHost)
         {
             this.Backends.Remove(inHost);
 
@@ -148,10 +148,10 @@ namespace MythMe
 
         public void saveFrontends()
         {
-            List<FrontendsViewModel> hostsList = new List<FrontendsViewModel>(this.Frontends);
-            StorageSave<List<FrontendsViewModel>>("Frontends", hostsList);
+            List<FrontendViewModel> hostsList = new List<FrontendViewModel>(this.Frontends);
+            StorageSave<List<FrontendViewModel>>("Frontends", hostsList);
         }
-        public void deleteFrontend(FrontendsViewModel inHost)
+        public void deleteFrontend(FrontendViewModel inHost)
         {
             this.Frontends.Remove(inHost);
 

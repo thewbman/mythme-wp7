@@ -50,10 +50,10 @@
         </DataTemplate>
 
     </phone:PhoneApplicationPage.Resources>
-    <!--LayoutRoot is the root grid where all page content is placed-->
+    
     <Grid x:Name="LayoutRoot" Background="Transparent">
         
-        <toolkit:PerformanceProgressBar x:Name="performanceProgressBarCustomized" Foreground="Red" Background="Red" IsIndeterminate="True"/>
+        <toolkit:PerformanceProgressBar x:Name="performanceProgressBarCustomized" Foreground="Red" Background="Red" IsIndeterminate="False" />
 
         <controls:Pivot x:Name="upcomingHeader" Title="upcoming">
 

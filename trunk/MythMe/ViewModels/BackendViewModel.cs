@@ -13,7 +13,7 @@ using System.Windows.Shapes;
 
 namespace MythMe
 {
-    public class BackendsViewModel : INotifyPropertyChanged
+    public class BackendViewModel : INotifyPropertyChanged
     {
         private string _name;
         public string Name
@@ -29,16 +29,16 @@ namespace MythMe
             }
         }
 
-        private string _host;
-        public string Host
+        private string _address;
+        public string Address
         {
-            get { return _host; }
+            get { return _address; }
             set
             {
-                if (value != _host)
+                if (value != _address)
                 {
-                    _host = value;
-                    NotifyPropertyChanged("Host");
+                    _address = value;
+                    NotifyPropertyChanged("Address");
                 }
             }
         }
@@ -81,6 +81,34 @@ namespace MythMe
                 {
                     _master = value;
                     NotifyPropertyChanged("Master");
+                }
+            }
+        }
+
+        private bool _NetworkControlEnabled;
+        public bool NetworkControlEnabled
+        {
+            get { return _NetworkControlEnabled; }
+            set
+            {
+                if (value != _NetworkControlEnabled)
+                {
+                    _NetworkControlEnabled = value;
+                    NotifyPropertyChanged("NetworkControlEnabled");
+                }
+            }
+        }
+
+        private int _NetworkControlPort;
+        public int NetworkControlPort
+        {
+            get { return _NetworkControlPort; }
+            set
+            {
+                if (value != _NetworkControlPort)
+                {
+                    _NetworkControlPort = value;
+                    NotifyPropertyChanged("NetworkControlPort");
                 }
             }
         }
