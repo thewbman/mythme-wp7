@@ -75,6 +75,9 @@ namespace MythMe
         public string recsort { get; set; }
         public string recsortdisplay { get; set; }
 
+        public string guidesort { get; set; }
+        public string guidesortdisplay { get; set; }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(String propertyName)

@@ -34,6 +34,13 @@
                 </ScrollViewer>
             </controls:PanoramaItem>
 
+            <controls:PanoramaItem Header="other">
+                <ScrollViewer>
+                    <TextBlock Text="more options comming later" />
+                </ScrollViewer>
+            </controls:PanoramaItem>
+            
+            
             <!--
             <controls:PanoramaItem Header="database">
                 <ScrollViewer>

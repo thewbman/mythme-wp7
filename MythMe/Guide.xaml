@@ -8,63 +8,153 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
-    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="True">
 
-    <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
-        
-        <toolkit:PerformanceProgressBar x:Name="performanceProgressBarCustomized" Foreground="Red" Background="Red" IsIndeterminate="False"/>
 
-        <controls:Pivot Title="guide">
-            <!--Pivot item one-->
-            <controls:PivotItem Header="Now">
+    <phone:PhoneApplicationPage.Resources>
+
+        <DataTemplate x:Key="guideGroupHeader">
+            <Border Background="#25B8D9" Margin="0">
+                <TextBlock Text="{Binding Title}" FontSize="36" Foreground="Black"/>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="guideItemTemplate">
+            <StackPanel>
+                <TextBlock Text="{Binding title}" TextWrapping="NoWrap" Margin="2,-6,12,0" Style="{StaticResource PhoneTextNormalStyle}" FontSize="24" Foreground="White" />
+                <TextBlock Text="{Binding subtitle}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                <StackPanel Orientation="Horizontal">
+                    <Image Width="100" MaxHeight="100" Source="{Binding chanicon}" Margin="0,-15,0,0" />
+                    <StackPanel Margin="0,0,0,17" Height="Auto">
+                        <TextBlock Text="{Binding starttimespace}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                        <TextBlock Text="{Binding category}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding channum}" Margin="12,-6,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                            <TextBlock Text=" - " Margin="0,-6,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                            <TextBlock Text="{Binding channame}" Margin="0,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                        </StackPanel>
+                        <TextBlock Text="{Binding recstatustext}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="guideItemHeader">
+            <Border Background="{StaticResource PhoneAccentBrush}" Margin="{StaticResource PhoneTouchTargetOverhang}" Padding="{StaticResource PhoneTouchTargetOverhang}">
+                <TextBlock Text="{Binding Title}" Width="460" Style="{StaticResource PhoneTextLargeStyle}"/>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="channelPickerTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding channum}" />
+                <TextBlock Text=" - " />
+                <TextBlock Text="{Binding channame}" />
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="channelPickerFullTemplate">
+            <StackPanel Orientation="Horizontal" >
+                <TextBlock Text="{Binding channum}" FontSize="30" />
+                <TextBlock Text=" - " FontSize="30" />
+                <TextBlock Text="{Binding channame}" FontSize="30" />
+            </StackPanel>
+        </DataTemplate>
+
+    </phone:PhoneApplicationPage.Resources>
+
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+
+        <Popup Name="SortPopup" VerticalAlignment="Top" VerticalOffset="100" HorizontalAlignment="Left" Width="480">
+            <StackPanel Background="White" Width="480" >
+                <TextBlock Name="PopupDateTitle" Text="Sort by:" Foreground="Black" FontSize="50" />
+                <TextBlock Name="PopupChannelAsc" Text="Channel/time, Asc" Margin="12, 0, 0, 0" Foreground="Black" FontSize="40" Tap="PopupChannelAsc_Tap" />
+                <TextBlock Name="PopupChannelDesc" Text="Channel/time, Desc" Margin="12, 0, 0, 0" Foreground="Black" FontSize="40" Tap="PopupChannelDesc_Tap" />
+                <TextBlock Name="PopupRecstatusAsc" Text="Recording status" Margin="12, 0, 0, 0" Foreground="Black" FontSize="40" Tap="PopupRecstatusAsc_Tap" />
+                <TextBlock Name="PopupTitleAsc" Text="Title, Asc" Margin="12, 0, 0, 0" Foreground="Black" FontSize="40" Tap="PopupTitleAsc_Tap" />
+                <TextBlock Name="PopupTitleDesc" Text="Title, Desc" Margin="12, 0, 0, 0" Foreground="Black" FontSize="40" Tap="PopupTitleDesc_Tap" />
+            </StackPanel>
+        </Popup>
+        
+        <toolkit:PerformanceProgressBar x:Name="performanceProgressBarCustomized" Foreground="Red" Background="Red" IsIndeterminate="False"  />
+
+        <controls:Pivot x:Name="guidePivot" Title="guide" SelectionChanged="guidePivot_SelectionChanged">
+
+            <controls:PivotItem x:Name="nowPivot" Header="Now">
+                
+                <toolkit:LongListSelector x:Name="NowGuideLL"
+                     GroupHeaderTemplate="{StaticResource guideGroupHeader}"
+                     ItemTemplate="{StaticResource guideItemTemplate}" 
+                     GroupItemTemplate="{StaticResource guideItemHeader}"
+                     ShowListFooter="False" ShowListHeader="False" SelectionChanged="NowGuideLL_SelectionChanged">
+                </toolkit:LongListSelector>
+
+            </controls:PivotItem>
+
+            <controls:PivotItem x:Name="timePivot" Header="Time">
                 <Grid>
-                    <ListBox x:Name="GuideNowListBox" SelectionChanged="GuideNowListBox_SelectionChanged">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Width="100" MaxHeight="100" Source="{Binding chanicon}" />
-                                    <StackPanel Margin="0,0,0,17" Height="Auto">
-                                        <TextBlock Text="{Binding title}" TextWrapping="NoWrap" Style="{StaticResource PhoneTextNormalStyle}" FontSize="24" Foreground="White" />
-                                        <TextBlock Text="{Binding subtitle}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                                        <TextBlock Text="{Binding starttime}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                                        <TextBlock Text="{Binding category}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                                        <TextBlock Text="{Binding recstatustext}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                                    </StackPanel>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                        <toolkit:DatePicker x:Name="guideDatePicker" />
+                        <toolkit:TimePicker x:Name="guideTimePicker" />
+                        <Button x:Name="guideTimePickerButton" Content="Go" Tap="guideTimePickerButton_Tap" />
+                    </StackPanel>
+                    <toolkit:LongListSelector x:Name="TimeGuideLL"
+                         GroupHeaderTemplate="{StaticResource guideGroupHeader}"
+                         ItemTemplate="{StaticResource guideItemTemplate}" 
+                         GroupItemTemplate="{StaticResource guideItemHeader}"
+                         ShowListFooter="False" ShowListHeader="False" SelectionChanged="TimeGuideLL_SelectionChanged" Grid.Row="1" />
                 </Grid>
             </controls:PivotItem>
 
-            <!--Pivot item two-->
-            <controls:PivotItem Header="Time">
-                <Grid/>
-            </controls:PivotItem>
+            <controls:PivotItem x:Name="channelPivot" Header="Channel">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <toolkit:ListPicker x:Name="guideChannelPicker" FullModeItemTemplate="{StaticResource channelPickerFullTemplate}" ItemTemplate="{StaticResource channelPickerTemplate}" />
 
-            <!--Pivot item two-->
-            <controls:PivotItem Header="Channel">
-                <Grid/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Grid.Row="1">
+                        <toolkit:DatePicker x:Name="guideChannelDatePicker" />
+                        <Button x:Name="guideChannelButton" Content="Go" Tap="guideChannelButton_Tap" />
+                    </StackPanel>
+
+                    <toolkit:LongListSelector x:Name="ChannelGuideLL"
+                     GroupHeaderTemplate="{StaticResource guideGroupHeader}"
+                     ItemTemplate="{StaticResource guideItemTemplate}" 
+                     GroupItemTemplate="{StaticResource guideItemHeader}"
+                     ShowListFooter="False" ShowListHeader="False" SelectionChanged="ChannelGuideLL_SelectionChanged" Grid.Row="2">
+                </toolkit:LongListSelector>
+                </Grid>
             </controls:PivotItem>
+            
         </controls:Pivot>
     </Grid>
 
-    <!--Sample code showing usage of ApplicationBar-->
-    <!--<phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton x:Name="appbar_button1" IconUri="/Images/appbar_button1.png" Text="Button 1"/>
-            <shell:ApplicationBarIconButton x:Name="appbar_button2" IconUri="/Images/appbar_button2.png" Text="Button 2"/>
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" >
+            <shell:ApplicationBarIconButton x:Name="appbarRefresh" IconUri="/Images/appbar.refresh.rest.png" Text="refresh" Click="appbarRefresh_Click" />
+            <shell:ApplicationBarIconButton x:Name="appbarSort" IconUri="/Images/appbar.feature.settings.rest.png" Text="sort" Click="appbarSort_Click" />
+            <!---->
             <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem x:Name="menuItem1" Text="MenuItem 1"/>
-                <shell:ApplicationBarMenuItem x:Name="menuItem2" Text="MenuItem 2"/>
+                <!-- 
+                <shell:ApplicationBarMenuItem Text="MenuItem 1"/>
+                <shell:ApplicationBarMenuItem Text="MenuItem 2"/>
+                -->
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
-    </phone:PhoneApplicationPage.ApplicationBar>-->
+    </phone:PhoneApplicationPage.ApplicationBar>
     
 </phone:PhoneApplicationPage>

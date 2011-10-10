@@ -26,9 +26,11 @@ namespace MythMe
             connected = false;
             //remoteSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             //remoteSocketEventArg = new SocketAsyncEventArgs();
-            remoteAddress = "192.168.1.104";
-            remotePort = 6546; 
-            remoteEndPoint = new DnsEndPoint(remoteAddress, remotePort);
+            //remoteAddress = "192.168.1.104";
+            //remotePort = 6546; 
+            //remoteEndPoint = new DnsEndPoint(remoteAddress, remotePort);
+
+            currentFrontend = new FrontendViewModel();
 
             this.responseText = "";
             
@@ -42,6 +44,8 @@ namespace MythMe
         private string remoteAddress;
         private int remotePort;
         private DnsEndPoint remoteEndPoint;
+
+        private FrontendViewModel currentFrontend;
 
 
         public string responseText
@@ -60,7 +64,13 @@ namespace MythMe
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
 
-            remoteTitle.Title = "remote: " + remoteAddress;
+            currentFrontend = App.ViewModel.Frontends[App.ViewModel.appSettings.RemoteIndexSetting];
+
+            if (currentFrontend.Address == null) currentFrontend.Address = App.ViewModel.appSettings.MasterBackendIpSetting;
+
+            remoteEndPoint = new DnsEndPoint(currentFrontend.Address, currentFrontend.Port);
+
+            remotePivot.Title = "remote: " + currentFrontend.Name + " @ "+currentFrontend.Address;
 
             remoteSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp); 
             remoteSocketEventArg = new SocketAsyncEventArgs();
@@ -164,7 +174,12 @@ namespace MythMe
             }
             else
             {
-                throw new SocketException((int)e.SocketError);
+                //throw new SocketException((int)e.SocketError);
+
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("Error connecting to frontend.  Check your settings.");
+                });
             }
         }
         void ProcessSend(SocketAsyncEventArgs e)
@@ -185,7 +200,12 @@ namespace MythMe
             }
             else
             {
-                throw new SocketException((int)e.SocketError);
+                //throw new SocketException((int)e.SocketError);
+
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("Error connecting to frontend.  Check your settings.");
+                });
             }
         }
         protected void ProcessReceive(SocketAsyncEventArgs e)
@@ -215,7 +235,12 @@ namespace MythMe
             }
             else
             {
-                throw new SocketException((int)e.SocketError);
+                //throw new SocketException((int)e.SocketError);
+
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("Error connecting to frontend.  Check your settings.");
+                });
             }
         }
 
@@ -296,6 +321,77 @@ namespace MythMe
         private void volume_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             SendQuery("volume");
+        }
+
+        private void keyboardBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            //MessageBox.Show("entered key: " + e.Key);
+            string newKey = e.Key.ToString();
+
+            switch(e.Key.ToString())
+            {
+                case "D1":
+                    newKey = "1";
+                    break;
+                case "D2":
+                    newKey = "2";
+                    break;
+                case "D3":
+                    newKey = "3";
+                    break;
+                case "D4":
+                    newKey = "4";
+                    break;
+                case "D5":
+                    newKey = "5";
+                    break;
+                case "D6":
+                    newKey = "6";
+                    break;
+                case "D7":
+                    newKey = "7";
+                    break;
+                case "D8":
+                    newKey = "8";
+                    break;
+                case "D9":
+                    newKey = "9";
+                    break;
+                case "D0":
+                    newKey = "0";
+                    break;
+                case "Back":
+                    newKey = "escape";
+                    break;
+
+            }
+
+            SendKey(newKey);
+
+            keyboardBox.Text = "";
+        }
+
+        private void remotePivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            switch (remotePivot.SelectedIndex)
+            {
+                case 0:
+                    //navigation
+                    keyboardBox.IsEnabled = false;
+                    break;
+                case 1:
+                    //playback
+                    keyboardBox.IsEnabled = false;
+                    break;
+                case 2:
+                    keyboardBox.IsEnabled = true;
+                    keyboardBox.Focus();
+                    break;
+                case 3:
+                    //query
+                    keyboardBox.IsEnabled = false;
+                    break;
+            }
         }
 
     }

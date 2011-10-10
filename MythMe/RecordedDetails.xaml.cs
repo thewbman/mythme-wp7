@@ -54,7 +54,7 @@ namespace MythMe
         {
             App.ViewModel.GuideTime = App.ViewModel.SelectedProgram.recstartts;
 
-            NavigationService.Navigate(new Uri("/Guide.xaml?SelectedTime="+App.ViewModel.SelectedProgram.recstartts, UriKind.Relative));
+            NavigationService.Navigate(new Uri("/Guide.xaml?SelectedTime="+App.ViewModel.SelectedProgram.starttime, UriKind.Relative));
         }
 
     }

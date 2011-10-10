@@ -105,9 +105,9 @@
       <DependentUpon>UpcomingDetails.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\AppSettings.cs" />
-    <Compile Include="ViewModels\BackendsViewModel.cs" />
+    <Compile Include="ViewModels\BackendViewModel.cs" />
     <Compile Include="ViewModels\ChannelViewModel.cs" />
-    <Compile Include="ViewModels\FrontendsViewModel.cs" />
+    <Compile Include="ViewModels\FrontendViewModel.cs" />
     <Compile Include="ViewModels\FunctionsModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\NameContentViewModel.cs" />
@@ -174,7 +174,17 @@
     </Content>
     <Content Include="Images\appbar.feature.settings.rest.png" />
     <Content Include="Images\appbar.refresh.rest.png" />
+    <Resource Include="Images\down.png" />
+    <Resource Include="Images\left.png" />
+    <Resource Include="Images\up.png" />
+    <Resource Include="Images\right.png" />
+    <Resource Include="Images\pause.png" />
+    <Resource Include="Images\jumpforward.png" />
+    <Resource Include="Images\jumpback.png" />
+    <Resource Include="Images\record.png" />
     <Content Include="SplashScreenImage.jpg" />
+    <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
