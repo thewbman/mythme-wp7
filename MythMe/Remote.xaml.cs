@@ -64,40 +64,64 @@ namespace MythMe
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
 
-            currentFrontend = App.ViewModel.Frontends[App.ViewModel.appSettings.RemoteIndexSetting];
+            try
+            {
+                if (App.ViewModel.appSettings.RemoteIndexSetting < App.ViewModel.Frontends.Count)
+                {
 
-            if (currentFrontend.Address == null) currentFrontend.Address = App.ViewModel.appSettings.MasterBackendIpSetting;
+                    currentFrontend = App.ViewModel.Frontends[App.ViewModel.appSettings.RemoteIndexSetting];
 
-            remoteEndPoint = new DnsEndPoint(currentFrontend.Address, currentFrontend.Port);
+                    if (currentFrontend.Address == null) currentFrontend.Address = App.ViewModel.appSettings.MasterBackendIpSetting;
 
-            remotePivot.Title = "remote: " + currentFrontend.Name + " @ "+currentFrontend.Address;
+                    remoteEndPoint = new DnsEndPoint(currentFrontend.Address, currentFrontend.Port);
 
-            remoteSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp); 
-            remoteSocketEventArg = new SocketAsyncEventArgs();
-            
+                    remotePivot.Title = "remote: " + currentFrontend.Name + " @ " + currentFrontend.Address;
 
-            if(connected == false) {
-
-                remoteSocketEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(SocketEventArg_Completed);
-                
-                remoteSocketEventArg.RemoteEndPoint = remoteEndPoint;
-                remoteSocketEventArg.UserToken = remoteSocket;
-
-                remoteSocket.ConnectAsync(remoteSocketEventArg);
+                    remoteSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                    remoteSocketEventArg = new SocketAsyncEventArgs();
 
 
-                connected = true;
-               
+                    if (connected == false)
+                    {
+
+                        remoteSocketEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(SocketEventArg_Completed);
+
+                        remoteSocketEventArg.RemoteEndPoint = remoteEndPoint;
+                        remoteSocketEventArg.UserToken = remoteSocket;
+
+                        remoteSocket.ConnectAsync(remoteSocketEventArg);
+
+                        connected = true;
+
+                    }
+
+                }
+                else
+                {
+                    //
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Frontend error: " + ex.ToString());
             }
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            remoteSocket.Close();
+            if (remoteSocket == null)
+            {
+                //do nothing
+            }
+            else
+            {
 
-            remoteSocket.Dispose();
+                remoteSocket.Close();
 
-            connected = false;
+                remoteSocket.Dispose();
+
+                connected = false;
+            }
             
             base.OnNavigatedFrom(e);
         }
@@ -123,30 +147,38 @@ namespace MythMe
 
         void SendKey(string inValue)
         {
+            if (remoteSocket.Connected)
+            {
+                //SocketAsyncEventArgs sendSocketEventArg = new SocketAsyncEventArgs();
+                byte[] buffer = Encoding.UTF8.GetBytes("key " + inValue + "\n");
+                remoteSocketEventArg.SetBuffer(buffer, 0, buffer.Length);
 
-            //SocketAsyncEventArgs sendSocketEventArg = new SocketAsyncEventArgs();
-            byte[] buffer = Encoding.UTF8.GetBytes("key " + inValue + "\n");
-            remoteSocketEventArg.SetBuffer(buffer, 0, buffer.Length);
-
-            remoteSocket.SendAsync(remoteSocketEventArg);
+                remoteSocket.SendAsync(remoteSocketEventArg);
+            }
         }
         void SendJump(string inValue)
         {
 
-            //SocketAsyncEventArgs sendSocketEventArg = new SocketAsyncEventArgs();
-            byte[] buffer = Encoding.UTF8.GetBytes("jump " + inValue + "\n");
-            remoteSocketEventArg.SetBuffer(buffer, 0, buffer.Length);
+            if (remoteSocket.Connected)
+            {
+                //SocketAsyncEventArgs sendSocketEventArg = new SocketAsyncEventArgs();
+                byte[] buffer = Encoding.UTF8.GetBytes("jump " + inValue + "\n");
+                remoteSocketEventArg.SetBuffer(buffer, 0, buffer.Length);
 
-            remoteSocket.SendAsync(remoteSocketEventArg);
+                remoteSocket.SendAsync(remoteSocketEventArg);
+            }
         }
         void SendQuery(string inValue)
         {
 
-            //SocketAsyncEventArgs sendSocketEventArg = new SocketAsyncEventArgs();
-            byte[] buffer = Encoding.UTF8.GetBytes("query " + inValue + "\n");
-            remoteSocketEventArg.SetBuffer(buffer, 0, buffer.Length);
+            if (remoteSocket.Connected)
+            {
+                //SocketAsyncEventArgs sendSocketEventArg = new SocketAsyncEventArgs();
+                byte[] buffer = Encoding.UTF8.GetBytes("query " + inValue + "\n");
+                remoteSocketEventArg.SetBuffer(buffer, 0, buffer.Length);
 
-            remoteSocket.SendAsync(remoteSocketEventArg);
+                remoteSocket.SendAsync(remoteSocketEventArg);
+            }
         }
 
         void ProcessConnect(SocketAsyncEventArgs e)
@@ -296,6 +328,18 @@ namespace MythMe
         {
             SendKey("z");
         }
+        private void mute_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            SendKey("f9");
+        }
+        private void voldown_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            SendKey("f10");
+        }
+        private void volup_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            SendKey("f11");
+        }
         private void livetv_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             SendJump("livetv");
@@ -392,6 +436,11 @@ namespace MythMe
                     keyboardBox.IsEnabled = false;
                     break;
             }
+        }
+
+        private void ApplicationBarIconButton_Click(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/RemoteSettings.xaml", UriKind.Relative));
         }
 
     }

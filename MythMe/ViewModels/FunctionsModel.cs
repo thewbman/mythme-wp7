@@ -333,9 +333,15 @@ namespace MythMe
                     newFrontend.Port = backend.NetworkControlPort;
                     newFrontend.Address = backend.Address;
 
+                    if (newFrontend.Address == null) newFrontend.Address = App.ViewModel.appSettings.MasterBackendIpSetting;
+
                     App.ViewModel.Frontends.Add(newFrontend);
                 }
             }
+
+            App.ViewModel.saveFrontends();
+
+            App.ViewModel.appSettings.RemoteIndexSetting = 0;
         }
 
         public string CreateScreenshotUrl(ProgramViewModel inProgram)
@@ -368,5 +374,6 @@ namespace MythMe
             return screenshot;
 
         }
+
     }
 }

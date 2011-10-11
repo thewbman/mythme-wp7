@@ -79,6 +79,9 @@
     <Compile Include="GuideDetails.xaml.cs">
       <DependentUpon>GuideDetails.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Help.xaml.cs">
+      <DependentUpon>Help.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -94,6 +97,9 @@
     </Compile>
     <Compile Include="Remote.xaml.cs">
       <DependentUpon>Remote.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RemoteSettings.xaml.cs">
+      <DependentUpon>RemoteSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Status.xaml.cs">
       <DependentUpon>Status.xaml</DependentUpon>
@@ -126,6 +132,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Help.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -143,6 +153,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Remote.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RemoteSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -166,12 +180,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ApplicationIcon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Background.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Images\appbar.add.rest.png" />
+    <Content Include="Images\appbar.delete.rest.png" />
     <Content Include="Images\appbar.feature.settings.rest.png" />
     <Content Include="Images\appbar.refresh.rest.png" />
     <Resource Include="Images\down.png" />
@@ -182,6 +192,16 @@
     <Resource Include="Images\jumpforward.png" />
     <Resource Include="Images\jumpback.png" />
     <Resource Include="Images\record.png" />
+    <Content Include="Images\appbar.save.rest.png" />
+    <Resource Include="Images\mute.png" />
+    <Resource Include="Images\volup.png" />
+    <Resource Include="Images\voldown.png" />
+    <Content Include="MythMe_173.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MythMe_62.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="SplashScreenImage.jpg" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />

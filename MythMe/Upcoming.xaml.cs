@@ -58,13 +58,21 @@ namespace MythMe
             
             //performanceProgressBarCustomized.IsIndeterminate = true;
 
-
-            if (App.ViewModel.Upcoming.Count == 0) this.Perform(() => GetUpcoming(), 50);
+            if (App.ViewModel.appSettings.ProtoVerSetting == 0)
+            {
+                MessageBox.Show("You need to view your recorded programs first to get the protocol version before you can view the upcoming recordings.", "MythMe", MessageBoxButton.OK);
+                NavigationService.GoBack();
+            }
             else
             {
 
-                this.Perform(() => SortAndDisplay(""), 50);
-                
+                if (App.ViewModel.Upcoming.Count == 0) this.Perform(() => GetUpcoming(), 50);
+                else
+                {
+
+                    this.Perform(() => SortAndDisplay(""), 50);
+
+                }
             }
 
         }
@@ -153,7 +161,12 @@ namespace MythMe
             }
             else
             {
-                throw new SocketException((int)e.SocketError);
+                //throw new SocketException((int)e.SocketError);
+
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("Error connecting to backend.  Check your settings.");
+                });
             }
         }
         private void ProcessSend(SocketAsyncEventArgs e)
@@ -173,7 +186,12 @@ namespace MythMe
             }
             else
             {
-                throw new SocketException((int)e.SocketError);
+                //throw new SocketException((int)e.SocketError);
+
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("Error connecting to backend.  Check your settings.");
+                });
             }
         }
         protected void ProcessReceive(SocketAsyncEventArgs e)
@@ -198,7 +216,11 @@ namespace MythMe
                             s.SendAsync(e);
                         } else 
                         {
-                            throw new Exception("Did not get ACCEPT back: "+newResponse);
+                            Deployment.Current.Dispatcher.BeginInvoke(() =>
+                            {
+                                MessageBox.Show("Did not get ACCEPT back: " + newResponse);
+                            });
+                            //throw new Exception("Did not get ACCEPT back: " + newResponse);
                         }
                         break;
                     case 8:
@@ -215,7 +237,11 @@ namespace MythMe
                         }
                         else
                         {
-                            throw new Exception("Did not get OK back from ANN: " + newResponse);
+                            Deployment.Current.Dispatcher.BeginInvoke(() =>
+                            {
+                                MessageBox.Show("Did not get OK back from ANN: " + newResponse);
+                            });
+                            //throw new Exception("Did not get OK back from ANN: " + newResponse);
                         }
                         break;
                     case 12:
@@ -268,14 +294,23 @@ namespace MythMe
                         });
                         break;
                     default:
-                        throw new Exception("Unknown protocolStatus (" + protocolStatus + ") and response: " + newResponse);
+                        Deployment.Current.Dispatcher.BeginInvoke(() =>
+                        {
+                            MessageBox.Show("Unknown protocolStatus (" + protocolStatus + ") and response: " + newResponse);
+                        });
+                        //throw new Exception("Unknown protocolStatus (" + protocolStatus + ") and response: " + newResponse);
                         break;
                 }
 
             }
             else
             {
-                throw new SocketException((int)e.SocketError);
+                //throw new SocketException((int)e.SocketError);
+
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("Error connecting to backend.  Check your settings.");
+                });
             }
         }
 
@@ -503,26 +538,1030 @@ namespace MythMe
             //upcomingHeader.Title = "upcoming: " + App.ViewModel.Upcoming.Count + " " + programIndex + " " + responseArray[1] + " " + responseArray.Length + " " + (Int64.Parse(responseArray[1])*41+2);
 
             SortAndDisplay(responseArray[0].Substring(8).Trim());
+
         }
         private void ParseUpcoming41()
         {
-            MessageBox.Show("Your MythTV protocol version (" + App.ViewModel.appSettings.ProtoVerSetting + ") is not currently supported by MythMe");
+
+            //Protocol version 41 and up - 47 fields
+
+            App.ViewModel.Upcoming.Clear();
+
+            string[] stringSeparators = new string[] { "[]:[]" };
+            string[] responseArray;
+
+            ProgramViewModel singleProgram = new ProgramViewModel();
+            //int arrayIndex = 0;
+            int programIndex = 0;
+            int fieldIndex = 0;
+            int i;
+
+            int offset = 2; //upcoming is conflicting[]:[]qty programs[]:[]programs ...
+
+            responseArray = fullProtocolResponse.Split(stringSeparators, StringSplitOptions.None);
+
+            try
+            {
+                for (i = offset; i < responseArray.Length; i++)
+                {
+                    switch (fieldIndex)
+                    {
+                        case 0:
+                            singleProgram = new ProgramViewModel();
+                            singleProgram.title = responseArray[i];
+                            break;
+                        case 1:
+                            singleProgram.subtitle = responseArray[i];
+                            break;
+                        case 2:
+                            singleProgram.description = responseArray[i];
+                            break;
+                        case 3:
+                            singleProgram.category = responseArray[i];
+                            break;
+                        case 4:
+                            singleProgram.chanid = int.Parse(responseArray[i]);
+                            singleProgram.chanicon = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Myth/GetChannelIcon?ChanId=" + responseArray[i];
+                            break;
+                        case 5:
+                            singleProgram.channum = responseArray[i];
+                            break;
+                        case 6:
+                            singleProgram.callsign = responseArray[i];
+                            break;
+                        case 7:
+                            singleProgram.channame = responseArray[i];
+                            break;
+                        case 8:
+                            singleProgram.filename = responseArray[i];
+                            break;
+                        case 9:
+                            //singleProgram.fs_high = Int64.Parse(responseArray[i]);
+                            break;
+                        case 10:
+                            //singleProgram.fs_low = Int64.Parse(responseArray[i]);
+                            break;
+
+                        case 11:
+                            singleProgram.starttimeint = Int64.Parse(responseArray[i]);
+                            DateTime st = new DateTime(1970, 1, 1).AddSeconds(singleProgram.starttimeint + (Int64)TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalSeconds);
+                            //st.Add(new TimeSpan(singleProgram.starttimeint * 10000000));
+                            //st.AddSeconds(singleProgram.starttimeint);
+                            singleProgram.starttime = st.ToString("s");
+                            singleProgram.starttimespace = singleProgram.starttime.Replace("T", " ");
+                            break;
+                        case 12:
+                            singleProgram.endtimeint = Int64.Parse(responseArray[i]);
+                            DateTime et = new DateTime(1970, 1, 1).AddSeconds(singleProgram.endtimeint + (Int64)TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalSeconds);
+                            //et.Add(new TimeSpan(singleProgram.endtimeint*10000000));
+                            //et.AddSeconds(singleProgram.endtimeint);
+                            singleProgram.endtime = et.ToString("s");
+                            //asdf
+                            break;
+                        case 13:
+                            //singleProgram.duplicate = responseArray[i];
+                            break;
+                        case 14:
+                            //singleProgram.shareable = responseArray[i];
+                            break;
+                        case 15:
+                            singleProgram.findid = responseArray[i];
+                            break;
+                        case 16:
+                            singleProgram.hostname = responseArray[i];
+                            break;
+                        case 17:
+                            singleProgram.sourceid = int.Parse(responseArray[i]);
+                            break;
+                        case 18:
+                            singleProgram.cardid = int.Parse(responseArray[i]);
+                            break;
+                        case 19:
+                            singleProgram.inputid = int.Parse(responseArray[i]);
+                            break;
+
+                        case 20:
+                            singleProgram.recpriority = int.Parse(responseArray[i]);
+                            break;
+                        case 21:
+                            singleProgram.recstatus = int.Parse(responseArray[i]);
+                            singleProgram.recstatustext = App.ViewModel.functions.RecStatusDecode(singleProgram.recstatus);
+                            //singleProgram.recstatustext = responseArray[i];
+                            break;
+                        case 22:
+                            singleProgram.recordid = int.Parse(responseArray[i]);
+                            break;
+                        case 23:
+                            singleProgram.rectype = int.Parse(responseArray[i]);
+                            break;
+                        case 24:
+                            //singleProgram.dupin = responseArray[i];
+                            break;
+                        case 25:
+                            //singleProgram.dupmethod = responseArray[i];
+                            break;
+                        case 26:
+                            singleProgram.recstarttsint = Int64.Parse(responseArray[i]);
+                            DateTime rt = new DateTime(1970, 1, 1).AddSeconds(singleProgram.recstarttsint + (Int64)TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalSeconds);
+                            //rt.Add(new TimeSpan(singleProgram.recstarttsint * 10000000));
+                            //rt.AddSeconds(singleProgram.recstarttsint);
+                            singleProgram.recstartts = rt.ToString("s");
+                            break;
+                        case 27:
+                            singleProgram.recendtsint = Int64.Parse(responseArray[i]);
+                            DateTime tt = new DateTime(1970, 1, 1).AddSeconds(singleProgram.recendtsint + (Int64)TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalSeconds);
+                            //tt.Add(new TimeSpan(singleProgram.recstarttsint * 10000000));
+                            //tt.AddSeconds(singleProgram.recstarttsint);
+                            singleProgram.recendts = tt.ToString("s");
+                            //asdf
+                            break;
+                        case 28:
+                            //singleProgram.repeat = int.Parse(responseArray[i]);
+                            break;
+                        case 29:
+                            //singleProgram.programflags = int.Parse(responseArray[i]);
+                            break;
+
+                        case 30:
+                            singleProgram.recgroup = responseArray[i];
+                            break;
+                        case 31:
+                            //singleProgram.chancommfree = responseArray[i];
+                            break;
+                        case 32:
+                            //singleProgram.outputfilters = responseArray[i];
+                            break;
+                        case 33:
+                            singleProgram.seriesid = responseArray[i];
+                            break;
+                        case 34:
+                            singleProgram.programid = responseArray[i];
+                            break;
+                        case 35:
+                            singleProgram.lastmodified = responseArray[i];
+                            break;
+                        case 36:
+                            //singleProgram.stars = responseArray[i];
+                            break;
+                        case 37:
+                            singleProgram.airdate = responseArray[i];
+                            break;
+                        case 38:
+                            //singleProgram.hasairdate = responseArray[i];
+                            break;
+                        case 39:
+                            singleProgram.playgroup = responseArray[i];
+                            break;
+
+                        case 40:
+                            singleProgram.recpriority2 = responseArray[i];
+                            break;
+                        case 41:
+                            singleProgram.parentid = responseArray[i];
+                            break;
+                        case 42:
+                            singleProgram.storagegroup = responseArray[i];
+                            break;
+                        case 43:
+                            //singleProgram.audio_props = responseArray[i];
+                            break;
+                        case 44:
+                            //singleProgram.video_props = responseArray[i];
+                            break;
+                        case 45:
+                            //singleProgram.subtitle_type = responseArray[i];
+                            break;
+                        case 46:
+                            //singleProgram.year = responseArray[i];
+                            App.ViewModel.Upcoming.Add(singleProgram);
+                            programIndex++;
+                            fieldIndex = -1;
+                            break;
+                    }
+
+                    fieldIndex++;
+
+                }
+
+                //MessageBox.Show("Finished parsing programs: " + App.ViewModel.Upcoming.Count + " view model, " + programIndex + " program index, " + responseArray[1] + " protocol");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Problems reading upcoming, not all upcoming programs will be visible.  There should have been " + responseArray[1] + " scheduled recordings listed instead of just " + App.ViewModel.Upcoming.Count + ".", "Error", MessageBoxButton.OK);
+            }
+
+            //upcomingHeader.Title = "upcoming: " + App.ViewModel.Upcoming.Count + " " + programIndex + " " + responseArray[1] + " " + responseArray.Length + " " + (Int64.Parse(responseArray[1])*41+2);
+
+            SortAndDisplay(responseArray[0].Substring(8).Trim());
+
         }
         private void ParseUpcoming35()
         {
-            MessageBox.Show("Your MythTV protocol version (" + App.ViewModel.appSettings.ProtoVerSetting + ") is not currently supported by MythMe");
+            //Protocol version 35 and up - 46 fields
+
+            App.ViewModel.Upcoming.Clear();
+
+            string[] stringSeparators = new string[] { "[]:[]" };
+            string[] responseArray;
+
+            ProgramViewModel singleProgram = new ProgramViewModel();
+            //int arrayIndex = 0;
+            int programIndex = 0;
+            int fieldIndex = 0;
+            int i;
+
+            int offset = 2; //upcoming is conflicting[]:[]qty programs[]:[]programs ...
+
+            responseArray = fullProtocolResponse.Split(stringSeparators, StringSplitOptions.None);
+
+            try
+            {
+                for (i = offset; i < responseArray.Length; i++)
+                {
+                    switch (fieldIndex)
+                    {
+                        case 0:
+                            singleProgram = new ProgramViewModel();
+                            singleProgram.title = responseArray[i];
+                            break;
+                        case 1:
+                            singleProgram.subtitle = responseArray[i];
+                            break;
+                        case 2:
+                            singleProgram.description = responseArray[i];
+                            break;
+                        case 3:
+                            singleProgram.category = responseArray[i];
+                            break;
+                        case 4:
+                            singleProgram.chanid = int.Parse(responseArray[i]);
+                            singleProgram.chanicon = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Myth/GetChannelIcon?ChanId=" + responseArray[i];
+                            break;
+                        case 5:
+                            singleProgram.channum = responseArray[i];
+                            break;
+                        case 6:
+                            singleProgram.callsign = responseArray[i];
+                            break;
+                        case 7:
+                            singleProgram.channame = responseArray[i];
+                            break;
+                        case 8:
+                            singleProgram.filename = responseArray[i];
+                            break;
+                        case 9:
+                            //singleProgram.fs_high = Int64.Parse(responseArray[i]);
+                            break;
+                        case 10:
+                            //singleProgram.fs_low = Int64.Parse(responseArray[i]);
+                            break;
+
+                        case 11:
+                            singleProgram.starttimeint = Int64.Parse(responseArray[i]);
+                            DateTime st = new DateTime(1970, 1, 1).AddSeconds(singleProgram.starttimeint + (Int64)TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalSeconds);
+                            //st.Add(new TimeSpan(singleProgram.starttimeint * 10000000));
+                            //st.AddSeconds(singleProgram.starttimeint);
+                            singleProgram.starttime = st.ToString("s");
+                            singleProgram.starttimespace = singleProgram.starttime.Replace("T", " ");
+                            break;
+                        case 12:
+                            singleProgram.endtimeint = Int64.Parse(responseArray[i]);
+                            DateTime et = new DateTime(1970, 1, 1).AddSeconds(singleProgram.endtimeint + (Int64)TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalSeconds);
+                            //et.Add(new TimeSpan(singleProgram.endtimeint*10000000));
+                            //et.AddSeconds(singleProgram.endtimeint);
+                            singleProgram.endtime = et.ToString("s");
+                            //asdf
+                            break;
+                        case 13:
+                            //singleProgram.duplicate = responseArray[i];
+                            break;
+                        case 14:
+                            //singleProgram.shareable = responseArray[i];
+                            break;
+                        case 15:
+                            singleProgram.findid = responseArray[i];
+                            break;
+                        case 16:
+                            singleProgram.hostname = responseArray[i];
+                            break;
+                        case 17:
+                            singleProgram.sourceid = int.Parse(responseArray[i]);
+                            break;
+                        case 18:
+                            singleProgram.cardid = int.Parse(responseArray[i]);
+                            break;
+                        case 19:
+                            singleProgram.inputid = int.Parse(responseArray[i]);
+                            break;
+
+                        case 20:
+                            singleProgram.recpriority = int.Parse(responseArray[i]);
+                            break;
+                        case 21:
+                            singleProgram.recstatus = int.Parse(responseArray[i]);
+                            singleProgram.recstatustext = App.ViewModel.functions.RecStatusDecode(singleProgram.recstatus);
+                            //singleProgram.recstatustext = responseArray[i];
+                            break;
+                        case 22:
+                            singleProgram.recordid = int.Parse(responseArray[i]);
+                            break;
+                        case 23:
+                            singleProgram.rectype = int.Parse(responseArray[i]);
+                            break;
+                        case 24:
+                            //singleProgram.dupin = responseArray[i];
+                            break;
+                        case 25:
+                            //singleProgram.dupmethod = responseArray[i];
+                            break;
+                        case 26:
+                            singleProgram.recstarttsint = Int64.Parse(responseArray[i]);
+                            DateTime rt = new DateTime(1970, 1, 1).AddSeconds(singleProgram.recstarttsint + (Int64)TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalSeconds);
+                            //rt.Add(new TimeSpan(singleProgram.recstarttsint * 10000000));
+                            //rt.AddSeconds(singleProgram.recstarttsint);
+                            singleProgram.recstartts = rt.ToString("s");
+                            break;
+                        case 27:
+                            singleProgram.recendtsint = Int64.Parse(responseArray[i]);
+                            DateTime tt = new DateTime(1970, 1, 1).AddSeconds(singleProgram.recendtsint + (Int64)TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalSeconds);
+                            //tt.Add(new TimeSpan(singleProgram.recstarttsint * 10000000));
+                            //tt.AddSeconds(singleProgram.recstarttsint);
+                            singleProgram.recendts = tt.ToString("s");
+                            //asdf
+                            break;
+                        case 28:
+                            //singleProgram.repeat = int.Parse(responseArray[i]);
+                            break;
+                        case 29:
+                            //singleProgram.programflags = int.Parse(responseArray[i]);
+                            break;
+
+                        case 30:
+                            singleProgram.recgroup = responseArray[i];
+                            break;
+                        case 31:
+                            //singleProgram.chancommfree = responseArray[i];
+                            break;
+                        case 32:
+                            //singleProgram.outputfilters = responseArray[i];
+                            break;
+                        case 33:
+                            singleProgram.seriesid = responseArray[i];
+                            break;
+                        case 34:
+                            singleProgram.programid = responseArray[i];
+                            break;
+                        case 35:
+                            singleProgram.lastmodified = responseArray[i];
+                            break;
+                        case 36:
+                            //singleProgram.stars = responseArray[i];
+                            break;
+                        case 37:
+                            singleProgram.airdate = responseArray[i];
+                            break;
+                        case 38:
+                            //singleProgram.hasairdate = responseArray[i];
+                            break;
+                        case 39:
+                            singleProgram.playgroup = responseArray[i];
+                            break;
+
+                        case 40:
+                            singleProgram.recpriority2 = responseArray[i];
+                            break;
+                        case 41:
+                            singleProgram.parentid = responseArray[i];
+                            break;
+                        case 42:
+                            singleProgram.storagegroup = responseArray[i];
+                            break;
+                        case 43:
+                            //singleProgram.audio_props = responseArray[i];
+                            break;
+                        case 44:
+                            //singleProgram.video_props = responseArray[i];
+                            break;
+                        case 45:
+                            //singleProgram.subtitle_type = responseArray[i];
+                            App.ViewModel.Upcoming.Add(singleProgram);
+                            programIndex++;
+                            fieldIndex = -1;
+                            break;
+                    }
+
+                    fieldIndex++;
+
+                }
+
+                //MessageBox.Show("Finished parsing programs: " + App.ViewModel.Upcoming.Count + " view model, " + programIndex + " program index, " + responseArray[1] + " protocol");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Problems reading upcoming, not all upcoming programs will be visible.  There should have been " + responseArray[1] + " scheduled recordings listed instead of just " + App.ViewModel.Upcoming.Count + ".", "Error", MessageBoxButton.OK);
+            }
+
+            //upcomingHeader.Title = "upcoming: " + App.ViewModel.Upcoming.Count + " " + programIndex + " " + responseArray[1] + " " + responseArray.Length + " " + (Int64.Parse(responseArray[1])*41+2);
+
+            SortAndDisplay(responseArray[0].Substring(8).Trim());
         }
         private void ParseUpcoming32()
         {
-            MessageBox.Show("Your MythTV protocol version (" + App.ViewModel.appSettings.ProtoVerSetting + ") is not currently supported by MythMe");
+
+            //Protocol version 32 and up - 43 fields
+
+            App.ViewModel.Upcoming.Clear();
+
+            string[] stringSeparators = new string[] { "[]:[]" };
+            string[] responseArray;
+
+            ProgramViewModel singleProgram = new ProgramViewModel();
+            //int arrayIndex = 0;
+            int programIndex = 0;
+            int fieldIndex = 0;
+            int i;
+
+            int offset = 2; //upcoming is conflicting[]:[]qty programs[]:[]programs ...
+
+            responseArray = fullProtocolResponse.Split(stringSeparators, StringSplitOptions.None);
+
+            try
+            {
+                for (i = offset; i < responseArray.Length; i++)
+                {
+                    switch (fieldIndex)
+                    {
+                        case 0:
+                            singleProgram = new ProgramViewModel();
+                            singleProgram.title = responseArray[i];
+                            break;
+                        case 1:
+                            singleProgram.subtitle = responseArray[i];
+                            break;
+                        case 2:
+                            singleProgram.description = responseArray[i];
+                            break;
+                        case 3:
+                            singleProgram.category = responseArray[i];
+                            break;
+                        case 4:
+                            singleProgram.chanid = int.Parse(responseArray[i]);
+                            singleProgram.chanicon = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Myth/GetChannelIcon?ChanId=" + responseArray[i];
+                            break;
+                        case 5:
+                            singleProgram.channum = responseArray[i];
+                            break;
+                        case 6:
+                            singleProgram.callsign = responseArray[i];
+                            break;
+                        case 7:
+                            singleProgram.channame = responseArray[i];
+                            break;
+                        case 8:
+                            singleProgram.filename = responseArray[i];
+                            break;
+                        case 9:
+                            //singleProgram.fs_high = Int64.Parse(responseArray[i]);
+                            break;
+                        case 10:
+                            //singleProgram.fs_low = Int64.Parse(responseArray[i]);
+                            break;
+
+                        case 11:
+                            singleProgram.starttimeint = Int64.Parse(responseArray[i]);
+                            DateTime st = new DateTime(1970, 1, 1).AddSeconds(singleProgram.starttimeint + (Int64)TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalSeconds);
+                            //st.Add(new TimeSpan(singleProgram.starttimeint * 10000000));
+                            //st.AddSeconds(singleProgram.starttimeint);
+                            singleProgram.starttime = st.ToString("s");
+                            singleProgram.starttimespace = singleProgram.starttime.Replace("T", " ");
+                            break;
+                        case 12:
+                            singleProgram.endtimeint = Int64.Parse(responseArray[i]);
+                            DateTime et = new DateTime(1970, 1, 1).AddSeconds(singleProgram.endtimeint + (Int64)TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalSeconds);
+                            //et.Add(new TimeSpan(singleProgram.endtimeint*10000000));
+                            //et.AddSeconds(singleProgram.endtimeint);
+                            singleProgram.endtime = et.ToString("s");
+                            //asdf
+                            break;
+                        case 13:
+                            //singleProgram.duplicate = responseArray[i];
+                            break;
+                        case 14:
+                            //singleProgram.shareable = responseArray[i];
+                            break;
+                        case 15:
+                            singleProgram.findid = responseArray[i];
+                            break;
+                        case 16:
+                            singleProgram.hostname = responseArray[i];
+                            break;
+                        case 17:
+                            singleProgram.sourceid = int.Parse(responseArray[i]);
+                            break;
+                        case 18:
+                            singleProgram.cardid = int.Parse(responseArray[i]);
+                            break;
+                        case 19:
+                            singleProgram.inputid = int.Parse(responseArray[i]);
+                            break;
+
+                        case 20:
+                            singleProgram.recpriority = int.Parse(responseArray[i]);
+                            break;
+                        case 21:
+                            singleProgram.recstatus = int.Parse(responseArray[i]);
+                            singleProgram.recstatustext = App.ViewModel.functions.RecStatusDecode(singleProgram.recstatus);
+                            //singleProgram.recstatustext = responseArray[i];
+                            break;
+                        case 22:
+                            singleProgram.recordid = int.Parse(responseArray[i]);
+                            break;
+                        case 23:
+                            singleProgram.rectype = int.Parse(responseArray[i]);
+                            break;
+                        case 24:
+                            //singleProgram.dupin = responseArray[i];
+                            break;
+                        case 25:
+                            //singleProgram.dupmethod = responseArray[i];
+                            break;
+                        case 26:
+                            singleProgram.recstarttsint = Int64.Parse(responseArray[i]);
+                            DateTime rt = new DateTime(1970, 1, 1).AddSeconds(singleProgram.recstarttsint + (Int64)TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalSeconds);
+                            //rt.Add(new TimeSpan(singleProgram.recstarttsint * 10000000));
+                            //rt.AddSeconds(singleProgram.recstarttsint);
+                            singleProgram.recstartts = rt.ToString("s");
+                            break;
+                        case 27:
+                            singleProgram.recendtsint = Int64.Parse(responseArray[i]);
+                            DateTime tt = new DateTime(1970, 1, 1).AddSeconds(singleProgram.recendtsint + (Int64)TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalSeconds);
+                            //tt.Add(new TimeSpan(singleProgram.recstarttsint * 10000000));
+                            //tt.AddSeconds(singleProgram.recstarttsint);
+                            singleProgram.recendts = tt.ToString("s");
+                            //asdf
+                            break;
+                        case 28:
+                            //singleProgram.repeat = int.Parse(responseArray[i]);
+                            break;
+                        case 29:
+                            //singleProgram.programflags = int.Parse(responseArray[i]);
+                            break;
+
+                        case 30:
+                            singleProgram.recgroup = responseArray[i];
+                            break;
+                        case 31:
+                            //singleProgram.chancommfree = responseArray[i];
+                            break;
+                        case 32:
+                            //singleProgram.outputfilters = responseArray[i];
+                            break;
+                        case 33:
+                            singleProgram.seriesid = responseArray[i];
+                            break;
+                        case 34:
+                            singleProgram.programid = responseArray[i];
+                            break;
+                        case 35:
+                            singleProgram.lastmodified = responseArray[i];
+                            break;
+                        case 36:
+                            //singleProgram.stars = responseArray[i];
+                            break;
+                        case 37:
+                            singleProgram.airdate = responseArray[i];
+                            break;
+                        case 38:
+                            //singleProgram.hasairdate = responseArray[i];
+                            break;
+                        case 39:
+                            singleProgram.playgroup = responseArray[i];
+                            break;
+
+                        case 40:
+                            singleProgram.recpriority2 = responseArray[i];
+                            break;
+                        case 41:
+                            singleProgram.parentid = responseArray[i];
+                            break;
+                        case 42:
+                            singleProgram.storagegroup = responseArray[i];
+                            App.ViewModel.Upcoming.Add(singleProgram);
+                            programIndex++;
+                            fieldIndex = -1;
+                            break;
+                    }
+
+                    fieldIndex++;
+
+                }
+
+                //MessageBox.Show("Finished parsing programs: " + App.ViewModel.Upcoming.Count + " view model, " + programIndex + " program index, " + responseArray[1] + " protocol");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Problems reading upcoming, not all upcoming programs will be visible.  There should have been " + responseArray[1] + " scheduled recordings listed instead of just " + App.ViewModel.Upcoming.Count + ".", "Error", MessageBoxButton.OK);
+            }
+
+            //upcomingHeader.Title = "upcoming: " + App.ViewModel.Upcoming.Count + " " + programIndex + " " + responseArray[1] + " " + responseArray.Length + " " + (Int64.Parse(responseArray[1])*41+2);
+
+            SortAndDisplay(responseArray[0].Substring(8).Trim());
         }
         private void ParseUpcoming31()
         {
-            MessageBox.Show("Your MythTV protocol version (" + App.ViewModel.appSettings.ProtoVerSetting + ") is not currently supported by MythMe");
+
+            //Protocol version 31 and up - 42 fields
+
+            App.ViewModel.Upcoming.Clear();
+
+            string[] stringSeparators = new string[] { "[]:[]" };
+            string[] responseArray;
+
+            ProgramViewModel singleProgram = new ProgramViewModel();
+            //int arrayIndex = 0;
+            int programIndex = 0;
+            int fieldIndex = 0;
+            int i;
+
+            int offset = 2; //upcoming is conflicting[]:[]qty programs[]:[]programs ...
+
+            responseArray = fullProtocolResponse.Split(stringSeparators, StringSplitOptions.None);
+
+            try
+            {
+                for (i = offset; i < responseArray.Length; i++)
+                {
+                    switch (fieldIndex)
+                    {
+                        case 0:
+                            singleProgram = new ProgramViewModel();
+                            singleProgram.title = responseArray[i];
+                            break;
+                        case 1:
+                            singleProgram.subtitle = responseArray[i];
+                            break;
+                        case 2:
+                            singleProgram.description = responseArray[i];
+                            break;
+                        case 3:
+                            singleProgram.category = responseArray[i];
+                            break;
+                        case 4:
+                            singleProgram.chanid = int.Parse(responseArray[i]);
+                            singleProgram.chanicon = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Myth/GetChannelIcon?ChanId=" + responseArray[i];
+                            break;
+                        case 5:
+                            singleProgram.channum = responseArray[i];
+                            break;
+                        case 6:
+                            singleProgram.callsign = responseArray[i];
+                            break;
+                        case 7:
+                            singleProgram.channame = responseArray[i];
+                            break;
+                        case 8:
+                            singleProgram.filename = responseArray[i];
+                            break;
+                        case 9:
+                            //singleProgram.fs_high = Int64.Parse(responseArray[i]);
+                            break;
+                        case 10:
+                            //singleProgram.fs_low = Int64.Parse(responseArray[i]);
+                            break;
+
+                        case 11:
+                            singleProgram.starttimeint = Int64.Parse(responseArray[i]);
+                            DateTime st = new DateTime(1970, 1, 1).AddSeconds(singleProgram.starttimeint + (Int64)TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalSeconds);
+                            //st.Add(new TimeSpan(singleProgram.starttimeint * 10000000));
+                            //st.AddSeconds(singleProgram.starttimeint);
+                            singleProgram.starttime = st.ToString("s");
+                            singleProgram.starttimespace = singleProgram.starttime.Replace("T", " ");
+                            break;
+                        case 12:
+                            singleProgram.endtimeint = Int64.Parse(responseArray[i]);
+                            DateTime et = new DateTime(1970, 1, 1).AddSeconds(singleProgram.endtimeint + (Int64)TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalSeconds);
+                            //et.Add(new TimeSpan(singleProgram.endtimeint*10000000));
+                            //et.AddSeconds(singleProgram.endtimeint);
+                            singleProgram.endtime = et.ToString("s");
+                            //asdf
+                            break;
+                        case 13:
+                            //singleProgram.duplicate = responseArray[i];
+                            break;
+                        case 14:
+                            //singleProgram.shareable = responseArray[i];
+                            break;
+                        case 15:
+                            singleProgram.findid = responseArray[i];
+                            break;
+                        case 16:
+                            singleProgram.hostname = responseArray[i];
+                            break;
+                        case 17:
+                            singleProgram.sourceid = int.Parse(responseArray[i]);
+                            break;
+                        case 18:
+                            singleProgram.cardid = int.Parse(responseArray[i]);
+                            break;
+                        case 19:
+                            singleProgram.inputid = int.Parse(responseArray[i]);
+                            break;
+
+                        case 20:
+                            singleProgram.recpriority = int.Parse(responseArray[i]);
+                            break;
+                        case 21:
+                            singleProgram.recstatus = int.Parse(responseArray[i]);
+                            singleProgram.recstatustext = App.ViewModel.functions.RecStatusDecode(singleProgram.recstatus);
+                            //singleProgram.recstatustext = responseArray[i];
+                            break;
+                        case 22:
+                            singleProgram.recordid = int.Parse(responseArray[i]);
+                            break;
+                        case 23:
+                            singleProgram.rectype = int.Parse(responseArray[i]);
+                            break;
+                        case 24:
+                            //singleProgram.dupin = responseArray[i];
+                            break;
+                        case 25:
+                            //singleProgram.dupmethod = responseArray[i];
+                            break;
+                        case 26:
+                            singleProgram.recstarttsint = Int64.Parse(responseArray[i]);
+                            DateTime rt = new DateTime(1970, 1, 1).AddSeconds(singleProgram.recstarttsint + (Int64)TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalSeconds);
+                            //rt.Add(new TimeSpan(singleProgram.recstarttsint * 10000000));
+                            //rt.AddSeconds(singleProgram.recstarttsint);
+                            singleProgram.recstartts = rt.ToString("s");
+                            break;
+                        case 27:
+                            singleProgram.recendtsint = Int64.Parse(responseArray[i]);
+                            DateTime tt = new DateTime(1970, 1, 1).AddSeconds(singleProgram.recendtsint + (Int64)TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalSeconds);
+                            //tt.Add(new TimeSpan(singleProgram.recstarttsint * 10000000));
+                            //tt.AddSeconds(singleProgram.recstarttsint);
+                            singleProgram.recendts = tt.ToString("s");
+                            //asdf
+                            break;
+                        case 28:
+                            //singleProgram.repeat = int.Parse(responseArray[i]);
+                            break;
+                        case 29:
+                            //singleProgram.programflags = int.Parse(responseArray[i]);
+                            break;
+
+                        case 30:
+                            singleProgram.recgroup = responseArray[i];
+                            break;
+                        case 31:
+                            //singleProgram.chancommfree = responseArray[i];
+                            break;
+                        case 32:
+                            //singleProgram.outputfilters = responseArray[i];
+                            break;
+                        case 33:
+                            singleProgram.seriesid = responseArray[i];
+                            break;
+                        case 34:
+                            singleProgram.programid = responseArray[i];
+                            break;
+                        case 35:
+                            singleProgram.lastmodified = responseArray[i];
+                            break;
+                        case 36:
+                            //singleProgram.stars = responseArray[i];
+                            break;
+                        case 37:
+                            singleProgram.airdate = responseArray[i];
+                            break;
+                        case 38:
+                            //singleProgram.hasairdate = responseArray[i];
+                            break;
+                        case 39:
+                            singleProgram.playgroup = responseArray[i];
+                            break;
+
+                        case 40:
+                            singleProgram.recpriority2 = responseArray[i];
+                            break;
+                        case 41:
+                            singleProgram.parentid = responseArray[i];
+                            App.ViewModel.Upcoming.Add(singleProgram);
+                            programIndex++;
+                            fieldIndex = -1;
+                            break;
+                    }
+
+                    fieldIndex++;
+
+                }
+
+                //MessageBox.Show("Finished parsing programs: " + App.ViewModel.Upcoming.Count + " view model, " + programIndex + " program index, " + responseArray[1] + " protocol");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Problems reading upcoming, not all upcoming programs will be visible.  There should have been " + responseArray[1] + " scheduled recordings listed instead of just " + App.ViewModel.Upcoming.Count + ".", "Error", MessageBoxButton.OK);
+            }
+
+            //upcomingHeader.Title = "upcoming: " + App.ViewModel.Upcoming.Count + " " + programIndex + " " + responseArray[1] + " " + responseArray.Length + " " + (Int64.Parse(responseArray[1])*41+2);
+
+            SortAndDisplay(responseArray[0].Substring(8).Trim());
         }
         private void ParseUpcoming25()
         {
-            MessageBox.Show("Your MythTV protocol version (" + App.ViewModel.appSettings.ProtoVerSetting + ") is not currently supported by MythMe");
+
+
+            //Protocol version 25 and up - 41 fields
+
+            App.ViewModel.Upcoming.Clear();
+
+            string[] stringSeparators = new string[] { "[]:[]" };
+            string[] responseArray;
+
+            ProgramViewModel singleProgram = new ProgramViewModel();
+            //int arrayIndex = 0;
+            int programIndex = 0;
+            int fieldIndex = 0;
+            int i;
+
+            int offset = 2; //upcoming is conflicting[]:[]qty programs[]:[]programs ...
+
+            responseArray = fullProtocolResponse.Split(stringSeparators, StringSplitOptions.None);
+
+            try
+            {
+                for (i = offset; i < responseArray.Length; i++)
+                {
+                    switch (fieldIndex)
+                    {
+                        case 0:
+                            singleProgram = new ProgramViewModel();
+                            singleProgram.title = responseArray[i];
+                            break;
+                        case 1:
+                            singleProgram.subtitle = responseArray[i];
+                            break;
+                        case 2:
+                            singleProgram.description = responseArray[i];
+                            break;
+                        case 3:
+                            singleProgram.category = responseArray[i];
+                            break;
+                        case 4:
+                            singleProgram.chanid = int.Parse(responseArray[i]);
+                            singleProgram.chanicon = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Myth/GetChannelIcon?ChanId=" + responseArray[i];
+                            break;
+                        case 5:
+                            singleProgram.channum = responseArray[i];
+                            break;
+                        case 6:
+                            singleProgram.callsign = responseArray[i];
+                            break;
+                        case 7:
+                            singleProgram.channame = responseArray[i];
+                            break;
+                        case 8:
+                            singleProgram.filename = responseArray[i];
+                            break;
+                        case 9:
+                            //singleProgram.fs_high = Int64.Parse(responseArray[i]);
+                            break;
+                        case 10:
+                            //singleProgram.fs_low = Int64.Parse(responseArray[i]);
+                            break;
+
+                        case 11:
+                            singleProgram.starttimeint = Int64.Parse(responseArray[i]);
+                            DateTime st = new DateTime(1970, 1, 1).AddSeconds(singleProgram.starttimeint + (Int64)TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalSeconds);
+                            //st.Add(new TimeSpan(singleProgram.starttimeint * 10000000));
+                            //st.AddSeconds(singleProgram.starttimeint);
+                            singleProgram.starttime = st.ToString("s");
+                            singleProgram.starttimespace = singleProgram.starttime.Replace("T", " ");
+                            break;
+                        case 12:
+                            singleProgram.endtimeint = Int64.Parse(responseArray[i]);
+                            DateTime et = new DateTime(1970, 1, 1).AddSeconds(singleProgram.endtimeint + (Int64)TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalSeconds);
+                            //et.Add(new TimeSpan(singleProgram.endtimeint*10000000));
+                            //et.AddSeconds(singleProgram.endtimeint);
+                            singleProgram.endtime = et.ToString("s");
+                            //asdf
+                            break;
+                        case 13:
+                            //singleProgram.duplicate = responseArray[i];
+                            break;
+                        case 14:
+                            //singleProgram.shareable = responseArray[i];
+                            break;
+                        case 15:
+                            singleProgram.findid = responseArray[i];
+                            break;
+                        case 16:
+                            singleProgram.hostname = responseArray[i];
+                            break;
+                        case 17:
+                            singleProgram.sourceid = int.Parse(responseArray[i]);
+                            break;
+                        case 18:
+                            singleProgram.cardid = int.Parse(responseArray[i]);
+                            break;
+                        case 19:
+                            singleProgram.inputid = int.Parse(responseArray[i]);
+                            break;
+
+                        case 20:
+                            singleProgram.recpriority = int.Parse(responseArray[i]);
+                            break;
+                        case 21:
+                            singleProgram.recstatus = int.Parse(responseArray[i]);
+                            singleProgram.recstatustext = App.ViewModel.functions.RecStatusDecode(singleProgram.recstatus);
+                            //singleProgram.recstatustext = responseArray[i];
+                            break;
+                        case 22:
+                            singleProgram.recordid = int.Parse(responseArray[i]);
+                            break;
+                        case 23:
+                            singleProgram.rectype = int.Parse(responseArray[i]);
+                            break;
+                        case 24:
+                            //singleProgram.dupin = responseArray[i];
+                            break;
+                        case 25:
+                            //singleProgram.dupmethod = responseArray[i];
+                            break;
+                        case 26:
+                            singleProgram.recstarttsint = Int64.Parse(responseArray[i]);
+                            DateTime rt = new DateTime(1970, 1, 1).AddSeconds(singleProgram.recstarttsint + (Int64)TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalSeconds);
+                            //rt.Add(new TimeSpan(singleProgram.recstarttsint * 10000000));
+                            //rt.AddSeconds(singleProgram.recstarttsint);
+                            singleProgram.recstartts = rt.ToString("s");
+                            break;
+                        case 27:
+                            singleProgram.recendtsint = Int64.Parse(responseArray[i]);
+                            DateTime tt = new DateTime(1970, 1, 1).AddSeconds(singleProgram.recendtsint + (Int64)TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalSeconds);
+                            //tt.Add(new TimeSpan(singleProgram.recstarttsint * 10000000));
+                            //tt.AddSeconds(singleProgram.recstarttsint);
+                            singleProgram.recendts = tt.ToString("s");
+                            //asdf
+                            break;
+                        case 28:
+                            //singleProgram.repeat = int.Parse(responseArray[i]);
+                            break;
+                        case 29:
+                            //singleProgram.programflags = int.Parse(responseArray[i]);
+                            break;
+
+                        case 30:
+                            singleProgram.recgroup = responseArray[i];
+                            break;
+                        case 31:
+                            //singleProgram.chancommfree = responseArray[i];
+                            break;
+                        case 32:
+                            //singleProgram.outputfilters = responseArray[i];
+                            break;
+                        case 33:
+                            singleProgram.seriesid = responseArray[i];
+                            break;
+                        case 34:
+                            singleProgram.programid = responseArray[i];
+                            break;
+                        case 35:
+                            singleProgram.lastmodified = responseArray[i];
+                            break;
+                        case 36:
+                            //singleProgram.stars = responseArray[i];
+                            break;
+                        case 37:
+                            singleProgram.airdate = responseArray[i];
+                            break;
+                        case 38:
+                            //singleProgram.hasairdate = responseArray[i];
+                            break;
+                        case 39:
+                            singleProgram.playgroup = responseArray[i];
+                            break;
+
+                        case 40:
+                            singleProgram.recpriority2 = responseArray[i];
+                            App.ViewModel.Upcoming.Add(singleProgram);
+                            programIndex++;
+                            fieldIndex = -1;
+                            break;
+                    }
+
+                    fieldIndex++;
+
+                }
+
+                //MessageBox.Show("Finished parsing programs: " + App.ViewModel.Upcoming.Count + " view model, " + programIndex + " program index, " + responseArray[1] + " protocol");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Problems reading upcoming, not all upcoming programs will be visible.  There should have been " + responseArray[1] + " scheduled recordings listed instead of just " + App.ViewModel.Upcoming.Count + ".", "Error", MessageBoxButton.OK);
+            }
+
+            //upcomingHeader.Title = "upcoming: " + App.ViewModel.Upcoming.Count + " " + programIndex + " " + responseArray[1] + " " + responseArray.Length + " " + (Int64.Parse(responseArray[1])*41+2);
+
+            SortAndDisplay(responseArray[0].Substring(8).Trim());
         }
 
 

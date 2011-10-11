@@ -7,11 +7,11 @@ using System.Resources;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("MythMe")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A MythTV app for Windows Phone 7")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyCompany("thewbman")]
 [assembly: AssemblyProduct("MythMe")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2011")]
+[assembly: AssemblyCopyright("Copyright © Wes Brown 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

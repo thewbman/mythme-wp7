@@ -64,5 +64,15 @@ namespace MythMe
 
             //remote
         }
+
+        private void appbarSave_Click(object sender, EventArgs e)
+        {
+
+            App.ViewModel.appSettings.MasterBackendIpSetting = MasterBackendIp.Text;
+            App.ViewModel.appSettings.MasterBackendPortSetting = int.Parse(MasterBackendPort.Text);
+            App.ViewModel.appSettings.MasterBackendXmlPortSetting = int.Parse(MasterBackendXmlPort.Text);
+
+            NavigationService.GoBack();
+        }
     }
 }

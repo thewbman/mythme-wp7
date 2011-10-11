@@ -59,7 +59,15 @@ namespace MythMe
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            this.Perform(() => GetStatus(), 50);
+            if (App.ViewModel.appSettings.MasterBackendIpSetting == "")
+            {
+                MessageBox.Show("You need to enter a valid backend address in the preferences.");
+                NavigationService.GoBack();
+            }
+            else
+            {
+                this.Perform(() => GetStatus(), 50);
+            }
         }
 
         private void GetStatus()

@@ -15,7 +15,7 @@
     shell:SystemTray.IsVisible="True">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot" Background="#3e000c">
         
         <controls:Pivot x:Name="remotePivot" Title="remote" SelectionChanged="remotePivot_SelectionChanged">
             
@@ -32,10 +32,10 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock x:Name="escape" Text="escape" Grid.Column="0" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Left" Tap="escape_Tap" FontSize="40" />
+                    <TextBlock x:Name="escape" Text="escape" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left" Tap="escape_Tap" FontSize="40" />
                     <!--<TextBlock x:Name="up" Text="up" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="up_Tap" FontSize="40" />-->
                     <Image Source="images/up.png" Grid.Column="1" Grid.Row="0" Tap="up_Tap" />
-                    <TextBlock x:Name="delete" Text="delete" Grid.Column="2" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Right" Tap="delete_Tap" FontSize="40" />
+                    <TextBlock x:Name="delete" Text="delete" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Right" Tap="delete_Tap" FontSize="40" />
 
                     <Image Source="images/left.png" Grid.Column="0" Grid.Row="1" Tap="left_Tap" />
                     <Image Source="images/record.png" Grid.Column="1" Grid.Row="1" Tap="enter_Tap" />
@@ -47,10 +47,10 @@
                     <TextBlock x:Name="right" Text="right" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="right_Tap" FontSize="40" />
                     -->
                     
-                    <TextBlock x:Name="menu" Text="menu" Grid.Column="0" Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Left" Tap="menu_Tap" FontSize="40" />
+                    <TextBlock x:Name="menu" Text="menu" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Tap="menu_Tap" FontSize="40" />
                     <!--<TextBlock x:Name="down" Text="down" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="down_Tap" FontSize="40" />-->
                     <Image Source="images/down.png" Grid.Column="1" Grid.Row="2" Tap="down_Tap" />
-                    <TextBlock x:Name="info" Text="info" Grid.Column="2" Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Tap="info_Tap" FontSize="40" />
+                    <TextBlock x:Name="info" Text="info" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Tap="info_Tap" FontSize="40" />
                     
                 </Grid>
             </controls:PivotItem>
@@ -58,6 +58,7 @@
             <controls:PivotItem Header="playback">
                 <Grid ShowGridLines="True">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
@@ -85,10 +86,30 @@
                         <Image Source="images/pause.png" Grid.Column="1" Grid.Row="0" Tap="pause_Tap" />
                         <Image Source="images/jumpforward.png" Grid.Column="2" Grid.Row="0" Tap="next_Tap" />
 
+                    </Grid>
+
+                    <Grid ShowGridLines="False" Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!--
+                        <TextBlock x:Name="previous" Text="previous" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="previous_Tap" FontSize="40" />
+                        <TextBlock x:Name="pause" Text="pause" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="pause_Tap" FontSize="40" />
+                        <TextBlock x:Name="next" Text="next" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="next_Tap" FontSize="40" />
+                        -->
+                        <Image Source="images/mute.png" Grid.Column="0" Grid.Row="0" Tap="mute_Tap" />
+                        <Image Source="images/voldown.png" Grid.Column="1" Grid.Row="0" Tap="voldown_Tap" />
+                        <Image Source="images/volup.png" Grid.Column="2" Grid.Row="0" Tap="volup_Tap" />
 
                     </Grid>
 
-                    <Grid ShowGridLines="True" Grid.Row="1">
+                    <Grid ShowGridLines="True" Grid.Row="2">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
@@ -98,10 +119,10 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock x:Name="livetv" Text="livetv" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="livetv_Tap" FontSize="40"  />
-                    <TextBlock x:Name="recorded" Text="recorded" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="recorded_Tap" FontSize="40"  />
-                </Grid>
+                        <TextBlock x:Name="recorded" Text="recorded" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="recorded_Tap" FontSize="40"  />
+                    </Grid>
                     
-                    <Grid ShowGridLines="True" Grid.Row="2">
+                    <Grid ShowGridLines="True" Grid.Row="3">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
@@ -153,17 +174,18 @@
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" BackgroundColor="Transparent">
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" BackgroundColor="#28000C">
+            <!-- -->
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.feature.settings.rest.png" Text="settings" Click="ApplicationBarIconButton_Click"/>
+            
             <!--
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Button 1"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Button 2"/>
-            -->
             <shell:ApplicationBar.MenuItems>
-                <!-- -->
+                 
                 <shell:ApplicationBarMenuItem Text="MenuItem 1"/>
                 <shell:ApplicationBarMenuItem Text="MenuItem 2"/>
                 
             </shell:ApplicationBar.MenuItems>
+                -->
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
     

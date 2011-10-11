@@ -15,7 +15,7 @@
     shell:SystemTray.IsVisible="False">
 
     <!--LayoutRoot contains the root grid where all other page content is placed-->
-    <Grid x:Name="LayoutRoot">
+    <Grid x:Name="LayoutRoot" Background="#3e000c">
         <controls:Panorama Name="topPanorama" Title="recorded">
             
             <controls:PanoramaItem Header="program">
