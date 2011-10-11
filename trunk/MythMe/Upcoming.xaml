@@ -18,7 +18,7 @@
     <phone:PhoneApplicationPage.Resources>
 
         <DataTemplate x:Key="upcomingGroupHeader">
-            <Border Background="#25B8D9" Margin="0">
+            <Border Background="#9f283f" Margin="0">
                 <TextBlock Text="{Binding Title}" FontSize="36" Foreground="Black"/>
             </Border>
         </DataTemplate>
@@ -44,14 +44,14 @@
         </DataTemplate>
 
         <DataTemplate x:Key="upcomingItemHeader">
-            <Border Background="{StaticResource PhoneAccentBrush}" Margin="{StaticResource PhoneTouchTargetOverhang}" Padding="{StaticResource PhoneTouchTargetOverhang}">
+            <Border Background="#9f283f" Margin="{StaticResource PhoneTouchTargetOverhang}" Padding="{StaticResource PhoneTouchTargetOverhang}">
                 <TextBlock Text="{Binding Title}" Width="460" Style="{StaticResource PhoneTextLargeStyle}"/>
             </Border>
         </DataTemplate>
 
     </phone:PhoneApplicationPage.Resources>
-    
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+
+    <Grid x:Name="LayoutRoot" Background="#3e000c">
         
         <toolkit:PerformanceProgressBar x:Name="performanceProgressBarCustomized" Foreground="Red" Background="Red" IsIndeterminate="False" />
 
@@ -105,7 +105,7 @@
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" >
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" BackgroundColor="#28000C" >
             <shell:ApplicationBarIconButton x:Name="appbarRefresh" IconUri="/Images/appbar.refresh.rest.png" Text="refresh" Click="appbarRefresh_Click" />
             <!--
             <shell:ApplicationBarIconButton x:Name="appbarSort" IconUri="/Images/appbar.feature.settings.rest.png" Text="sort" Click="appbarSort_Click" />

@@ -59,7 +59,7 @@ namespace MythMe
 
                 if ((App.ViewModel.appSettings.FirstRunSetting) || (false))
                 {
-                    MessageBox.Show("Welcome to MythMe.  This is an app for controlling a MythTV DVR system.  If you do not know what that means this app is not for you.  You will need to enter your master backend address in the preferences to get started.", "MythMe", MessageBoxButton.OK);
+                    MessageBox.Show("Welcome to MythMe.  This is an app for controlling a MythTV DVR system.  If you do not know what that means this app is not for you.  You will need to enter your master backend address in the preferences to get started.  This app does not yet support the 0.25-development branch of MythTV.", "MythMe", MessageBoxButton.OK);
 
                     App.ViewModel.appSettings.FirstRunSetting = false;
 
@@ -68,7 +68,7 @@ namespace MythMe
 
             }
 
-            App.ViewModel.appSettings.RemoteIndexSetting = 2;
+            //App.ViewModel.appSettings.RemoteIndexSetting = 2;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -203,7 +203,7 @@ namespace MythMe
         private void GetHosts()
         {
 
-            if ((App.ViewModel.Backends.Count == 0) || (true))
+            if ((App.ViewModel.Backends.Count == 0) || (false))
             {
                 App.ViewModel.Backends.Clear();
 
@@ -438,10 +438,13 @@ namespace MythMe
 
                 if(CurrentBackendIndex == App.ViewModel.Backends.Count)
                 {
+                    App.ViewModel.functions.FrontendsFromBackends();
+
+                    App.ViewModel.saveBackends();
+
                     performanceProgressBarCustomized.IsIndeterminate = false;
                     //MessageBox.Show("finished getting settings for "+App.ViewModel.Backends.Count+" hosts");
 
-                    App.ViewModel.functions.FrontendsFromBackends();
                 }
                 else
                 {
@@ -506,7 +509,17 @@ namespace MythMe
 
         private void helpButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            MessageBox.Show("Not yet implimented");
+            NavigationService.Navigate(new Uri("/Help.xaml", UriKind.Relative));
+        }
+
+        private void reload_Click(object sender, EventArgs e)
+        {
+
+            performanceProgressBarCustomized.IsIndeterminate = true;
+
+            App.ViewModel.Backends.Clear();
+
+            GetHosts();
         }
     }
 }

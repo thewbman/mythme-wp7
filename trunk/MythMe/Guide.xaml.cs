@@ -54,7 +54,13 @@ namespace MythMe
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             string SelectedTime;
-            if (NavigationContext.QueryString.TryGetValue("SelectedNow", out SelectedTime))
+
+            if (App.ViewModel.appSettings.MasterBackendIpSetting == "")
+            {
+                MessageBox.Show("You need to enter a valid backend address in the preferences.");
+                NavigationService.GoBack();
+            }
+            else if (NavigationContext.QueryString.TryGetValue("SelectedNow", out SelectedTime))
             {
                 performanceProgressBarCustomized.IsIndeterminate = true;
 

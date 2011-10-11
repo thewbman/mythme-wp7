@@ -49,7 +49,12 @@ namespace MythMe
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
 
-            if (App.ViewModel.Recorded.Count == 0) this.Perform(() => GetRecorded(), 50);
+            if (App.ViewModel.appSettings.MasterBackendIpSetting == "")
+            {
+                MessageBox.Show("You need to enter a valid backend address in the preferences.");
+                NavigationService.GoBack();
+            }
+            else if (App.ViewModel.Recorded.Count == 0) this.Perform(() => GetRecorded(), 50);
             else
             {
                 
