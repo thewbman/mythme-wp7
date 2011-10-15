@@ -36,8 +36,26 @@ namespace MythMe
             CurrentBackend = new BackendViewModel();
             CurrentBackendIndex = 0;
 
+            menuListItems = new List<NameContentViewModel>();
+
+            menuListItems.Add(new NameContentViewModel() {Content = "remote"});
+            menuListItems.Add(new NameContentViewModel() {Content = "recorded"});
+            menuListItems.Add(new NameContentViewModel() {Content = "upcoming"});
+            menuListItems.Add(new NameContentViewModel() {Content = "guide"});
+            //menuListItems.Add(new NameContentViewModel() {Content = "search"});
+            //menuListItems.Add(new NameContentViewModel() {Content = "videos"});
+            //menuListItems.Add(new NameContentViewModel() {Content = "music"});
+            menuListItems.Add(new NameContentViewModel() {Content = "status"});
+            //menuListItems.Add(new NameContentViewModel() {Content = "log"});
+            menuListItems.Add(new NameContentViewModel() {Content = "preferences"});
+            menuListItems.Add(new NameContentViewModel() {Content = "help"});
+
+            menuList.ItemsSource = menuListItems;
+
             this.Loaded += new RoutedEventHandler(MainPage_Loaded);
         }
+
+        private List<NameContentViewModel> menuListItems;
 
         private string getSettingsString = "http://{0}:{1}/Myth/GetSetting?random={2}";
         private string getHosts25String = "http://{0}:{1}/Myth/GetHosts?random={2}";
@@ -203,7 +221,7 @@ namespace MythMe
         private void GetHosts()
         {
 
-            if ((App.ViewModel.Backends.Count == 0) || (false))
+            if (((App.ViewModel.Backends.Count == 0)&&(App.ViewModel.appSettings.MasterBackendIpSetting.Length > 0)) || (false))
             {
                 App.ViewModel.Backends.Clear();
 
@@ -457,61 +475,6 @@ namespace MythMe
 
 
 
-        private void remoteButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            NavigationService.Navigate(new Uri("/Remote.xaml", UriKind.Relative));
-        }
-
-        private void recordedButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            NavigationService.Navigate(new Uri("/Recorded.xaml", UriKind.Relative));
-        }
-
-        private void upcomingButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            NavigationService.Navigate(new Uri("/Upcoming.xaml", UriKind.Relative));
-        }
-
-        private void guideButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            NavigationService.Navigate(new Uri("/Guide.xaml?SelectedNow=true", UriKind.Relative));
-        }
-
-        private void searchButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            MessageBox.Show("Not yet implimented");
-        }
-
-        private void videosButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            MessageBox.Show("Not yet implimented");
-        }
-
-        private void musicButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            MessageBox.Show("Not yet implimented");
-        }
-
-        private void statusButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            NavigationService.Navigate(new Uri("/Status.xaml", UriKind.Relative));
-        }
-
-        private void logButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            MessageBox.Show("Not yet implimented");
-        }
-
-        private void preferencesButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            NavigationService.Navigate(new Uri("/Preferences.xaml", UriKind.Relative));
-        }
-
-        private void helpButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            NavigationService.Navigate(new Uri("/Help.xaml", UriKind.Relative));
-        }
-
         private void reload_Click(object sender, EventArgs e)
         {
 
@@ -519,7 +482,62 @@ namespace MythMe
 
             App.ViewModel.Backends.Clear();
 
-            GetHosts();
+            if (App.ViewModel.appSettings.MasterBackendIpSetting.Length > 0)
+            {
+                GetHosts();
+            }
+            else
+            {
+                MessageBox.Show("You must setup a master backend address before reloading the backends and settings.");
+
+                performanceProgressBarCustomized.IsIndeterminate = false;
+            }
+        }
+
+        private void menuList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (menuList.SelectedItem == null)
+                return;
+
+            var thisItem = (NameContentViewModel)menuList.SelectedItem;
+
+            switch (thisItem.Content)
+            {
+                case "remote":
+                    NavigationService.Navigate(new Uri("/Remote.xaml", UriKind.Relative));
+                    break;
+                case "recorded":
+                    NavigationService.Navigate(new Uri("/Recorded.xaml", UriKind.Relative));
+                    break;
+                case "upcoming":
+                    NavigationService.Navigate(new Uri("/Upcoming.xaml", UriKind.Relative));
+                    break;
+                case "guide":
+                    NavigationService.Navigate(new Uri("/Guide.xaml?SelectedNow=true", UriKind.Relative));
+                    break;
+                case "search":
+                    //NavigationService.Navigate(new Uri("/Search.xaml", UriKind.Relative));
+                    break;
+                case "videos":
+                    //NavigationService.Navigate(new Uri("/Videos.xaml", UriKind.Relative));
+                    break;
+                case "music":
+                    //NavigationService.Navigate(new Uri("/Music.xaml", UriKind.Relative));
+                    break;
+                case "status":
+                    NavigationService.Navigate(new Uri("/Status.xaml", UriKind.Relative));
+                    break;
+                case "log":
+                    //NavigationService.Navigate(new Uri("/Log.xaml", UriKind.Relative));
+                    break;
+                case "preferences":
+                    NavigationService.Navigate(new Uri("/Preferences.xaml", UriKind.Relative));
+                    break;
+                case "help":
+                    NavigationService.Navigate(new Uri("/Help.xaml", UriKind.Relative));
+                    break;
+            }
+
         }
     }
 }

@@ -104,6 +104,7 @@
     <Compile Include="Status.xaml.cs">
       <DependentUpon>Status.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TiltEffect.cs" />
     <Compile Include="Upcoming.xaml.cs">
       <DependentUpon>Upcoming.xaml</DependentUpon>
     </Compile>

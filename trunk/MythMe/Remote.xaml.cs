@@ -66,7 +66,7 @@ namespace MythMe
 
             try
             {
-                if (App.ViewModel.appSettings.RemoteIndexSetting < App.ViewModel.Frontends.Count)
+                if ((App.ViewModel.appSettings.RemoteIndexSetting < App.ViewModel.Frontends.Count)&&(App.ViewModel.Frontends.Count > 0))
                 {
 
                     currentFrontend = App.ViewModel.Frontends[App.ViewModel.appSettings.RemoteIndexSetting];
@@ -98,7 +98,7 @@ namespace MythMe
                 }
                 else
                 {
-                    //
+                    remoteSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 }
             }
             catch (Exception ex)

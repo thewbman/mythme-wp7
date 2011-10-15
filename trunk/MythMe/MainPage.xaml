@@ -12,7 +12,11 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
-    shell:SystemTray.IsVisible="True">
+    shell:SystemTray.IsVisible="True"
+    xmlns:local="clr-namespace:MythMe"
+    local:TiltEffect.IsTiltEnabled="True"
+
+    >
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="#3e000c">
@@ -33,29 +37,20 @@
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,-15,12,0">
             
-            
-            <ScrollViewer>
-            <StackPanel>
-                <TextBlock x:Name="remoteButton" Text="remote" Margin="50,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" Tap="remoteButton_Tap" />
-                <TextBlock x:Name="recordedButton" Text="recorded" Margin="50,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" Tap="recordedButton_Tap" />
-                <TextBlock x:Name="upcomingButton" Text="upcoming" Margin="50,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" Tap="upcomingButton_Tap" />
-                <TextBlock x:Name="guideButton" Text="guide" Margin="50,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" Tap="guideButton_Tap" />
-                <!--
-                <TextBlock x:Name="searchButton" Text="search" Margin="50,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" Tap="searchButton_Tap" />
-                <TextBlock x:Name="videosButton" Text="videos" Margin="50,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" Tap="videosButton_Tap" />
-                <TextBlock x:Name="musicButton" Text="music" Margin="50,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" Tap="musicButton_Tap" />
-                -->
-                <TextBlock x:Name="statusButton" Text="status" Margin="50,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" Tap="statusButton_Tap" />
-                <!--
-                <TextBlock x:Name="logButton" Text="log" Margin="50,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" Tap="logButton_Tap" />
-                -->
-                <TextBlock x:Name="preferencesButton" Text="preferences" Margin="50,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" Tap="preferencesButton_Tap" />
-                <TextBlock x:Name="helpButton" Text="help" Margin="50,0,0,50" Style="{StaticResource PhoneTextExtraLargeStyle}" Tap="helpButton_Tap" />
-                    
-                <toolkit:PerformanceProgressBar x:Name="performanceProgressBarCustomized" Foreground="Red" Background="Red" IsIndeterminate="False"  />
+            <ListBox x:Name="menuList" SelectionChanged="menuList_SelectionChanged">
 
-                </StackPanel>
-            </ScrollViewer>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+
+                        <TextBlock Text="{Binding Content}" TextWrapping="NoWrap" Margin="50,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
+
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                
+            </ListBox>
+            
+            <toolkit:PerformanceProgressBar x:Name="performanceProgressBarCustomized" Foreground="Red" Background="Red" IsIndeterminate="False" VerticalAlignment="Bottom" Margin="0,0,0,100" />
+
         </Grid>
     </Grid>
 

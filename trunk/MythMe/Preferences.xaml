@@ -16,7 +16,7 @@
 
     <!--LayoutRoot contains the root grid where all other page content is placed-->
     <Grid x:Name="LayoutRoot" Background="#3e000c">
-        <controls:Panorama Title="preferences">
+        <controls:Panorama Title="preferences" SelectionChanged="Panorama_SelectionChanged">
 
             <controls:PanoramaItem Header="backend">
                 <ScrollViewer>
@@ -34,9 +34,14 @@
                 </ScrollViewer>
             </controls:PanoramaItem>
 
-            <controls:PanoramaItem Header="other">
+            <controls:PanoramaItem Header="webserver">
                 <ScrollViewer>
-                    <TextBlock Text="more options comming later" />
+                    <StackPanel>
+                        
+                        <TextBlock Text="webserver address" Style="{StaticResource PhoneTextSubtleStyle}" />
+                        <TextBox x:Name="WebserverHost" />
+
+                    </StackPanel>
                 </ScrollViewer>
             </controls:PanoramaItem>
             
