@@ -57,6 +57,90 @@ namespace MythMe
             }
         }
 
+        private string _First;
+        /// <summary>
+        /// Sample ViewModel property; this property is used in the view to display its value using a Binding.
+        /// </summary>
+        /// <returns></returns>
+        public string First
+        {
+            get
+            {
+                return _First;
+            }
+            set
+            {
+                if (value != _First)
+                {
+                    _First = value;
+                    NotifyPropertyChanged("First");
+                }
+            }
+        }
+
+        private string _Second;
+        /// <summary>
+        /// Sample ViewModel property; this property is used in the view to display its value using a Binding.
+        /// </summary>
+        /// <returns></returns>
+        public string Second
+        {
+            get
+            {
+                return _Second;
+            }
+            set
+            {
+                if (value != _Second)
+                {
+                    _Second = value;
+                    NotifyPropertyChanged("Second");
+                }
+            }
+        }
+
+        private string _Third;
+        /// <summary>
+        /// Sample ViewModel property; this property is used in the view to display its value using a Binding.
+        /// </summary>
+        /// <returns></returns>
+        public string Third
+        {
+            get
+            {
+                return _Third;
+            }
+            set
+            {
+                if (value != _Third)
+                {
+                    _Third = value;
+                    NotifyPropertyChanged("Third");
+                }
+            }
+        }
+
+        private string _Fourth;
+        /// <summary>
+        /// Sample ViewModel property; this property is used in the view to display its value using a Binding.
+        /// </summary>
+        /// <returns></returns>
+        public string Fourth
+        {
+            get
+            {
+                return _Fourth;
+            }
+            set
+            {
+                if (value != _Fourth)
+                {
+                    _Fourth = value;
+                    NotifyPropertyChanged("Fourth");
+                }
+            }
+        }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(String propertyName)

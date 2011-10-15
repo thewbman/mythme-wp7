@@ -104,7 +104,7 @@ namespace MythMe
         const string DatabasePasswordDefault = "mythtv";
         const string DatabaseNameDefault = "mythconverg";
 
-        const string WebserverHostDefault = "-";
+        const string WebserverHostDefault = "";
         const string WebserverUsernameDefault = "";
         const string WebserverPasswordDefault = "";
         const int UseScriptDefault = 0;

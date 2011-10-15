@@ -218,7 +218,7 @@ namespace MythMe
 
             WebBrowserTask webopen = new WebBrowserTask();
 
-            webopen.Uri = new Uri("http://" + App.ViewModel.appSettings.MasterBackendIpSetting + "/mythweb/tv/detail/" + App.ViewModel.SelectedProgram.chanid + "/" + timestamp);
+            webopen.Uri = new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/mythweb/tv/detail/" + App.ViewModel.SelectedProgram.chanid + "/" + timestamp);
             webopen.Show();
         }
 

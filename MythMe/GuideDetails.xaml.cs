@@ -123,6 +123,12 @@ namespace MythMe
                     App.ViewModel.SelectedProgram.starttimespace = (string)singleProgramElement.Attribute("startTime").Value.Replace("T", " ");
                     //App.ViewModel.SelectedProgram.lastmodified = (string)singleProgramElement.Attribute("lastModified").Value;
 
+                    App.ViewModel.SelectedProgram.description = (string)singleProgramElement.FirstNode.ToString();
+
+                    if (App.ViewModel.SelectedProgram.description.Contains("<Channel")) App.ViewModel.SelectedProgram.description = "";
+                    if (App.ViewModel.SelectedProgram.description.Contains("<Recording")) App.ViewModel.SelectedProgram.description = "";
+
+
                     if (singleProgramElement.Descendants("Recording").Count() > 0)
                     {
                         App.ViewModel.SelectedProgram.inputid = int.Parse((string)singleProgramElement.Element("Channel").Attribute("inputId").Value);
@@ -217,7 +223,7 @@ namespace MythMe
 
             WebBrowserTask webopen = new WebBrowserTask();
 
-            webopen.Uri = new Uri("http://" + App.ViewModel.appSettings.MasterBackendIpSetting + "/mythweb/tv/detail/" + App.ViewModel.SelectedProgram.chanid + "/" + timestamp);
+            webopen.Uri = new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/mythweb/tv/detail/" + App.ViewModel.SelectedProgram.chanid + "/" + timestamp);
             webopen.Show();
         }
     }

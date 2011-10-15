@@ -28,7 +28,10 @@
                         <DataTemplate>
                             <StackPanel Margin="0,0,0,17" Width="432" Height="Auto">
                                 <TextBlock Text="{Binding Content}" TextWrapping="NoWrap" Style="{StaticResource PhoneTextNormalStyle}" FontSize="24" />
-                                <TextBlock Text="{Binding Name}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                                <TextBlock Text="{Binding First}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                                <TextBlock Text="{Binding Second}" TextWrapping="NoWrap" Margin="30,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                                <TextBlock Text="{Binding Third}" TextWrapping="NoWrap" Margin="30,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                                <TextBlock Text="{Binding Fourth}" TextWrapping="NoWrap" Margin="30,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -41,7 +44,9 @@
                         <DataTemplate>
                             <StackPanel Margin="0,0,0,17" Width="432" Height="Auto">
                                 <TextBlock Text="{Binding Content}" TextWrapping="NoWrap" Style="{StaticResource PhoneTextNormalStyle}" FontSize="24" />
-                                <TextBlock Text="{Binding Name}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                                <TextBlock Text="{Binding First}" TextWrapping="NoWrap" Margin="30,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                                <TextBlock Text="{Binding Second}" TextWrapping="NoWrap" Margin="30,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                                <TextBlock Text="{Binding Third}" TextWrapping="NoWrap" Margin="40,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -54,7 +59,10 @@
                         <DataTemplate>
                             <StackPanel Margin="0,0,0,17" Width="432" Height="Auto">
                                 <TextBlock Text="{Binding Content}" TextWrapping="NoWrap" Style="{StaticResource PhoneTextNormalStyle}" FontSize="24" />
-                                <TextBlock Text="{Binding Name}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                                <TextBlock Text="{Binding First}" TextWrapping="NoWrap" Margin="30,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                                <TextBlock Text="{Binding Second}" TextWrapping="NoWrap" Margin="30,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                                <TextBlock Text="{Binding Third}" TextWrapping="NoWrap" Margin="40,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                                <TextBlock Text="{Binding Fourth}" TextWrapping="NoWrap" Margin="40,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>

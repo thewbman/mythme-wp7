@@ -40,11 +40,14 @@ namespace MythMe
             //database
 
             //webserver
+            WebserverHost.Text = App.ViewModel.appSettings.WebserverHostSetting;
 
             //ChannelIcons.IsChecked = App.ViewModel.appSettings.ChannelIconsSetting;
             //images
 
             //remote
+
+            if ((WebserverHost.Text == "") && (App.ViewModel.appSettings.WebserverHostSetting == "")) WebserverHost.Text = App.ViewModel.appSettings.MasterBackendIpSetting;
 
         }
 
@@ -58,6 +61,7 @@ namespace MythMe
             //database
 
             //webserver
+            App.ViewModel.appSettings.WebserverHostSetting = WebserverHost.Text;
 
             //App.ViewModel.appSettings.ChannelIconsSetting = (bool)ChannelIcons.IsChecked;
             //images
@@ -72,7 +76,22 @@ namespace MythMe
             App.ViewModel.appSettings.MasterBackendPortSetting = int.Parse(MasterBackendPort.Text);
             App.ViewModel.appSettings.MasterBackendXmlPortSetting = int.Parse(MasterBackendXmlPort.Text);
 
+            //database
+
+            //webserver
+            App.ViewModel.appSettings.WebserverHostSetting = WebserverHost.Text;
+
+            //App.ViewModel.appSettings.ChannelIconsSetting = (bool)ChannelIcons.IsChecked;
+            //images
+
+            //remote
+
             NavigationService.GoBack();
+        }
+
+        private void Panorama_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if ((WebserverHost.Text == "") && (App.ViewModel.appSettings.WebserverHostSetting == "")) WebserverHost.Text = MasterBackendIp.Text;
         }
     }
 }

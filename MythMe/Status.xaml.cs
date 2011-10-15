@@ -147,49 +147,107 @@ namespace MythMe
                 
                 foreach (XElement singleEncoderElement in xdoc.Element("Status").Element("Encoders").Descendants("Encoder"))
                 {
+                    NameContentViewModel newEncoder = new NameContentViewModel();
+                    
                     string hostname;
                     string id;
                     string state;
                     string connected;
+
+                    string title;
+                    string subtitle;
+                    string recstartts;
+                    string recendts;
+                    string channum = "";
+                    string channame = "";
+
+                    string programline = "";
+                    string channelline = "";
+                    string timeline = "";
 
                     hostname = (string)singleEncoderElement.Attribute("hostname").Value;
                     id = (string)singleEncoderElement.Attribute("id").Value;
                     state = (string)singleEncoderElement.Attribute("state").Value;
                     connected = (string)singleEncoderElement.Attribute("connected").Value;
 
+                    foreach (XElement singleEncoderProgramElement in singleEncoderElement.Descendants("Program"))
+                    {
+                        title = (string)singleEncoderProgramElement.Attribute("title").Value;
+                        subtitle = (string)singleEncoderProgramElement.Attribute("subTitle").Value;
+
+                        recstartts = (string)singleEncoderProgramElement.Element("Recording").Attribute("recStartTs").Value;
+                        recendts = (string)singleEncoderProgramElement.Element("Recording").Attribute("recEndTs").Value;
+
+                        channum = (string)singleEncoderProgramElement.Element("Channel").Attribute("chanNum").Value;
+                        channame = (string)singleEncoderProgramElement.Element("Channel").Attribute("channelName").Value;
+
+                        programline = title + ": " + subtitle;
+                        channelline = channum + " - " + channame;
+                        timeline = recstartts + " to " + recendts;
+                    }
+
+                    newEncoder.Content = "#" + id + " on " + hostname;
+                    newEncoder.First = App.ViewModel.functions.EncoderStateDecode(state);
+                    newEncoder.Second = programline;
+                    newEncoder.Third = channelline;
+                    newEncoder.Fourth = timeline;
+
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
-                        Encoders.Add(new NameContentViewModel() { Content = "#" + id + " on " + hostname, Name = "state: " + App.ViewModel.functions.EncoderStateDecode(state) });
+                        //Encoders.Add(new NameContentViewModel() { First = "#" + id + " on " + hostname, Content = "#" + id + " on " + hostname, Second = "state: " + App.ViewModel.functions.EncoderStateDecode(state), Name = "state: " + App.ViewModel.functions.EncoderStateDecode(state), Third = thirdline, Fourth = fourthline });
+                        Encoders.Add(newEncoder);
                     });
 
                 }
 
                 foreach (XElement singleScheduledElement in xdoc.Element("Status").Element("Scheduled").Descendants("Program"))
                 {
+                    NameContentViewModel newScheduled = new NameContentViewModel();
+
                     string title;
                     string subtitle;
-                    string starttime;
-                    string channame;
+                    string recstartts;
+                    string recendts;
+                    string channum = "";
+                    string channame = "";
                     string encoderid;
 
                     title = (string)singleScheduledElement.Attribute("title").Value;
                     subtitle = (string)singleScheduledElement.Attribute("subTitle").Value;
-                    starttime = (string)singleScheduledElement.Attribute("startTime").Value;
-                    channame = (string)singleScheduledElement.Element("Channel").Attribute("channelName").Value;
+                    //starttime = (string)singleScheduledElement.Attribute("startTime").Value;
+                    //channame = (string)singleScheduledElement.Element("Channel").Attribute("channelName").Value;
+                    //channum = (string)singleScheduledElement.Element("Channel").Attribute("chanNum").Value;
+                    
                     encoderid = (string)singleScheduledElement.Element("Recording").Attribute("encoderId").Value;
+                    recstartts = (string)singleScheduledElement.Element("Recording").Attribute("recStartTs").Value;
+                    recendts = (string)singleScheduledElement.Element("Recording").Attribute("recEndTs").Value;
+
+                    channum = (string)singleScheduledElement.Element("Channel").Attribute("chanNum").Value;
+                    channame = (string)singleScheduledElement.Element("Channel").Attribute("channelName").Value;
+
+                    newScheduled.Content = title + ": " + subtitle;
+                    newScheduled.First = channum + " - " + channame;
+                    newScheduled.Second = recstartts + " to " + recendts;
+                    newScheduled.Third = "encoder #" + encoderid;
 
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
-                        Scheduled.Add(new NameContentViewModel() { Content = title + ": " + subtitle, Name = starttime+" on "+channame+" (#"+encoderid+")" });
+                        //Scheduled.Add(new NameContentViewModel() { Content = title + ": " + subtitle, Name = starttime+" on "+channame+" (#"+encoderid+")" });
+                        Scheduled.Add(newScheduled);
                     });
 
                 }
 
                 foreach (XElement singleJobqueueElement in xdoc.Element("Status").Element("JobQueue").Descendants("Job"))
                 {
+                    NameContentViewModel newJobqueue = new NameContentViewModel();
+                    
                     string title;
                     string subtitle;
                     string starttime;
+                    string endtime;
+                    string channum = "";
+                    string channame = "";
                     string type;
                     string status;
                     string comments;
@@ -197,15 +255,27 @@ namespace MythMe
                     title = (string)singleJobqueueElement.Element("Program").Attribute("title").Value;
                     subtitle = (string)singleJobqueueElement.Element("Program").Attribute("subTitle").Value;
                     starttime = (string)singleJobqueueElement.Element("Program").Attribute("startTime").Value;
+                    endtime = (string)singleJobqueueElement.Element("Program").Attribute("endTime").Value;
+
+                    channum = (string)singleJobqueueElement.Element("Program").Element("Channel").Attribute("chanNum").Value;
+                    channame = (string)singleJobqueueElement.Element("Program").Element("Channel").Attribute("channelName").Value;
+
                     type = (string)singleJobqueueElement.Attribute("type").Value;
                     status = (string)singleJobqueueElement.Attribute("status").Value;
                     comments = (string)singleJobqueueElement.FirstNode.ToString();
 
                     if (comments.Contains("<Program")) comments = "";
 
+                    newJobqueue.Content = title + ": " + subtitle;
+                    newJobqueue.First = channum + " - " + channame;
+                    newJobqueue.Second = starttime + " to " + endtime;
+                    newJobqueue.Third = App.ViewModel.functions.JobqueueTypeDecode(type) + ": " + App.ViewModel.functions.JobqueueStatusDecode(status);
+                    newJobqueue.Fourth = comments;
+
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
-                        Jobqueue.Add(new NameContentViewModel() { Content = title + ": " + subtitle, Name = App.ViewModel.functions.JobqueueTypeDecode(type)+": "+App.ViewModel.functions.JobqueueStatusDecode(status) });
+                        //Jobqueue.Add(new NameContentViewModel() { Content = title + ": " + subtitle, Name = App.ViewModel.functions.JobqueueTypeDecode(type)+": "+App.ViewModel.functions.JobqueueStatusDecode(status) });
+                        Jobqueue.Add(newJobqueue);
                     });
 
                 }
