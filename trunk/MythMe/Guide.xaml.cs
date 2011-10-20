@@ -111,7 +111,8 @@ namespace MythMe
             {
                 HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(String.Format(getGuideString, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting, startTime, endTime, numChannels, startChanid, App.ViewModel.randText())));
                 webRequest.BeginGetResponse(new AsyncCallback(GuideNowCallback), webRequest);
-                //MessageBox.Show(String.Format(getGuideString, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting, startTime, endTime, numChannels, startChanid, App.ViewModel.randText()));
+                //HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://192.168.1.105/dropbox/GetProgramGuide.xml"));
+                //webRequest.BeginGetResponse(new AsyncCallback(Guide25NowCallback), webRequest);
             }
         }
 
@@ -129,7 +130,8 @@ namespace MythMe
             {
                 HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(String.Format(getGuideString, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting, startTime, endTime, numChannels, startChanid, App.ViewModel.randText())));
                 webRequest.BeginGetResponse(new AsyncCallback(GuideTimeCallback), webRequest);
-                //MessageBox.Show(String.Format(getGuideString, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting, startTime, endTime, numChannels, startChanid, App.ViewModel.randText()));
+                //HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://192.168.1.105/dropbox/GetProgramGuide.xml"));
+                //webRequest.BeginGetResponse(new AsyncCallback(Guide25TimeCallback), webRequest);
             }
         }
 
@@ -147,13 +149,160 @@ namespace MythMe
             {
                 HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(String.Format(getGuideString, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting, startTime, endTime, numChannels, startChanid, App.ViewModel.randText())));
                 webRequest.BeginGetResponse(new AsyncCallback(GuideChannelCallback), webRequest);
-                //MessageBox.Show(String.Format(getGuideString, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting, startTime, endTime, numChannels, startChanid, App.ViewModel.randText()));
+                //HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://192.168.1.105/dropbox/GetProgramGuide.xml"));
+                //webRequest.BeginGetResponse(new AsyncCallback(Guide25ChannelCallback), webRequest);
             }
         }
 
         private void Guide25NowCallback(IAsyncResult asynchronousResult)
         {
-            Deployment.Current.Dispatcher.BeginInvoke(() => { MessageBox.Show("not yet supported"); });
+
+            string resultString;
+
+            HttpWebRequest request = (HttpWebRequest)asynchronousResult.AsyncState;
+
+            HttpWebResponse response;
+
+            try
+            {
+                response = (HttpWebResponse)request.EndGetResponse(asynchronousResult);
+            }
+            catch (Exception ex)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("Failed to get guide data: " + ex.ToString(), "Error", MessageBoxButton.OK);
+                    NavigationService.GoBack();
+                });
+
+                return;
+            }
+
+            using (StreamReader streamReader1 = new StreamReader(response.GetResponseStream()))
+            {
+                resultString = streamReader1.ReadToEnd();
+            }
+
+            response.GetResponseStream().Close();
+            response.Close();
+
+            try
+            {
+
+                XDocument xdoc = XDocument.Parse(resultString, LoadOptions.None);
+
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    App.ViewModel.Channels.Clear();
+
+                    App.ViewModel.appSettings.MythBinarySetting = xdoc.Element("ProgramGuide").Element("Version").Value;
+                    App.ViewModel.appSettings.ProtoVerSetting = int.Parse(xdoc.Element("ProgramGuide").Element("ProtoVer").Value);
+
+                });
+
+                foreach (XElement singleChannelElement in xdoc.Element("ProgramGuide").Element("Channels").Descendants("Channel"))
+                {
+                    ChannelViewModel singleChannel = new ChannelViewModel() { };
+
+                    if (singleChannelElement.Element("ChannelName").FirstNode != null) singleChannel.channame = (string)singleChannelElement.Element("ChannelName").Value;
+                    if (singleChannelElement.Element("ChanId").FirstNode != null) singleChannel.chanid = int.Parse(singleChannelElement.Element("ChanId").Value);
+                    if (singleChannelElement.Element("ChanNum").FirstNode != null) singleChannel.channum = (string)singleChannelElement.Element("ChanNum").Value;
+                    //singleChannel.channumint = int.Parse(singleChannelElement.Element("chanNum").Value);
+                    if (singleChannelElement.Element("CallSign").FirstNode != null) singleChannel.callsign = (string)singleChannelElement.Element("CallSign").Value;
+
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        App.ViewModel.Channels.Add(singleChannel);
+
+                    });
+
+                    foreach (XElement singleProgramElement in singleChannelElement.Element("Programs").Descendants("Program"))
+                    {
+                        ProgramViewModel singleProgram = new ProgramViewModel() { };
+
+                        if (singleProgramElement.Element("Title").FirstNode != null) singleProgram.title = (string)singleProgramElement.Element("Title").FirstNode.ToString();
+                        if (singleProgramElement.Element("SubTitle").FirstNode != null) singleProgram.subtitle = (string)singleProgramElement.Element("SubTitle").FirstNode.ToString();
+
+                        //singleProgram.programflags = (string)singleProgramElement.Attribute("programFlags").FirstNode.ToString();
+                        if (singleProgramElement.Element("Category").FirstNode != null) singleProgram.category = (string)singleProgramElement.Element("Category").FirstNode.ToString();
+                        if (singleProgramElement.Element("FileSize").FirstNode != null) singleProgram.filesize = Int64.Parse((string)singleProgramElement.Element("FileSize").FirstNode.ToString());
+                        if (singleProgramElement.Element("SeriesId").FirstNode != null) singleProgram.seriesid = (string)singleProgramElement.Element("SeriesId").FirstNode.ToString();
+                        if (singleProgramElement.Element("Hostname").FirstNode != null) singleProgram.hostname = (string)singleProgramElement.Element("Hostname").FirstNode.ToString();
+                        //singleProgram.cattype = (string)singleProgramElement.Element("CatType").FirstNode.ToString();
+                        if (singleProgramElement.Element("ProgramId").FirstNode != null) singleProgram.programid = (string)singleProgramElement.Element("ProgramId").FirstNode.ToString();
+                        //singleProgram.repeat = (string)singleProgramElement.Element("Repeat").FirstNode.ToString();
+                        //singleProgram.stars = (string)singleProgramElement.Element("Stars").FirstNode.ToString();
+                        if (singleProgramElement.Element("EndTime").FirstNode != null) singleProgram.endtime = (string)singleProgramElement.Element("EndTime").FirstNode.ToString();
+                        if (singleProgramElement.Element("EndTime").FirstNode != null) singleProgram.endtimespace = (string)singleProgramElement.Element("EndTime").FirstNode.ToString().Replace("T", " ");
+                        if (singleProgramElement.Element("Airdate").FirstNode != null) singleProgram.airdate = (string)singleProgramElement.Element("Airdate").FirstNode.ToString();
+                        if (singleProgramElement.Element("StartTime").FirstNode != null) singleProgram.starttime = (string)singleProgramElement.Element("StartTime").FirstNode.ToString();
+                        if (singleProgramElement.Element("StartTime").FirstNode != null) singleProgram.starttimespace = (string)singleProgramElement.Element("StartTime").FirstNode.ToString().Replace("T", " ");
+                        //singleProgram.lastmodified = (string)singleProgramElement.Element("lastModified").FirstNode.ToString();
+
+
+                        singleProgram.channame = singleChannel.channame;
+                        singleProgram.chanid = singleChannel.chanid;
+                        singleProgram.channum = singleChannel.channum;
+                        //singleProgram.channumint = singleChannel.channumint;
+                        singleProgram.callsign = singleChannel.callsign;
+                        /*
+                        */
+
+                        
+                        if (singleProgramElement.Descendants("Recording").Count() > 0)
+                        {
+                            if (singleProgramElement.Element("Recording").Element("Priority").FirstNode != null) singleProgram.recpriority = int.Parse((string)singleProgramElement.Element("Recording").Element("Priority").Value);
+                            if (singleProgramElement.Element("Recording").Element("Status").FirstNode != null) singleProgram.recstatus = int.Parse((string)singleProgramElement.Element("Recording").Element("Status").Value);
+                            //singleProgram.recstatustext = App.ViewModel.functions.RecStatusDecode(singleProgram.recstatus);
+                            if (singleProgramElement.Element("Recording").Element("RecGroup").FirstNode != null) singleProgram.recgroup = (string)singleProgramElement.Element("Recording").Element("RecGroup").Value;
+                            if (singleProgramElement.Element("Recording").Element("StartTs").FirstNode != null) singleProgram.recstartts = (string)singleProgramElement.Element("Recording").Element("StartTs").Value;
+                            if (singleProgramElement.Element("Recording").Element("EndTs").FirstNode != null) singleProgram.recendts = (string)singleProgramElement.Element("Recording").Element("EndTs").Value;
+                            if (singleProgramElement.Element("Recording").Element("RecordId").FirstNode != null) singleProgram.recordid = int.Parse((string)singleProgramElement.Element("Recording").Element("RecordId").Value);
+
+                        }
+                        else
+                        {
+                            singleProgram.recstatus = -20;
+                        }
+
+                        singleProgram.recstatustext = App.ViewModel.functions.RecStatusDecode(singleProgram.recstatus);
+
+                        //not sure how to get plain text as child of "Recording"
+                        //singleProgram.description = (string)singleProgramElement.FirstNode.ToString();
+                        
+                        
+                        singleProgram.chanicon = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Myth/GetChannelIcon?ChanId=" + singleProgram.chanid;
+
+                        
+
+
+                        if (App.ViewModel.appSettings.ChannelIconsSetting)
+                            singleProgram.showChanicon = System.Windows.Visibility.Visible;
+                        else
+                            singleProgram.showChanicon = System.Windows.Visibility.Collapsed;
+
+                        Deployment.Current.Dispatcher.BeginInvoke(() => { NowPrograms.Add(singleProgram); });
+
+                    }
+                }
+
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    NowSortAndDisplay();
+
+                    //NowGuideListBox.ItemsSource = NowPrograms;
+
+                    //performanceProgressBarCustomized.IsIndeterminate = false;
+                });
+
+            }
+            catch (Exception ex)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("Failed to get guide data: " + ex.ToString(), "Error", MessageBoxButton.OK);
+                });
+            }
         }
 
         private void GuideNowCallback(IAsyncResult asynchronousResult)
@@ -225,7 +374,7 @@ namespace MythMe
                         singleProgram.title = (string)singleProgramElement.Attribute("title").Value;
                         singleProgram.subtitle = (string)singleProgramElement.Attribute("subTitle").Value;
 
-                        //singleProgram.programflags = (string)singleRecordedElement.Attribute("programFlags").Value;
+                        //singleProgram.programflags = (string)singleProgramElement.Attribute("programFlags").Value;
                         singleProgram.category = (string)singleProgramElement.Attribute("category").Value;
                         if (singleProgramElement.Attributes("fileSize").Count() > 0) singleProgram.filesize = Int64.Parse((string)singleProgramElement.Attribute("fileSize").Value);
                         //singleProgram.seriesid = (string)singleProgramElement.Attribute("seriesId").Value;
@@ -239,7 +388,7 @@ namespace MythMe
                         if (singleProgramElement.Attributes("airdate").Count() > 0) singleProgram.airdate = (string)singleProgramElement.Attribute("airdate").Value;
                         singleProgram.starttime = (string)singleProgramElement.Attribute("startTime").Value;
                         singleProgram.starttimespace = (string)singleProgramElement.Attribute("startTime").Value.Replace("T", " ");
-                        //singleProgram.lastmodified = (string)singleRecordedElement.Attribute("lastModified").Value;
+                        //singleProgram.lastmodified = (string)singleProgramElement.Attribute("lastModified").Value;
 
                         singleProgram.channame = singleChannel.channame;
                         singleProgram.chanid = singleChannel.chanid;
@@ -267,6 +416,11 @@ namespace MythMe
 
                         singleProgram.recstatustext = App.ViewModel.functions.RecStatusDecode(singleProgram.recstatus);
 
+
+                        if (App.ViewModel.appSettings.ChannelIconsSetting)
+                            singleProgram.showChanicon = System.Windows.Visibility.Visible;
+                        else
+                            singleProgram.showChanicon = System.Windows.Visibility.Collapsed;
 
                         Deployment.Current.Dispatcher.BeginInvoke(() => { NowPrograms.Add(singleProgram); });
 
@@ -296,7 +450,154 @@ namespace MythMe
 
         private void Guide25TimeCallback(IAsyncResult asynchronousResult)
         {
-            Deployment.Current.Dispatcher.BeginInvoke(() => { MessageBox.Show("not yet supported"); });
+
+            string resultString;
+
+            HttpWebRequest request = (HttpWebRequest)asynchronousResult.AsyncState;
+
+            HttpWebResponse response;
+
+            try
+            {
+                response = (HttpWebResponse)request.EndGetResponse(asynchronousResult);
+            }
+            catch (Exception ex)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("Failed to get guide data: " + ex.ToString(), "Error", MessageBoxButton.OK);
+                    NavigationService.GoBack();
+                });
+
+                return;
+            }
+
+            using (StreamReader streamReader1 = new StreamReader(response.GetResponseStream()))
+            {
+                resultString = streamReader1.ReadToEnd();
+            }
+
+            response.GetResponseStream().Close();
+            response.Close();
+
+            try
+            {
+
+                XDocument xdoc = XDocument.Parse(resultString, LoadOptions.None);
+
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    App.ViewModel.Channels.Clear();
+
+                    App.ViewModel.appSettings.MythBinarySetting = xdoc.Element("ProgramGuide").Element("Version").Value;
+                    App.ViewModel.appSettings.ProtoVerSetting = int.Parse(xdoc.Element("ProgramGuide").Element("ProtoVer").Value);
+
+                });
+
+                foreach (XElement singleChannelElement in xdoc.Element("ProgramGuide").Element("Channels").Descendants("Channel"))
+                {
+                    ChannelViewModel singleChannel = new ChannelViewModel() { };
+
+                    if (singleChannelElement.Element("ChannelName").FirstNode != null) singleChannel.channame = (string)singleChannelElement.Element("ChannelName").Value;
+                    if (singleChannelElement.Element("ChanId").FirstNode != null) singleChannel.chanid = int.Parse(singleChannelElement.Element("ChanId").Value);
+                    if (singleChannelElement.Element("ChanNum").FirstNode != null) singleChannel.channum = (string)singleChannelElement.Element("ChanNum").Value;
+                    //singleChannel.channumint = int.Parse(singleChannelElement.Element("chanNum").Value);
+                    if (singleChannelElement.Element("CallSign").FirstNode != null) singleChannel.callsign = (string)singleChannelElement.Element("CallSign").Value;
+
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        App.ViewModel.Channels.Add(singleChannel);
+
+                    });
+
+                    foreach (XElement singleProgramElement in singleChannelElement.Element("Programs").Descendants("Program"))
+                    {
+                        ProgramViewModel singleProgram = new ProgramViewModel() { };
+
+                        if (singleProgramElement.Element("Title").FirstNode != null) singleProgram.title = (string)singleProgramElement.Element("Title").FirstNode.ToString();
+                        if (singleProgramElement.Element("SubTitle").FirstNode != null) singleProgram.subtitle = (string)singleProgramElement.Element("SubTitle").FirstNode.ToString();
+
+                        //singleProgram.programflags = (string)singleProgramElement.Attribute("programFlags").FirstNode.ToString();
+                        if (singleProgramElement.Element("Category").FirstNode != null) singleProgram.category = (string)singleProgramElement.Element("Category").FirstNode.ToString();
+                        if (singleProgramElement.Element("FileSize").FirstNode != null) singleProgram.filesize = Int64.Parse((string)singleProgramElement.Element("FileSize").FirstNode.ToString());
+                        if (singleProgramElement.Element("SeriesId").FirstNode != null) singleProgram.seriesid = (string)singleProgramElement.Element("SeriesId").FirstNode.ToString();
+                        if (singleProgramElement.Element("Hostname").FirstNode != null) singleProgram.hostname = (string)singleProgramElement.Element("Hostname").FirstNode.ToString();
+                        //singleProgram.cattype = (string)singleProgramElement.Element("CatType").FirstNode.ToString();
+                        if (singleProgramElement.Element("ProgramId").FirstNode != null) singleProgram.programid = (string)singleProgramElement.Element("ProgramId").FirstNode.ToString();
+                        //singleProgram.repeat = (string)singleProgramElement.Element("Repeat").FirstNode.ToString();
+                        //singleProgram.stars = (string)singleProgramElement.Element("Stars").FirstNode.ToString();
+                        if (singleProgramElement.Element("EndTime").FirstNode != null) singleProgram.endtime = (string)singleProgramElement.Element("EndTime").FirstNode.ToString();
+                        if (singleProgramElement.Element("EndTime").FirstNode != null) singleProgram.endtimespace = (string)singleProgramElement.Element("EndTime").FirstNode.ToString().Replace("T", " ");
+                        if (singleProgramElement.Element("Airdate").FirstNode != null) singleProgram.airdate = (string)singleProgramElement.Element("Airdate").FirstNode.ToString();
+                        if (singleProgramElement.Element("StartTime").FirstNode != null) singleProgram.starttime = (string)singleProgramElement.Element("StartTime").FirstNode.ToString();
+                        if (singleProgramElement.Element("StartTime").FirstNode != null) singleProgram.starttimespace = (string)singleProgramElement.Element("StartTime").FirstNode.ToString().Replace("T", " ");
+                        //singleProgram.lastmodified = (string)singleProgramElement.Element("lastModified").FirstNode.ToString();
+
+
+                        singleProgram.channame = singleChannel.channame;
+                        singleProgram.chanid = singleChannel.chanid;
+                        singleProgram.channum = singleChannel.channum;
+                        //singleProgram.channumint = singleChannel.channumint;
+                        singleProgram.callsign = singleChannel.callsign;
+                        /*
+                        */
+
+
+                        if (singleProgramElement.Descendants("Recording").Count() > 0)
+                        {
+                            if (singleProgramElement.Element("Recording").Element("Priority").FirstNode != null) singleProgram.recpriority = int.Parse((string)singleProgramElement.Element("Recording").Element("Priority").Value);
+                            if (singleProgramElement.Element("Recording").Element("Status").FirstNode != null) singleProgram.recstatus = int.Parse((string)singleProgramElement.Element("Recording").Element("Status").Value);
+                            //singleProgram.recstatustext = App.ViewModel.functions.RecStatusDecode(singleProgram.recstatus);
+                            if (singleProgramElement.Element("Recording").Element("RecGroup").FirstNode != null) singleProgram.recgroup = (string)singleProgramElement.Element("Recording").Element("RecGroup").Value;
+                            if (singleProgramElement.Element("Recording").Element("StartTs").FirstNode != null) singleProgram.recstartts = (string)singleProgramElement.Element("Recording").Element("StartTs").Value;
+                            if (singleProgramElement.Element("Recording").Element("EndTs").FirstNode != null) singleProgram.recendts = (string)singleProgramElement.Element("Recording").Element("EndTs").Value;
+                            if (singleProgramElement.Element("Recording").Element("RecordId").FirstNode != null) singleProgram.recordid = int.Parse((string)singleProgramElement.Element("Recording").Element("RecordId").Value);
+
+                        }
+                        else
+                        {
+                            singleProgram.recstatus = -20;
+                        }
+
+                        singleProgram.recstatustext = App.ViewModel.functions.RecStatusDecode(singleProgram.recstatus);
+
+                        //not sure how to get plain text as child of "Recording"
+                        //singleProgram.description = (string)singleProgramElement.FirstNode.ToString();
+
+
+                        singleProgram.chanicon = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Myth/GetChannelIcon?ChanId=" + singleProgram.chanid;
+
+
+
+
+                        if (App.ViewModel.appSettings.ChannelIconsSetting)
+                            singleProgram.showChanicon = System.Windows.Visibility.Visible;
+                        else
+                            singleProgram.showChanicon = System.Windows.Visibility.Collapsed;
+
+
+                        Deployment.Current.Dispatcher.BeginInvoke(() => { TimePrograms.Add(singleProgram); });
+
+                    }
+                }
+
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    TimeSortAndDisplay();
+
+                    //NowGuideListBox.ItemsSource = NowPrograms;
+
+                    //performanceProgressBarCustomized.IsIndeterminate = false;
+                });
+
+            }
+            catch (Exception ex)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("Failed to get guide data: " + ex.ToString(), "Error", MessageBoxButton.OK);
+                });
+            }
         }
 
         private void GuideTimeCallback(IAsyncResult asynchronousResult)
@@ -368,7 +669,7 @@ namespace MythMe
                         singleProgram.title = (string)singleProgramElement.Attribute("title").Value;
                         singleProgram.subtitle = (string)singleProgramElement.Attribute("subTitle").Value;
 
-                        //singleProgram.programflags = (string)singleRecordedElement.Attribute("programFlags").Value;
+                        //singleProgram.programflags = (string)singleProgramElement.Attribute("programFlags").Value;
                         singleProgram.category = (string)singleProgramElement.Attribute("category").Value;
                         if (singleProgramElement.Attributes("fileSize").Count() > 0) singleProgram.filesize = Int64.Parse((string)singleProgramElement.Attribute("fileSize").Value);
                         //singleProgram.seriesid = (string)singleProgramElement.Attribute("seriesId").Value;
@@ -382,7 +683,7 @@ namespace MythMe
                         if (singleProgramElement.Attributes("airdate").Count() > 0) singleProgram.airdate = (string)singleProgramElement.Attribute("airdate").Value;
                         singleProgram.starttime = (string)singleProgramElement.Attribute("startTime").Value;
                         singleProgram.starttimespace = (string)singleProgramElement.Attribute("startTime").Value.Replace("T", " ");
-                        //singleProgram.lastmodified = (string)singleRecordedElement.Attribute("lastModified").Value;
+                        //singleProgram.lastmodified = (string)singleProgramElement.Attribute("lastModified").Value;
 
                         singleProgram.channame = singleChannel.channame;
                         singleProgram.chanid = singleChannel.chanid;
@@ -410,6 +711,10 @@ namespace MythMe
 
                         singleProgram.recstatustext = App.ViewModel.functions.RecStatusDecode(singleProgram.recstatus);
 
+                        if (App.ViewModel.appSettings.ChannelIconsSetting)
+                            singleProgram.showChanicon = System.Windows.Visibility.Visible;
+                        else
+                            singleProgram.showChanicon = System.Windows.Visibility.Collapsed;
 
                         Deployment.Current.Dispatcher.BeginInvoke(() => { TimePrograms.Add(singleProgram); });
 
@@ -438,7 +743,153 @@ namespace MythMe
 
         private void Guide25ChannelCallback(IAsyncResult asynchronousResult)
         {
-            Deployment.Current.Dispatcher.BeginInvoke(() => { MessageBox.Show("not yet supported"); });
+
+            string resultString;
+
+            HttpWebRequest request = (HttpWebRequest)asynchronousResult.AsyncState;
+
+            HttpWebResponse response;
+
+            try
+            {
+                response = (HttpWebResponse)request.EndGetResponse(asynchronousResult);
+            }
+            catch (Exception ex)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("Failed to get guide data: " + ex.ToString(), "Error", MessageBoxButton.OK);
+                    NavigationService.GoBack();
+                });
+
+                return;
+            }
+
+            using (StreamReader streamReader1 = new StreamReader(response.GetResponseStream()))
+            {
+                resultString = streamReader1.ReadToEnd();
+            }
+
+            response.GetResponseStream().Close();
+            response.Close();
+
+            try
+            {
+
+                XDocument xdoc = XDocument.Parse(resultString, LoadOptions.None);
+
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    App.ViewModel.Channels.Clear();
+
+                    App.ViewModel.appSettings.MythBinarySetting = xdoc.Element("ProgramGuide").Element("Version").Value;
+                    App.ViewModel.appSettings.ProtoVerSetting = int.Parse(xdoc.Element("ProgramGuide").Element("ProtoVer").Value);
+
+                });
+
+                foreach (XElement singleChannelElement in xdoc.Element("ProgramGuide").Element("Channels").Descendants("Channel"))
+                {
+                    ChannelViewModel singleChannel = new ChannelViewModel() { };
+
+                    if (singleChannelElement.Element("ChannelName").FirstNode != null) singleChannel.channame = (string)singleChannelElement.Element("ChannelName").Value;
+                    if (singleChannelElement.Element("ChanId").FirstNode != null) singleChannel.chanid = int.Parse(singleChannelElement.Element("ChanId").Value);
+                    if (singleChannelElement.Element("ChanNum").FirstNode != null) singleChannel.channum = (string)singleChannelElement.Element("ChanNum").Value;
+                    //singleChannel.channumint = int.Parse(singleChannelElement.Element("chanNum").Value);
+                    if (singleChannelElement.Element("CallSign").FirstNode != null) singleChannel.callsign = (string)singleChannelElement.Element("CallSign").Value;
+
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        App.ViewModel.Channels.Add(singleChannel);
+
+                    });
+
+                    foreach (XElement singleProgramElement in singleChannelElement.Element("Programs").Descendants("Program"))
+                    {
+                        ProgramViewModel singleProgram = new ProgramViewModel() { };
+
+                        if (singleProgramElement.Element("Title").FirstNode != null) singleProgram.title = (string)singleProgramElement.Element("Title").FirstNode.ToString();
+                        if (singleProgramElement.Element("SubTitle").FirstNode != null) singleProgram.subtitle = (string)singleProgramElement.Element("SubTitle").FirstNode.ToString();
+
+                        //singleProgram.programflags = (string)singleProgramElement.Attribute("programFlags").FirstNode.ToString();
+                        if (singleProgramElement.Element("Category").FirstNode != null) singleProgram.category = (string)singleProgramElement.Element("Category").FirstNode.ToString();
+                        if (singleProgramElement.Element("FileSize").FirstNode != null) singleProgram.filesize = Int64.Parse((string)singleProgramElement.Element("FileSize").FirstNode.ToString());
+                        if (singleProgramElement.Element("SeriesId").FirstNode != null) singleProgram.seriesid = (string)singleProgramElement.Element("SeriesId").FirstNode.ToString();
+                        if (singleProgramElement.Element("Hostname").FirstNode != null) singleProgram.hostname = (string)singleProgramElement.Element("Hostname").FirstNode.ToString();
+                        //singleProgram.cattype = (string)singleProgramElement.Element("CatType").FirstNode.ToString();
+                        if (singleProgramElement.Element("ProgramId").FirstNode != null) singleProgram.programid = (string)singleProgramElement.Element("ProgramId").FirstNode.ToString();
+                        //singleProgram.repeat = (string)singleProgramElement.Element("Repeat").FirstNode.ToString();
+                        //singleProgram.stars = (string)singleProgramElement.Element("Stars").FirstNode.ToString();
+                        if (singleProgramElement.Element("EndTime").FirstNode != null) singleProgram.endtime = (string)singleProgramElement.Element("EndTime").FirstNode.ToString();
+                        if (singleProgramElement.Element("EndTime").FirstNode != null) singleProgram.endtimespace = (string)singleProgramElement.Element("EndTime").FirstNode.ToString().Replace("T", " ");
+                        if (singleProgramElement.Element("Airdate").FirstNode != null) singleProgram.airdate = (string)singleProgramElement.Element("Airdate").FirstNode.ToString();
+                        if (singleProgramElement.Element("StartTime").FirstNode != null) singleProgram.starttime = (string)singleProgramElement.Element("StartTime").FirstNode.ToString();
+                        if (singleProgramElement.Element("StartTime").FirstNode != null) singleProgram.starttimespace = (string)singleProgramElement.Element("StartTime").FirstNode.ToString().Replace("T", " ");
+                        //singleProgram.lastmodified = (string)singleProgramElement.Element("lastModified").FirstNode.ToString();
+
+
+                        singleProgram.channame = singleChannel.channame;
+                        singleProgram.chanid = singleChannel.chanid;
+                        singleProgram.channum = singleChannel.channum;
+                        //singleProgram.channumint = singleChannel.channumint;
+                        singleProgram.callsign = singleChannel.callsign;
+                        /*
+                        */
+
+
+                        if (singleProgramElement.Descendants("Recording").Count() > 0)
+                        {
+                            if (singleProgramElement.Element("Recording").Element("Priority").FirstNode != null) singleProgram.recpriority = int.Parse((string)singleProgramElement.Element("Recording").Element("Priority").Value);
+                            if (singleProgramElement.Element("Recording").Element("Status").FirstNode != null) singleProgram.recstatus = int.Parse((string)singleProgramElement.Element("Recording").Element("Status").Value);
+                            //singleProgram.recstatustext = App.ViewModel.functions.RecStatusDecode(singleProgram.recstatus);
+                            if (singleProgramElement.Element("Recording").Element("RecGroup").FirstNode != null) singleProgram.recgroup = (string)singleProgramElement.Element("Recording").Element("RecGroup").Value;
+                            if (singleProgramElement.Element("Recording").Element("StartTs").FirstNode != null) singleProgram.recstartts = (string)singleProgramElement.Element("Recording").Element("StartTs").Value;
+                            if (singleProgramElement.Element("Recording").Element("EndTs").FirstNode != null) singleProgram.recendts = (string)singleProgramElement.Element("Recording").Element("EndTs").Value;
+                            if (singleProgramElement.Element("Recording").Element("RecordId").FirstNode != null) singleProgram.recordid = int.Parse((string)singleProgramElement.Element("Recording").Element("RecordId").Value);
+
+                        }
+                        else
+                        {
+                            singleProgram.recstatus = -20;
+                        }
+
+                        singleProgram.recstatustext = App.ViewModel.functions.RecStatusDecode(singleProgram.recstatus);
+
+                        //not sure how to get plain text as child of "Recording"
+                        //singleProgram.description = (string)singleProgramElement.FirstNode.ToString();
+
+
+                        singleProgram.chanicon = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Myth/GetChannelIcon?ChanId=" + singleProgram.chanid;
+
+
+
+
+                        if (App.ViewModel.appSettings.ChannelIconsSetting)
+                            singleProgram.showChanicon = System.Windows.Visibility.Visible;
+                        else
+                            singleProgram.showChanicon = System.Windows.Visibility.Collapsed;
+
+                        Deployment.Current.Dispatcher.BeginInvoke(() => { ChannelPrograms.Add(singleProgram); });
+
+                    }
+                }
+
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    ChannelSortAndDisplay();
+
+                    //NowGuideListBox.ItemsSource = NowPrograms;
+
+                    //performanceProgressBarCustomized.IsIndeterminate = false;
+                });
+
+            }
+            catch (Exception ex)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("Failed to get guide data: " + ex.ToString(), "Error", MessageBoxButton.OK);
+                });
+            }
         }
 
         private void GuideChannelCallback(IAsyncResult asynchronousResult)
@@ -510,7 +961,7 @@ namespace MythMe
                         singleProgram.title = (string)singleProgramElement.Attribute("title").Value;
                         singleProgram.subtitle = (string)singleProgramElement.Attribute("subTitle").Value;
 
-                        //singleProgram.programflags = (string)singleRecordedElement.Attribute("programFlags").Value;
+                        //singleProgram.programflags = (string)singleProgramElement.Attribute("programFlags").Value;
                         singleProgram.category = (string)singleProgramElement.Attribute("category").Value;
                         if (singleProgramElement.Attributes("fileSize").Count() > 0) singleProgram.filesize = Int64.Parse((string)singleProgramElement.Attribute("fileSize").Value);
                         //singleProgram.seriesid = (string)singleProgramElement.Attribute("seriesId").Value;
@@ -524,7 +975,7 @@ namespace MythMe
                         if (singleProgramElement.Attributes("airdate").Count() > 0) singleProgram.airdate = (string)singleProgramElement.Attribute("airdate").Value;
                         singleProgram.starttime = (string)singleProgramElement.Attribute("startTime").Value;
                         singleProgram.starttimespace = (string)singleProgramElement.Attribute("startTime").Value.Replace("T", " ");
-                        //singleProgram.lastmodified = (string)singleRecordedElement.Attribute("lastModified").Value;
+                        //singleProgram.lastmodified = (string)singleProgramElement.Attribute("lastModified").Value;
 
                         singleProgram.channame = singleChannel.channame;
                         singleProgram.chanid = singleChannel.chanid;
@@ -552,6 +1003,10 @@ namespace MythMe
 
                         singleProgram.recstatustext = App.ViewModel.functions.RecStatusDecode(singleProgram.recstatus);
 
+                        if (App.ViewModel.appSettings.ChannelIconsSetting)
+                            singleProgram.showChanicon = System.Windows.Visibility.Visible;
+                        else
+                            singleProgram.showChanicon = System.Windows.Visibility.Collapsed;
 
                         Deployment.Current.Dispatcher.BeginInvoke(() => { ChannelPrograms.Add(singleProgram); });
 

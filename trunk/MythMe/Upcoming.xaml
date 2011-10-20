@@ -29,18 +29,18 @@
         <DataTemplate x:Key="upcomingItemTemplate">
             <StackPanel>
                 <TextBlock Text="{Binding title}" TextWrapping="NoWrap" Margin="2,-6,12,0" Style="{StaticResource PhoneTextNormalStyle}" FontSize="24" Foreground="White" />
-                <TextBlock Text="{Binding subtitle}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                <TextBlock Text="{Binding subtitle}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
                 <StackPanel Orientation="Horizontal">
-                    <Image Width="100" MaxHeight="100" Source="{Binding chanicon}" Margin="0,-15,0,0" />
+                    <Image Width="100" MaxHeight="100" Source="{Binding chanicon}" Margin="0,-15,0,0" Visibility="{Binding showChanicon}"/>
                     <StackPanel Margin="0,0,0,17" Height="Auto">
-                        <TextBlock Text="{Binding starttimespace}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                        <TextBlock Text="{Binding category}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                        <TextBlock Text="{Binding starttimespace}" TextWrapping="NoWrap" Margin="16,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding category}" TextWrapping="NoWrap" Margin="20,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding channum}" Margin="12,-6,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                            <TextBlock Text=" - " Margin="0,-6,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                            <TextBlock Text="{Binding channame}" Margin="0,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                            <TextBlock Text="{Binding channum}" Margin="24,-6,0,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                            <TextBlock Text=" - " Margin="0,-6,0,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                            <TextBlock Text="{Binding channame}" Margin="0,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
                         </StackPanel>
-                        <TextBlock Text="{Binding recstatustext}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                        <TextBlock Text="{Binding recstatustext}" TextWrapping="NoWrap" Margin="28,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
@@ -48,7 +48,7 @@
 
         <DataTemplate x:Key="upcomingItemHeader">
             <Border Background="#9f283f" Margin="{StaticResource PhoneTouchTargetOverhang}" Padding="{StaticResource PhoneTouchTargetOverhang}">
-                <TextBlock Text="{Binding Title}" Width="460" Style="{StaticResource PhoneTextLargeStyle}"/>
+                <TextBlock Text="{Binding Title}" Width="460" Style="{StaticResource PhoneTextLargeStyle}" Foreground="Black"/>
             </Border>
         </DataTemplate>
 
@@ -58,9 +58,9 @@
         
         <toolkit:PerformanceProgressBar x:Name="performanceProgressBarCustomized" Foreground="Red" Background="Red" IsIndeterminate="False" />
 
-        <controls:Pivot x:Name="upcomingHeader" Title="upcoming">
+        <controls:Pivot x:Name="upcomingHeader" Title="upcoming" Foreground="White">
 
-            <controls:PivotItem x:Name="UpcomingTitle" Header="Upcoming">
+            <controls:PivotItem x:Name="UpcomingTitle" Header="Upcoming" Foreground="White">
 
                 <toolkit:LongListSelector x:Name="UpcomingUpcomingLL"
                      GroupHeaderTemplate="{StaticResource upcomingGroupHeader}"
@@ -70,8 +70,8 @@
                 </toolkit:LongListSelector>
 
             </controls:PivotItem>
-            
-            <controls:PivotItem x:Name="AllTitle" Header="All">
+
+            <controls:PivotItem x:Name="AllTitle" Header="All" Foreground="White">
 
                 <toolkit:LongListSelector x:Name="AllUpcomingLL"
                      GroupHeaderTemplate="{StaticResource upcomingGroupHeader}"
@@ -82,7 +82,7 @@
                 
             </controls:PivotItem>
 
-            <controls:PivotItem x:Name="ConflictingTitle" Header="Conflicting">
+            <controls:PivotItem x:Name="ConflictingTitle" Header="Conflicting" Foreground="White">
 
                 <toolkit:LongListSelector x:Name="ConflictingUpcomingLL"
                      GroupHeaderTemplate="{StaticResource upcomingGroupHeader}"
@@ -93,7 +93,7 @@
                 
             </controls:PivotItem>
 
-            <controls:PivotItem x:Name="OverridesTitle" Header="Overrides">
+            <controls:PivotItem x:Name="OverridesTitle" Header="Overrides" Foreground="White">
 
                 <toolkit:LongListSelector x:Name="OverridesUpcomingLL"
                      GroupHeaderTemplate="{StaticResource upcomingGroupHeader}"
@@ -108,7 +108,7 @@
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" BackgroundColor="#28000C" >
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" BackgroundColor="#28000C" ForegroundColor="White" >
             <shell:ApplicationBarIconButton x:Name="appbarRefresh" IconUri="/Images/appbar.refresh.rest.png" Text="refresh" Click="appbarRefresh_Click" />
             <!--
             <shell:ApplicationBarIconButton x:Name="appbarSort" IconUri="/Images/appbar.feature.settings.rest.png" Text="sort" Click="appbarSort_Click" />

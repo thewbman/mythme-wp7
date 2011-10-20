@@ -85,19 +85,16 @@ namespace MythMe
             if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
             {
                 HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(String.Format(getStatus25String, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting, App.ViewModel.randText())));
-                webRequest.BeginGetResponse(new AsyncCallback(Status25Callback), webRequest);
+                webRequest.BeginGetResponse(new AsyncCallback(StatusCallback), webRequest);
             }
             else
             {
+                //HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://192.168.1.105/dropbox/GetStatus.xml"));
                 HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(String.Format(getStatusString, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting, App.ViewModel.randText())));
                 webRequest.BeginGetResponse(new AsyncCallback(StatusCallback), webRequest);
             }
         }
-        
-        private void Status25Callback(IAsyncResult asynchronousResult)
-        {
-            MessageBox.Show("not yet supported");
-        }
+
 
         private void StatusCallback(IAsyncResult asynchronousResult)
         {
@@ -175,8 +172,8 @@ namespace MythMe
                         title = (string)singleEncoderProgramElement.Attribute("title").Value;
                         subtitle = (string)singleEncoderProgramElement.Attribute("subTitle").Value;
 
-                        recstartts = (string)singleEncoderProgramElement.Element("Recording").Attribute("recStartTs").Value;
-                        recendts = (string)singleEncoderProgramElement.Element("Recording").Attribute("recEndTs").Value;
+                        recstartts = (string)singleEncoderProgramElement.Element("Recording").Attribute("recStartTs").Value.Replace("T"," ");
+                        recendts = (string)singleEncoderProgramElement.Element("Recording").Attribute("recEndTs").Value.Replace("T", " ");
 
                         channum = (string)singleEncoderProgramElement.Element("Channel").Attribute("chanNum").Value;
                         channame = (string)singleEncoderProgramElement.Element("Channel").Attribute("channelName").Value;
@@ -219,8 +216,8 @@ namespace MythMe
                     //channum = (string)singleScheduledElement.Element("Channel").Attribute("chanNum").Value;
                     
                     encoderid = (string)singleScheduledElement.Element("Recording").Attribute("encoderId").Value;
-                    recstartts = (string)singleScheduledElement.Element("Recording").Attribute("recStartTs").Value;
-                    recendts = (string)singleScheduledElement.Element("Recording").Attribute("recEndTs").Value;
+                    recstartts = (string)singleScheduledElement.Element("Recording").Attribute("recStartTs").Value.Replace("T", " ");
+                    recendts = (string)singleScheduledElement.Element("Recording").Attribute("recEndTs").Value.Replace("T", " ");
 
                     channum = (string)singleScheduledElement.Element("Channel").Attribute("chanNum").Value;
                     channame = (string)singleScheduledElement.Element("Channel").Attribute("channelName").Value;
@@ -254,8 +251,8 @@ namespace MythMe
 
                     title = (string)singleJobqueueElement.Element("Program").Attribute("title").Value;
                     subtitle = (string)singleJobqueueElement.Element("Program").Attribute("subTitle").Value;
-                    starttime = (string)singleJobqueueElement.Element("Program").Attribute("startTime").Value;
-                    endtime = (string)singleJobqueueElement.Element("Program").Attribute("endTime").Value;
+                    starttime = (string)singleJobqueueElement.Element("Program").Attribute("startTime").Value.Replace("T", " ");
+                    endtime = (string)singleJobqueueElement.Element("Program").Attribute("endTime").Value.Replace("T", " ");
 
                     channum = (string)singleJobqueueElement.Element("Program").Element("Channel").Attribute("chanNum").Value;
                     channame = (string)singleJobqueueElement.Element("Program").Element("Channel").Attribute("channelName").Value;
@@ -309,9 +306,9 @@ namespace MythMe
                     string start;
                     string comments;
 
-                    guidethru = (string)singleGuideElement.Attribute("guideThru").Value;
+                    guidethru = (string)singleGuideElement.Attribute("guideThru").Value.Replace("T", " ");
                     status = (string)singleGuideElement.Attribute("status").Value;
-                    next = (string)singleGuideElement.Attribute("next").Value;
+                    next = (string)singleGuideElement.Attribute("next").Value.Replace("T", " ");
                     end = (string)singleGuideElement.Attribute("end").Value;
                     guidedays = (string)singleGuideElement.Attribute("guideDays").Value;
                     start = (string)singleGuideElement.Attribute("start").Value;

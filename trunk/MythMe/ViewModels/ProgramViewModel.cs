@@ -78,6 +78,8 @@ namespace MythMe
         public string guidesort { get; set; }
         public string guidesortdisplay { get; set; }
 
+        public Visibility showChanicon { get; set; }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(String propertyName)

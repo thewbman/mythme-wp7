@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2009/deployment" AppPlatformVersion="7.1">
-  <App xmlns="" ProductID="{83580f20-61aa-4198-8782-55dca608de2d}" Title="MythMe" RuntimeType="Silverlight" Version="1.1.0.0" Genre="apps.normal" Author="thewbman" Description="A MythTV app for Windows Phone 7" Publisher="thewbman">
+  <App xmlns="" ProductID="{83580f20-61aa-4198-8782-55dca608de2d}" Title="MythMe" RuntimeType="Silverlight" Version="1.2.0.0" Genre="apps.normal" Author="thewbman" Description="A MythTV app for Windows Phone 7" Publisher="thewbman">
     <IconPath IsRelative="true" IsResource="false">MythMe_62.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_IDENTITY_DEVICE" />

@@ -19,89 +19,89 @@
     <Grid x:Name="LayoutRoot" Background="#3e000c">
         
         <toolkit:PerformanceProgressBar x:Name="performanceProgressBarCustomized" Foreground="Red" Background="Red" IsIndeterminate="True"/>
-        
-        <controls:Panorama Title="status">
 
-            <controls:PanoramaItem Header="encoders">
-                <ListBox x:Name="EncodersListBox" ItemsSource="{Binding Globals}">
+        <controls:Panorama Title="status" Foreground="White">
+
+            <controls:PanoramaItem Header="encoders" Foreground="White">
+                <ListBox x:Name="EncodersListBox" >
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Margin="0,0,0,17" Width="432" Height="Auto">
-                                <TextBlock Text="{Binding Content}" TextWrapping="NoWrap" Style="{StaticResource PhoneTextNormalStyle}" FontSize="24" />
-                                <TextBlock Text="{Binding First}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                                <TextBlock Text="{Binding Second}" TextWrapping="NoWrap" Margin="30,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                                <TextBlock Text="{Binding Third}" TextWrapping="NoWrap" Margin="30,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
-                                <TextBlock Text="{Binding Fourth}" TextWrapping="NoWrap" Margin="30,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+                                <TextBlock Text="{Binding Content}" TextWrapping="NoWrap" Style="{StaticResource PhoneTextNormalStyle}" FontSize="24" Foreground="White" />
+                                <TextBlock Text="{Binding First}" TextWrapping="NoWrap" Margin="20,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                                <TextBlock Text="{Binding Second}" TextWrapping="NoWrap" Margin="30,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                                <TextBlock Text="{Binding Third}" TextWrapping="NoWrap" Margin="40,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                                <TextBlock Text="{Binding Fourth}" TextWrapping="NoWrap" Margin="50,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
             </controls:PanoramaItem>
 
-            <controls:PanoramaItem Header="scheduled">
-                <ListBox x:Name="ScheduledListBox" ItemsSource="{Binding Globals}">
+            <controls:PanoramaItem Header="scheduled" Foreground="White">
+                <ListBox x:Name="ScheduledListBox" >
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Margin="0,0,0,17" Width="432" Height="Auto">
-                                <TextBlock Text="{Binding Content}" TextWrapping="NoWrap" Style="{StaticResource PhoneTextNormalStyle}" FontSize="24" />
-                                <TextBlock Text="{Binding First}" TextWrapping="NoWrap" Margin="30,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
-                                <TextBlock Text="{Binding Second}" TextWrapping="NoWrap" Margin="30,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
-                                <TextBlock Text="{Binding Third}" TextWrapping="NoWrap" Margin="40,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                                <TextBlock Text="{Binding Content}" TextWrapping="NoWrap" Style="{StaticResource PhoneTextNormalStyle}" FontSize="24" Foreground="White" />
+                                <TextBlock Text="{Binding First}" TextWrapping="NoWrap" Margin="20,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver"/>
+                                <TextBlock Text="{Binding Second}" TextWrapping="NoWrap" Margin="30,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver"/>
+                                <TextBlock Text="{Binding Third}" TextWrapping="NoWrap" Margin="40,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
             </controls:PanoramaItem>
 
-            <controls:PanoramaItem Header="jobqueue">
-                <ListBox x:Name="JobqueueListBox" ItemsSource="{Binding Globals}">
+            <controls:PanoramaItem Header="jobqueue" Foreground="White">
+                <ListBox x:Name="JobqueueListBox" >
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Margin="0,0,0,17" Width="432" Height="Auto">
-                                <TextBlock Text="{Binding Content}" TextWrapping="NoWrap" Style="{StaticResource PhoneTextNormalStyle}" FontSize="24" />
-                                <TextBlock Text="{Binding First}" TextWrapping="NoWrap" Margin="30,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
-                                <TextBlock Text="{Binding Second}" TextWrapping="NoWrap" Margin="30,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
-                                <TextBlock Text="{Binding Third}" TextWrapping="NoWrap" Margin="40,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
-                                <TextBlock Text="{Binding Fourth}" TextWrapping="NoWrap" Margin="40,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                                <TextBlock Text="{Binding Content}" TextWrapping="NoWrap" Style="{StaticResource PhoneTextNormalStyle}" FontSize="24" Foreground="White" />
+                                <TextBlock Text="{Binding First}" TextWrapping="NoWrap" Margin="20,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver"/>
+                                <TextBlock Text="{Binding Second}" TextWrapping="NoWrap" Margin="30,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver"/>
+                                <TextBlock Text="{Binding Third}" TextWrapping="NoWrap" Margin="40,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver"/>
+                                <TextBlock Text="{Binding Fourth}" TextWrapping="NoWrap" Margin="50,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
             </controls:PanoramaItem>
 
-            <controls:PanoramaItem Header="storage">
-                <ListBox x:Name="StorageListBox" ItemsSource="{Binding Globals}">
+            <controls:PanoramaItem Header="storage" Foreground="White">
+                <ListBox x:Name="StorageListBox" >
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Margin="0,0,0,17" Width="432" Height="Auto">
-                                <TextBlock Text="{Binding Content}" TextWrapping="NoWrap" Style="{StaticResource PhoneTextNormalStyle}" FontSize="24" />
-                                <TextBlock Text="{Binding Name}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                                <TextBlock Text="{Binding Content}" TextWrapping="NoWrap" Style="{StaticResource PhoneTextNormalStyle}" FontSize="24" Foreground="White" />
+                                <TextBlock Text="{Binding Name}" TextWrapping="NoWrap" Margin="20,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
             </controls:PanoramaItem>
 
-            <controls:PanoramaItem Header="guide">
-                <ListBox x:Name="GuideListBox" ItemsSource="{Binding Globals}">
+            <controls:PanoramaItem Header="guide" Foreground="White">
+                <ListBox x:Name="GuideListBox" >
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Margin="0,0,0,17" Width="432" Height="Auto">
-                                <TextBlock Text="{Binding Content}" TextWrapping="NoWrap" Style="{StaticResource PhoneTextNormalStyle}" FontSize="24" />
-                                <TextBlock Text="{Binding Name}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                            <StackPanel Width="432" Height="Auto">
+                                <TextBlock Text="{Binding Name}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver"/>
+                                <TextBlock Text="{Binding Content}" TextWrapping="Wrap" FontSize="32" Foreground="White"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
             </controls:PanoramaItem>
 
-            <controls:PanoramaItem Header="other">
-                <ListBox x:Name="OtherListBox" ItemsSource="{Binding Globals}">
+            <controls:PanoramaItem Header="other" Foreground="White">
+                <ListBox x:Name="OtherListBox">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Margin="0,0,0,17" Width="432" Height="Auto">
-                                <TextBlock Text="{Binding Content}" TextWrapping="NoWrap" Style="{StaticResource PhoneTextNormalStyle}" FontSize="24" />
-                                <TextBlock Text="{Binding Name}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                            <StackPanel Width="432" Height="Auto">
+                                <TextBlock Text="{Binding Name}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver"/>
+                                <TextBlock Text="{Binding Content}" TextWrapping="Wrap" FontSize="32" Foreground="White"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
