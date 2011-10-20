@@ -16,69 +16,69 @@
 
     <!--LayoutRoot contains the root grid where all other page content is placed-->
     <Grid x:Name="LayoutRoot" Background="#3e000c">
-        <controls:Panorama Name="topPanorama" Title="recorded">
-            
-            <controls:PanoramaItem Header="program">
+        <controls:Panorama Name="topPanorama" Title="recorded" Foreground="White">
+
+            <controls:PanoramaItem Header="program" Foreground="White">
                 <ScrollViewer>
                     <StackPanel>
-                        <TextBlock Text="{Binding title}" TextWrapping="Wrap"  />
-                        <TextBlock Text="{Binding subtitle}" FontSize="26" Style="{StaticResource PhoneTextSubtleStyle}" TextWrapping="Wrap"  />
-                        <TextBlock Text="{Binding category}" FontSize="26" Style="{StaticResource PhoneTextSubtleStyle}"  />
-                        <Image Source="{Binding screenshot}" Width="420"/>
-                        <TextBlock Text="{Binding description}" Style="{StaticResource PhoneTextSubtleStyle}" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding title}" TextWrapping="Wrap" Foreground="White"  />
+                        <TextBlock Text="{Binding subtitle}" FontSize="26" Style="{StaticResource PhoneTextSubtleStyle}" TextWrapping="Wrap" Foreground="Silver"  />
+                        <TextBlock Text="{Binding category}" FontSize="26" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver"  />
+                        <Image Source="{Binding screenshot}" Width="420" />
+                        <TextBlock Text="{Binding description}" Style="{StaticResource PhoneTextSubtleStyle}" TextWrapping="Wrap" Foreground="Silver" />
                     </StackPanel>
                 </ScrollViewer>
             </controls:PanoramaItem>
 
-            <controls:PanoramaItem Header="details">
+            <controls:PanoramaItem Header="details" Foreground="White">
                 <ScrollViewer>
                     <StackPanel>
-                        <TextBlock Text="start time" Style="{StaticResource PhoneTextSubtleStyle}" />
-                        <TextBlock Text="{Binding starttime}" />
-                        <TextBlock Text="end time" Style="{StaticResource PhoneTextSubtleStyle}" />
-                        <TextBlock Text="{Binding endtime}" />
-                        <TextBlock Text="series id" Style="{StaticResource PhoneTextSubtleStyle}" />
-                        <TextBlock Text="{Binding seriesid}" />
-                        <TextBlock Text="program id" Style="{StaticResource PhoneTextSubtleStyle}" />
-                        <TextBlock Text="{Binding programid}" />
-                        <TextBlock Text="original airdate" Style="{StaticResource PhoneTextSubtleStyle}" />
-                        <TextBlock Text="{Binding airdate}" />
+                        <TextBlock Text="start time" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding starttime}" Foreground="White" />
+                        <TextBlock Text="end time" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding endtime}" Foreground="White" />
+                        <TextBlock Text="series id" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding seriesid}" Foreground="White" />
+                        <TextBlock Text="program id" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding programid}" Foreground="White" />
+                        <TextBlock Text="original airdate" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding airdate}" Foreground="White" />
                     </StackPanel>
                 </ScrollViewer>
             </controls:PanoramaItem>
 
-            <controls:PanoramaItem Header="channel">
+            <controls:PanoramaItem Header="channel" Foreground="White">
                 <ScrollViewer>
                     <StackPanel>
-                        <TextBlock Text="channel number" Style="{StaticResource PhoneTextSubtleStyle}" />
-                        <TextBlock Text="{Binding channum}" />
-                        <TextBlock Text="channel name" Style="{StaticResource PhoneTextSubtleStyle}" />
-                        <TextBlock Text="{Binding channame}" />
-                        <TextBlock Text="chanid" Style="{StaticResource PhoneTextSubtleStyle}" />
-                        <TextBlock Text="{Binding chanid}" />
+                        <TextBlock Text="channel number" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding channum}" Foreground="White" />
+                        <TextBlock Text="channel name" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding channame}" Foreground="White" />
+                        <TextBlock Text="chanid" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding chanid}" Foreground="White" />
                     </StackPanel>
                 </ScrollViewer>
             </controls:PanoramaItem>
 
-            <controls:PanoramaItem Header="recording">
+            <controls:PanoramaItem Header="recording" Foreground="White">
                 <ScrollViewer>
                     <StackPanel>
-                        <TextBlock Text="recording start" Style="{StaticResource PhoneTextSubtleStyle}" />
-                        <TextBlock Text="{Binding recstartts}" />
-                        <TextBlock Text="recording end" Style="{StaticResource PhoneTextSubtleStyle}" />
-                        <TextBlock Text="{Binding recendts}" />
-                        <TextBlock Text="hostname" Style="{StaticResource PhoneTextSubtleStyle}" />
-                        <TextBlock Text="{Binding hostname}" />
-                        <TextBlock Text="recording group" Style="{StaticResource PhoneTextSubtleStyle}" />
-                        <TextBlock Text="{Binding recgroup}" />
-                        <TextBlock Text="filesize" Style="{StaticResource PhoneTextSubtleStyle}" />
-                        <TextBlock Text="{Binding filesize}" />
+                        <TextBlock Text="recording start" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding recstartts}" Foreground="White" />
+                        <TextBlock Text="recording end" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding recendts}" Foreground="White" />
+                        <TextBlock Text="hostname" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding hostname}" Foreground="White" />
+                        <TextBlock Text="recording group" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding recgroup}" Foreground="White" />
+                        <TextBlock Text="filesize" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding filesize}" Foreground="White" />
                     </StackPanel>
                 </ScrollViewer>
             </controls:PanoramaItem>
 
 
-            <controls:PanoramaItem Header="actions">
+            <controls:PanoramaItem Header="actions" Foreground="White">
                 <ScrollViewer>
                     <StackPanel>
                         <!-- use a list with context menu ? 
@@ -91,8 +91,8 @@
                         <TextBlock x:Name="scheduleButton" Text="schedule" Tap="scheduleButton_Tap" />
                         <TextBlock x:Name="guideButton" Text="guide" Tap="guideButton_Tap" />
                         -->
-                        <Button x:Name="mythwebButton" Content="mythweb"  Tap="scheduleButton_Tap" />
-                        <Button x:Name="guidebutton" Content="program guide"  Tap="guideButton_Tap" />
+                        <Button x:Name="mythwebButton" Content="mythweb"  Tap="scheduleButton_Tap" Foreground="White" BorderBrush="White"/>
+                        <Button x:Name="guidebutton" Content="program guide"  Tap="guideButton_Tap" Foreground="White" BorderBrush="White" />
 
                     </StackPanel>
                 </ScrollViewer>

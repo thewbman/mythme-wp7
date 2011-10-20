@@ -16,30 +16,30 @@
 
     <!--LayoutRoot contains the root grid where all other page content is placed-->
     <Grid x:Name="LayoutRoot" Background="#3e000c">
-        <controls:Panorama Title="preferences" SelectionChanged="Panorama_SelectionChanged">
+        <controls:Panorama Title="preferences" SelectionChanged="Panorama_SelectionChanged" Foreground="White">
 
-            <controls:PanoramaItem Header="backend">
+            <controls:PanoramaItem Header="backend" Foreground="White">
                 <ScrollViewer>
                     <StackPanel>
-                        <TextBlock Text="master backend address" Style="{StaticResource PhoneTextSubtleStyle}" />
-                        <TextBox x:Name="MasterBackendIp" />
+                        <TextBlock Text="master backend address" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBox x:Name="MasterBackendIp" Foreground="White" />
 
-                        <TextBlock Text="mythprotocol port" Style="{StaticResource PhoneTextSubtleStyle}" />
-                        <TextBox x:Name="MasterBackendPort" InputScope="NumberFullWidth" />
+                        <TextBlock Text="mythprotocol port" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBox x:Name="MasterBackendPort" InputScope="NumberFullWidth" Foreground="White" />
 
-                        <TextBlock Text="mythxml port" Style="{StaticResource PhoneTextSubtleStyle}" />
-                        <TextBox x:Name="MasterBackendXmlPort" InputScope="NumberFullWidth" />
+                        <TextBlock Text="mythxml port" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBox x:Name="MasterBackendXmlPort" InputScope="NumberFullWidth" Foreground="White" />
                         
                     </StackPanel>
                 </ScrollViewer>
             </controls:PanoramaItem>
 
-            <controls:PanoramaItem Header="webserver">
+            <controls:PanoramaItem Header="webserver" Foreground="White">
                 <ScrollViewer>
                     <StackPanel>
-                        
-                        <TextBlock Text="webserver address" Style="{StaticResource PhoneTextSubtleStyle}" />
-                        <TextBox x:Name="WebserverHost" />
+
+                        <TextBlock Text="webserver address" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBox x:Name="WebserverHost" Foreground="White" />
 
                     </StackPanel>
                 </ScrollViewer>
@@ -80,22 +80,22 @@
             </controls:PanoramaItem>
             -->
 
-            <!--
-            <controls:PanoramaItem Header="images">
+
+            <controls:PanoramaItem Header="images" Foreground="White">
                 <ScrollViewer>
                     <StackPanel>
-                        <CheckBox x:Name="ChannelIcons" AllowDrop="False" />
-                        <TextBlock Text="show channel icons" Style="{StaticResource PhoneTextSubtleStyle}" />
+                        <CheckBox x:Name="ChannelIcons" AllowDrop="False" Foreground="White" BorderBrush="white" />
+                        <TextBlock Text="show channel icons" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
 
-                        
+                        <!--
                         video list
                         video details
                         script
+                        -->
                         
                     </StackPanel>
                 </ScrollViewer>
             </controls:PanoramaItem>
-            -->
             
             <!--
             <controls:PanoramaItem Header="remote">
@@ -117,7 +117,7 @@
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" BackgroundColor="#28000C" >
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" BackgroundColor="#28000C" ForegroundColor="White" >
             <shell:ApplicationBarIconButton x:Name="appbarSave" IconUri="/Images/appbar.save.rest.png" Text="refresh" Click="appbarSave_Click" />
             <!---->
             <shell:ApplicationBar.MenuItems>

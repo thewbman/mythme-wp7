@@ -31,9 +31,11 @@ namespace MythMe
             InitializeComponent();
 
             this.Questions = new ObservableCollection<NameContentViewModel>();
+            this.Support = new ObservableCollection<NameContentViewModel>();
         }
 
         public ObservableCollection<NameContentViewModel> Questions { get; private set; }
+        public ObservableCollection<NameContentViewModel> Support { get; private set; }
 
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -48,6 +50,16 @@ namespace MythMe
             this.Questions.Add(new NameContentViewModel() { Name = "What I have trouble getting this app to work?", Content = "Try emailing the developer.  The contact information is available to right." });
 
             QuestionListBox.ItemsSource = this.Questions;
+
+            this.Support.Clear();
+
+            this.Support.Add(new NameContentViewModel() { Name = "email", Content = "mythme.help@gmail.com" });
+            this.Support.Add(new NameContentViewModel() { Name = "twitter", Content = "@webmyth_dev" });
+            this.Support.Add(new NameContentViewModel() { Name = "app homepage", Content = "http://code.google.com/p/mythme-wp7" });
+            this.Support.Add(new NameContentViewModel() { Name = "leave review", Content = "" });
+
+            SupportListBox.ItemsSource = this.Support;
+
         }
 
         private void email_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -80,6 +92,30 @@ namespace MythMe
         {
             MarketplaceReviewTask marketReview = new MarketplaceReviewTask();
             marketReview.Show();
+        }
+
+        private void SupportListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (SupportListBox.SelectedItem == null)
+                return;
+
+            var myItem = (NameContentViewModel)SupportListBox.SelectedItem;
+
+            switch (myItem.Name)
+            {
+                case "email":
+                    email_Tap(sender, new System.Windows.Input.GestureEventArgs());
+                    break;
+                case "twitter":
+                    twitter_Tap(sender, new System.Windows.Input.GestureEventArgs());
+                    break;
+                case "app homepage":
+                    homepage_Tap(sender, new System.Windows.Input.GestureEventArgs());
+                    break;
+                case "leave review":
+                    reviewTitle_Tap(sender, new System.Windows.Input.GestureEventArgs());
+                    break;
+            }
         }
     }
 }

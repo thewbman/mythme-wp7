@@ -340,7 +340,215 @@ namespace MythMe
         }
         private void ParseUpcoming67()
         {
-            MessageBox.Show("Your MythTV protocol version (" + App.ViewModel.appSettings.ProtoVerSetting + ") is not currently supported by MythMe");
+
+            //Protocol version 67 and up - 44 fields
+
+            App.ViewModel.Upcoming.Clear();
+
+            string[] stringSeparators = new string[] { "[]:[]" };
+            string[] responseArray;
+
+            ProgramViewModel singleProgram = new ProgramViewModel();
+            //int arrayIndex = 0;
+            int programIndex = 0;
+            int fieldIndex = 0;
+            int i;
+
+            int offset = 2; //upcoming is conflicting[]:[]qty programs[]:[]programs ...
+
+            responseArray = fullProtocolResponse.Split(stringSeparators, StringSplitOptions.None);
+
+            try
+            {
+                for (i = offset; i < responseArray.Length; i++)
+                {
+                    switch (fieldIndex)
+                    {
+                        case 0:
+                            singleProgram = new ProgramViewModel();
+                            singleProgram.title = responseArray[i];
+                            break;
+                        case 1:
+                            singleProgram.subtitle = responseArray[i];
+                            break;
+                        case 2:
+                            singleProgram.description = responseArray[i];
+                            break;
+                        case 3:
+                            //singleProgram.season = responseArray[i];
+                            break;
+                        case 4:
+                            //singleProgram.episode = responseArray[i];
+                            break;
+                        case 5:
+                            singleProgram.category = responseArray[i];
+                            break;
+                        case 6:
+                            singleProgram.chanid = int.Parse(responseArray[i]);
+                            singleProgram.chanicon = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Myth/GetChannelIcon?ChanId=" + responseArray[i];
+                            break;
+                        case 7:
+                            singleProgram.channum = responseArray[i];
+                            break;
+                        case 8:
+                            singleProgram.callsign = responseArray[i];
+                            break;
+                        case 9:
+                            singleProgram.channame = responseArray[i];
+                            break;
+
+                        case 10:
+                            singleProgram.filename = responseArray[i];
+                            break;
+                        case 11:
+                            //singleProgram.filesize = Int64.Parse(responseArray[i]);
+                            break;
+                        case 12:
+                            singleProgram.starttimeint = Int64.Parse(responseArray[i]);
+                            DateTime st = new DateTime(1970, 1, 1).AddSeconds(singleProgram.starttimeint + (Int64)TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalSeconds);
+                            //st.Add(new TimeSpan(singleProgram.starttimeint * 10000000));
+                            //st.AddSeconds(singleProgram.starttimeint);
+                            singleProgram.starttime = st.ToString("s");
+                            singleProgram.starttimespace = singleProgram.starttime.Replace("T", " ");
+                            break;
+                        case 13:
+                            singleProgram.endtimeint = Int64.Parse(responseArray[i]);
+                            DateTime et = new DateTime(1970, 1, 1).AddSeconds(singleProgram.endtimeint + (Int64)TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalSeconds);
+                            //et.Add(new TimeSpan(singleProgram.endtimeint*10000000));
+                            //et.AddSeconds(singleProgram.endtimeint);
+                            singleProgram.endtime = et.ToString("s");
+                            //asdf
+                            break;
+                        case 14:
+                            singleProgram.findid = responseArray[i];
+                            break;
+                        case 15:
+                            singleProgram.hostname = responseArray[i];
+                            break;
+                        case 16:
+                            singleProgram.sourceid = int.Parse(responseArray[i]);
+                            break;
+                        case 17:
+                            singleProgram.cardid = int.Parse(responseArray[i]);
+                            break;
+                        case 18:
+                            singleProgram.inputid = int.Parse(responseArray[i]);
+                            break;
+                        case 19:
+                            singleProgram.recpriority = int.Parse(responseArray[i]);
+                            break;
+
+                        case 20:
+                            singleProgram.recstatus = int.Parse(responseArray[i]);
+                            singleProgram.recstatustext = App.ViewModel.functions.RecStatusDecode(singleProgram.recstatus);
+                            //singleProgram.recstatustext = responseArray[i];
+                            break;
+                        case 21:
+                            singleProgram.recordid = int.Parse(responseArray[i]);
+                            break;
+                        case 22:
+                            singleProgram.rectype = int.Parse(responseArray[i]);
+                            break;
+                        case 23:
+                            //singleProgram.dupin = responseArray[i];
+                            break;
+                        case 24:
+                            //singleProgram.dupmethod = responseArray[i];
+                            break;
+                        case 25:
+                            singleProgram.recstarttsint = Int64.Parse(responseArray[i]);
+                            DateTime rt = new DateTime(1970, 1, 1).AddSeconds(singleProgram.recstarttsint + (Int64)TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalSeconds);
+                            //rt.Add(new TimeSpan(singleProgram.recstarttsint * 10000000));
+                            //rt.AddSeconds(singleProgram.recstarttsint);
+                            singleProgram.recstartts = rt.ToString("s");
+                            break;
+                        case 26:
+                            singleProgram.recendtsint = Int64.Parse(responseArray[i]);
+                            DateTime tt = new DateTime(1970, 1, 1).AddSeconds(singleProgram.recendtsint + (Int64)TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalSeconds);
+                            //tt.Add(new TimeSpan(singleProgram.recstarttsint * 10000000));
+                            //tt.AddSeconds(singleProgram.recstarttsint);
+                            singleProgram.recendts = tt.ToString("s");
+                            //asdf
+                            break;
+                        case 27:
+                            //singleProgram.programflags = int.Parse(responseArray[i]);
+                            break;
+                        case 28:
+                            singleProgram.recgroup = responseArray[i];
+                            break;
+                        case 29:
+                            //singleProgram.outputfilters = responseArray[i];
+                            break;
+
+                        case 30:
+                            singleProgram.seriesid = responseArray[i];
+                            break;
+                        case 31:
+                            singleProgram.programid = responseArray[i];
+                            break;
+                        case 32:
+                            //singleProgram.initref = responseArray[i];
+                            break;
+                        case 33:
+                            singleProgram.lastmodified = responseArray[i];
+                            break;
+                        case 34:
+                            //singleProgram.stars = responseArray[i];
+                            break;
+                        case 35:
+                            singleProgram.airdate = responseArray[i];
+                            break;
+                        case 36:
+                            singleProgram.playgroup = responseArray[i];
+                            break;
+                        case 37:
+                            singleProgram.recpriority2 = responseArray[i];
+                            break;
+                        case 38:
+                            singleProgram.parentid = responseArray[i];
+                            break;
+                        case 39:
+                            singleProgram.storagegroup = responseArray[i];
+                            break;
+
+                        case 40:
+                            //singleProgram.audio_props = responseArray[i];
+                            break;
+                        case 41:
+                            //singleProgram.video_props = responseArray[i];
+                            break;
+                        case 42:
+                            //singleProgram.subtitle_type = responseArray[i];
+                            break;
+                        //
+                        case 43:
+                            //singleProgram.year = responseArray[i];
+
+                            if (App.ViewModel.appSettings.ChannelIconsSetting)
+                                singleProgram.showChanicon = System.Windows.Visibility.Visible;
+                            else
+                                singleProgram.showChanicon = System.Windows.Visibility.Collapsed;
+
+                            App.ViewModel.Upcoming.Add(singleProgram);
+                            programIndex++;
+                            fieldIndex = -1;
+                            break;
+                    }
+
+                    fieldIndex++;
+
+                }
+
+                //MessageBox.Show("Finished parsing programs: " + App.ViewModel.Upcoming.Count + " view model, " + programIndex + " program index, " + responseArray[1] + " protocol");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Problems reading upcoming, not all upcoming programs will be visible.  There should have been " + responseArray[1] + " scheduled recordings listed instead of just " + App.ViewModel.Upcoming.Count + ".", "Error", MessageBoxButton.OK);
+            }
+
+            //upcomingHeader.Title = "upcoming: " + App.ViewModel.Upcoming.Count + " " + programIndex + " " + responseArray[1] + " " + responseArray.Length + " " + (Int64.Parse(responseArray[1])*41+2);
+
+            SortAndDisplay(responseArray[0].Substring(8).Trim());
         }
         private void ParseUpcoming57()
         {
@@ -369,7 +577,7 @@ namespace MythMe
                     switch (fieldIndex)
                     {
                         case 0:
-                            singleProgram = new ProgramViewModel();
+                            singleProgram = new ProgramViewModel(); 
                             singleProgram.title = responseArray[i];
                             break;
                         case 1:
@@ -518,6 +726,12 @@ namespace MythMe
                         //
                         case 40:
                             //singleProgram.year = responseArray[i];
+
+                            if (App.ViewModel.appSettings.ChannelIconsSetting)
+                                singleProgram.showChanicon = System.Windows.Visibility.Visible;
+                            else
+                                singleProgram.showChanicon = System.Windows.Visibility.Collapsed;
+
                             App.ViewModel.Upcoming.Add(singleProgram);
                             programIndex++;
                             fieldIndex = -1;
@@ -733,6 +947,12 @@ namespace MythMe
                             break;
                         case 46:
                             //singleProgram.year = responseArray[i];
+
+                            if (App.ViewModel.appSettings.ChannelIconsSetting)
+                                singleProgram.showChanicon = System.Windows.Visibility.Visible;
+                            else
+                                singleProgram.showChanicon = System.Windows.Visibility.Collapsed;
+
                             App.ViewModel.Upcoming.Add(singleProgram);
                             programIndex++;
                             fieldIndex = -1;
@@ -944,6 +1164,12 @@ namespace MythMe
                             break;
                         case 45:
                             //singleProgram.subtitle_type = responseArray[i];
+
+                            if (App.ViewModel.appSettings.ChannelIconsSetting)
+                                singleProgram.showChanicon = System.Windows.Visibility.Visible;
+                            else
+                                singleProgram.showChanicon = System.Windows.Visibility.Collapsed;
+
                             App.ViewModel.Upcoming.Add(singleProgram);
                             programIndex++;
                             fieldIndex = -1;
@@ -1146,6 +1372,12 @@ namespace MythMe
                             break;
                         case 42:
                             singleProgram.storagegroup = responseArray[i];
+
+                            if (App.ViewModel.appSettings.ChannelIconsSetting)
+                                singleProgram.showChanicon = System.Windows.Visibility.Visible;
+                            else
+                                singleProgram.showChanicon = System.Windows.Visibility.Collapsed;
+
                             App.ViewModel.Upcoming.Add(singleProgram);
                             programIndex++;
                             fieldIndex = -1;
@@ -1345,6 +1577,12 @@ namespace MythMe
                             break;
                         case 41:
                             singleProgram.parentid = responseArray[i];
+
+                            if (App.ViewModel.appSettings.ChannelIconsSetting)
+                                singleProgram.showChanicon = System.Windows.Visibility.Visible;
+                            else
+                                singleProgram.showChanicon = System.Windows.Visibility.Collapsed;
+
                             App.ViewModel.Upcoming.Add(singleProgram);
                             programIndex++;
                             fieldIndex = -1;
@@ -1542,6 +1780,12 @@ namespace MythMe
 
                         case 40:
                             singleProgram.recpriority2 = responseArray[i];
+
+                            if (App.ViewModel.appSettings.ChannelIconsSetting)
+                                singleProgram.showChanicon = System.Windows.Visibility.Visible;
+                            else
+                                singleProgram.showChanicon = System.Windows.Visibility.Collapsed;
+
                             App.ViewModel.Upcoming.Add(singleProgram);
                             programIndex++;
                             fieldIndex = -1;

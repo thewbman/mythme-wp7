@@ -19,22 +19,22 @@
 
         <DataTemplate x:Key="remotePickerTemplate">
             <StackPanel Orientation="Vertical" >
-                <TextBlock Text="{Binding Name}" FontSize="30" HorizontalAlignment="Left" />
+                <TextBlock Text="{Binding Name}" FontSize="30" HorizontalAlignment="Left" Foreground="Silver" />
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <TextBlock Text="{Binding Address}" FontSize="26"  HorizontalAlignment="Right" />
-                    <TextBlock Text=":" FontSize="26"  HorizontalAlignment="Right" />
-                    <TextBlock Text="{Binding Port}" FontSize="26" HorizontalAlignment="Right" />
+                    <TextBlock Text="{Binding Address}" FontSize="26"  HorizontalAlignment="Right" Foreground="Silver" />
+                    <TextBlock Text=":" FontSize="26"  HorizontalAlignment="Right" Foreground="Silver" />
+                    <TextBlock Text="{Binding Port}" FontSize="26" HorizontalAlignment="Right" Foreground="Silver" />
                 </StackPanel>
             </StackPanel>
         </DataTemplate>
         
         <DataTemplate x:Key="remotePickerFullTemplate">
             <StackPanel Orientation="Vertical" >
-                <TextBlock Text="{Binding Name}" FontSize="30" HorizontalAlignment="Left" />
+                <TextBlock Text="{Binding Name}" FontSize="30" HorizontalAlignment="Left" Foreground="Silver" />
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <TextBlock Text="{Binding Address}" FontSize="26"  HorizontalAlignment="Right" />
-                    <TextBlock Text=":" FontSize="26"  HorizontalAlignment="Right" />
-                    <TextBlock Text="{Binding Port}" FontSize="26" HorizontalAlignment="Right" />
+                    <TextBlock Text="{Binding Address}" FontSize="26"  HorizontalAlignment="Right" Foreground="Silver" />
+                    <TextBlock Text=":" FontSize="26"  HorizontalAlignment="Right" Foreground="Silver" />
+                    <TextBlock Text="{Binding Port}" FontSize="26" HorizontalAlignment="Right" Foreground="Silver" />
                 </StackPanel>
             </StackPanel>
         </DataTemplate>
@@ -50,22 +50,22 @@
 
         
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="ApplicationTitle" Text="MythMe" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="remote settings" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock x:Name="ApplicationTitle" Text="MythMe" Style="{StaticResource PhoneTextNormalStyle}" Foreground="White"/>
+            <TextBlock x:Name="PageTitle" Text="remote settings" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" Foreground="White"/>
         </StackPanel>
 
         <StackPanel Grid.Row="1" Margin="12,0,12,0">
             
             <toolkit:ListPicker x:Name="remotePicker" FullModeItemTemplate="{StaticResource remotePickerFullTemplate}" ItemTemplate="{StaticResource remotePickerTemplate}" SelectionChanged="remotePicker_SelectionChanged" />
 
-            <TextBlock Text="name" TextWrapping="Wrap" Margin="12,26,12,0" Style="{StaticResource PhoneTextLargeStyle}"/>
-            <TextBox x:Name="nameBox" />
+            <TextBlock Text="name" TextWrapping="Wrap" Margin="12,26,12,0" Style="{StaticResource PhoneTextLargeStyle}" Foreground="White"/>
+            <TextBox x:Name="nameBox" Foreground="White" />
 
-            <TextBlock Text="address" TextWrapping="Wrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextLargeStyle}"/>
-            <TextBox x:Name="addressBox" />
+            <TextBlock Text="address" TextWrapping="Wrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextLargeStyle}" Foreground="White"/>
+            <TextBox x:Name="addressBox" Foreground="White" />
 
-            <TextBlock Text="port" TextWrapping="Wrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextLargeStyle}"/>
-            <TextBox x:Name="portBox" InputScope="NumberFullWidth" />
+            <TextBlock Text="port" TextWrapping="Wrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextLargeStyle}" Foreground="White"/>
+            <TextBox x:Name="portBox" InputScope="NumberFullWidth" Foreground="White" />
 
         </StackPanel>
     </Grid>

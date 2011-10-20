@@ -42,12 +42,15 @@ namespace MythMe
             //webserver
             WebserverHost.Text = App.ViewModel.appSettings.WebserverHostSetting;
 
-            //ChannelIcons.IsChecked = App.ViewModel.appSettings.ChannelIconsSetting;
             //images
-
+            ChannelIcons.IsChecked = App.ViewModel.appSettings.ChannelIconsSetting;
+            
             //remote
 
-            if ((WebserverHost.Text == "") && (App.ViewModel.appSettings.WebserverHostSetting == "")) WebserverHost.Text = App.ViewModel.appSettings.MasterBackendIpSetting;
+            if ((WebserverHost.Text == "") && (App.ViewModel.appSettings.WebserverHostSetting == ""))
+            {
+                WebserverHost.Text = App.ViewModel.appSettings.MasterBackendIpSetting;
+            }
 
         }
 
@@ -61,25 +64,34 @@ namespace MythMe
             //database
 
             //webserver
-            App.ViewModel.appSettings.WebserverHostSetting = WebserverHost.Text;
+            if ("" == WebserverHost.Text)
+            {
+                App.ViewModel.appSettings.WebserverHostSetting = "" + MasterBackendIp.Text;
+            }
+            else
+            {
+                App.ViewModel.appSettings.WebserverHostSetting = WebserverHost.Text;
+            }
 
-            //App.ViewModel.appSettings.ChannelIconsSetting = (bool)ChannelIcons.IsChecked;
             //images
+            App.ViewModel.appSettings.ChannelIconsSetting = (bool)ChannelIcons.IsChecked;
 
             //remote
+
+            base.OnNavigatedFrom(e);
         }
 
         private void appbarSave_Click(object sender, EventArgs e)
         {
 
-            App.ViewModel.appSettings.MasterBackendIpSetting = MasterBackendIp.Text;
-            App.ViewModel.appSettings.MasterBackendPortSetting = int.Parse(MasterBackendPort.Text);
-            App.ViewModel.appSettings.MasterBackendXmlPortSetting = int.Parse(MasterBackendXmlPort.Text);
+            //App.ViewModel.appSettings.MasterBackendIpSetting = MasterBackendIp.Text;
+            //App.ViewModel.appSettings.MasterBackendPortSetting = int.Parse(MasterBackendPort.Text);
+            //App.ViewModel.appSettings.MasterBackendXmlPortSetting = int.Parse(MasterBackendXmlPort.Text);
 
             //database
 
             //webserver
-            App.ViewModel.appSettings.WebserverHostSetting = WebserverHost.Text;
+            //App.ViewModel.appSettings.WebserverHostSetting = WebserverHost.Text;
 
             //App.ViewModel.appSettings.ChannelIconsSetting = (bool)ChannelIcons.IsChecked;
             //images

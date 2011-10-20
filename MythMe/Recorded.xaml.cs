@@ -92,12 +92,173 @@ namespace MythMe
             {
                 HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(String.Format(getRecordedString, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting, App.ViewModel.randText())));
                 webRequest.BeginGetResponse(new AsyncCallback(RecordedCallback), webRequest);
+                //HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://192.168.1.105/dropbox/GetRecorded.xml"));
+                //webRequest.BeginGetResponse(new AsyncCallback(Recorded25Callback), webRequest);
             }
         }
 
         private void Recorded25Callback(IAsyncResult asynchronousResult)
         {
-            Deployment.Current.Dispatcher.BeginInvoke(() => { MessageBox.Show("not yet supported"); });
+            string resultString;
+
+            HttpWebRequest request = (HttpWebRequest)asynchronousResult.AsyncState;
+
+            HttpWebResponse response;
+
+            try
+            {
+                response = (HttpWebResponse)request.EndGetResponse(asynchronousResult);
+            }
+            catch (Exception ex)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("Failed to get recorded data: " + ex.ToString(), "Error", MessageBoxButton.OK);
+                    App.ViewModel.Connected = false;
+                    NavigationService.GoBack();
+                });
+
+                return;
+            }
+
+            using (StreamReader streamReader1 = new StreamReader(response.GetResponseStream()))
+            {
+                resultString = streamReader1.ReadToEnd();
+            }
+
+            response.GetResponseStream().Close();
+            response.Close();
+            
+            try
+            {
+            
+
+                XDocument xdoc = XDocument.Parse(resultString, LoadOptions.None);
+
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    App.ViewModel.Recorded.Clear();
+
+                    App.ViewModel.appSettings.MythBinarySetting = xdoc.Element("ProgramList").Element("Version").Value;
+                    App.ViewModel.appSettings.ProtoVerSetting = int.Parse(xdoc.Element("ProgramList").Element("ProtoVer").Value);
+
+                });
+
+                //ObservableCollection<ProgramViewModel> programlist = new ObservableCollection<ProgramViewModel>();
+                //int recordedCount = 0;
+
+
+                foreach (XElement singleRecordedElement in xdoc.Element("ProgramList").Element("Programs").Descendants("Program"))
+                {
+                    ProgramViewModel singleRecorded = new ProgramViewModel() { };
+
+                    if (singleRecordedElement.Element("Title").FirstNode != null) singleRecorded.title = (string)singleRecordedElement.Element("Title").FirstNode.ToString();
+                    if (singleRecordedElement.Element("SubTitle").FirstNode != null) singleRecorded.subtitle = (string)singleRecordedElement.Element("SubTitle").FirstNode.ToString();
+
+                    //singleRecorded.programflags = (string)singleRecordedElement.Attribute("programFlags").FirstNode.ToString();
+                    if (singleRecordedElement.Element("Category").FirstNode != null) singleRecorded.category = (string)singleRecordedElement.Element("Category").FirstNode.ToString();
+                    if (singleRecordedElement.Element("FileSize").FirstNode != null) singleRecorded.filesize = Int64.Parse((string)singleRecordedElement.Element("FileSize").FirstNode.ToString());
+                    if (singleRecordedElement.Element("SeriesId").FirstNode != null) singleRecorded.seriesid = (string)singleRecordedElement.Element("SeriesId").FirstNode.ToString();
+                    if (singleRecordedElement.Element("Hostname").FirstNode != null) singleRecorded.hostname = (string)singleRecordedElement.Element("Hostname").FirstNode.ToString();
+                    //singleRecorded.cattype = (string)singleRecordedElement.Element("CatType").FirstNode.ToString();
+                    if (singleRecordedElement.Element("ProgramId").FirstNode != null) singleRecorded.programid = (string)singleRecordedElement.Element("ProgramId").FirstNode.ToString();
+                    //singleRecorded.repeat = (string)singleRecordedElement.Element("Repeat").FirstNode.ToString();
+                    //singleRecorded.stars = (string)singleRecordedElement.Element("Stars").FirstNode.ToString();
+                    if (singleRecordedElement.Element("EndTime").FirstNode != null) singleRecorded.endtime = (string)singleRecordedElement.Element("EndTime").FirstNode.ToString();
+                    if (singleRecordedElement.Element("EndTime").FirstNode != null) singleRecorded.endtimespace = (string)singleRecordedElement.Element("EndTime").FirstNode.ToString().Replace("T", " ");
+                    if (singleRecordedElement.Element("Airdate").FirstNode != null) singleRecorded.airdate = (string)singleRecordedElement.Element("Airdate").FirstNode.ToString();
+                    if (singleRecordedElement.Element("StartTime").FirstNode != null) singleRecorded.starttime = (string)singleRecordedElement.Element("StartTime").FirstNode.ToString();
+                    if (singleRecordedElement.Element("StartTime").FirstNode != null) singleRecorded.starttimespace = (string)singleRecordedElement.Element("StartTime").FirstNode.ToString().Replace("T", " ");
+                    //singleRecorded.lastmodified = (string)singleRecordedElement.Element("lastModified").FirstNode.ToString();
+
+                    if (singleRecordedElement.Element("Channel").Element("InputId").FirstNode != null) singleRecorded.inputid = int.Parse((string)singleRecordedElement.Element("Channel").Element("InputId").Value);
+                    if (singleRecordedElement.Element("Channel").Element("ChannelName").FirstNode != null) singleRecorded.channame = (string)singleRecordedElement.Element("Channel").Element("ChannelName").Value;
+                    if (singleRecordedElement.Element("Channel").Element("SourceId").FirstNode != null) singleRecorded.sourceid = int.Parse((string)singleRecordedElement.Element("Channel").Element("SourceId").Value);
+                    if (singleRecordedElement.Element("Channel").Element("ChanId").FirstNode != null) singleRecorded.chanid = int.Parse((string)singleRecordedElement.Element("Channel").Element("ChanId").Value);
+                    if (singleRecordedElement.Element("Channel").Element("ChanNum").FirstNode != null) singleRecorded.channum = (string)singleRecordedElement.Element("Channel").Element("ChanNum").Value;
+                    if (singleRecordedElement.Element("Channel").Element("CallSign").FirstNode != null) singleRecorded.callsign = (string)singleRecordedElement.Element("Channel").Element("CallSign").Value;
+                    /*
+                    */
+
+                    if (singleRecordedElement.Element("Recording").Element("Priority").FirstNode != null) singleRecorded.recpriority = int.Parse((string)singleRecordedElement.Element("Recording").Element("Priority").Value);
+                    if (singleRecordedElement.Element("Recording").Element("Status").FirstNode != null) singleRecorded.recstatus = int.Parse((string)singleRecordedElement.Element("Recording").Element("Status").Value);
+                    singleRecorded.recstatustext = App.ViewModel.functions.RecStatusDecode(singleRecorded.recstatus);
+                    if (singleRecordedElement.Element("Recording").Element("RecGroup").FirstNode != null) singleRecorded.recgroup = (string)singleRecordedElement.Element("Recording").Element("RecGroup").Value;
+                    if (singleRecordedElement.Element("Recording").Element("StartTs").FirstNode != null) singleRecorded.recstartts = (string)singleRecordedElement.Element("Recording").Element("StartTs").Value;
+                    if (singleRecordedElement.Element("Recording").Element("EndTs").FirstNode != null) singleRecorded.recendts = (string)singleRecordedElement.Element("Recording").Element("EndTs").Value;
+                    if (singleRecordedElement.Element("Recording").Element("RecordId").FirstNode != null) singleRecorded.recordid = int.Parse((string)singleRecordedElement.Element("Recording").Element("RecordId").Value);
+
+                    //not sure how to get plain text as child of "Recording"
+                    //singleRecorded.description = (string)singleRecordedElement.FirstNode.ToString();
+                    
+                    /*
+                     * foreach (XElement singleRecordedChild in singleRecordedElement.RemoveNodes())
+                    {
+                        if (singleRecordedChild.ToString().Substring(0, 1) != "<") 
+                            singleRecorded.description = singleRecordedChild.ToString();
+                    }
+                     */
+
+                    singleRecorded.screenshot = App.ViewModel.functions.CreateScreenshotUrl(singleRecorded);
+
+                    if (singleRecorded.recstatus == -2)
+                    {
+                        singleRecorded.recordedfourthline = "Currently recording (" + singleRecorded.channum + " - " + singleRecorded.channame + ")";
+                    }
+                    else
+                    {
+                        singleRecorded.recordedfourthline = singleRecorded.channum + " - " + singleRecorded.channame;
+                    }
+
+                    if (singleRecorded.subtitle == "") singleRecorded.subtitle = ".";
+
+                    singleRecorded.description = singleRecordedElement.Element("Airdate").NextNode.ToString();
+                    if (singleRecorded.description.Contains("<Inet")) singleRecorded.description = "";
+
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        //programlist.Add(singleRecorded);
+                        App.ViewModel.Recorded.Add(singleRecorded);
+
+                        /*
+                        if (singleRecorded.recgroup == "Default")
+                        {
+                            DefaultRecorded.Add(singleRecorded);
+                           // DefaultRecorded.OrderBy(p => p.title);
+                        }
+                        else if (singleRecorded.recgroup == "Deleted")
+                        {
+                            DeletedRecorded.Add(singleRecorded);
+                            //DeletedRecorded.OrderBy(p => p.title);
+                        }
+                        else if (singleRecorded.recgroup == "LiveTV")
+                        {
+                            LiveTVRecorded.Add(singleRecorded);
+                            //LiveTVRecorded.OrderBy(p => p.title);
+                        }
+                         */
+                    });
+                }
+
+
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    SortAndDisplay();
+                });
+            
+            }
+            catch (Exception ex)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("Failed to parse recorded data: " + ex.ToString(), "Error", MessageBoxButton.OK);
+                    App.ViewModel.Connected = false;
+                    NavigationService.GoBack();
+                });
+
+                return;
+            }
+             
         }
 
         private void RecordedCallback(IAsyncResult asynchronousResult)

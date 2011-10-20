@@ -41,8 +41,8 @@ namespace MythMe
         private bool connected;
         private Socket remoteSocket;
         SocketAsyncEventArgs remoteSocketEventArg;
-        private string remoteAddress;
-        private int remotePort;
+        //private string remoteAddress;
+        //private int remotePort;
         private DnsEndPoint remoteEndPoint;
 
         private FrontendViewModel currentFrontend;
@@ -150,7 +150,7 @@ namespace MythMe
             if (remoteSocket.Connected)
             {
                 //SocketAsyncEventArgs sendSocketEventArg = new SocketAsyncEventArgs();
-                byte[] buffer = Encoding.UTF8.GetBytes("key " + inValue + "\n");
+                byte[] buffer = Encoding.UTF8.GetBytes("key " + inValue.ToLower() + "\n");
                 remoteSocketEventArg.SetBuffer(buffer, 0, buffer.Length);
 
                 remoteSocket.SendAsync(remoteSocketEventArg);

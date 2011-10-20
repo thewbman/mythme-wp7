@@ -77,7 +77,7 @@ namespace MythMe
 
                 if ((App.ViewModel.appSettings.FirstRunSetting) || (false))
                 {
-                    MessageBox.Show("Welcome to MythMe.  This is an app for controlling a MythTV DVR system.  If you do not know what that means this app is not for you.  You will need to enter your master backend address in the preferences to get started.  This app does not yet support the 0.25-development branch of MythTV.", "MythMe", MessageBoxButton.OK);
+                    MessageBox.Show("Welcome to MythMe.  This is an app for controlling a MythTV DVR system.  If you do not know what that means this app is not for you.  You will need to enter your master backend address in the preferences to get started. ", "MythMe", MessageBoxButton.OK);
 
                     App.ViewModel.appSettings.FirstRunSetting = false;
 
@@ -98,8 +98,14 @@ namespace MythMe
             {
                 performanceProgressBarCustomized.IsIndeterminate = true;
 
+                //HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://192.168.1.105/dropbox/GetSetting.xml"));
                 HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(String.Format(getSettingsString, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting, App.ViewModel.randText())));
                 webRequest.BeginGetResponse(new AsyncCallback(SettingsCallback), webRequest);
+            }
+
+            if ("" == App.ViewModel.appSettings.WebserverHostSetting)
+            {
+                App.ViewModel.appSettings.WebserverHostSetting = ""+App.ViewModel.appSettings.MasterBackendIpSetting;      
             }
 
         }
@@ -141,66 +147,131 @@ namespace MythMe
 
                 XDocument xdoc = XDocument.Parse(resultString, LoadOptions.None);
 
-                foreach (XElement singleValueElement in xdoc.Element("GetSettingResponse").Element("Values").Descendants("Value"))
+                if (xdoc.Descendants("GetSettingResponse").Count() > 0)
                 {
 
-                    switch (singleValueElement.Attribute("key").Value)
+                    foreach (XElement singleValueElement in xdoc.Element("GetSettingResponse").Element("Values").Descendants("Value"))
                     {
-                        case "DBSchemaVer":
-                            App.ViewModel.appSettings.DBSchemaVerSetting = int.Parse(singleValueElement.FirstNode.ToString());
-                            break;
-                        case "MasterServerIP":
-                            App.ViewModel.appSettings.MasterBackendIpSettingSetting = singleValueElement.FirstNode.ToString();
-                            break;
-                        case "MasterServerPort":
-                            App.ViewModel.appSettings.MasterBackendPortSetting = int.Parse(singleValueElement.FirstNode.ToString());
-                            break;
 
-                        case "UserJobDesc1":
-                            App.ViewModel.appSettings.UserJobDesc1Setting = singleValueElement.FirstNode.ToString();
-                            break;
-                        case "UserJobDesc2":
-                            App.ViewModel.appSettings.UserJobDesc2Setting = singleValueElement.FirstNode.ToString();
-                            break;
-                        case "UserJobDesc3":
-                            App.ViewModel.appSettings.UserJobDesc3Setting = singleValueElement.FirstNode.ToString();
-                            break;
-                        case "UserJobDesc4":
-                            App.ViewModel.appSettings.UserJobDesc4Setting = singleValueElement.FirstNode.ToString();
-                            break;
+                        switch (singleValueElement.Attribute("key").Value)
+                        {
+                            case "DBSchemaVer":
+                                App.ViewModel.appSettings.DBSchemaVerSetting = int.Parse(singleValueElement.FirstNode.ToString());
+                                break;
+                            case "MasterServerIP":
+                                App.ViewModel.appSettings.MasterBackendIpSettingSetting = singleValueElement.FirstNode.ToString();
+                                break;
+                            case "MasterServerPort":
+                                App.ViewModel.appSettings.MasterBackendPortSetting = int.Parse(singleValueElement.FirstNode.ToString());
+                                break;
 
-                        case "AutoCommercialFlag":
-                            App.ViewModel.appSettings.AutoCommercialFlagSetting = App.ViewModel.functions.IntToBool(singleValueElement.FirstNode.ToString());
-                            break;
-                        case "AutoTranscode":
-                            App.ViewModel.appSettings.AutoTranscodeSetting = App.ViewModel.functions.IntToBool(singleValueElement.FirstNode.ToString());
-                            break;
-                        case "AutoRunUserJob1":
-                            App.ViewModel.appSettings.AutoRunUserJob1Setting = App.ViewModel.functions.IntToBool(singleValueElement.FirstNode.ToString());
-                            break;
-                        case "AutoRunUserJob2":
-                            App.ViewModel.appSettings.AutoRunUserJob2Setting = App.ViewModel.functions.IntToBool(singleValueElement.FirstNode.ToString());
-                            break;
-                        case "AutoRunUserJob3":
-                            App.ViewModel.appSettings.AutoRunUserJob3Setting = App.ViewModel.functions.IntToBool(singleValueElement.FirstNode.ToString());
-                            break;
-                        case "AutoRunUserJob4":
-                            App.ViewModel.appSettings.AutoRunUserJob4Setting = App.ViewModel.functions.IntToBool(singleValueElement.FirstNode.ToString());
-                            break;
+                            case "UserJobDesc1":
+                                App.ViewModel.appSettings.UserJobDesc1Setting = singleValueElement.FirstNode.ToString();
+                                break;
+                            case "UserJobDesc2":
+                                App.ViewModel.appSettings.UserJobDesc2Setting = singleValueElement.FirstNode.ToString();
+                                break;
+                            case "UserJobDesc3":
+                                App.ViewModel.appSettings.UserJobDesc3Setting = singleValueElement.FirstNode.ToString();
+                                break;
+                            case "UserJobDesc4":
+                                App.ViewModel.appSettings.UserJobDesc4Setting = singleValueElement.FirstNode.ToString();
+                                break;
 
-                        case "MythXML_key":
-                            App.ViewModel.appSettings.MythwebXmlKeySetting = singleValueElement.FirstNode.ToString();
-                            break;
+                            case "AutoCommercialFlag":
+                                App.ViewModel.appSettings.AutoCommercialFlagSetting = App.ViewModel.functions.IntToBool(singleValueElement.FirstNode.ToString());
+                                break;
+                            case "AutoTranscode":
+                                App.ViewModel.appSettings.AutoTranscodeSetting = App.ViewModel.functions.IntToBool(singleValueElement.FirstNode.ToString());
+                                break;
+                            case "AutoRunUserJob1":
+                                App.ViewModel.appSettings.AutoRunUserJob1Setting = App.ViewModel.functions.IntToBool(singleValueElement.FirstNode.ToString());
+                                break;
+                            case "AutoRunUserJob2":
+                                App.ViewModel.appSettings.AutoRunUserJob2Setting = App.ViewModel.functions.IntToBool(singleValueElement.FirstNode.ToString());
+                                break;
+                            case "AutoRunUserJob3":
+                                App.ViewModel.appSettings.AutoRunUserJob3Setting = App.ViewModel.functions.IntToBool(singleValueElement.FirstNode.ToString());
+                                break;
+                            case "AutoRunUserJob4":
+                                App.ViewModel.appSettings.AutoRunUserJob4Setting = App.ViewModel.functions.IntToBool(singleValueElement.FirstNode.ToString());
+                                break;
 
-                        default:
-                            Deployment.Current.Dispatcher.BeginInvoke(() =>
-                            {
-                                //MessageBox.Show("Value key: " + singleValueElement.Attribute("key").Value);
-                            });
-                            break;
+                            case "MythXML_key":
+                                App.ViewModel.appSettings.MythwebXmlKeySetting = singleValueElement.FirstNode.ToString();
+                                break;
+
+                            default:
+                                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                                {
+                                    //MessageBox.Show("Value key: " + singleValueElement.Attribute("key").Value);
+                                });
+                                break;
+                        }
                     }
+                }
+                else if(xdoc.Descendants("SettingList").Count() > 0)
+                {
 
+                    foreach (XElement singleValueElement in xdoc.Element("SettingList").Element("Settings").Descendants("String"))
+                    {
 
+                        switch (singleValueElement.Attribute("key").Value)
+                        {
+                            case "DBSchemaVer":
+                                App.ViewModel.appSettings.DBSchemaVerSetting = int.Parse(singleValueElement.FirstNode.ToString());
+                                break;
+                            case "MasterServerIP":
+                                App.ViewModel.appSettings.MasterBackendIpSettingSetting = singleValueElement.FirstNode.ToString();
+                                break;
+                            case "MasterServerPort":
+                                App.ViewModel.appSettings.MasterBackendPortSetting = int.Parse(singleValueElement.FirstNode.ToString());
+                                break;
+
+                            case "UserJobDesc1":
+                                App.ViewModel.appSettings.UserJobDesc1Setting = singleValueElement.FirstNode.ToString();
+                                break;
+                            case "UserJobDesc2":
+                                App.ViewModel.appSettings.UserJobDesc2Setting = singleValueElement.FirstNode.ToString();
+                                break;
+                            case "UserJobDesc3":
+                                App.ViewModel.appSettings.UserJobDesc3Setting = singleValueElement.FirstNode.ToString();
+                                break;
+                            case "UserJobDesc4":
+                                App.ViewModel.appSettings.UserJobDesc4Setting = singleValueElement.FirstNode.ToString();
+                                break;
+
+                            case "AutoCommercialFlag":
+                                App.ViewModel.appSettings.AutoCommercialFlagSetting = App.ViewModel.functions.IntToBool(singleValueElement.FirstNode.ToString());
+                                break;
+                            case "AutoTranscode":
+                                App.ViewModel.appSettings.AutoTranscodeSetting = App.ViewModel.functions.IntToBool(singleValueElement.FirstNode.ToString());
+                                break;
+                            case "AutoRunUserJob1":
+                                App.ViewModel.appSettings.AutoRunUserJob1Setting = App.ViewModel.functions.IntToBool(singleValueElement.FirstNode.ToString());
+                                break;
+                            case "AutoRunUserJob2":
+                                App.ViewModel.appSettings.AutoRunUserJob2Setting = App.ViewModel.functions.IntToBool(singleValueElement.FirstNode.ToString());
+                                break;
+                            case "AutoRunUserJob3":
+                                App.ViewModel.appSettings.AutoRunUserJob3Setting = App.ViewModel.functions.IntToBool(singleValueElement.FirstNode.ToString());
+                                break;
+                            case "AutoRunUserJob4":
+                                App.ViewModel.appSettings.AutoRunUserJob4Setting = App.ViewModel.functions.IntToBool(singleValueElement.FirstNode.ToString());
+                                break;
+
+                            case "MythXML_key":
+                                App.ViewModel.appSettings.MythwebXmlKeySetting = singleValueElement.FirstNode.ToString();
+                                break;
+
+                            default:
+                                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                                {
+                                    //MessageBox.Show("Value key: " + singleValueElement.Attribute("key").Value);
+                                });
+                                break;
+                        }
+                    }
                 }
 
             }

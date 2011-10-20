@@ -12,20 +12,23 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
-    shell:SystemTray.IsVisible="False">
+    shell:SystemTray.IsVisible="False"
+    xmlns:local="clr-namespace:MythMe"
+    local:TiltEffect.IsTiltEnabled="True"
+    >
 
     <!--LayoutRoot contains the root grid where all other page content is placed-->
     <Grid x:Name="LayoutRoot" Background="#3e000c" >
-        <controls:Panorama Title="help" >
+        <controls:Panorama Title="help" Foreground="White" >
 
-            <controls:PanoramaItem Header="faqs">
+            <controls:PanoramaItem Header="faqs" Foreground="White">
                 <Grid>
                     <ListBox x:Name="QuestionListBox" Margin="0,0,-12,0" ItemsSource="{Binding Questions}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Margin="0,0,0,17" Width="432">
-                                    <TextBlock Text="{Binding Name}" TextWrapping="Wrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextLargeStyle}"/>
-                                    <TextBlock Text="{Binding Content}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSmallStyle}"/>
+                                    <TextBlock Text="{Binding Name}" TextWrapping="Wrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextLargeStyle}" Foreground="White" />
+                                    <TextBlock Text="{Binding Content}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSmallStyle}" Foreground="Silver" />
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -33,17 +36,29 @@
                 </Grid>
             </controls:PanoramaItem>
 
-            <controls:PanoramaItem Header="support">
+            <controls:PanoramaItem Header="support" Foreground="White" >
                 <Grid>
+                    <!--
                     <StackPanel Margin="0,0,0,17" Width="432">
-                        <TextBlock x:Name="emailTitle" Text="email" TextWrapping="Wrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextLargeStyle}" Tap="email_Tap" />
-                        <TextBlock x:Name="emailContent" Text="mythme.help@gmail.com" TextWrapping="Wrap" Style="{StaticResource PhoneTextSmallStyle}" Tap="email_Tap" />
-                        <TextBlock x:Name="twitterTitle" Text="twitter" TextWrapping="Wrap" Margin="12,6,12,0" Style="{StaticResource PhoneTextLargeStyle}" Tap="twitter_Tap" />
-                        <TextBlock x:Name="twitterContent" Text="@webmyth_dev" TextWrapping="Wrap" Style="{StaticResource PhoneTextSmallStyle}" Tap="twitter_Tap" />
-                        <TextBlock x:Name="homepageTitle" Text="app homepage" TextWrapping="Wrap" Margin="12,6,12,0" Style="{StaticResource PhoneTextLargeStyle}" Tap="homepage_Tap" />
-                        <TextBlock x:Name="homepageContent" Text="http://code.google.com/p/mythme-wp7/" TextWrapping="Wrap" Style="{StaticResource PhoneTextSmallStyle}" Tap="homepage_Tap" />
-                        <TextBlock x:Name="reviewTitle" Text="leave a review" TextWrapping="Wrap" Margin="12,6,12,0" Style="{StaticResource PhoneTextLargeStyle}" Tap="reviewTitle_Tap" />
+                        <TextBlock x:Name="emailTitle" Text="email" TextWrapping="Wrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextLargeStyle}" Foreground="White" Tap="email_Tap" />
+                        <TextBlock x:Name="emailContent" Text="mythme.help@gmail.com" TextWrapping="Wrap" Style="{StaticResource PhoneTextSmallStyle}" Foreground="Silver" Tap="email_Tap" />
+                        <TextBlock x:Name="twitterTitle" Text="twitter" TextWrapping="Wrap" Margin="12,6,12,0" Style="{StaticResource PhoneTextLargeStyle}" Foreground="White" Tap="twitter_Tap" />
+                        <TextBlock x:Name="twitterContent" Text="@webmyth_dev" TextWrapping="Wrap" Style="{StaticResource PhoneTextSmallStyle}" Foreground="Silver" Tap="twitter_Tap" />
+                        <TextBlock x:Name="homepageTitle" Text="app homepage" TextWrapping="Wrap" Margin="12,6,12,0" Style="{StaticResource PhoneTextLargeStyle}" Foreground="White" Tap="homepage_Tap" />
+                        <TextBlock x:Name="homepageContent" Text="http://code.google.com/p/mythme-wp7/" TextWrapping="Wrap" Style="{StaticResource PhoneTextSmallStyle}" Foreground="Silver" Tap="homepage_Tap" />
+                        <TextBlock x:Name="reviewTitle" Text="leave a review" TextWrapping="Wrap" Margin="12,6,12,0" Style="{StaticResource PhoneTextLargeStyle}" Foreground="White" Tap="reviewTitle_Tap" />
                     </StackPanel>
+                    -->
+                    <ListBox x:Name="SupportListBox" Margin="0,0,-12,0" ItemsSource="{Binding Support}" SelectionChanged="SupportListBox_SelectionChanged">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,0,0,17" Width="432">
+                                    <TextBlock Text="{Binding Name}" TextWrapping="Wrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextLargeStyle}" Foreground="White" />
+                                    <TextBlock Text="{Binding Content}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSmallStyle}" Foreground="Silver" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                 </Grid>
             </controls:PanoramaItem>
 
