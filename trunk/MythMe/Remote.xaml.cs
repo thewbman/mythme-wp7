@@ -128,56 +128,81 @@ namespace MythMe
 
         private void SocketEventArg_Completed(object sender, SocketAsyncEventArgs e)
         {
-            
-            switch (e.LastOperation)
+            try
             {
-                case SocketAsyncOperation.Connect:
-                    ProcessConnect(e);
-                    break;
-                case SocketAsyncOperation.Send:
-                    ProcessSend(e);
-                    break;
-                case SocketAsyncOperation.Receive:
-                    ProcessReceive(e);
-                    break;
-                default:
-                    throw new Exception("Invalid operation completed");
+                switch (e.LastOperation)
+                {
+                    case SocketAsyncOperation.Connect:
+                        ProcessConnect(e);
+                        break;
+                    case SocketAsyncOperation.Send:
+                        ProcessSend(e);
+                        break;
+                    case SocketAsyncOperation.Receive:
+                        ProcessReceive(e);
+                        break;
+                    default:
+                        throw new Exception("Invalid operation completed");
+                }
+            }
+            catch (Exception ex)
+            {
+                //
             }
         }
 
         void SendKey(string inValue)
         {
-            if (remoteSocket.Connected)
+            try
             {
-                //SocketAsyncEventArgs sendSocketEventArg = new SocketAsyncEventArgs();
-                byte[] buffer = Encoding.UTF8.GetBytes("key " + inValue.ToLower() + "\n");
-                remoteSocketEventArg.SetBuffer(buffer, 0, buffer.Length);
+                if (remoteSocket.Connected)
+                {
+                    //SocketAsyncEventArgs sendSocketEventArg = new SocketAsyncEventArgs();
+                    byte[] buffer = Encoding.UTF8.GetBytes("key " + inValue.ToLower() + "\n");
+                    remoteSocketEventArg.SetBuffer(buffer, 0, buffer.Length);
 
-                remoteSocket.SendAsync(remoteSocketEventArg);
+                    remoteSocket.SendAsync(remoteSocketEventArg);
+                }
+            }
+            catch (Exception ex)
+            {
+                //
             }
         }
         void SendJump(string inValue)
         {
-
-            if (remoteSocket.Connected)
+            try
             {
-                //SocketAsyncEventArgs sendSocketEventArg = new SocketAsyncEventArgs();
-                byte[] buffer = Encoding.UTF8.GetBytes("jump " + inValue + "\n");
-                remoteSocketEventArg.SetBuffer(buffer, 0, buffer.Length);
+                if (remoteSocket.Connected)
+                {
+                    //SocketAsyncEventArgs sendSocketEventArg = new SocketAsyncEventArgs();
+                    byte[] buffer = Encoding.UTF8.GetBytes("jump " + inValue + "\n");
+                    remoteSocketEventArg.SetBuffer(buffer, 0, buffer.Length);
 
-                remoteSocket.SendAsync(remoteSocketEventArg);
+                    remoteSocket.SendAsync(remoteSocketEventArg);
+                }
+            }
+            catch (Exception ex)
+            {
+                //
             }
         }
         void SendQuery(string inValue)
         {
-
-            if (remoteSocket.Connected)
+            try
             {
-                //SocketAsyncEventArgs sendSocketEventArg = new SocketAsyncEventArgs();
-                byte[] buffer = Encoding.UTF8.GetBytes("query " + inValue + "\n");
-                remoteSocketEventArg.SetBuffer(buffer, 0, buffer.Length);
+                if (remoteSocket.Connected)
+                {
+                    //SocketAsyncEventArgs sendSocketEventArg = new SocketAsyncEventArgs();
+                    byte[] buffer = Encoding.UTF8.GetBytes("query " + inValue + "\n");
+                    remoteSocketEventArg.SetBuffer(buffer, 0, buffer.Length);
 
-                remoteSocket.SendAsync(remoteSocketEventArg);
+                    remoteSocket.SendAsync(remoteSocketEventArg);
+                }
+            }
+            catch (Exception ex)
+            {
+                //
             }
         }
 
