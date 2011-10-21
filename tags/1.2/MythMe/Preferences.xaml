@@ -1,0 +1,132 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="MythMe.Preferences"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="728"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait"  Orientation="Portrait"
+    shell:SystemTray.IsVisible="False">
+
+    <!--LayoutRoot contains the root grid where all other page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="#3e000c">
+        <controls:Panorama Title="preferences" SelectionChanged="Panorama_SelectionChanged" Foreground="White">
+
+            <controls:PanoramaItem Header="backend" Foreground="White">
+                <ScrollViewer>
+                    <StackPanel>
+                        <TextBlock Text="master backend address" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBox x:Name="MasterBackendIp" Foreground="White" />
+
+                        <TextBlock Text="mythprotocol port" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBox x:Name="MasterBackendPort" InputScope="NumberFullWidth" Foreground="White" />
+
+                        <TextBlock Text="mythxml port" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBox x:Name="MasterBackendXmlPort" InputScope="NumberFullWidth" Foreground="White" />
+                        
+                    </StackPanel>
+                </ScrollViewer>
+            </controls:PanoramaItem>
+
+            <controls:PanoramaItem Header="webserver" Foreground="White">
+                <ScrollViewer>
+                    <StackPanel>
+
+                        <TextBlock Text="webserver address" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBox x:Name="WebserverHost" Foreground="White" />
+
+                    </StackPanel>
+                </ScrollViewer>
+            </controls:PanoramaItem>
+            
+            
+            <!--
+            <controls:PanoramaItem Header="database">
+                <ScrollViewer>
+                    <StackPanel>
+
+                        manual 
+                        host
+                        username
+                        password
+                        name
+
+                    </StackPanel>
+                </ScrollViewer>
+            </controls:PanoramaItem>
+            -->
+            <!--
+            <controls:PanoramaItem Header="webserver">
+                <ScrollViewer>
+                    <StackPanel>
+                        
+                        host 
+                        username
+                        password
+                        script
+                        mythwebxml
+                        mythwebxmlkey
+                        python file
+                        downloads
+                        
+                    </StackPanel>
+                </ScrollViewer>
+            </controls:PanoramaItem>
+            -->
+
+
+            <controls:PanoramaItem Header="images" Foreground="White">
+                <ScrollViewer>
+                    <StackPanel>
+                        <CheckBox x:Name="ChannelIcons" AllowDrop="False" Foreground="White" BorderBrush="white" />
+                        <TextBlock Text="show channel icons" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+
+                        <!--
+                        video list
+                        video details
+                        script
+                        -->
+                        
+                    </StackPanel>
+                </ScrollViewer>
+            </controls:PanoramaItem>
+            
+            <!--
+            <controls:PanoramaItem Header="remote">
+                <ScrollViewer>
+                    <StackPanel>
+                        
+                        
+                        header
+                        vibrate
+                        fullscreen
+                        jump on play
+                        jump on livetv
+                       
+                    </StackPanel>
+                </ScrollViewer>
+            </controls:PanoramaItem>
+            -->
+        </controls:Panorama>
+    </Grid>
+
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" BackgroundColor="#28000C" ForegroundColor="White" >
+            <shell:ApplicationBarIconButton x:Name="appbarSave" IconUri="/Images/appbar.save.rest.png" Text="refresh" Click="appbarSave_Click" />
+            <!---->
+            <shell:ApplicationBar.MenuItems>
+                <!-- 
+                <shell:ApplicationBarMenuItem Text="MenuItem 1"/>
+                <shell:ApplicationBarMenuItem Text="MenuItem 2"/>
+                -->
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+</phone:PhoneApplicationPage>

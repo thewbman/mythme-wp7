@@ -1,0 +1,87 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="MythMe.RemoteSettings"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
+    shell:SystemTray.IsVisible="True">
+
+
+    <phone:PhoneApplicationPage.Resources>
+
+        <DataTemplate x:Key="remotePickerTemplate">
+            <StackPanel Orientation="Vertical" >
+                <TextBlock Text="{Binding Name}" FontSize="30" HorizontalAlignment="Left" Foreground="Silver" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <TextBlock Text="{Binding Address}" FontSize="26"  HorizontalAlignment="Right" Foreground="Silver" />
+                    <TextBlock Text=":" FontSize="26"  HorizontalAlignment="Right" Foreground="Silver" />
+                    <TextBlock Text="{Binding Port}" FontSize="26" HorizontalAlignment="Right" Foreground="Silver" />
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+        
+        <DataTemplate x:Key="remotePickerFullTemplate">
+            <StackPanel Orientation="Vertical" >
+                <TextBlock Text="{Binding Name}" FontSize="30" HorizontalAlignment="Left" Foreground="Silver" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <TextBlock Text="{Binding Address}" FontSize="26"  HorizontalAlignment="Right" Foreground="Silver" />
+                    <TextBlock Text=":" FontSize="26"  HorizontalAlignment="Right" Foreground="Silver" />
+                    <TextBlock Text="{Binding Port}" FontSize="26" HorizontalAlignment="Right" Foreground="Silver" />
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+
+    </phone:PhoneApplicationPage.Resources>
+    
+    
+    <Grid x:Name="LayoutRoot" Background="#3e000c">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+            <TextBlock x:Name="ApplicationTitle" Text="MythMe" Style="{StaticResource PhoneTextNormalStyle}" Foreground="White"/>
+            <TextBlock x:Name="PageTitle" Text="remote settings" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" Foreground="White"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Margin="12,0,12,0">
+            
+            <toolkit:ListPicker x:Name="remotePicker" FullModeItemTemplate="{StaticResource remotePickerFullTemplate}" ItemTemplate="{StaticResource remotePickerTemplate}" SelectionChanged="remotePicker_SelectionChanged" />
+
+            <TextBlock Text="name" TextWrapping="Wrap" Margin="12,26,12,0" Style="{StaticResource PhoneTextLargeStyle}" Foreground="White"/>
+            <TextBox x:Name="nameBox" Foreground="White" />
+
+            <TextBlock Text="address" TextWrapping="Wrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextLargeStyle}" Foreground="White"/>
+            <TextBox x:Name="addressBox" Foreground="White" />
+
+            <TextBlock Text="port" TextWrapping="Wrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextLargeStyle}" Foreground="White"/>
+            <TextBox x:Name="portBox" InputScope="NumberFullWidth" Foreground="White" />
+
+        </StackPanel>
+    </Grid>
+ 
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" BackgroundColor="#28000C" >
+            <shell:ApplicationBarIconButton x:Name="addButton" IconUri="/Images/appbar.add.rest.png" Text="new" Click="addButton_Click"/>
+            <shell:ApplicationBarIconButton x:Name="saveButton" IconUri="/Images/appbar.save.rest.png" Text="save" Click="saveButton_Click" />
+            <shell:ApplicationBarIconButton x:Name="deleteButton" IconUri="/Images/appbar.delete.rest.png" Text="delete" Click="deleteButton_Click" />
+            <!--
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="MenuItem 1"/>
+                <shell:ApplicationBarMenuItem Text="MenuItem 2"/>
+            </shell:ApplicationBar.MenuItems>
+            -->
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+</phone:PhoneApplicationPage>

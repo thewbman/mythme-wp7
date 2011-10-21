@@ -1,0 +1,9 @@
+﻿Todo:
+
+ - webmyth script (upcoming, mysql, etc)
+ - remote visual status
+ - font color
+ - download transcoded?
+ - theme/colors?
+ - ads?
+ - clean sort popup
