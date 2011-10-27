@@ -107,8 +107,8 @@
                     </Grid.RowDefinitions>
                     
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                        <toolkit:DatePicker x:Name="guideDatePicker" Foreground="White" />
-                        <toolkit:TimePicker x:Name="guideTimePicker" Foreground="White" />
+                        <toolkit:DatePicker x:Name="guideDatePicker" Foreground="#800000" />
+                        <toolkit:TimePicker x:Name="guideTimePicker" Foreground="#800000" />
                         <Button x:Name="guideTimePickerButton" Content="Go" Tap="guideTimePickerButton_Tap" Foreground="White" BorderBrush="White" />
                     </StackPanel>
                     <toolkit:LongListSelector x:Name="TimeGuideLL"
@@ -126,11 +126,11 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    
-                    <toolkit:ListPicker x:Name="guideChannelPicker" FullModeItemTemplate="{StaticResource channelPickerFullTemplate}" ItemTemplate="{StaticResource channelPickerTemplate}" Foreground="White" />
+
+                    <toolkit:ListPicker x:Name="guideChannelPicker" FullModeItemTemplate="{StaticResource channelPickerFullTemplate}" ItemTemplate="{StaticResource channelPickerTemplate}" Foreground="#800000" />
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Grid.Row="1">
-                        <toolkit:DatePicker x:Name="guideChannelDatePicker" Foreground="White" />
+                        <toolkit:DatePicker x:Name="guideChannelDatePicker" Foreground="#800000" />
                         <Button x:Name="guideChannelButton" Content="Go" Tap="guideChannelButton_Tap" Foreground="White" BorderBrush="White"/>
                     </StackPanel>
 

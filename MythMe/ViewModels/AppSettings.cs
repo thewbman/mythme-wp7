@@ -107,7 +107,7 @@ namespace MythMe
         const string WebserverHostDefault = "";
         const string WebserverUsernameDefault = "";
         const string WebserverPasswordDefault = "";
-        const int UseScriptDefault = 0;
+        const bool UseScriptDefault = false;
         const bool MythwebXmlDefault = false;
         const string MythwebXmlKeyDefault = "DefaultKey";
         const string PythonFileDefault = "/cgi-bin/webmyth.py";
@@ -318,9 +318,9 @@ namespace MythMe
             get { return GetValueOrDefault<string>(WebserverPasswordName, WebserverPasswordDefault); }
             set { if (AddOrUpdateValue(WebserverPasswordName, value)) { Save(); } }
         }
-        public int UseScriptSetting
+        public bool UseScriptSetting
         {
-            get { return GetValueOrDefault<int>(UseScriptName, UseScriptDefault); }
+            get { return GetValueOrDefault<bool>(UseScriptName, UseScriptDefault); }
             set { if (AddOrUpdateValue(UseScriptName, value)) { Save(); } }
         }
         public bool MythwebXmlSetting

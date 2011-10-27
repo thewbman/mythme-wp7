@@ -15,6 +15,8 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Windows.Navigation;
 using System.Windows.Threading;
+using System.Runtime.Serialization.Json;
+using System.ServiceModel;
 using System.Threading;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
@@ -98,6 +100,152 @@ namespace MythMe
             UpcomingUpcomingLL.ItemsSource = null;
 
             App.ViewModel.Upcoming.Clear();
+
+            if (App.ViewModel.appSettings.UseScriptSetting)
+            {
+                GetUpcomingScript();
+            }
+            else
+            {
+                GetUpcomingProtocol();
+            }
+        }
+
+        private void GetUpcomingScript()
+        {
+            string url = "http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=getPending&rand=" + App.ViewModel.randText();
+
+            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(url));
+            webRequest.BeginGetResponse(new AsyncCallback(UpcomingCallback), webRequest);
+        }
+        private void UpcomingCallback(IAsyncResult asynchronousResult)
+        {
+            string resultString;
+
+            HttpWebRequest request = (HttpWebRequest)asynchronousResult.AsyncState;
+
+            HttpWebResponse response;
+
+            try
+            {
+                response = (HttpWebResponse)request.EndGetResponse(asynchronousResult);
+            }
+            catch (Exception ex)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("Failed to get upcoming data: " + ex.ToString(), "Error", MessageBoxButton.OK);
+                    App.ViewModel.Connected = false;
+                    NavigationService.GoBack();
+                });
+
+                return;
+            }
+
+            using (StreamReader streamReader1 = new StreamReader(response.GetResponseStream()))
+            {
+                resultString = streamReader1.ReadToEnd();
+            }
+
+            response.GetResponseStream().Close();
+            response.Close();
+
+            try
+            {
+                List<ScriptProgram> programs = new List<ScriptProgram>();
+
+                MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(resultString));
+                DataContractJsonSerializer x = new DataContractJsonSerializer(programs.GetType());
+
+                programs = x.ReadObject(ms) as List<ScriptProgram>;
+
+                ms.Close();
+
+
+                foreach (ScriptProgram s in programs)
+                {
+                    ProgramViewModel singleProgram = new ProgramViewModel();
+
+                    singleProgram.airdate = s.airdate;
+                    singleProgram.callsign = s.callsign;
+                    singleProgram.cardid = int.Parse(s.cardid);
+                    singleProgram.category = s.category;
+                    singleProgram.chanid = int.Parse(s.chanid);
+                    singleProgram.channame = s.channame;
+                    singleProgram.channum = s.channum;
+                    //singleProgram.channumint = 0;
+                    singleProgram.description = s.description;
+                    singleProgram.endtime = s.endtime;
+                    singleProgram.endtimespace = s.endtime.Replace("T", " ");
+                    //singleProgram.filename = s.filename;
+                    //singleProgram.filesize = Int64.Parse(s.filesize);
+                    //singleProgram.findid = s.findid;
+                    singleProgram.hostname = s.hostname;
+                    singleProgram.inputid = int.Parse(s.inputid);
+                    //singleProgram.lastmodified = s.lastmodified;
+                    singleProgram.parentid = s.parentid;
+                    //singleProgram.playgroup = s.playgroup;
+                    singleProgram.programid = s.programid;
+                    singleProgram.recendts = s.recendts;
+                    singleProgram.recgroup = s.recgroup;
+                    singleProgram.recordid = int.Parse(s.recordid);
+                    //singleProgram.recpriority = int.Parse(s.recpriority);
+                    //singleProgram.recpriority2 = s.recpriority2;
+                    singleProgram.recstartts = s.recstartts;
+                    singleProgram.recstatus = int.Parse(s.recstatus);
+                    singleProgram.recstatustext = App.ViewModel.functions.RecStatusDecode(singleProgram.recstatus);
+                    singleProgram.rectype = int.Parse(s.rectype);
+                    singleProgram.seriesid = s.seriesid;
+                    singleProgram.sourceid = int.Parse(s.sourceid);
+                    singleProgram.starttime = s.starttime;
+                    singleProgram.starttimespace = s.starttime.Replace("T"," ");
+                    singleProgram.storagegroup = s.storagegroup;
+                    singleProgram.subtitle = s.subtitle;
+                    singleProgram.title = s.title;
+
+
+
+                    //singleProgram.upcomingfourthline;
+
+                    singleProgram.chanicon = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Myth/GetChannelIcon?ChanId=" + singleProgram.chanid;
+                            
+
+                        
+                    if (App.ViewModel.appSettings.ChannelIconsSetting)
+                        singleProgram.showChanicon = System.Windows.Visibility.Visible;
+                    else
+                        singleProgram.showChanicon = System.Windows.Visibility.Collapsed;
+
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        App.ViewModel.Upcoming.Add(singleProgram);
+                    });
+                    
+            
+                }
+
+
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        SortAndDisplay("");
+                    });
+
+            
+            }
+            catch (Exception ex)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("Error parsing JSON from script: " + ex.ToString());
+                });
+            }
+             
+
+        }
+            
+
+        private void GetUpcomingProtocol()
+        {
 
             protocolStatus = 0;
             //0 - not connected;
@@ -1955,62 +2103,7 @@ namespace MythMe
 
             worker.RunWorkerAsync();
         }
-
-        private void UpcomingUpcomingListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-/*
-            if (UpcomingUpcomingListBox.SelectedItem == null)
-                return;
-
-            App.ViewModel.SelectedProgram = (ProgramViewModel)UpcomingUpcomingListBox.SelectedItem;
-
-            NavigationService.Navigate(new Uri("/UpcomingDetails.xaml", UriKind.Relative));
-
-            UpcomingUpcomingListBox.SelectedItem = null;
-*/
-        }
-
-        private void AllUpcomingListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            /*
-            if (AllUpcomingListBox.SelectedItem == null)
-                return;
-
-            App.ViewModel.SelectedProgram = (ProgramViewModel)AllUpcomingListBox.SelectedItem;
-
-            NavigationService.Navigate(new Uri("/UpcomingDetails.xaml", UriKind.Relative));
-
-            AllUpcomingListBox.SelectedItem = null;
-            */
-        }
-
-        private void ConflictingUpcomingListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            /*
-            if (ConflictingUpcomingListBox.SelectedItem == null)
-                return;
-
-            App.ViewModel.SelectedProgram = (ProgramViewModel)ConflictingUpcomingListBox.SelectedItem;
-
-            NavigationService.Navigate(new Uri("/UpcomingDetails.xaml", UriKind.Relative));
-
-            ConflictingUpcomingListBox.SelectedItem = null;
-            */
-        }
-
-        private void OverridesUpcomingListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            /*
-            if (OverridesUpcomingListBox.SelectedItem == null)
-                return;
-
-            App.ViewModel.SelectedProgram = (ProgramViewModel)OverridesUpcomingListBox.SelectedItem;
-
-            NavigationService.Navigate(new Uri("/UpcomingDetails.xaml", UriKind.Relative));
-
-            OverridesUpcomingListBox.SelectedItem = null;
-             */
-        }
+        
 
         private void UpcomingUpcomingLL_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -2063,5 +2156,62 @@ namespace MythMe
 
             OverridesUpcomingLL.SelectedItem = null;
         }
+
+
+    }
+
+    public class ScriptProgram
+    {
+        public string title { get; set; }
+        public string subtitle { get; set; }
+        public string description { get; set; }
+        public string category { get; set; }
+
+        public string chanid { get; set; }
+        public string channum { get; set; }
+        public string callsign { get; set; }
+        public string channame { get; set; }
+
+        //public string filename { get; set; }
+        //public string filesize { get; set; }
+        public string starttime { get; set; }
+        public string endtime { get; set; }
+
+        //public string findid { get; set; }
+        public string hostname { get; set; }
+        public string sourceid { get; set; }
+        public string cardid { get; set; }
+
+        public string inputid { get; set; }
+        //public string recpriority { get; set; }
+        public string recstatus { get; set; }
+        public string recordid { get; set; }
+
+        public string rectype { get; set; }
+        //public string dupin { get; set; }
+        //public string dupmethod { get; set; }
+        public string recstartts { get; set; }
+
+        public string recendts { get; set; }
+        //public string programflags { get; set; }
+        public string recgroup { get; set; }
+        //public string outputfilters { get; set; }
+
+        public string seriesid { get; set; }
+        public string programid { get; set; }
+        //public string lastmodified { get; set; }
+        //public string stars { get; set; }
+
+        public string airdate { get; set; }
+        public string playgroup { get; set; }
+        public string recpriority2 { get; set; }
+        public string parentid { get; set; }
+
+        public string storagegroup { get; set; }
+        public string audio_props { get; set; }
+        public string video_props { get; set; }
+        public string subtitle_type { get; set; }
+
+        public string year { get; set; }
     }
 }

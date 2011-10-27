@@ -108,6 +108,11 @@ namespace MythMe
                 App.ViewModel.appSettings.WebserverHostSetting = ""+App.ViewModel.appSettings.MasterBackendIpSetting;      
             }
 
+            if ((App.ViewModel.appSettings.UseScriptScreenshotsSetting) && (!App.ViewModel.appSettings.UseScriptSetting))
+            {
+                App.ViewModel.appSettings.UseScriptScreenshotsSetting = false;
+            }
+
         }
 
         private void SettingsCallback(IAsyncResult asynchronousResult)

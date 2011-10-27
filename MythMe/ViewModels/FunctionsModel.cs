@@ -350,7 +350,7 @@ namespace MythMe
 
             if (App.ViewModel.appSettings.UseScriptScreenshotsSetting)
             {
-                screenshot = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + "/cgi-bin/webmyth.py?op=getPremadeImage&chanid=";
+                screenshot = "http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=getPremadeImage&chanid=";
                 screenshot += inProgram.chanid + "&starttime=" + inProgram.recstartts.Replace("T", " ");
             }
             else
