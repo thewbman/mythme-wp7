@@ -1,0 +1,24 @@
+#!/bin/bash
+#
+# Script file to convert a recording to a format playable on the phone
+# Part of the WebMyth App  - http://code.google.com/p/webmyth/downloads/list
+#
+# You will need to download the HandBrake program seperately 
+# http://handbrake.fr/    (or if on Ubuntu you get it from here https://launchpad.net/~handbrake-ubuntu/+archive/ppa )
+#
+# Setup a MythTV user job with this script like '/usr/local/bin/mythHandbrake "%DIR%" "%FILE%"'
+#
+
+#echo "$1/$2"
+
+infile=${1}/${2}
+midfile=${infile//.mpg/.mp4}
+outfile=${midfile//.nuv/.mp4}
+
+#echo $infile
+#echo $outfile
+
+`HandBrakeCLI  -i "$infile" -o "$outfile" --preset="iPod" > /dev/null 2>&1 `
+
+
+
