@@ -13,6 +13,9 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Threading;
+using System.ComponentModel;
+using System.Collections.ObjectModel;
 using Microsoft.Phone.Controls;
 
 namespace MythMe
@@ -93,6 +96,19 @@ namespace MythMe
 
                         connected = true;
 
+                        string command;
+
+                        if (NavigationContext.QueryString.TryGetValue("Command", out command))
+                        {
+                            if (command == "playProgram")
+                            {
+                                this.Perform(() => SendPlay("program " + App.ViewModel.SelectedProgram.chanid + " " + App.ViewModel.SelectedProgram.recstartts + " resume"), 250);
+                            }
+                            else if (command == "playChannel")
+                            {
+                                this.Perform(() => SendPlay("chanid " + App.ViewModel.SelectedProgram.chanid), 250);
+                            }
+                        }
                     }
 
                 }
@@ -195,6 +211,24 @@ namespace MythMe
                 {
                     //SocketAsyncEventArgs sendSocketEventArg = new SocketAsyncEventArgs();
                     byte[] buffer = Encoding.UTF8.GetBytes("query " + inValue + "\n");
+                    remoteSocketEventArg.SetBuffer(buffer, 0, buffer.Length);
+
+                    remoteSocket.SendAsync(remoteSocketEventArg);
+                }
+            }
+            catch (Exception ex)
+            {
+                //
+            }
+        }
+        void SendPlay(string inValue)
+        {
+            try
+            {
+                if (remoteSocket.Connected)
+                {
+                    //SocketAsyncEventArgs sendSocketEventArg = new SocketAsyncEventArgs();
+                    byte[] buffer = Encoding.UTF8.GetBytes("play " + inValue + "\n");
                     remoteSocketEventArg.SetBuffer(buffer, 0, buffer.Length);
 
                     remoteSocket.SendAsync(remoteSocketEventArg);
@@ -468,5 +502,16 @@ namespace MythMe
             NavigationService.Navigate(new Uri("/RemoteSettings.xaml", UriKind.Relative));
         }
 
+
+        private void Perform(Action myMethod, int delayInMilliseconds)
+        {
+            BackgroundWorker worker = new BackgroundWorker();
+
+            worker.DoWork += (s, e) => Thread.Sleep(delayInMilliseconds);
+
+            worker.RunWorkerCompleted += (s, e) => myMethod.Invoke();
+
+            worker.RunWorkerAsync();
+        }
     }
 }

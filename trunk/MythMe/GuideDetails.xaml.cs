@@ -375,5 +375,10 @@ namespace MythMe
                 MessageBox.Show("Error opening browser.  Check your webserver address in the preferences.");
             }
         }
+
+        private void playButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Remote.xaml?Command=playChannel", UriKind.Relative));
+        }
     }
 }

@@ -18,6 +18,7 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 using Microsoft.Phone;
 using Microsoft.Phone.Controls;
+using Microsoft.Phone.Tasks;
 
 namespace MythMe
 {
@@ -41,9 +42,12 @@ namespace MythMe
 
             //webserver
             WebserverHost.Text = App.ViewModel.appSettings.WebserverHostSetting;
+            UseScript.IsChecked = App.ViewModel.appSettings.UseScriptSetting;
+            PythonFileName.Text = App.ViewModel.appSettings.PythonFileSetting;
 
             //images
             ChannelIcons.IsChecked = App.ViewModel.appSettings.ChannelIconsSetting;
+            UseScriptScreenshots.IsChecked = App.ViewModel.appSettings.UseScriptScreenshotsSetting;
             
             //remote
 
@@ -72,9 +76,13 @@ namespace MythMe
             {
                 App.ViewModel.appSettings.WebserverHostSetting = WebserverHost.Text;
             }
+            App.ViewModel.appSettings.UseScriptSetting = (bool)UseScript.IsChecked;
+            App.ViewModel.appSettings.PythonFileSetting = PythonFileName.Text;
+
 
             //images
             App.ViewModel.appSettings.ChannelIconsSetting = (bool)ChannelIcons.IsChecked;
+            App.ViewModel.appSettings.UseScriptScreenshotsSetting = (bool)UseScriptScreenshots.IsChecked;
 
             //remote
 
@@ -104,6 +112,35 @@ namespace MythMe
         private void Panorama_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if ((WebserverHost.Text == "") && (App.ViewModel.appSettings.WebserverHostSetting == "")) WebserverHost.Text = MasterBackendIp.Text;
+        }
+
+        private void UseScript_Checked(object sender, RoutedEventArgs e)
+        {
+            //MessageBox.Show("You can download a script to improve the reliability of listing the upcoming recordings.  And in the future the script may also be used for additional functionality.  The script can be found on the app homepage under downloads.  (Use the help view to get the app homepage.)", "Download script", MessageBoxButton.OK);
+        }
+
+        private void UseScriptScreenshots_Checked(object sender, RoutedEventArgs e)
+        {
+            if(!(bool)UseScript.IsChecked)
+            {
+                MessageBox.Show("This setting can only be used if you have enabled the script for the webserver.");
+                UseScriptScreenshots.IsChecked = false;
+            }
+        }
+
+        private void UseScript_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            if((bool)UseScript.IsChecked)
+                MessageBox.Show("You can download a script to improve the reliability of listing the upcoming recordings.  And in the future the script may also be used for additional functionality.  The script can be found on the app homepage under downloads. ", "Optional script", MessageBoxButton.OK);
+        }
+
+        private void TextBlock_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
+            WebBrowserTask webopen = new WebBrowserTask();
+
+            webopen.Uri = new Uri("http://code.google.com/p/mythme-wp7/");
+            webopen.Show();
         }
     }
 }

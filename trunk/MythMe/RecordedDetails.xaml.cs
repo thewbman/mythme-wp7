@@ -64,5 +64,10 @@ namespace MythMe
             NavigationService.Navigate(new Uri("/Guide.xaml?SelectedTime="+App.ViewModel.SelectedProgram.starttime, UriKind.Relative));
         }
 
+        private void playButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Remote.xaml?Command=playProgram", UriKind.Relative));
+        }
+
     }
 }

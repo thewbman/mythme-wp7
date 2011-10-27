@@ -19,22 +19,22 @@
 
         <DataTemplate x:Key="remotePickerTemplate">
             <StackPanel Orientation="Vertical" >
-                <TextBlock Text="{Binding Name}" FontSize="30" HorizontalAlignment="Left" Foreground="Silver" />
+                <TextBlock Text="{Binding Name}" FontSize="30" HorizontalAlignment="Left" Foreground="#800000" />
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <TextBlock Text="{Binding Address}" FontSize="26"  HorizontalAlignment="Right" Foreground="Silver" />
-                    <TextBlock Text=":" FontSize="26"  HorizontalAlignment="Right" Foreground="Silver" />
-                    <TextBlock Text="{Binding Port}" FontSize="26" HorizontalAlignment="Right" Foreground="Silver" />
+                    <TextBlock Text="{Binding Address}" FontSize="26"  HorizontalAlignment="Right" Foreground="#800000" />
+                    <TextBlock Text=":" FontSize="26"  HorizontalAlignment="Right" Foreground="#800000" />
+                    <TextBlock Text="{Binding Port}" FontSize="26" HorizontalAlignment="Right" Foreground="#800000" />
                 </StackPanel>
             </StackPanel>
         </DataTemplate>
         
         <DataTemplate x:Key="remotePickerFullTemplate">
             <StackPanel Orientation="Vertical" >
-                <TextBlock Text="{Binding Name}" FontSize="30" HorizontalAlignment="Left" Foreground="Silver" />
+                <TextBlock Text="{Binding Name}" FontSize="30" HorizontalAlignment="Left" Foreground="#800000" />
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <TextBlock Text="{Binding Address}" FontSize="26"  HorizontalAlignment="Right" Foreground="Silver" />
-                    <TextBlock Text=":" FontSize="26"  HorizontalAlignment="Right" Foreground="Silver" />
-                    <TextBlock Text="{Binding Port}" FontSize="26" HorizontalAlignment="Right" Foreground="Silver" />
+                    <TextBlock Text="{Binding Address}" FontSize="26"  HorizontalAlignment="Right" Foreground="#800000" />
+                    <TextBlock Text=":" FontSize="26"  HorizontalAlignment="Right" Foreground="#800000" />
+                    <TextBlock Text="{Binding Port}" FontSize="26" HorizontalAlignment="Right" Foreground="#800000" />
                 </StackPanel>
             </StackPanel>
         </DataTemplate>
@@ -59,13 +59,13 @@
             <toolkit:ListPicker x:Name="remotePicker" FullModeItemTemplate="{StaticResource remotePickerFullTemplate}" ItemTemplate="{StaticResource remotePickerTemplate}" SelectionChanged="remotePicker_SelectionChanged" />
 
             <TextBlock Text="name" TextWrapping="Wrap" Margin="12,26,12,0" Style="{StaticResource PhoneTextLargeStyle}" Foreground="White"/>
-            <TextBox x:Name="nameBox" Foreground="White" />
+            <TextBox x:Name="nameBox" Foreground="#800000" />
 
             <TextBlock Text="address" TextWrapping="Wrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextLargeStyle}" Foreground="White"/>
-            <TextBox x:Name="addressBox" Foreground="White" />
+            <TextBox x:Name="addressBox" Foreground="#800000" />
 
             <TextBlock Text="port" TextWrapping="Wrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextLargeStyle}" Foreground="White"/>
-            <TextBox x:Name="portBox" InputScope="NumberFullWidth" Foreground="White" />
+            <TextBox x:Name="portBox" InputScope="NumberFullWidth" Foreground="#800000" />
 
         </StackPanel>
     </Grid>
