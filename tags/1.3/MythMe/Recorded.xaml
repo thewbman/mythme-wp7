@@ -1,0 +1,131 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="MythMe.Recorded"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait"  Orientation="Portrait"
+    shell:SystemTray.IsVisible="True"
+    xmlns:local="clr-namespace:MythMe"
+    local:TiltEffect.IsTiltEnabled="True"
+    >
+
+    <phone:PhoneApplicationPage.Resources>
+
+        <DataTemplate x:Key="recordedGroupHeader">
+            <Border Background="#9f283f" Margin="0">
+                <TextBlock Text="{Binding Title}" FontSize="36" Foreground="Black"/>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="recordedItemTemplate">
+            <StackPanel>
+                <TextBlock Text="{Binding title}" TextWrapping="NoWrap" Margin="2,-6,12,6" Style="{StaticResource PhoneTextNormalStyle}" FontSize="24" Foreground="White" />
+                <StackPanel Orientation="Horizontal">
+                    <Image Width="150" MaxHeight="100" Source="{Binding screenshot}"  Margin="0,-15,0,0" />
+                    <StackPanel Margin="0,0,0,17" Height="Auto">
+                        <TextBlock Text="{Binding subtitle}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding starttimespace}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding category}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding recordedfourthline}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="recordedItemHeader">
+            <Border Background="#9f283f" Margin="{StaticResource PhoneTouchTargetOverhang}" Padding="{StaticResource PhoneTouchTargetOverhang}">
+                <TextBlock Text="{Binding Title}" Width="460" Style="{StaticResource PhoneTextLargeStyle}" Foreground="Black"/>
+            </Border>
+        </DataTemplate>
+
+    </phone:PhoneApplicationPage.Resources>
+    
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="#3e000c">
+
+        <Popup Name="SortPopup" VerticalAlignment="Top" VerticalOffset="100" HorizontalAlignment="Left" Width="480">
+            <StackPanel Background="White" Width="480" >
+                <TextBlock Name="PopupDateTitle" Text="Sort by:" Foreground="Black" FontSize="50" />
+                <TextBlock Name="PopupDateAsc" Text="Date, Asc" Margin="12, 0, 0, 0" Foreground="Black" FontSize="40" Tap="PopupDateAsc_Tap" />
+                <TextBlock Name="PopupDateDesc" Text="Date, Desc" Margin="12, 0, 0, 0" Foreground="Black" FontSize="40" Tap="PopupDateDesc_Tap" />
+                <TextBlock Name="PopupAirateAsc" Text="Original airdate, Asc" Margin="12, 0, 0, 0" Foreground="Black" FontSize="40" Tap="PopupAirateAsc_Tap" />
+                <TextBlock Name="PopupAirdateDesc" Text="Original airdate, Desc" Margin="12, 0, 0, 0" Foreground="Black" FontSize="40" Tap="PopupAirdateDesc_Tap" />
+                <TextBlock Name="PopupTitleAsc" Text="Title, Asc" Margin="12, 0, 0, 0" Foreground="Black" FontSize="40" Tap="PopupTitleAsc_Tap" />
+                <TextBlock Name="PopupTitleDesc" Text="Title, Desc" Margin="12, 0, 0, 0" Foreground="Black" FontSize="40" Tap="PopupTitleDesc_Tap" />
+            </StackPanel>
+        </Popup>
+
+        <toolkit:PerformanceProgressBar x:Name="performanceProgressBarCustomized" Foreground="Red" Background="Red" IsIndeterminate="False" />
+
+
+        <controls:Pivot Title="recorded" Foreground="White">
+            <controls:PivotItem x:Name="DefaultTitle" Header="Default" Visibility="Collapsed" Foreground="White">
+
+                <toolkit:LongListSelector x:Name="DefaultRecordedLL"
+                     GroupHeaderTemplate="{StaticResource recordedGroupHeader}"
+                     ItemTemplate="{StaticResource recordedItemTemplate}" 
+                     GroupItemTemplate="{StaticResource recordedItemHeader}"
+                     ShowListFooter="False" ShowListHeader="False" SelectionChanged="DefaultRecordedLL_SelectionChanged">
+                </toolkit:LongListSelector>
+                
+            </controls:PivotItem>
+
+            <controls:PivotItem x:Name="DeletedTitle" Header="Deleted" Visibility="Collapsed" Foreground="White">
+
+                <toolkit:LongListSelector x:Name="DeletedRecordedLL"
+                     GroupHeaderTemplate="{StaticResource recordedGroupHeader}"
+                     ItemTemplate="{StaticResource recordedItemTemplate}" 
+                     GroupItemTemplate="{StaticResource recordedItemHeader}"
+                     ShowListFooter="False" ShowListHeader="False" SelectionChanged="DeletedRecordedLL_SelectionChanged">
+                </toolkit:LongListSelector>
+                
+            </controls:PivotItem>
+
+            <controls:PivotItem x:Name="LiveTVTitle" Header="LiveTV" Visibility="Collapsed" Foreground="White">
+
+                <toolkit:LongListSelector x:Name="LiveTVRecordedLL"
+                     GroupHeaderTemplate="{StaticResource recordedGroupHeader}"
+                     ItemTemplate="{StaticResource recordedItemTemplate}" 
+                     GroupItemTemplate="{StaticResource recordedItemHeader}"
+                     ShowListFooter="False" ShowListHeader="False" SelectionChanged="LiveTVRecordedLL_SelectionChanged">
+                </toolkit:LongListSelector>
+                
+            </controls:PivotItem>
+
+            <controls:PivotItem x:Name="AllTitle" Header="All" Visibility="Collapsed" Foreground="White">
+
+                <toolkit:LongListSelector x:Name="AllRecordedLL"
+                     GroupHeaderTemplate="{StaticResource recordedGroupHeader}"
+                     ItemTemplate="{StaticResource recordedItemTemplate}" 
+                     GroupItemTemplate="{StaticResource recordedItemHeader}"
+                     ShowListFooter="False" ShowListHeader="False" SelectionChanged="AllRecordedLL_SelectionChanged">
+                </toolkit:LongListSelector>
+                
+            </controls:PivotItem>
+        </controls:Pivot>
+    </Grid>
+
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" BackgroundColor="#28000C" ForegroundColor="White" >
+            <shell:ApplicationBarIconButton x:Name="appbarRefresh" IconUri="/Images/appbar.refresh.rest.png" Text="refresh" Click="appbarRefresh_Click" />
+            <shell:ApplicationBarIconButton x:Name="appbarSort" IconUri="/Images/appbar.feature.settings.rest.png" Text="sort" Click="appbarSort_Click" />
+            <!---->
+            <shell:ApplicationBar.MenuItems>
+                <!-- 
+                <shell:ApplicationBarMenuItem Text="MenuItem 1"/>
+                <shell:ApplicationBarMenuItem Text="MenuItem 2"/>
+                -->
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+    
+</phone:PhoneApplicationPage>

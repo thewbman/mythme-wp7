@@ -1,0 +1,125 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="MythMe.Upcoming"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait"  Orientation="Portrait"
+    shell:SystemTray.IsVisible="True"
+    xmlns:local="clr-namespace:MythMe"
+    local:TiltEffect.IsTiltEnabled="True"
+    >
+
+    <phone:PhoneApplicationPage.Resources>
+
+        <DataTemplate x:Key="upcomingGroupHeader">
+            <Border Background="#9f283f" Margin="0">
+                <TextBlock Text="{Binding Title}" FontSize="36" Foreground="Black"/>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="upcomingItemTemplate">
+            <StackPanel>
+                <TextBlock Text="{Binding title}" TextWrapping="NoWrap" Margin="2,-6,12,0" Style="{StaticResource PhoneTextNormalStyle}" FontSize="24" Foreground="White" />
+                <TextBlock Text="{Binding subtitle}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                <StackPanel Orientation="Horizontal">
+                    <Image Width="100" MaxHeight="100" Source="{Binding chanicon}" Margin="0,-15,0,0" Visibility="{Binding showChanicon}"/>
+                    <StackPanel Margin="0,0,0,17" Height="Auto">
+                        <TextBlock Text="{Binding starttimespace}" TextWrapping="NoWrap" Margin="16,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding category}" TextWrapping="NoWrap" Margin="20,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding channum}" Margin="24,-6,0,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                            <TextBlock Text=" - " Margin="0,-6,0,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                            <TextBlock Text="{Binding channame}" Margin="0,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        </StackPanel>
+                        <TextBlock Text="{Binding recstatustext}" TextWrapping="NoWrap" Margin="28,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="upcomingItemHeader">
+            <Border Background="#9f283f" Margin="{StaticResource PhoneTouchTargetOverhang}" Padding="{StaticResource PhoneTouchTargetOverhang}">
+                <TextBlock Text="{Binding Title}" Width="460" Style="{StaticResource PhoneTextLargeStyle}" Foreground="Black"/>
+            </Border>
+        </DataTemplate>
+
+    </phone:PhoneApplicationPage.Resources>
+
+    <Grid x:Name="LayoutRoot" Background="#3e000c">
+        
+        <toolkit:PerformanceProgressBar x:Name="performanceProgressBarCustomized" Foreground="Red" Background="Red" IsIndeterminate="False" />
+
+        <controls:Pivot x:Name="upcomingHeader" Title="upcoming" Foreground="White">
+
+            <controls:PivotItem x:Name="UpcomingTitle" Header="Upcoming" Foreground="White">
+
+                <toolkit:LongListSelector x:Name="UpcomingUpcomingLL"
+                     GroupHeaderTemplate="{StaticResource upcomingGroupHeader}"
+                     ItemTemplate="{StaticResource upcomingItemTemplate}" 
+                     GroupItemTemplate="{StaticResource upcomingItemHeader}"
+                     ShowListFooter="False" ShowListHeader="False" SelectionChanged="UpcomingUpcomingLL_SelectionChanged">
+                </toolkit:LongListSelector>
+
+            </controls:PivotItem>
+
+            <controls:PivotItem x:Name="AllTitle" Header="All" Foreground="White">
+
+                <toolkit:LongListSelector x:Name="AllUpcomingLL"
+                     GroupHeaderTemplate="{StaticResource upcomingGroupHeader}"
+                     ItemTemplate="{StaticResource upcomingItemTemplate}" 
+                     GroupItemTemplate="{StaticResource upcomingItemHeader}"
+                     ShowListFooter="False" ShowListHeader="False" SelectionChanged="AllUpcomingLL_SelectionChanged">
+                </toolkit:LongListSelector>
+                
+            </controls:PivotItem>
+
+            <controls:PivotItem x:Name="ConflictingTitle" Header="Conflicting" Foreground="White">
+
+                <toolkit:LongListSelector x:Name="ConflictingUpcomingLL"
+                     GroupHeaderTemplate="{StaticResource upcomingGroupHeader}"
+                     ItemTemplate="{StaticResource upcomingItemTemplate}" 
+                     GroupItemTemplate="{StaticResource upcomingItemHeader}"
+                     ShowListFooter="False" ShowListHeader="False" SelectionChanged="ConflictingUpcomingLL_SelectionChanged">
+                </toolkit:LongListSelector>
+                
+            </controls:PivotItem>
+
+            <controls:PivotItem x:Name="OverridesTitle" Header="Overrides" Foreground="White">
+
+                <toolkit:LongListSelector x:Name="OverridesUpcomingLL"
+                     GroupHeaderTemplate="{StaticResource upcomingGroupHeader}"
+                     ItemTemplate="{StaticResource upcomingItemTemplate}" 
+                     GroupItemTemplate="{StaticResource upcomingItemHeader}"
+                     ShowListFooter="False" ShowListHeader="False" SelectionChanged="OverridesUpcomingLL_SelectionChanged">
+                </toolkit:LongListSelector>
+                
+            </controls:PivotItem>
+
+        </controls:Pivot>
+    </Grid>
+
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" BackgroundColor="#28000C" ForegroundColor="White" >
+            <shell:ApplicationBarIconButton x:Name="appbarRefresh" IconUri="/Images/appbar.refresh.rest.png" Text="refresh" Click="appbarRefresh_Click" />
+            <!--
+            <shell:ApplicationBarIconButton x:Name="appbarSort" IconUri="/Images/appbar.feature.settings.rest.png" Text="sort" Click="appbarSort_Click" />
+            -->
+            <shell:ApplicationBar.MenuItems>
+                <!-- 
+                <shell:ApplicationBarMenuItem Text="MenuItem 1"/>
+                <shell:ApplicationBarMenuItem Text="MenuItem 2"/>
+                -->
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+    
+</phone:PhoneApplicationPage>
