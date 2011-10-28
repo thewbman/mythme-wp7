@@ -22,13 +22,13 @@
                 <ScrollViewer>
                     <StackPanel>
                         <TextBlock Text="master backend address" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
-                        <TextBox x:Name="MasterBackendIp" Foreground="#800000" Text="backend"/>
+                        <TextBox x:Name="MasterBackendIp" Foreground="#800000" Text="backend" Background="Silver"/>
 
                         <TextBlock Text="mythprotocol port" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
-                        <TextBox x:Name="MasterBackendPort" InputScope="NumberFullWidth" Foreground="#800000" Text="6543"/>
+                        <TextBox x:Name="MasterBackendPort" InputScope="NumberFullWidth" Foreground="#800000" Text="6543" Background="Silver"/>
 
                         <TextBlock Text="mythxml port" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
-                        <TextBox x:Name="MasterBackendXmlPort" InputScope="NumberFullWidth" Foreground="#800000" Text="6544" />
+                        <TextBox x:Name="MasterBackendXmlPort" InputScope="NumberFullWidth" Foreground="#800000" Text="6544" Background="Silver" />
                         
                     </StackPanel>
                 </ScrollViewer>
@@ -39,13 +39,13 @@
                     <StackPanel>
 
                         <TextBlock Text="webserver address" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
-                        <TextBox x:Name="WebserverHost" Foreground="#800000" Text="server" />
+                        <TextBox x:Name="WebserverHost" Foreground="#800000" Text="server" Background="Silver" />
 
                         <TextBlock Text="use optional script for upcoming" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
-                        <CheckBox x:Name="UseScript" AllowDrop="False" Foreground="White" BorderBrush="White" Checked="UseScript_Checked" Tap="UseScript_Tap" />
+                        <CheckBox x:Name="UseScript" AllowDrop="False" Foreground="White" BorderBrush="White" Checked="UseScript_Checked" Tap="UseScript_Tap" Background="Silver" />
 
                         <TextBlock Text="script location" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
-                        <TextBox x:Name="PythonFileName" Foreground="#800000" Text="script" />
+                        <TextBox x:Name="PythonFileName" Foreground="#800000" Text="script" Background="Silver" />
                         
                         <TextBlock Text="open app homepage" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,40,0,0" Foreground="Silver" Tap="TextBlock_Tap" />
 
@@ -94,10 +94,10 @@
                     <StackPanel>
                         
                         <TextBlock Text="show channel icons" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
-                        <CheckBox x:Name="ChannelIcons" AllowDrop="False" Foreground="White" BorderBrush="White" />
+                        <CheckBox x:Name="ChannelIcons" AllowDrop="False" Foreground="White" BorderBrush="White" Background="Silver" />
 
                         <TextBlock Text="use script for screenshots" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
-                        <CheckBox x:Name="UseScriptScreenshots" AllowDrop="False" Foreground="White" BorderBrush="White" Checked="UseScriptScreenshots_Checked" />
+                        <CheckBox x:Name="UseScriptScreenshots" AllowDrop="False" Foreground="White" BorderBrush="White" Checked="UseScriptScreenshots_Checked" Background="Silver"  />
 
                         <!--
                         video list
