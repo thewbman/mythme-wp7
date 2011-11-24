@@ -92,6 +92,7 @@
                         <TextBlock x:Name="guideButton" Text="guide" Tap="guideButton_Tap" />
                         -->
                         <Button x:Name="playButton" Content="play on frontend"  Tap="playButton_Tap" Foreground="White" BorderBrush="White"/>
+                        <Button x:Name="downloadButton" Content="download to phone"  Tap="downloadButton_Tap" Foreground="White" BorderBrush="White"/>
                         <Button x:Name="mythwebButton" Content="mythweb"  Tap="scheduleButton_Tap" Foreground="White" BorderBrush="White"/>
                         <Button x:Name="guidebutton" Content="program guide"  Tap="guideButton_Tap" Foreground="White" BorderBrush="White" />
 

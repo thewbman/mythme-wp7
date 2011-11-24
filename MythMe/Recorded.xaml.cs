@@ -341,8 +341,7 @@ namespace MythMe
                     singleRecorded.chanid = int.Parse((string)singleRecordedElement.Element("Channel").Attribute("chanId").Value);
                     singleRecorded.channum = (string)singleRecordedElement.Element("Channel").Attribute("chanNum").Value;
                     singleRecorded.callsign = (string)singleRecordedElement.Element("Channel").Attribute("callSign").Value;
-                    /*
-                    */
+                    
 
                     singleRecorded.recpriority = int.Parse((string)singleRecordedElement.Element("Recording").Attribute("recPriority").Value);
                     singleRecorded.recstatus = int.Parse((string)singleRecordedElement.Element("Recording").Attribute("recStatus").Value);
@@ -353,6 +352,7 @@ namespace MythMe
                     singleRecorded.recordid = int.Parse((string)singleRecordedElement.Element("Recording").Attribute("recordId").Value);
 
                     singleRecorded.description = (string)singleRecordedElement.FirstNode.ToString();
+                    if (singleRecorded.description.Contains("<Channel")) singleRecorded.description = "";
 
                     singleRecorded.screenshot = App.ViewModel.functions.CreateScreenshotUrl(singleRecorded);
 

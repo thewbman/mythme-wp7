@@ -47,6 +47,9 @@
                         <TextBlock Text="script location" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
                         <TextBox x:Name="PythonFileName" Foreground="#800000" Text="script" Background="Silver" />
                         
+                        <TextBlock Text="allow downloads of recordingss" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <CheckBox x:Name="AllowDownloads" AllowDrop="False" Foreground="White" BorderBrush="White" Tap="AllowDownloads_Tap" Background="Silver" />
+
                         <TextBlock Text="open app homepage" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,40,0,0" Foreground="Silver" Tap="TextBlock_Tap" />
 
                     </StackPanel>
@@ -65,24 +68,6 @@
                         password
                         name
 
-                    </StackPanel>
-                </ScrollViewer>
-            </controls:PanoramaItem>
-            -->
-            <!--
-            <controls:PanoramaItem Header="webserver">
-                <ScrollViewer>
-                    <StackPanel>
-                        
-                        host 
-                        username
-                        password
-                        script
-                        mythwebxml
-                        mythwebxmlkey
-                        python file
-                        downloads
-                        
                     </StackPanel>
                 </ScrollViewer>
             </controls:PanoramaItem>

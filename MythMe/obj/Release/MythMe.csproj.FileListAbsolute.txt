@@ -29,3 +29,4 @@ C:\Users\wes\SVN\MythMe\MythMe\obj\Release\MythMe.g.resources
 C:\Users\wes\SVN\MythMe\MythMe\obj\Release\MythMe.dll
 C:\Users\wes\SVN\MythMe\MythMe\obj\Release\MythMe.pdb
 C:\Users\wes\SVN\MythMe\MythMe\obj\Release\XapCacheFile.xml
+C:\Users\wes\SVN\MythMe\MythMe\obj\Release\Downloads.g.i.cs

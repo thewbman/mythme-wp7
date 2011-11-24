@@ -90,8 +90,12 @@ namespace MythMe
 
         private void reviewTitle_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            MarketplaceReviewTask marketReview = new MarketplaceReviewTask();
-            marketReview.Show();
+            //MarketplaceReviewTask marketReview = new MarketplaceReviewTask();
+            //marketReview.Show();
+
+            MarketplaceDetailTask marketDetail = new MarketplaceDetailTask();
+            marketDetail.ContentIdentifier = "455f5645-0b06-429b-9cac-9097b10ae6d2";
+            marketDetail.Show();
         }
 
         private void SupportListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
