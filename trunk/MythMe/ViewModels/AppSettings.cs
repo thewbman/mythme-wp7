@@ -111,7 +111,7 @@ namespace MythMe
         const bool MythwebXmlDefault = false;
         const string MythwebXmlKeyDefault = "DefaultKey";
         const string PythonFileDefault = "/cgi-bin/webmyth.py";
-        const bool AllowDownloadsDefault = true;
+        const bool AllowDownloadsDefault = false;
 
         const bool ChannelIconsDefault = true;
         const bool VideoListImagesDefault = true;

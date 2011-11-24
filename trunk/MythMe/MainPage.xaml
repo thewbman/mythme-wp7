@@ -49,7 +49,7 @@
                 
             </ListBox>
             
-            <toolkit:PerformanceProgressBar x:Name="performanceProgressBarCustomized" Foreground="Red" Background="Red" IsIndeterminate="False" VerticalAlignment="Bottom" Margin="0,0,0,100" />
+            <toolkit:PerformanceProgressBar x:Name="performanceProgressBarCustomized" Foreground="Red" Background="Red" IsIndeterminate="False" VerticalAlignment="Bottom" Margin="0,0,0,50" />
 
         </Grid>
     </Grid>

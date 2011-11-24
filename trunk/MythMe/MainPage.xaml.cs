@@ -36,21 +36,6 @@ namespace MythMe
             CurrentBackend = new BackendViewModel();
             CurrentBackendIndex = 0;
 
-            menuListItems = new List<NameContentViewModel>();
-
-            menuListItems.Add(new NameContentViewModel() {Content = "remote"});
-            menuListItems.Add(new NameContentViewModel() {Content = "recorded"});
-            menuListItems.Add(new NameContentViewModel() {Content = "upcoming"});
-            menuListItems.Add(new NameContentViewModel() {Content = "guide"});
-            //menuListItems.Add(new NameContentViewModel() {Content = "search"});
-            //menuListItems.Add(new NameContentViewModel() {Content = "videos"});
-            //menuListItems.Add(new NameContentViewModel() {Content = "music"});
-            menuListItems.Add(new NameContentViewModel() {Content = "status"});
-            //menuListItems.Add(new NameContentViewModel() {Content = "log"});
-            menuListItems.Add(new NameContentViewModel() {Content = "preferences"});
-            menuListItems.Add(new NameContentViewModel() {Content = "help"});
-
-            menuList.ItemsSource = menuListItems;
 
             this.Loaded += new RoutedEventHandler(MainPage_Loaded);
         }
@@ -93,6 +78,30 @@ namespace MythMe
         {
 
             MasterBackendTitle.Text = App.ViewModel.appSettings.MasterBackendIpSetting;
+
+
+            menuListItems = new List<NameContentViewModel>();
+
+            menuListItems.Add(new NameContentViewModel() { Content = "remote" });
+            menuListItems.Add(new NameContentViewModel() { Content = "recorded" });
+            menuListItems.Add(new NameContentViewModel() { Content = "upcoming" });
+            menuListItems.Add(new NameContentViewModel() { Content = "guide" });
+            //menuListItems.Add(new NameContentViewModel() {Content = "search"});
+            //menuListItems.Add(new NameContentViewModel() {Content = "videos"});
+            //menuListItems.Add(new NameContentViewModel() {Content = "music"});
+            menuListItems.Add(new NameContentViewModel() { Content = "status" });
+            //menuListItems.Add(new NameContentViewModel() {Content = "log"});
+
+            if (App.ViewModel.appSettings.AllowDownloadsSetting)
+            {
+                menuListItems.Add(new NameContentViewModel() { Content = "downloads" });
+            }
+
+            menuListItems.Add(new NameContentViewModel() { Content = "preferences" });
+            menuListItems.Add(new NameContentViewModel() { Content = "help" });
+
+            menuList.ItemsSource = menuListItems;
+
 
             if ((!GotSettings)&&(App.ViewModel.appSettings.MasterBackendIpSetting.Length > 0))
             {
@@ -605,6 +614,9 @@ namespace MythMe
                     break;
                 case "log":
                     //NavigationService.Navigate(new Uri("/Log.xaml", UriKind.Relative));
+                    break;
+                case "downloads":
+                    NavigationService.Navigate(new Uri("/Downloads.xaml", UriKind.Relative));
                     break;
                 case "preferences":
                     NavigationService.Navigate(new Uri("/Preferences.xaml", UriKind.Relative));

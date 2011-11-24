@@ -44,6 +44,7 @@ namespace MythMe
             WebserverHost.Text = App.ViewModel.appSettings.WebserverHostSetting;
             UseScript.IsChecked = App.ViewModel.appSettings.UseScriptSetting;
             PythonFileName.Text = App.ViewModel.appSettings.PythonFileSetting;
+            AllowDownloads.IsChecked = App.ViewModel.appSettings.AllowDownloadsSetting;
 
             //images
             ChannelIcons.IsChecked = App.ViewModel.appSettings.ChannelIconsSetting;
@@ -78,6 +79,7 @@ namespace MythMe
             }
             App.ViewModel.appSettings.UseScriptSetting = (bool)UseScript.IsChecked;
             App.ViewModel.appSettings.PythonFileSetting = PythonFileName.Text;
+            App.ViewModel.appSettings.AllowDownloadsSetting = (bool)AllowDownloads.IsChecked;
 
 
             //images
@@ -92,19 +94,6 @@ namespace MythMe
         private void appbarSave_Click(object sender, EventArgs e)
         {
 
-            //App.ViewModel.appSettings.MasterBackendIpSetting = MasterBackendIp.Text;
-            //App.ViewModel.appSettings.MasterBackendPortSetting = int.Parse(MasterBackendPort.Text);
-            //App.ViewModel.appSettings.MasterBackendXmlPortSetting = int.Parse(MasterBackendXmlPort.Text);
-
-            //database
-
-            //webserver
-            //App.ViewModel.appSettings.WebserverHostSetting = WebserverHost.Text;
-
-            //App.ViewModel.appSettings.ChannelIconsSetting = (bool)ChannelIcons.IsChecked;
-            //images
-
-            //remote
 
             NavigationService.GoBack();
         }
@@ -141,6 +130,13 @@ namespace MythMe
 
             webopen.Uri = new Uri("http://code.google.com/p/mythme-wp7/");
             webopen.Show();
+        }
+
+        private void AllowDownloads_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            if ((bool)AllowDownloads.IsChecked)
+                MessageBox.Show("In order to play videos on your phone you need to transcode the recordings to a mobile-friendly format.  You can download the script to do that from the app homepage under downloads.", "Download", MessageBoxButton.OK);
+        
         }
     }
 }

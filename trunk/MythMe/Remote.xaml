@@ -36,7 +36,6 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock x:Name="escape" Text="escape" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left" Tap="escape_Tap" FontSize="40" Foreground="White" />
-                    <!--<TextBlock x:Name="up" Text="up" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="up_Tap" FontSize="40" />-->
                     <Image Source="images/up.png" Grid.Column="1" Grid.Row="0" Tap="up_Tap" />
                     <TextBlock x:Name="delete" Text="delete" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Right" Tap="delete_Tap" FontSize="40" Foreground="White" />
 
@@ -44,14 +43,7 @@
                     <Image Source="images/record.png" Grid.Column="1" Grid.Row="1" Tap="enter_Tap" />
                     <Image Source="images/right.png" Grid.Column="2" Grid.Row="1" Tap="right_Tap" />
 
-                    <!--
-                    <TextBlock x:Name="left" Text="left" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="left_Tap" FontSize="40" />
-                    <TextBlock x:Name="enter" Text="enter" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="enter_Tap" FontSize="40" />
-                    <TextBlock x:Name="right" Text="right" Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="right_Tap" FontSize="40" />
-                    -->
-
                     <TextBlock x:Name="menu" Text="menu" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Tap="menu_Tap" FontSize="40" Foreground="White" />
-                    <!--<TextBlock x:Name="down" Text="down" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="down_Tap" FontSize="40" />-->
                     <Image Source="images/down.png" Grid.Column="1" Grid.Row="2" Tap="down_Tap" />
                     <TextBlock x:Name="info" Text="info" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Tap="info_Tap" FontSize="40" Foreground="White" />
                     
