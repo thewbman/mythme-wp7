@@ -78,7 +78,7 @@ namespace MythMe
 
                     remoteEndPoint = new DnsEndPoint(currentFrontend.Address, currentFrontend.Port);
 
-                    remotePivot.Title = "remote: " + currentFrontend.Name + " @ " + currentFrontend.Address;
+                    remotePivot.Title = "REMOTE: " + currentFrontend.Name + " @ " + currentFrontend.Address;
 
                     remoteSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                     remoteSocketEventArg = new SocketAsyncEventArgs();
@@ -341,7 +341,15 @@ namespace MythMe
         {
             SendKey("escape");
         }
+        private void escapeButton_Click(object sender, RoutedEventArgs e)
+        {
+            SendKey("escape");
+        }
         private void up_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            SendKey("up");
+        }
+        private void upButton_Click(object sender, RoutedEventArgs e)
         {
             SendKey("up");
         }
@@ -349,7 +357,15 @@ namespace MythMe
         {
             SendKey("d");
         }
+        private void deleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            SendKey("d");
+        }
         private void left_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            SendKey("left");
+        }
+        private void leftButton_Click(object sender, RoutedEventArgs e)
         {
             SendKey("left");
         }
@@ -357,7 +373,15 @@ namespace MythMe
         {
             SendKey("enter");
         }
+        private void centerButton_Click(object sender, RoutedEventArgs e)
+        {
+            SendKey("enter");
+        }
         private void right_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            SendKey("right");
+        }
+        private void rightButton_Click(object sender, RoutedEventArgs e)
         {
             SendKey("right");
         }
@@ -365,11 +389,23 @@ namespace MythMe
         {
             SendKey("m");
         }
+        private void menuButton_Click(object sender, RoutedEventArgs e)
+        {
+            SendKey("m");
+        }
         private void down_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             SendKey("down");
         }
+        private void downButton_Click(object sender, RoutedEventArgs e)
+        {
+            SendKey("down");
+        }
         private void info_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            SendKey("i");
+        }
+        private void infoButton_Click(object sender, RoutedEventArgs e)
         {
             SendKey("i");
         }
@@ -379,7 +415,15 @@ namespace MythMe
         {
             SendKey("q");
         }
+        private void backButton_Click(object sender, RoutedEventArgs e)
+        {
+            SendKey("q");
+        }
         private void pause_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            SendKey("p");
+        }
+        private void pauseButton_Click(object sender, RoutedEventArgs e)
         {
             SendKey("p");
         }
@@ -387,7 +431,15 @@ namespace MythMe
         {
             SendKey("z");
         }
+        private void forwardButton_Click(object sender, RoutedEventArgs e)
+        {
+            SendKey("z");
+        }
         private void mute_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            SendKey("f9");
+        }
+        private void muteButton_Click(object sender, RoutedEventArgs e)
         {
             SendKey("f9");
         }
@@ -395,7 +447,15 @@ namespace MythMe
         {
             SendKey("f10");
         }
+        private void voldownButton_Click(object sender, RoutedEventArgs e)
+        {
+            SendKey("f10");
+        }
         private void volup_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            SendKey("f11");
+        }
+        private void volupButton_Click(object sender, RoutedEventArgs e)
         {
             SendKey("f11");
         }
@@ -403,7 +463,15 @@ namespace MythMe
         {
             SendJump("livetv");
         }
+        private void livetvButton_Click(object sender, RoutedEventArgs e)
+        {
+            SendJump("livetv");
+        }
         private void recorded_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            SendJump("playbackbox");
+        }
+        private void recordedButton_Click(object sender, RoutedEventArgs e)
         {
             SendJump("playbackbox");
         }
@@ -411,7 +479,15 @@ namespace MythMe
         {
             SendJump("mythvideo");
         }
+        private void videoButton_Click(object sender, RoutedEventArgs e)
+        {
+            SendJump("mythvideo");
+        }
         private void music_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            SendJump("playmusic");
+        }
+        private void musicButton_Click(object sender, RoutedEventArgs e)
         {
             SendJump("playmusic");
         }
@@ -513,5 +589,8 @@ namespace MythMe
 
             worker.RunWorkerAsync();
         }
+
+
+
     }
 }

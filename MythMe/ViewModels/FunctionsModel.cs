@@ -8,6 +8,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace MythMe
 {
@@ -133,6 +135,9 @@ namespace MythMe
 
             switch (inProto)
             {
+                case 70:
+                    response = "MYTH_PROTO_VERSION 70 53153836";
+                    break;
                 case 69:
                     response = "MYTH_PROTO_VERSION 69 63835135";
                     break;
@@ -214,6 +219,26 @@ namespace MythMe
             return response;
         }
 
+        public ObservableCollection<NameContentViewModel> JobsToModel(List<JobqueueItem> inJobs)
+        {
+            ObservableCollection<NameContentViewModel> l = new ObservableCollection<NameContentViewModel>();
+            NameContentViewModel n = new NameContentViewModel();
+
+            foreach (JobqueueItem j in inJobs)
+            {
+                n = new NameContentViewModel();
+
+                n.Name = j.type;
+                n.Content = JobqueueTypeDecode(j.type);
+                n.First = JobqueueStatusDecode(j.status);
+                n.Second = j.hostname;
+                n.Third = j.comment;
+
+                l.Add(n);
+            }
+
+            return l;
+        }
 
         public string JobqueueTypeDecode(string inType)
         {
@@ -374,6 +399,10 @@ namespace MythMe
             return screenshot;
 
         }
+
+
+
+        
 
     }
 }

@@ -58,7 +58,7 @@
         
         <toolkit:PerformanceProgressBar x:Name="performanceProgressBarCustomized" Foreground="Red" Background="Red" IsIndeterminate="False" />
 
-        <controls:Pivot x:Name="upcomingHeader" Title="upcoming" Foreground="White">
+        <controls:Pivot x:Name="upcomingHeader" Title="UPCOMING" Foreground="White">
 
             <controls:PivotItem x:Name="UpcomingTitle" Header="Upcoming" Foreground="White">
 
