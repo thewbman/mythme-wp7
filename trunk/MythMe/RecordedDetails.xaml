@@ -77,6 +77,40 @@
                 </ScrollViewer>
             </controls:PanoramaItem>
 
+            <controls:PanoramaItem Header="jobs" x:Name="jobsPivot" Foreground="White">
+                <Grid ShowGridLines="False">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    
+                    <ListBox x:Name="jobsList" Grid.Row="0" Grid.ColumnSpan="2">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,0,0,17" Width="432" Height="Auto">
+                                    <TextBlock Text="{Binding Content}" TextWrapping="NoWrap" Style="{StaticResource PhoneTextNormalStyle}" FontSize="24" Foreground="White" />
+                                    <TextBlock Text="{Binding First}" TextWrapping="NoWrap" Margin="20,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver"/>
+                                    <TextBlock Text="{Binding Second}" TextWrapping="NoWrap" Margin="30,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver"/>
+                                    <TextBlock Text="{Binding Third}" TextWrapping="NoWrap" Margin="40,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver"/>
+                                    <TextBlock Text="{Binding Fourth}" TextWrapping="NoWrap" Margin="50,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <Button x:Name="comflag" Content="commercial flag"  Grid.Row="1" Grid.ColumnSpan="2" Click="comflag_Click" FontSize="20" />
+                    <Button x:Name="userjob1" Content="userjob1" Grid.Row="2" Grid.Column="0" Click="userjob1_Click" FontSize="20" />
+                    <Button x:Name="userjob2" Content="userjob2" Grid.Row="2" Grid.Column="1" Click="userjob2_Click" FontSize="20" />
+                    <Button x:Name="userjob3" Content="userjob3" Grid.Row="3" Grid.Column="0" Click="userjob3_Click" FontSize="20" />
+                    <Button x:Name="userjob4" Content="userjob4" Grid.Row="3" Grid.Column="1" Click="userjob4_Click" FontSize="20" />
+                </Grid>
+            </controls:PanoramaItem>
 
             <controls:PanoramaItem Header="actions" Foreground="White">
                 <ScrollViewer>

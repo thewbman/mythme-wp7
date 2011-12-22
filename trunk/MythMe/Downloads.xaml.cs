@@ -127,8 +127,8 @@ namespace MythMe
 
                         s.First = filesplit[0].Replace("_", ":"); //starttime
                         s.Second = filesplit[1];    //chanid
-                        s.Third = filesplit[2]; //title
-                        s.Fourth = filesplit[3].Replace(".mp4", ""); //subtitle
+                        s.Third = Uri.UnescapeDataString(filesplit[2]); //title
+                        s.Fourth = Uri.UnescapeDataString(filesplit[3].Replace(".mp4", "")); //subtitle
 
                         s.Name = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Myth/GetChannelIcon?ChanId=" + s.Second;
                     }
@@ -138,7 +138,7 @@ namespace MythMe
 
                         s.First = filesplit[0].Replace("_", ":"); //starttime
                         s.Second = filesplit[1];    //chanid
-                        s.Third = filesplit[2].Replace(".mp4", ""); ; //title
+                        s.Third = Uri.UnescapeDataString(filesplit[2].Replace(".mp4", "")); ; //title
                         //s.Fourth = filesplit[3].Replace(".mp4", ""); //subtitle
 
                         s.Name = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Myth/GetChannelIcon?ChanId=" + s.Second;

@@ -121,6 +121,7 @@
     <Compile Include="ViewModels\ChannelViewModel.cs" />
     <Compile Include="ViewModels\FrontendViewModel.cs" />
     <Compile Include="ViewModels\FunctionsModel.cs" />
+    <Compile Include="ViewModels\JobqueueItem.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\NameContentViewModel.cs" />
     <Compile Include="ViewModels\ProgramViewModel.cs" />

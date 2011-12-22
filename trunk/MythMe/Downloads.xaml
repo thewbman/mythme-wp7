@@ -21,7 +21,7 @@
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="#3e000c">
         
-        <controls:Pivot Title="downloads">
+        <controls:Pivot Title="DOWNLOADS">
             <!--Pivot item one-->
             <controls:PivotItem Header="completed">
                 <Grid>
