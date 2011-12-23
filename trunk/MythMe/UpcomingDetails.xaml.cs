@@ -21,6 +21,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Tasks;
 using System.Xml.Linq;
 using System.Security.Cryptography;
+using System.Runtime.Serialization.Json;
 
 namespace MythMe
 {
@@ -30,16 +31,30 @@ namespace MythMe
         {
             InitializeComponent();
 
+            People = new List<PeopleModel>();
+            encoder = new UTF8Encoding();
+
             DataContext = App.ViewModel.SelectedProgram;
         }
+
+        List<PeopleModel> People;
+        UTF8Encoding encoder;
 
         private string getDetails25String = "http://{0}:{1}/Guide/GetProgramDetails?StartTime={2}&ChanId={3}&random={2}";
         private string getDetailsString = "http://{0}:{1}/Myth/GetProgramDetails?StartTime={2}&ChanId={3}&random={4}";
 
 
-
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            if (App.ViewModel.appSettings.UseScriptSetting)
+            {
+                peoplePivot.Visibility = System.Windows.Visibility.Visible;
+
+            }
+            else
+            {
+                peoplePivot.Visibility = System.Windows.Visibility.Collapsed;
+            }
 
             this.Perform(() => GetDetails(), 50);
         }
@@ -205,6 +220,8 @@ namespace MythMe
                 Deployment.Current.Dispatcher.BeginInvoke(() => { MessageBox.Show("Error parsing details: " + ex.ToString()); });
             }
 
+            if (App.ViewModel.appSettings.UseScriptSetting) this.GetPeople();
+
         }
 
         private void DetailsCallback(IAsyncResult asynchronousResult)
@@ -334,7 +351,97 @@ namespace MythMe
                 Deployment.Current.Dispatcher.BeginInvoke(() => { MessageBox.Show("Error parsing details: "+ex.ToString()); });
             }
 
+            if (App.ViewModel.appSettings.UseScriptSetting) this.GetPeople();
+
         }
+
+
+        private void GetPeople()
+        {
+            try
+                {
+
+                    string query = "SELECT UPPER(`credits`.`role`) AS `role`, ";
+                    query += " `people`.`name`, `people`.`person`, ";
+                    query += " `videocast`.`intid` AS videoPersonId ";
+                    query += " FROM `credits` ";
+                    query += " LEFT OUTER JOIN `people` ON `credits`.`person` = `people`.`person` ";
+                    query += " LEFT OUTER JOIN `videocast` ON `videocast`.`cast` = `people`.`name` ";
+                    query += " WHERE (`credits`.`chanid` = " + App.ViewModel.SelectedProgram.chanid;
+                    query += " AND `credits`.`starttime` = \"" + App.ViewModel.SelectedProgram.starttime.Replace("T", " ") + "\" ) ";
+                    query += " ORDER BY `role`,`name` ";
+
+                    HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponse&query64=" + Convert.ToBase64String(encoder.GetBytes(query)) + "&rand=" + randText()));
+                    webRequest.BeginGetResponse(new AsyncCallback(PeopleCallback), webRequest);
+
+            }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error requesting people data: " + ex.ToString());
+                }
+        
+
+        }
+        private void PeopleCallback(IAsyncResult asynchronousResult)
+        {
+            //string resultString;
+
+            HttpWebRequest request = (HttpWebRequest)asynchronousResult.AsyncState;
+
+            HttpWebResponse response;
+
+            try
+            {
+                response = (HttpWebResponse)request.EndGetResponse(asynchronousResult);
+            }
+            catch (Exception ex)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("Failed to get details data: " + ex.ToString(), "Error", MessageBoxButton.OK);
+                });
+
+                return;
+            }
+
+
+            //using (StreamReader streamReader1 = new StreamReader(response.GetResponseStream()))
+            //{
+            //    resultString = streamReader1.ReadToEnd();
+            //}
+
+            //response.GetResponseStream().Close();
+            //response.Close();
+
+            try
+            {
+                //List<PeopleModel> lp = new List<PeopleModel>();
+
+                DataContractJsonSerializer s = new DataContractJsonSerializer(typeof(List<PeopleModel>));
+
+                People = (List<PeopleModel>)s.ReadObject(response.GetResponseStream());
+
+
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    //MessageBox.Show("Got people: " + PeopleModel.Count);
+
+                    peopleList.ItemsSource = People;
+
+                });
+
+            }
+            catch (Exception ex)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    //MessageBox.Show("Error getting people: " + ex.ToString());
+                });
+            }
+
+        }
+
+
 
         private void Perform(Action myMethod, int delayInMilliseconds)
         {
@@ -377,6 +484,14 @@ namespace MythMe
 
             NavigationService.Navigate(new Uri("/Guide.xaml?SelectedTime=" + App.ViewModel.SelectedProgram.starttime, UriKind.Relative));
 
+        }
+
+
+        private static string randText()
+        {
+            Random random = new Random();
+
+            return random.Next().ToString();
         }
     }
 }

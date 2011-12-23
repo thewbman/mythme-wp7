@@ -219,12 +219,12 @@ namespace MythMe
             return response;
         }
 
-        public ObservableCollection<NameContentViewModel> JobsToModel(List<JobqueueItem> inJobs)
+        public List<NameContentViewModel> JobsToModel(List<JobqueueModel> inJobs)
         {
-            ObservableCollection<NameContentViewModel> l = new ObservableCollection<NameContentViewModel>();
+            List<NameContentViewModel> l = new List<NameContentViewModel>();
             NameContentViewModel n = new NameContentViewModel();
 
-            foreach (JobqueueItem j in inJobs)
+            foreach (JobqueueModel j in inJobs)
             {
                 n = new NameContentViewModel();
 

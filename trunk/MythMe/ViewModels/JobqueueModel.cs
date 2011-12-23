@@ -12,7 +12,7 @@ using System.ComponentModel;
 
 namespace MythMe
 {
-    public class JobqueueItem : INotifyPropertyChanged
+    public class JobqueueModel : INotifyPropertyChanged
     {
 
         public string id { get; set; }
