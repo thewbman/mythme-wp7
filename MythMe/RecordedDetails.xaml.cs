@@ -30,9 +30,11 @@ namespace MythMe
 
             DataContext = App.ViewModel.SelectedProgram;
 
-            Jobqueue = new ObservableCollection<NameContentViewModel>();
+            Jobqueue = new List<NameContentViewModel>();
+            People = new List<PeopleModel>();
             encoder = new UTF8Encoding();
 
+            peopleList.ItemsSource = People;
             jobsList.ItemsSource = Jobqueue;
 
             using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetUserStoreForApplication())
@@ -45,7 +47,8 @@ namespace MythMe
         }
 
 
-        ObservableCollection<NameContentViewModel> Jobqueue;
+        List<NameContentViewModel> Jobqueue;
+        List<PeopleModel> People;
         UTF8Encoding encoder;
 
 
@@ -68,6 +71,7 @@ namespace MythMe
 
             if(App.ViewModel.appSettings.UseScriptSetting)
             {
+                peoplePivot.Visibility = System.Windows.Visibility.Visible;
                 jobsPivot.Visibility = System.Windows.Visibility.Visible;
 
                 userjob1.Content = App.ViewModel.appSettings.UserJobDesc1Setting;
@@ -77,13 +81,106 @@ namespace MythMe
 
                 Jobqueue.Clear();
 
-                this.GetJobs();
+                this.GetPeople();
 
             }
             else
             {
+                peoplePivot.Visibility = System.Windows.Visibility.Collapsed;
                 jobsPivot.Visibility = System.Windows.Visibility.Collapsed;
             }
+        }
+
+        private void GetPeople()
+        {
+            if (People.Count == 0)
+            {
+                try
+                {
+                    
+		            string query = "SELECT UPPER(`credits`.`role`) AS `role`, ";
+		            query += " `people`.`name`, `people`.`person`, ";
+		            query += " `videocast`.`intid` AS videoPersonId ";
+		            query += " FROM `credits` ";
+		            query += " LEFT OUTER JOIN `people` ON `credits`.`person` = `people`.`person` ";
+		            query += " LEFT OUTER JOIN `videocast` ON `videocast`.`cast` = `people`.`name` ";
+		            query += " WHERE (`credits`.`chanid` = "+App.ViewModel.SelectedProgram.chanid;
+                    query += " AND `credits`.`starttime` = \""+App.ViewModel.SelectedProgram.starttime.Replace("T"," ")+"\" ) ";
+		            query += " ORDER BY `role`,`name` ";
+                    
+                    HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponse&query64=" + Convert.ToBase64String(encoder.GetBytes(query)) + "&rand=" + randText()));
+                    webRequest.BeginGetResponse(new AsyncCallback(PeopleCallback), webRequest);
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error requesting people data: " + ex.ToString());
+                }
+            }
+            else
+            {
+                this.GetJobs();
+            }
+
+        }
+        private void PeopleCallback(IAsyncResult asynchronousResult)
+        {
+            //string resultString;
+
+            HttpWebRequest request = (HttpWebRequest)asynchronousResult.AsyncState;
+
+            HttpWebResponse response;
+
+            try
+            {
+                response = (HttpWebResponse)request.EndGetResponse(asynchronousResult);
+            }
+            catch (Exception ex)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("Failed to get details data: " + ex.ToString(), "Error", MessageBoxButton.OK);
+                });
+
+                return;
+            }
+
+
+            //using (StreamReader streamReader1 = new StreamReader(response.GetResponseStream()))
+            //{
+            //    resultString = streamReader1.ReadToEnd();
+            //}
+
+            //response.GetResponseStream().Close();
+            //response.Close();
+
+            try
+            {
+                //List<PeopleModel> lp = new List<PeopleModel>();
+
+                DataContractJsonSerializer s = new DataContractJsonSerializer(typeof(List<PeopleModel>));
+
+                People = (List<PeopleModel>)s.ReadObject(response.GetResponseStream());
+
+
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    //MessageBox.Show("Got people: " + PeopleModel.Count);
+
+                    peopleList.ItemsSource = People;
+
+                });
+
+            }
+            catch (Exception ex)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    //MessageBox.Show("Error getting people: " + ex.ToString());
+                });
+            }
+
+            this.GetJobs();
         }
 
         private void GetJobs()
@@ -136,11 +233,11 @@ namespace MythMe
 
             try
             {
-                List<JobqueueItem> l = new List<JobqueueItem>();
+                List<JobqueueModel> l = new List<JobqueueModel>();
 
-                DataContractJsonSerializer s = new DataContractJsonSerializer(typeof(List<JobqueueItem>));
+                DataContractJsonSerializer s = new DataContractJsonSerializer(typeof(List<JobqueueModel>));
 
-                l = (List<JobqueueItem>)s.ReadObject(response.GetResponseStream());
+                l = (List<JobqueueModel>)s.ReadObject(response.GetResponseStream());
 
 
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
@@ -259,11 +356,11 @@ namespace MythMe
             }
             catch (InvalidOperationException ex)
             {
-                MessageBox.Show("Unable to add background transfer request. " + ex.Message);
+                MessageBox.Show("Unable to add background transfer request. " + ex.Message, "Error", MessageBoxButton.OK);
             }
             catch (Exception ex2)
             {
-                MessageBox.Show("Unable to add background transfer request. " + ex2.Message);
+                MessageBox.Show("Unable to add background transfer request. " + ex2.Message, "Error", MessageBoxButton.OK);
 
             }
 
