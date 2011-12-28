@@ -1431,7 +1431,7 @@ namespace MythMe
             if (NowGuideLL.SelectedItem == null)
                 return;
 
-            App.ViewModel.SelectedProgram = (ProgramViewModel)NowGuideLL.SelectedItem;
+            App.ViewModel.SelectedGuideProgram = (ProgramViewModel)NowGuideLL.SelectedItem;
 
             NavigationService.Navigate(new Uri("/GuideDetails.xaml", UriKind.Relative));
 
@@ -1444,7 +1444,7 @@ namespace MythMe
             if (TimeGuideLL.SelectedItem == null)
                 return;
 
-            App.ViewModel.SelectedProgram = (ProgramViewModel)TimeGuideLL.SelectedItem;
+            App.ViewModel.SelectedGuideProgram = (ProgramViewModel)TimeGuideLL.SelectedItem;
 
             NavigationService.Navigate(new Uri("/GuideDetails.xaml", UriKind.Relative));
 
@@ -1457,7 +1457,7 @@ namespace MythMe
             if (ChannelGuideLL.SelectedItem == null)
                 return;
 
-            App.ViewModel.SelectedProgram = (ProgramViewModel)ChannelGuideLL.SelectedItem;
+            App.ViewModel.SelectedGuideProgram = (ProgramViewModel)ChannelGuideLL.SelectedItem;
 
             NavigationService.Navigate(new Uri("/GuideDetails.xaml", UriKind.Relative));
 

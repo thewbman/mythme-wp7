@@ -607,7 +607,7 @@ namespace MythMe
             if (DefaultRecordedLL.SelectedItem == null)
                 return;
 
-            App.ViewModel.SelectedProgram = (ProgramViewModel)DefaultRecordedLL.SelectedItem;
+            App.ViewModel.SelectedRecordedProgram = (ProgramViewModel)DefaultRecordedLL.SelectedItem;
 
             NavigationService.Navigate(new Uri("/RecordedDetails.xaml", UriKind.Relative));
 
@@ -620,7 +620,7 @@ namespace MythMe
             if (DeletedRecordedLL.SelectedItem == null)
                 return;
 
-            App.ViewModel.SelectedProgram = (ProgramViewModel)DeletedRecordedLL.SelectedItem;
+            App.ViewModel.SelectedRecordedProgram = (ProgramViewModel)DeletedRecordedLL.SelectedItem;
 
             NavigationService.Navigate(new Uri("/RecordedDetails.xaml", UriKind.Relative));
 
@@ -633,7 +633,7 @@ namespace MythMe
             if (LiveTVRecordedLL.SelectedItem == null)
                 return;
 
-            App.ViewModel.SelectedProgram = (ProgramViewModel)LiveTVRecordedLL.SelectedItem;
+            App.ViewModel.SelectedRecordedProgram = (ProgramViewModel)LiveTVRecordedLL.SelectedItem;
 
             NavigationService.Navigate(new Uri("/RecordedDetails.xaml", UriKind.Relative));
 
@@ -646,7 +646,7 @@ namespace MythMe
             if (AllRecordedLL.SelectedItem == null)
                 return;
 
-            App.ViewModel.SelectedProgram = (ProgramViewModel)AllRecordedLL.SelectedItem;
+            App.ViewModel.SelectedRecordedProgram = (ProgramViewModel)AllRecordedLL.SelectedItem;
 
             NavigationService.Navigate(new Uri("/RecordedDetails.xaml", UriKind.Relative));
 

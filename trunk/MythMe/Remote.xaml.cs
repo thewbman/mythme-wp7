@@ -102,11 +102,11 @@ namespace MythMe
                         {
                             if (command == "playProgram")
                             {
-                                this.Perform(() => SendPlay("program " + App.ViewModel.SelectedProgram.chanid + " " + App.ViewModel.SelectedProgram.recstartts + " resume"), 250);
+                                this.Perform(() => SendPlay("program " + App.ViewModel.SelectedRecordedProgram.chanid + " " + App.ViewModel.SelectedRecordedProgram.recstartts + " resume"), 250);
                             }
                             else if (command == "playChannel")
                             {
-                                this.Perform(() => SendPlay("chanid " + App.ViewModel.SelectedProgram.chanid), 250);
+                                this.Perform(() => SendPlay("chanid " + App.ViewModel.SelectedGuideProgram.chanid), 250);
                             }
                         }
                     }

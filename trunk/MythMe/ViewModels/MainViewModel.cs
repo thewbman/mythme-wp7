@@ -33,11 +33,17 @@ namespace MythMe
 
             this.Channels = new ObservableCollection<ChannelViewModel>();
 
-            this.SelectedProgram = new ProgramViewModel();
+            this.SelectedRecordedProgram = new ProgramViewModel();
+            this.SelectedUpcomingProgram = new ProgramViewModel();
+            this.SelectedGuideProgram = new ProgramViewModel();
+
+            this.SelectedPerson = new PeopleViewModel();
 
             this.appSettings = new AppSettings();
 
             this.functions = new FunctionsModel();
+
+            this.encoder = new UTF8Encoding();
 
             this.Connected = false;
 
@@ -56,13 +62,19 @@ namespace MythMe
 
         public ObservableCollection<ChannelViewModel> Channels { get; private set; }
 
-        public ProgramViewModel SelectedProgram;
+        public ProgramViewModel SelectedRecordedProgram;
+        public ProgramViewModel SelectedUpcomingProgram;
+        public ProgramViewModel SelectedGuideProgram;
+
+        public PeopleViewModel SelectedPerson;
 
         public string GuideTime { get; set; }
 
         public AppSettings appSettings;
 
         public FunctionsModel functions;
+
+        public UTF8Encoding encoder;
 
         public bool IsDataLoaded { get; private set; }
 

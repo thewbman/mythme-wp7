@@ -2111,7 +2111,7 @@ namespace MythMe
             if (UpcomingUpcomingLL.SelectedItem == null)
                 return;
 
-            App.ViewModel.SelectedProgram = (ProgramViewModel)UpcomingUpcomingLL.SelectedItem;
+            App.ViewModel.SelectedUpcomingProgram = (ProgramViewModel)UpcomingUpcomingLL.SelectedItem;
 
             NavigationService.Navigate(new Uri("/UpcomingDetails.xaml", UriKind.Relative));
 
@@ -2124,7 +2124,7 @@ namespace MythMe
             if (AllUpcomingLL.SelectedItem == null)
                 return;
 
-            App.ViewModel.SelectedProgram = (ProgramViewModel)AllUpcomingLL.SelectedItem;
+            App.ViewModel.SelectedUpcomingProgram = (ProgramViewModel)AllUpcomingLL.SelectedItem;
 
             NavigationService.Navigate(new Uri("/UpcomingDetails.xaml", UriKind.Relative));
 
@@ -2137,7 +2137,7 @@ namespace MythMe
             if (ConflictingUpcomingLL.SelectedItem == null)
                 return;
 
-            App.ViewModel.SelectedProgram = (ProgramViewModel)ConflictingUpcomingLL.SelectedItem;
+            App.ViewModel.SelectedUpcomingProgram = (ProgramViewModel)ConflictingUpcomingLL.SelectedItem;
 
             NavigationService.Navigate(new Uri("/UpcomingDetails.xaml", UriKind.Relative));
 
@@ -2150,7 +2150,7 @@ namespace MythMe
             if (OverridesUpcomingLL.SelectedItem == null)
                 return;
 
-            App.ViewModel.SelectedProgram = (ProgramViewModel)OverridesUpcomingLL.SelectedItem;
+            App.ViewModel.SelectedUpcomingProgram = (ProgramViewModel)OverridesUpcomingLL.SelectedItem;
 
             NavigationService.Navigate(new Uri("/UpcomingDetails.xaml", UriKind.Relative));
 

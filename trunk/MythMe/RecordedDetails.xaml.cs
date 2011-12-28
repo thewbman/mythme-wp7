@@ -28,11 +28,13 @@ namespace MythMe
         {
             InitializeComponent();
 
-            DataContext = App.ViewModel.SelectedProgram;
-
+            DataContext = App.ViewModel.SelectedRecordedProgram;
+            
             Jobqueue = new List<NameContentViewModel>();
-            People = new List<PeopleModel>();
-            encoder = new UTF8Encoding();
+            People = new List<PeopleViewModel>();
+            //encoder = new UTF8Encoding();
+
+            HasLoaded = false;
 
             peopleList.ItemsSource = People;
             jobsList.ItemsSource = Jobqueue;
@@ -47,47 +49,67 @@ namespace MythMe
         }
 
 
-        List<NameContentViewModel> Jobqueue;
-        List<PeopleModel> People;
-        UTF8Encoding encoder;
+        private List<NameContentViewModel> Jobqueue;
+        private List<PeopleViewModel> People;
+        //private UTF8Encoding encoder;
+
+        private bool HasLoaded;
 
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            //text1.Text = App.ViewModel.SelectedProgram.description;
+            //text1.Text = App.ViewModel.SelectedRecordedProgram.description;
 
-            //BitmapImage bitmapImage = new BitmapImage(new Uri(App.ViewModel.SelectedProgram.screenshot));
+            //BitmapImage bitmapImage = new BitmapImage(new Uri(App.ViewModel.SelectedRecordedProgram.screenshot));
             //panoramaBackground.ImageSource = bitmapImage;
 
-            if (App.ViewModel.appSettings.AllowDownloadsSetting)
+            try
             {
-                downloadButton.Visibility = System.Windows.Visibility.Visible;
+                if (!HasLoaded)
+                {
+
+                    if (App.ViewModel.appSettings.AllowDownloadsSetting)
+                    {
+                        downloadButton.Visibility = System.Windows.Visibility.Visible;
+                    }
+                    else
+                    {
+                        downloadButton.Visibility = System.Windows.Visibility.Collapsed;
+                    }
+
+
+                    if (App.ViewModel.appSettings.UseScriptSetting)
+                    {
+                        peoplePivot.Visibility = System.Windows.Visibility.Visible;
+                        jobsPivot.Visibility = System.Windows.Visibility.Visible;
+
+                        userjob1.Content = App.ViewModel.appSettings.UserJobDesc1Setting;
+                        userjob2.Content = App.ViewModel.appSettings.UserJobDesc2Setting;
+                        userjob3.Content = App.ViewModel.appSettings.UserJobDesc3Setting;
+                        userjob4.Content = App.ViewModel.appSettings.UserJobDesc4Setting;
+
+                        Jobqueue.Clear();
+
+                        this.GetPeople();
+
+                    }
+                    else
+                    {
+                        peoplePivot.Visibility = System.Windows.Visibility.Collapsed;
+                        jobsPivot.Visibility = System.Windows.Visibility.Collapsed;
+                    }
+
+                    HasLoaded = true;
+                }
+                else
+                {
+                    this.GetPeople();
+                }
+
             }
-            else
+            catch (Exception ex)
             {
-                downloadButton.Visibility = System.Windows.Visibility.Collapsed;
-            }
-
-
-            if(App.ViewModel.appSettings.UseScriptSetting)
-            {
-                peoplePivot.Visibility = System.Windows.Visibility.Visible;
-                jobsPivot.Visibility = System.Windows.Visibility.Visible;
-
-                userjob1.Content = App.ViewModel.appSettings.UserJobDesc1Setting;
-                userjob2.Content = App.ViewModel.appSettings.UserJobDesc2Setting;
-                userjob3.Content = App.ViewModel.appSettings.UserJobDesc3Setting;
-                userjob4.Content = App.ViewModel.appSettings.UserJobDesc4Setting;
-
-                Jobqueue.Clear();
-
-                this.GetPeople();
-
-            }
-            else
-            {
-                peoplePivot.Visibility = System.Windows.Visibility.Collapsed;
-                jobsPivot.Visibility = System.Windows.Visibility.Collapsed;
+                MessageBox.Show("Error: " + ex.ToString());
             }
         }
 
@@ -104,11 +126,11 @@ namespace MythMe
 		            query += " FROM `credits` ";
 		            query += " LEFT OUTER JOIN `people` ON `credits`.`person` = `people`.`person` ";
 		            query += " LEFT OUTER JOIN `videocast` ON `videocast`.`cast` = `people`.`name` ";
-		            query += " WHERE (`credits`.`chanid` = "+App.ViewModel.SelectedProgram.chanid;
-                    query += " AND `credits`.`starttime` = \""+App.ViewModel.SelectedProgram.starttime.Replace("T"," ")+"\" ) ";
+		            query += " WHERE (`credits`.`chanid` = "+App.ViewModel.SelectedRecordedProgram.chanid;
+                    query += " AND `credits`.`starttime` = \"" + App.ViewModel.SelectedRecordedProgram.starttime.Replace("T", " ") + "\" ) ";
 		            query += " ORDER BY `role`,`name` ";
                     
-                    HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponse&query64=" + Convert.ToBase64String(encoder.GetBytes(query)) + "&rand=" + randText()));
+                    HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponse&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + randText()));
                     webRequest.BeginGetResponse(new AsyncCallback(PeopleCallback), webRequest);
 
                 }
@@ -156,16 +178,16 @@ namespace MythMe
 
             try
             {
-                //List<PeopleModel> lp = new List<PeopleModel>();
+                //List<PeopleViewModel> lp = new List<PeopleViewModel>();
 
-                DataContractJsonSerializer s = new DataContractJsonSerializer(typeof(List<PeopleModel>));
+                DataContractJsonSerializer s = new DataContractJsonSerializer(typeof(List<PeopleViewModel>));
 
-                People = (List<PeopleModel>)s.ReadObject(response.GetResponseStream());
+                People = (List<PeopleViewModel>)s.ReadObject(response.GetResponseStream());
 
 
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
-                    //MessageBox.Show("Got people: " + PeopleModel.Count);
+                    //MessageBox.Show("Got people: " + PeopleViewModel.Count);
 
                     peopleList.ItemsSource = People;
 
@@ -188,9 +210,9 @@ namespace MythMe
 
             try
             {
-                string query = "SELECT * FROM `jobqueue` WHERE `chanid` = " + App.ViewModel.SelectedProgram.chanid + " AND `starttime` = \"" + App.ViewModel.SelectedProgram.recstartts + "\" ;";
+                string query = "SELECT * FROM `jobqueue` WHERE `chanid` = " + App.ViewModel.SelectedRecordedProgram.chanid + " AND `starttime` = \"" + App.ViewModel.SelectedRecordedProgram.recstartts + "\" ;";
 
-                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponse&query64=" + Convert.ToBase64String(encoder.GetBytes(query)) + "&rand=" + randText()));
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponse&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + randText()));
                 webRequest.BeginGetResponse(new AsyncCallback(JobsCallback), webRequest);
 
             }
@@ -281,7 +303,7 @@ namespace MythMe
             try
             {
                 DateTime dateResult;
-                DateTime.TryParse(App.ViewModel.SelectedProgram.recstartts, out dateResult);
+                DateTime.TryParse(App.ViewModel.SelectedRecordedProgram.recstartts, out dateResult);
 
                 //TimeSpan s = (DateTime.Now - new DateTime(1970, 1, 1, ));
                 TimeSpan t = (dateResult - new DateTime(1970, 1, 1));
@@ -291,7 +313,7 @@ namespace MythMe
 
                 WebBrowserTask webopen = new WebBrowserTask();
 
-                webopen.Uri = new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/mythweb/tv/detail/" + App.ViewModel.SelectedProgram.chanid + "/" + timestamp);
+                webopen.Uri = new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/mythweb/tv/detail/" + App.ViewModel.SelectedRecordedProgram.chanid + "/" + timestamp);
                 webopen.Show();
             }
             catch (Exception ex)
@@ -302,9 +324,9 @@ namespace MythMe
 
         private void guideButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            App.ViewModel.GuideTime = App.ViewModel.SelectedProgram.recstartts;
+            //App.ViewModel.GuideTime = App.ViewModel.SelectedRecordedProgram.recstartts;
 
-            NavigationService.Navigate(new Uri("/Guide.xaml?SelectedTime="+App.ViewModel.SelectedProgram.starttime, UriKind.Relative));
+            NavigationService.Navigate(new Uri("/Guide.xaml?SelectedTime="+App.ViewModel.SelectedRecordedProgram.starttime.Replace("asdf",""), UriKind.Relative));
         }
 
         private void playButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -321,7 +343,7 @@ namespace MythMe
             }
 
             DateTime dateResult;
-            DateTime.TryParse(App.ViewModel.SelectedProgram.recstartts, out dateResult);
+            DateTime.TryParse(App.ViewModel.SelectedRecordedProgram.recstartts, out dateResult);
 
             //TimeSpan s = (DateTime.Now - new DateTime(1970, 1, 1, ));
             TimeSpan t = (dateResult - new DateTime(1970, 1, 1));
@@ -330,7 +352,7 @@ namespace MythMe
             //Int64 timestamp = (Int64)s.TotalSeconds + (Int64)u.TotalSeconds;
 
 
-            Uri transferUri = new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/mythweb/pl/stream/" + App.ViewModel.SelectedProgram.chanid + "/" + timestamp + ".mp4", UriKind.RelativeOrAbsolute);
+            Uri transferUri = new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/mythweb/pl/stream/" + App.ViewModel.SelectedRecordedProgram.chanid + "/" + timestamp + ".mp4", UriKind.RelativeOrAbsolute);
 
             // Create the new transfer request, passing in the URI of the file to 
             // be transferred.
@@ -339,11 +361,11 @@ namespace MythMe
             // Set the transfer method. GET and POST are supported.
             transferRequest.Method = "GET";
 
-            string filename = App.ViewModel.SelectedProgram.starttime.Replace(":", "_") + "___" + App.ViewModel.SelectedProgram.chanid + "___" + App.ViewModel.SelectedProgram.title + "___" + App.ViewModel.SelectedProgram.subtitle + ".mp4";
+            string filename = App.ViewModel.SelectedRecordedProgram.starttime.Replace(":", "_") + "___" + App.ViewModel.SelectedRecordedProgram.chanid + "___" + App.ViewModel.SelectedRecordedProgram.title + "___" + App.ViewModel.SelectedRecordedProgram.subtitle + ".mp4";
             Uri downloadUri = new Uri("shared/transfers/" + filename, UriKind.RelativeOrAbsolute);
             transferRequest.DownloadLocation = downloadUri;
 
-            transferRequest.Tag = App.ViewModel.SelectedProgram.starttime.Replace(":", "_") + "___" + App.ViewModel.SelectedProgram.chanid;
+            transferRequest.Tag = App.ViewModel.SelectedRecordedProgram.starttime.Replace(":", "_") + "___" + App.ViewModel.SelectedRecordedProgram.chanid;
 
             //Allowing batery seems to creaet corrupted/empty downloads
             //transferRequest.TransferPreferences = TransferPreferences.AllowBattery;
@@ -393,8 +415,8 @@ namespace MythMe
 
         private void callQueueJob(string jobTypeNum)
         {
-            string query = "INSERT INTO `jobqueue` SET `chanid` = " + App.ViewModel.SelectedProgram.chanid;
-            query += ", starttime = \"" + App.ViewModel.SelectedProgram.recstartts.Replace("T", " ");
+            string query = "INSERT INTO `jobqueue` SET `chanid` = " + App.ViewModel.SelectedRecordedProgram.chanid;
+            query += ", starttime = \"" + App.ViewModel.SelectedRecordedProgram.recstartts.Replace("T", " ");
             query += "\", inserttime = \"" + DateTime.Now.ToString("s").Replace("T", " ");
             query += "\", hostname = \"";
             query += "\", args = \"";
@@ -407,7 +429,7 @@ namespace MythMe
             query += ";";
 
 
-            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQL&query64=" + Convert.ToBase64String(encoder.GetBytes(query)) + "&rand=" + randText()));
+            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQL&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + randText()));
             webRequest.BeginGetResponse(new AsyncCallback(QueueJobCallback), webRequest);
         }
 
@@ -423,11 +445,29 @@ namespace MythMe
         }
 
 
-        private static string randText()
+        private string randText()
         {
-            Random random = new Random();
+            //Random random = new Random();
 
-            return random.Next().ToString();
+            //return random.Next().ToString();
+
+            return App.ViewModel.randText();
+        }
+
+        private void peopleList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (peopleList.SelectedItem == null)
+                return;
+
+
+            var s = (PeopleViewModel)peopleList.SelectedItem;
+
+            App.ViewModel.SelectedPerson = s;
+
+            peopleList.SelectedItem = null;
+
+            NavigationService.Navigate(new Uri("/People.xaml?Source=recorded", UriKind.Relative));
+
         }
     }
 }

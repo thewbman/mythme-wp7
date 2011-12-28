@@ -31,14 +31,14 @@ namespace MythMe
         {
             InitializeComponent();
 
-            People = new List<PeopleModel>();
+            People = new List<PeopleViewModel>();
             encoder = new UTF8Encoding();
 
-            DataContext = App.ViewModel.SelectedProgram;
+            DataContext = App.ViewModel.SelectedUpcomingProgram;
         }
 
-        List<PeopleModel> People;
-        UTF8Encoding encoder;
+        private List<PeopleViewModel> People;
+        private UTF8Encoding encoder;
 
         private string getDetails25String = "http://{0}:{1}/Guide/GetProgramDetails?StartTime={2}&ChanId={3}&random={2}";
         private string getDetailsString = "http://{0}:{1}/Myth/GetProgramDetails?StartTime={2}&ChanId={3}&random={4}";
@@ -64,12 +64,12 @@ namespace MythMe
 
             if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
             {
-                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(String.Format(getDetails25String, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting, App.ViewModel.SelectedProgram.starttime, App.ViewModel.SelectedProgram.chanid, App.ViewModel.randText())));
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(String.Format(getDetails25String, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting, App.ViewModel.SelectedUpcomingProgram.starttime, App.ViewModel.SelectedUpcomingProgram.chanid, App.ViewModel.randText())));
                 webRequest.BeginGetResponse(new AsyncCallback(Details25Callback), webRequest);
             }
             else
             {
-                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(String.Format(getDetailsString, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting, App.ViewModel.SelectedProgram.starttime, App.ViewModel.SelectedProgram.chanid, App.ViewModel.randText())));
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(String.Format(getDetailsString, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting, App.ViewModel.SelectedUpcomingProgram.starttime, App.ViewModel.SelectedUpcomingProgram.chanid, App.ViewModel.randText())));
                 webRequest.BeginGetResponse(new AsyncCallback(DetailsCallback), webRequest);
                 //HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://192.168.1.105/dropbox/GetProgramDetails.xml"));
                 //webRequest.BeginGetResponse(new AsyncCallback(Details25Callback), webRequest);
@@ -114,71 +114,71 @@ namespace MythMe
 
                 XElement singleProgramElement = xdoc.Element("Program");
 
-                if (singleProgramElement.Element("Title").FirstNode != null) App.ViewModel.SelectedProgram.title = (string)singleProgramElement.Element("Title").FirstNode.ToString();
-                if (singleProgramElement.Element("SubTitle").FirstNode != null) App.ViewModel.SelectedProgram.subtitle = (string)singleProgramElement.Element("SubTitle").FirstNode.ToString();
+                if (singleProgramElement.Element("Title").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.title = (string)singleProgramElement.Element("Title").FirstNode.ToString();
+                if (singleProgramElement.Element("SubTitle").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.subtitle = (string)singleProgramElement.Element("SubTitle").FirstNode.ToString();
 
-                //App.ViewModel.SelectedProgram.programflags = (string)singleProgramElement.Attribute("programFlags").FirstNode.ToString();
-                if (singleProgramElement.Element("Category").FirstNode != null) App.ViewModel.SelectedProgram.category = (string)singleProgramElement.Element("Category").FirstNode.ToString();
-                if (singleProgramElement.Element("FileSize").FirstNode != null) App.ViewModel.SelectedProgram.filesize = Int64.Parse((string)singleProgramElement.Element("FileSize").FirstNode.ToString());
-                if (singleProgramElement.Element("SeriesId").FirstNode != null) App.ViewModel.SelectedProgram.seriesid = (string)singleProgramElement.Element("SeriesId").FirstNode.ToString();
-                if (singleProgramElement.Element("Hostname").FirstNode != null) App.ViewModel.SelectedProgram.hostname = (string)singleProgramElement.Element("Hostname").FirstNode.ToString();
-                //App.ViewModel.SelectedProgram.cattype = (string)singleProgramElement.Element("CatType").FirstNode.ToString();
-                if (singleProgramElement.Element("ProgramId").FirstNode != null) App.ViewModel.SelectedProgram.programid = (string)singleProgramElement.Element("ProgramId").FirstNode.ToString();
-                //App.ViewModel.SelectedProgram.repeat = (string)singleProgramElement.Element("Repeat").FirstNode.ToString();
-                //App.ViewModel.SelectedProgram.stars = (string)singleProgramElement.Element("Stars").FirstNode.ToString();
-                if (singleProgramElement.Element("EndTime").FirstNode != null) App.ViewModel.SelectedProgram.endtime = (string)singleProgramElement.Element("EndTime").FirstNode.ToString();
-                if (singleProgramElement.Element("EndTime").FirstNode != null) App.ViewModel.SelectedProgram.endtimespace = (string)singleProgramElement.Element("EndTime").FirstNode.ToString().Replace("T", " ");
-                if (singleProgramElement.Element("Airdate").FirstNode != null) App.ViewModel.SelectedProgram.airdate = (string)singleProgramElement.Element("Airdate").FirstNode.ToString();
-                if (singleProgramElement.Element("StartTime").FirstNode != null) App.ViewModel.SelectedProgram.starttime = (string)singleProgramElement.Element("StartTime").FirstNode.ToString();
-                if (singleProgramElement.Element("StartTime").FirstNode != null) App.ViewModel.SelectedProgram.starttimespace = (string)singleProgramElement.Element("StartTime").FirstNode.ToString().Replace("T", " ");
-                //App.ViewModel.SelectedProgram.lastmodified = (string)singleProgramElement.Element("lastModified").FirstNode.ToString();
-                
-
-                App.ViewModel.SelectedProgram.description = singleProgramElement.Element("Airdate").NextNode.ToString();
-                if (App.ViewModel.SelectedProgram.description.Contains("<Inet")) App.ViewModel.SelectedProgram.description = "";
+                //App.ViewModel.SelectedUpcomingProgram.programflags = (string)singleProgramElement.Attribute("programFlags").FirstNode.ToString();
+                if (singleProgramElement.Element("Category").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.category = (string)singleProgramElement.Element("Category").FirstNode.ToString();
+                if (singleProgramElement.Element("FileSize").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.filesize = Int64.Parse((string)singleProgramElement.Element("FileSize").FirstNode.ToString());
+                if (singleProgramElement.Element("SeriesId").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.seriesid = (string)singleProgramElement.Element("SeriesId").FirstNode.ToString();
+                if (singleProgramElement.Element("Hostname").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.hostname = (string)singleProgramElement.Element("Hostname").FirstNode.ToString();
+                //App.ViewModel.SelectedUpcomingProgram.cattype = (string)singleProgramElement.Element("CatType").FirstNode.ToString();
+                if (singleProgramElement.Element("ProgramId").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.programid = (string)singleProgramElement.Element("ProgramId").FirstNode.ToString();
+                //App.ViewModel.SelectedUpcomingProgram.repeat = (string)singleProgramElement.Element("Repeat").FirstNode.ToString();
+                //App.ViewModel.SelectedUpcomingProgram.stars = (string)singleProgramElement.Element("Stars").FirstNode.ToString();
+                if (singleProgramElement.Element("EndTime").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.endtime = (string)singleProgramElement.Element("EndTime").FirstNode.ToString();
+                if (singleProgramElement.Element("EndTime").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.endtimespace = (string)singleProgramElement.Element("EndTime").FirstNode.ToString().Replace("T", " ");
+                if (singleProgramElement.Element("Airdate").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.airdate = (string)singleProgramElement.Element("Airdate").FirstNode.ToString();
+                if (singleProgramElement.Element("StartTime").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.starttime = (string)singleProgramElement.Element("StartTime").FirstNode.ToString();
+                if (singleProgramElement.Element("StartTime").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.starttimespace = (string)singleProgramElement.Element("StartTime").FirstNode.ToString().Replace("T", " ");
+                //App.ViewModel.SelectedUpcomingProgram.lastmodified = (string)singleProgramElement.Element("lastModified").FirstNode.ToString();
 
 
-                if (App.ViewModel.SelectedProgram.subtitle == "") App.ViewModel.SelectedProgram.subtitle = ".";
+                App.ViewModel.SelectedUpcomingProgram.description = singleProgramElement.Element("Airdate").NextNode.ToString();
+                if (App.ViewModel.SelectedUpcomingProgram.description.Contains("<Inet")) App.ViewModel.SelectedUpcomingProgram.description = "";
+
+
+                if (App.ViewModel.SelectedUpcomingProgram.subtitle == "") App.ViewModel.SelectedUpcomingProgram.subtitle = ".";
 
                 if (singleProgramElement.Descendants("Channel").Count() > 0)
                 {
 
-                    if (singleProgramElement.Element("Channel").Element("InputId").FirstNode != null) App.ViewModel.SelectedProgram.inputid = int.Parse((string)singleProgramElement.Element("Channel").Element("InputId").Value);
-                    if (singleProgramElement.Element("Channel").Element("ChannelName").FirstNode != null) App.ViewModel.SelectedProgram.channame = (string)singleProgramElement.Element("Channel").Element("ChannelName").Value;
-                    if (singleProgramElement.Element("Channel").Element("SourceId").FirstNode != null) App.ViewModel.SelectedProgram.sourceid = int.Parse((string)singleProgramElement.Element("Channel").Element("SourceId").Value);
-                    if (singleProgramElement.Element("Channel").Element("ChanId").FirstNode != null) App.ViewModel.SelectedProgram.chanid = int.Parse((string)singleProgramElement.Element("Channel").Element("ChanId").Value);
-                    if (singleProgramElement.Element("Channel").Element("ChanNum").FirstNode != null) App.ViewModel.SelectedProgram.channum = (string)singleProgramElement.Element("Channel").Element("ChanNum").Value;
-                    if (singleProgramElement.Element("Channel").Element("CallSign").FirstNode != null) App.ViewModel.SelectedProgram.callsign = (string)singleProgramElement.Element("Channel").Element("CallSign").Value;
+                    if (singleProgramElement.Element("Channel").Element("InputId").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.inputid = int.Parse((string)singleProgramElement.Element("Channel").Element("InputId").Value);
+                    if (singleProgramElement.Element("Channel").Element("ChannelName").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.channame = (string)singleProgramElement.Element("Channel").Element("ChannelName").Value;
+                    if (singleProgramElement.Element("Channel").Element("SourceId").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.sourceid = int.Parse((string)singleProgramElement.Element("Channel").Element("SourceId").Value);
+                    if (singleProgramElement.Element("Channel").Element("ChanId").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.chanid = int.Parse((string)singleProgramElement.Element("Channel").Element("ChanId").Value);
+                    if (singleProgramElement.Element("Channel").Element("ChanNum").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.channum = (string)singleProgramElement.Element("Channel").Element("ChanNum").Value;
+                    if (singleProgramElement.Element("Channel").Element("CallSign").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.callsign = (string)singleProgramElement.Element("Channel").Element("CallSign").Value;
 
                 }
 
 
                 if (singleProgramElement.Descendants("Recording").Count() > 0)
                 {
-                    if (singleProgramElement.Element("Recording").Element("Priority").FirstNode != null) App.ViewModel.SelectedProgram.recpriority = int.Parse((string)singleProgramElement.Element("Recording").Element("Priority").Value);
-                    if (singleProgramElement.Element("Recording").Element("Status").FirstNode != null) App.ViewModel.SelectedProgram.recstatus = int.Parse((string)singleProgramElement.Element("Recording").Element("Status").Value);
-                    //App.ViewModel.SelectedProgram.recstatustext = App.ViewModel.functions.RecStatusDecode(App.ViewModel.SelectedProgram.recstatus);
-                    if (singleProgramElement.Element("Recording").Element("RecGroup").FirstNode != null) App.ViewModel.SelectedProgram.recgroup = (string)singleProgramElement.Element("Recording").Element("RecGroup").Value;
-                    if (singleProgramElement.Element("Recording").Element("StartTs").FirstNode != null) App.ViewModel.SelectedProgram.recstartts = (string)singleProgramElement.Element("Recording").Element("StartTs").Value;
-                    if (singleProgramElement.Element("Recording").Element("EndTs").FirstNode != null) App.ViewModel.SelectedProgram.recendts = (string)singleProgramElement.Element("Recording").Element("EndTs").Value;
-                    if (singleProgramElement.Element("Recording").Element("RecordId").FirstNode != null) App.ViewModel.SelectedProgram.recordid = int.Parse((string)singleProgramElement.Element("Recording").Element("RecordId").Value);
+                    if (singleProgramElement.Element("Recording").Element("Priority").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.recpriority = int.Parse((string)singleProgramElement.Element("Recording").Element("Priority").Value);
+                    if (singleProgramElement.Element("Recording").Element("Status").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.recstatus = int.Parse((string)singleProgramElement.Element("Recording").Element("Status").Value);
+                    //App.ViewModel.SelectedUpcomingProgram.recstatustext = App.ViewModel.functions.RecStatusDecode(App.ViewModel.SelectedUpcomingProgram.recstatus);
+                    if (singleProgramElement.Element("Recording").Element("RecGroup").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.recgroup = (string)singleProgramElement.Element("Recording").Element("RecGroup").Value;
+                    if (singleProgramElement.Element("Recording").Element("StartTs").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.recstartts = (string)singleProgramElement.Element("Recording").Element("StartTs").Value;
+                    if (singleProgramElement.Element("Recording").Element("EndTs").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.recendts = (string)singleProgramElement.Element("Recording").Element("EndTs").Value;
+                    if (singleProgramElement.Element("Recording").Element("RecordId").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.recordid = int.Parse((string)singleProgramElement.Element("Recording").Element("RecordId").Value);
 
                 }
                 else
                 {
-                    App.ViewModel.SelectedProgram.recstatus = -20;
+                    App.ViewModel.SelectedUpcomingProgram.recstatus = -20;
                 }
 
-                App.ViewModel.SelectedProgram.recstatustext = App.ViewModel.functions.RecStatusDecode(App.ViewModel.SelectedProgram.recstatus);
+                App.ViewModel.SelectedUpcomingProgram.recstatustext = App.ViewModel.functions.RecStatusDecode(App.ViewModel.SelectedUpcomingProgram.recstatus);
 
 
-                if (App.ViewModel.SelectedProgram.recstatus == -2)
+                if (App.ViewModel.SelectedUpcomingProgram.recstatus == -2)
                 {
-                    App.ViewModel.SelectedProgram.recordedfourthline = "Currently recording (" + App.ViewModel.SelectedProgram.channum + " - " + App.ViewModel.SelectedProgram.channame + ")";
+                    App.ViewModel.SelectedUpcomingProgram.recordedfourthline = "Currently recording (" + App.ViewModel.SelectedUpcomingProgram.channum + " - " + App.ViewModel.SelectedUpcomingProgram.channame + ")";
                 }
                 else
                 {
-                    App.ViewModel.SelectedProgram.recordedfourthline = App.ViewModel.SelectedProgram.channum + " - " + App.ViewModel.SelectedProgram.channame;
+                    App.ViewModel.SelectedUpcomingProgram.recordedfourthline = App.ViewModel.SelectedUpcomingProgram.channum + " - " + App.ViewModel.SelectedUpcomingProgram.channame;
                 }
 
 
@@ -188,30 +188,30 @@ namespace MythMe
                 {
                     //MessageBox.Show("Done updating");
 
-                    DataContext = App.ViewModel.SelectedProgram;
-                    topPanorama.DataContext = App.ViewModel.SelectedProgram;
+                    DataContext = App.ViewModel.SelectedUpcomingProgram;
+                    topPanorama.DataContext = App.ViewModel.SelectedUpcomingProgram;
 
-                    recstatustext.Text = App.ViewModel.SelectedProgram.recstatustext;
-                    title.Text = App.ViewModel.SelectedProgram.title;
-                    subtitle.Text = App.ViewModel.SelectedProgram.subtitle;
-                    category.Text = App.ViewModel.SelectedProgram.category;
-                    description.Text = App.ViewModel.SelectedProgram.description;
+                    recstatustext.Text = App.ViewModel.SelectedUpcomingProgram.recstatustext;
+                    title.Text = App.ViewModel.SelectedUpcomingProgram.title;
+                    subtitle.Text = App.ViewModel.SelectedUpcomingProgram.subtitle;
+                    category.Text = App.ViewModel.SelectedUpcomingProgram.category;
+                    description.Text = App.ViewModel.SelectedUpcomingProgram.description;
 
-                    starttime.Text = App.ViewModel.SelectedProgram.starttime;
-                    endtime.Text = App.ViewModel.SelectedProgram.endtime;
-                    seriesid.Text = App.ViewModel.SelectedProgram.seriesid;
-                    programid.Text = App.ViewModel.SelectedProgram.programid;
-                    airdate.Text = App.ViewModel.SelectedProgram.airdate;
+                    starttime.Text = App.ViewModel.SelectedUpcomingProgram.starttime;
+                    endtime.Text = App.ViewModel.SelectedUpcomingProgram.endtime;
+                    seriesid.Text = App.ViewModel.SelectedUpcomingProgram.seriesid;
+                    programid.Text = App.ViewModel.SelectedUpcomingProgram.programid;
+                    airdate.Text = App.ViewModel.SelectedUpcomingProgram.airdate;
 
-                    channum.Text = App.ViewModel.SelectedProgram.channum;
-                    channame.Text = App.ViewModel.SelectedProgram.channame;
-                    chanid.Text = App.ViewModel.SelectedProgram.chanid.ToString();
+                    channum.Text = App.ViewModel.SelectedUpcomingProgram.channum;
+                    channame.Text = App.ViewModel.SelectedUpcomingProgram.channame;
+                    chanid.Text = App.ViewModel.SelectedUpcomingProgram.chanid.ToString();
 
-                    recstatustext2.Text = App.ViewModel.SelectedProgram.recstatustext;
-                    recstartts.Text = App.ViewModel.SelectedProgram.recstartts;
-                    recendts.Text = App.ViewModel.SelectedProgram.recendts;
-                    //hostname.Text = App.ViewModel.SelectedProgram.hostname;
-                    recgroup.Text = App.ViewModel.SelectedProgram.recgroup;
+                    recstatustext2.Text = App.ViewModel.SelectedUpcomingProgram.recstatustext;
+                    recstartts.Text = App.ViewModel.SelectedUpcomingProgram.recstartts;
+                    recendts.Text = App.ViewModel.SelectedUpcomingProgram.recendts;
+                    //hostname.Text = App.ViewModel.SelectedUpcomingProgram.hostname;
+                    recgroup.Text = App.ViewModel.SelectedUpcomingProgram.recgroup;
 
                 });
             }
@@ -265,53 +265,53 @@ namespace MythMe
 
                 foreach (XElement singleProgramElement in xdoc.Element("GetProgramDetailsResponse").Element("ProgramDetails").Descendants("Program"))
                 {
-                    App.ViewModel.SelectedProgram.title = (string)singleProgramElement.Attribute("title").Value;
-                    App.ViewModel.SelectedProgram.subtitle = (string)singleProgramElement.Attribute("subTitle").Value;
+                    App.ViewModel.SelectedUpcomingProgram.title = (string)singleProgramElement.Attribute("title").Value;
+                    App.ViewModel.SelectedUpcomingProgram.subtitle = (string)singleProgramElement.Attribute("subTitle").Value;
 
-                    //App.ViewModel.SelectedProgram.programflags = (string)singleProgramElement.Attribute("programFlags").Value;
-                    App.ViewModel.SelectedProgram.category = (string)singleProgramElement.Attribute("category").Value;
-                    if (singleProgramElement.Attributes("fileSize").Count() > 0) App.ViewModel.SelectedProgram.filesize = Int64.Parse((string)singleProgramElement.Attribute("fileSize").Value);
-                    App.ViewModel.SelectedProgram.seriesid = (string)singleProgramElement.Attribute("seriesId").Value;
-                    App.ViewModel.SelectedProgram.hostname = (string)singleProgramElement.Attribute("hostname").Value;
-                    //App.ViewModel.SelectedProgram.cattype = (string)singleProgramElement.Attribute("catType").Value;
-                    App.ViewModel.SelectedProgram.programid = (string)singleProgramElement.Attribute("programId").Value;
-                    //App.ViewModel.SelectedProgram.repeat = (string)singleProgramElement.Attribute("repeat").Value;
-                    //App.ViewModel.SelectedProgram.stars = (string)singleProgramElement.Attribute("stars").Value;
-                    App.ViewModel.SelectedProgram.endtime = (string)singleProgramElement.Attribute("endTime").Value;
-                    App.ViewModel.SelectedProgram.endtimespace = (string)singleProgramElement.Attribute("endTime").Value.Replace("T", " ");
-                    if (singleProgramElement.Attributes("airdate").Count() > 0) App.ViewModel.SelectedProgram.airdate = (string)singleProgramElement.Attribute("airdate").Value;
-                    App.ViewModel.SelectedProgram.starttime = (string)singleProgramElement.Attribute("startTime").Value;
-                    App.ViewModel.SelectedProgram.starttimespace = (string)singleProgramElement.Attribute("startTime").Value.Replace("T", " ");
-                    //App.ViewModel.SelectedProgram.lastmodified = (string)singleProgramElement.Attribute("lastModified").Value;
+                    //App.ViewModel.SelectedUpcomingProgram.programflags = (string)singleProgramElement.Attribute("programFlags").Value;
+                    App.ViewModel.SelectedUpcomingProgram.category = (string)singleProgramElement.Attribute("category").Value;
+                    if (singleProgramElement.Attributes("fileSize").Count() > 0) App.ViewModel.SelectedUpcomingProgram.filesize = Int64.Parse((string)singleProgramElement.Attribute("fileSize").Value);
+                    App.ViewModel.SelectedUpcomingProgram.seriesid = (string)singleProgramElement.Attribute("seriesId").Value;
+                    App.ViewModel.SelectedUpcomingProgram.hostname = (string)singleProgramElement.Attribute("hostname").Value;
+                    //App.ViewModel.SelectedUpcomingProgram.cattype = (string)singleProgramElement.Attribute("catType").Value;
+                    App.ViewModel.SelectedUpcomingProgram.programid = (string)singleProgramElement.Attribute("programId").Value;
+                    //App.ViewModel.SelectedUpcomingProgram.repeat = (string)singleProgramElement.Attribute("repeat").Value;
+                    //App.ViewModel.SelectedUpcomingProgram.stars = (string)singleProgramElement.Attribute("stars").Value;
+                    App.ViewModel.SelectedUpcomingProgram.endtime = (string)singleProgramElement.Attribute("endTime").Value;
+                    App.ViewModel.SelectedUpcomingProgram.endtimespace = (string)singleProgramElement.Attribute("endTime").Value.Replace("T", " ");
+                    if (singleProgramElement.Attributes("airdate").Count() > 0) App.ViewModel.SelectedUpcomingProgram.airdate = (string)singleProgramElement.Attribute("airdate").Value;
+                    App.ViewModel.SelectedUpcomingProgram.starttime = (string)singleProgramElement.Attribute("startTime").Value;
+                    App.ViewModel.SelectedUpcomingProgram.starttimespace = (string)singleProgramElement.Attribute("startTime").Value.Replace("T", " ");
+                    //App.ViewModel.SelectedUpcomingProgram.lastmodified = (string)singleProgramElement.Attribute("lastModified").Value;
 
                     if (singleProgramElement.Descendants("Recording").Count() > 0)
                     {
-                        App.ViewModel.SelectedProgram.inputid = int.Parse((string)singleProgramElement.Element("Channel").Attribute("inputId").Value);
-                        App.ViewModel.SelectedProgram.channame = (string)singleProgramElement.Element("Channel").Attribute("channelName").Value;
-                        App.ViewModel.SelectedProgram.sourceid = int.Parse((string)singleProgramElement.Element("Channel").Attribute("sourceId").Value);
-                        App.ViewModel.SelectedProgram.chanid = int.Parse((string)singleProgramElement.Element("Channel").Attribute("chanId").Value);
-                        App.ViewModel.SelectedProgram.channum = (string)singleProgramElement.Element("Channel").Attribute("chanNum").Value;
-                        App.ViewModel.SelectedProgram.callsign = (string)singleProgramElement.Element("Channel").Attribute("callSign").Value;
+                        App.ViewModel.SelectedUpcomingProgram.inputid = int.Parse((string)singleProgramElement.Element("Channel").Attribute("inputId").Value);
+                        App.ViewModel.SelectedUpcomingProgram.channame = (string)singleProgramElement.Element("Channel").Attribute("channelName").Value;
+                        App.ViewModel.SelectedUpcomingProgram.sourceid = int.Parse((string)singleProgramElement.Element("Channel").Attribute("sourceId").Value);
+                        App.ViewModel.SelectedUpcomingProgram.chanid = int.Parse((string)singleProgramElement.Element("Channel").Attribute("chanId").Value);
+                        App.ViewModel.SelectedUpcomingProgram.channum = (string)singleProgramElement.Element("Channel").Attribute("chanNum").Value;
+                        App.ViewModel.SelectedUpcomingProgram.callsign = (string)singleProgramElement.Element("Channel").Attribute("callSign").Value;
                     }
 
 
                     if (singleProgramElement.Descendants("Recording").Count() > 0)
                     {
-                        App.ViewModel.SelectedProgram.recpriority = int.Parse((string)singleProgramElement.Element("Recording").Attribute("recPriority").Value);
-                        App.ViewModel.SelectedProgram.recstatus = int.Parse((string)singleProgramElement.Element("Recording").Attribute("recStatus").Value);
-                        //App.ViewModel.SelectedProgram.recstatustext = App.ViewModel.functions.RecStatusDecode(App.ViewModel.SelectedProgram.recstatus);
-                        App.ViewModel.SelectedProgram.recgroup = (string)singleProgramElement.Element("Recording").Attribute("recGroup").Value;
-                        App.ViewModel.SelectedProgram.recstartts = (string)singleProgramElement.Element("Recording").Attribute("recStartTs").Value;
-                        App.ViewModel.SelectedProgram.recendts = (string)singleProgramElement.Element("Recording").Attribute("recEndTs").Value;
-                        App.ViewModel.SelectedProgram.recordid = int.Parse((string)singleProgramElement.Element("Recording").Attribute("recordId").Value);
+                        App.ViewModel.SelectedUpcomingProgram.recpriority = int.Parse((string)singleProgramElement.Element("Recording").Attribute("recPriority").Value);
+                        App.ViewModel.SelectedUpcomingProgram.recstatus = int.Parse((string)singleProgramElement.Element("Recording").Attribute("recStatus").Value);
+                        //App.ViewModel.SelectedUpcomingProgram.recstatustext = App.ViewModel.functions.RecStatusDecode(App.ViewModel.SelectedUpcomingProgram.recstatus);
+                        App.ViewModel.SelectedUpcomingProgram.recgroup = (string)singleProgramElement.Element("Recording").Attribute("recGroup").Value;
+                        App.ViewModel.SelectedUpcomingProgram.recstartts = (string)singleProgramElement.Element("Recording").Attribute("recStartTs").Value;
+                        App.ViewModel.SelectedUpcomingProgram.recendts = (string)singleProgramElement.Element("Recording").Attribute("recEndTs").Value;
+                        App.ViewModel.SelectedUpcomingProgram.recordid = int.Parse((string)singleProgramElement.Element("Recording").Attribute("recordId").Value);
 
                     }
                     else
                     {
-                        App.ViewModel.SelectedProgram.recstatus = -20;
+                        App.ViewModel.SelectedUpcomingProgram.recstatus = -20;
                     }
 
-                    App.ViewModel.SelectedProgram.recstatustext = App.ViewModel.functions.RecStatusDecode(App.ViewModel.SelectedProgram.recstatus);
+                    App.ViewModel.SelectedUpcomingProgram.recstatustext = App.ViewModel.functions.RecStatusDecode(App.ViewModel.SelectedUpcomingProgram.recstatus);
                         
                 }
 
@@ -319,30 +319,30 @@ namespace MythMe
                 {
                     //MessageBox.Show("Done updating");
 
-                    DataContext = App.ViewModel.SelectedProgram;
-                    topPanorama.DataContext = App.ViewModel.SelectedProgram;
+                    DataContext = App.ViewModel.SelectedUpcomingProgram;
+                    topPanorama.DataContext = App.ViewModel.SelectedUpcomingProgram;
 
-                    recstatustext.Text = App.ViewModel.SelectedProgram.recstatustext;
-                    title.Text = App.ViewModel.SelectedProgram.title;
-                    subtitle.Text = App.ViewModel.SelectedProgram.subtitle;
-                    category.Text = App.ViewModel.SelectedProgram.category;
-                    description.Text = App.ViewModel.SelectedProgram.description;
+                    recstatustext.Text = App.ViewModel.SelectedUpcomingProgram.recstatustext;
+                    title.Text = App.ViewModel.SelectedUpcomingProgram.title;
+                    subtitle.Text = App.ViewModel.SelectedUpcomingProgram.subtitle;
+                    category.Text = App.ViewModel.SelectedUpcomingProgram.category;
+                    description.Text = App.ViewModel.SelectedUpcomingProgram.description;
 
-                    starttime.Text = App.ViewModel.SelectedProgram.starttime;
-                    endtime.Text = App.ViewModel.SelectedProgram.endtime;
-                    seriesid.Text = App.ViewModel.SelectedProgram.seriesid;
-                    programid.Text = App.ViewModel.SelectedProgram.programid;
-                    airdate.Text = App.ViewModel.SelectedProgram.airdate;
+                    starttime.Text = App.ViewModel.SelectedUpcomingProgram.starttime;
+                    endtime.Text = App.ViewModel.SelectedUpcomingProgram.endtime;
+                    seriesid.Text = App.ViewModel.SelectedUpcomingProgram.seriesid;
+                    programid.Text = App.ViewModel.SelectedUpcomingProgram.programid;
+                    airdate.Text = App.ViewModel.SelectedUpcomingProgram.airdate;
 
-                    channum.Text = App.ViewModel.SelectedProgram.channum;
-                    channame.Text = App.ViewModel.SelectedProgram.channame;
-                    chanid.Text = App.ViewModel.SelectedProgram.chanid.ToString();
+                    channum.Text = App.ViewModel.SelectedUpcomingProgram.channum;
+                    channame.Text = App.ViewModel.SelectedUpcomingProgram.channame;
+                    chanid.Text = App.ViewModel.SelectedUpcomingProgram.chanid.ToString();
 
-                    recstatustext2.Text = App.ViewModel.SelectedProgram.recstatustext;
-                    recstartts.Text = App.ViewModel.SelectedProgram.recstartts;
-                    recendts.Text = App.ViewModel.SelectedProgram.recendts;
-                    //hostname.Text = App.ViewModel.SelectedProgram.hostname;
-                    recgroup.Text = App.ViewModel.SelectedProgram.recgroup;
+                    recstatustext2.Text = App.ViewModel.SelectedUpcomingProgram.recstatustext;
+                    recstartts.Text = App.ViewModel.SelectedUpcomingProgram.recstartts;
+                    recendts.Text = App.ViewModel.SelectedUpcomingProgram.recendts;
+                    //hostname.Text = App.ViewModel.SelectedUpcomingProgram.hostname;
+                    recgroup.Text = App.ViewModel.SelectedUpcomingProgram.recgroup;
 
                 });
             }
@@ -367,8 +367,8 @@ namespace MythMe
                     query += " FROM `credits` ";
                     query += " LEFT OUTER JOIN `people` ON `credits`.`person` = `people`.`person` ";
                     query += " LEFT OUTER JOIN `videocast` ON `videocast`.`cast` = `people`.`name` ";
-                    query += " WHERE (`credits`.`chanid` = " + App.ViewModel.SelectedProgram.chanid;
-                    query += " AND `credits`.`starttime` = \"" + App.ViewModel.SelectedProgram.starttime.Replace("T", " ") + "\" ) ";
+                    query += " WHERE (`credits`.`chanid` = " + App.ViewModel.SelectedUpcomingProgram.chanid;
+                    query += " AND `credits`.`starttime` = \"" + App.ViewModel.SelectedUpcomingProgram.starttime.Replace("T", " ") + "\" ) ";
                     query += " ORDER BY `role`,`name` ";
 
                     HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponse&query64=" + Convert.ToBase64String(encoder.GetBytes(query)) + "&rand=" + randText()));
@@ -415,16 +415,16 @@ namespace MythMe
 
             try
             {
-                //List<PeopleModel> lp = new List<PeopleModel>();
+                //List<PeopleViewModel> lp = new List<PeopleViewModel>();
 
-                DataContractJsonSerializer s = new DataContractJsonSerializer(typeof(List<PeopleModel>));
+                DataContractJsonSerializer s = new DataContractJsonSerializer(typeof(List<PeopleViewModel>));
 
-                People = (List<PeopleModel>)s.ReadObject(response.GetResponseStream());
+                People = (List<PeopleViewModel>)s.ReadObject(response.GetResponseStream());
 
 
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
-                    //MessageBox.Show("Got people: " + PeopleModel.Count);
+                    //MessageBox.Show("Got people: " + PeopleViewModel.Count);
 
                     peopleList.ItemsSource = People;
 
@@ -459,7 +459,7 @@ namespace MythMe
             try
             {
                 DateTime dateResult;
-                DateTime.TryParse(App.ViewModel.SelectedProgram.starttime, out dateResult);
+                DateTime.TryParse(App.ViewModel.SelectedUpcomingProgram.starttime, out dateResult);
 
                 //TimeSpan s = (DateTime.Now - new DateTime(1970, 1, 1, ));
                 TimeSpan t = (dateResult - new DateTime(1970, 1, 1));
@@ -469,7 +469,7 @@ namespace MythMe
 
                 WebBrowserTask webopen = new WebBrowserTask();
 
-                webopen.Uri = new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/mythweb/tv/detail/" + App.ViewModel.SelectedProgram.chanid + "/" + timestamp);
+                webopen.Uri = new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/mythweb/tv/detail/" + App.ViewModel.SelectedUpcomingProgram.chanid + "/" + timestamp);
                 webopen.Show();
             }
             catch (Exception ex)
@@ -480,9 +480,9 @@ namespace MythMe
 
         private void guideButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            App.ViewModel.GuideTime = App.ViewModel.SelectedProgram.starttime;
+            App.ViewModel.GuideTime = App.ViewModel.SelectedUpcomingProgram.starttime;
 
-            NavigationService.Navigate(new Uri("/Guide.xaml?SelectedTime=" + App.ViewModel.SelectedProgram.starttime, UriKind.Relative));
+            NavigationService.Navigate(new Uri("/Guide.xaml?SelectedTime=" + App.ViewModel.SelectedUpcomingProgram.starttime, UriKind.Relative));
 
         }
 
@@ -492,6 +492,21 @@ namespace MythMe
             Random random = new Random();
 
             return random.Next().ToString();
+        }
+
+        private void peopleList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (peopleList.SelectedItem == null)
+                return;
+
+
+            var s = (PeopleViewModel)peopleList.SelectedItem;
+
+            App.ViewModel.SelectedPerson = s;
+
+            NavigationService.Navigate(new Uri("/People.xaml?Source=upcoming", UriKind.Relative));
+
+            peopleList.SelectedItem = null;
         }
     }
 }

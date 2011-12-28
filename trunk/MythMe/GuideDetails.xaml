@@ -7,6 +7,7 @@
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:local="clr-namespace:MythMe"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeLarge}"
@@ -24,7 +25,7 @@
                         <TextBlock x:Name="recstatustext" Text="{Binding recstatustext}" FontSize="26" Style="{StaticResource PhoneTextSubtleStyle}" TextWrapping="Wrap" FontStyle="Italic" Foreground="Silver" />
                         <TextBlock x:Name="title" Text="{Binding title}" TextWrapping="Wrap"  Foreground="White" />
                         <TextBlock x:Name="subtitle" Text="{Binding subtitle}" FontSize="26" Style="{StaticResource PhoneTextSubtleStyle}" TextWrapping="Wrap" Foreground="Silver"  />
-                        <TextBlock x:Name="category" Text="{Binding category}" FontSize="26" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver"  />
+                        <TextBlock x:Name="category" Text="{Binding category}" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver"  />
                         <Image Source="{Binding chanicon}" Width="150"/>
                         <TextBlock x:Name="description" Text="{Binding description}" Style="{StaticResource PhoneTextSubtleStyle}" TextWrapping="Wrap" Foreground="Silver" />
                     </StackPanel>
@@ -80,9 +81,9 @@
                 </ScrollViewer>
             </controls:PanoramaItem>
 
-            <controls:PanoramaItem Header="people" x:Name="peoplePivot" Foreground="White">
+            <controls:PanoramaItem Header="people" x:Name="peoplePivot" Foreground="White"  local:TiltEffect.IsTiltEnabled="True">
 
-                <ListBox x:Name="peopleList">
+                <ListBox x:Name="peopleList" SelectionChanged="peopleList_SelectionChanged">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Margin="0,0,0,17" Width="432" Height="Auto">
