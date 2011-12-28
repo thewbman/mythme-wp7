@@ -90,6 +90,9 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="People.xaml.cs">
+      <DependentUpon>People.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Preferences.xaml.cs">
       <DependentUpon>Preferences.xaml</DependentUpon>
     </Compile>
@@ -124,8 +127,9 @@
     <Compile Include="ViewModels\JobqueueModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\NameContentViewModel.cs" />
-    <Compile Include="ViewModels\PeopleModel.cs" />
+    <Compile Include="ViewModels\PeopleViewModel.cs" />
     <Compile Include="ViewModels\ProgramViewModel.cs" />
+    <Compile Include="ViewModels\VideoViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -149,6 +153,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="People.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -194,6 +202,7 @@
   <ItemGroup>
     <Content Include="Images\appbar.add.rest.png" />
     <Content Include="Images\appbar.delete.rest.png" />
+    <Content Include="Images\appbar.feature.search.rest.png" />
     <Content Include="Images\appbar.feature.settings.rest.png" />
     <Content Include="Images\appbar.refresh.rest.png" />
     <Resource Include="Images\down.png" />

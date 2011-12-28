@@ -12,11 +12,12 @@ using System.ComponentModel;
 
 namespace MythMe
 {
-    public class PeopleModel : INotifyPropertyChanged
+    public class PeopleViewModel : INotifyPropertyChanged
     {
 
         public string role { get; set; }
         public string name { get; set; }
+        public string alpha { get; set; }
         public string person { get; set; }
         public string videoPersonId { get; set; }
         

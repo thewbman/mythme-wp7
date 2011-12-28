@@ -66,6 +66,9 @@ namespace MythMe
         //public string video_props { get; set; }
         //public string year { get; set; }
 
+        //for people search results
+        public string role { get; set; }
+
         public string screenshot { get; set; }
         public string chanicon { get; set; }
 

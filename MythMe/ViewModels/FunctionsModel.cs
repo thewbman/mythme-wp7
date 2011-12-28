@@ -10,6 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Text.RegularExpressions;
 
 namespace MythMe
 {
@@ -400,9 +401,27 @@ namespace MythMe
 
         }
 
+        public string FirstChar(string inString)
+        {
+            string a = inString.ToUpper().Substring(0, 1);
 
+            if (Regex.IsMatch(a, "[0-9]"))
+            {
+                a = "#";
+            }
+            else if (Regex.IsMatch(a, "[A-Z]"))
+            {
+                //
+            }
+            else
+            {
+                a = "~";
+            }
 
+            return a;
+        }
         
+
 
     }
 }

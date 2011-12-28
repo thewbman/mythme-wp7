@@ -54,8 +54,9 @@ namespace MythMe
 		//upcomingGroup: "Upcoming",
         const string GuideSortName = "GuideSort";
         const string GuideSortAscName = "GuideSortAsc";
-		//searchSort: "Date [Asc]",
-		//searchPeopleSort: "Date [Asc]",
+        //searchSort: "Date [Asc]",
+        const string PeopleSortName = "PeopleSort";
+        const string PeopleSortAscName = "PeopleSortAsc";
 		//videosSort: "Title [Asc][]:[]Season [Asc]",
 		//videosGroup: "Directory",
 		//musicSort: "artist-asc",	//asdf
@@ -135,7 +136,8 @@ namespace MythMe
         const bool GuideSortAscDefault = false;
         //guideSort: "Default",	//asdf
         //searchSort: "Date [Asc]",
-        //searchPeopleSort: "Date [Asc]",
+        const string PeopleSortDefault = "starttime";
+        const bool PeopleSortAscDefault = true;
         //videosSort: "Title [Asc][]:[]Season [Asc]",
         //videosGroup: "Directory",
         //musicSort: "artist-asc",	//asdf
@@ -421,7 +423,16 @@ namespace MythMe
             set { if (AddOrUpdateValue(GuideSortAscName, value)) { Save(); } }
         }
         //searchSort: "Date [Asc]",
-        //searchPeopleSort: "Date [Asc]",
+        public string PeopleSortSetting
+        {
+            get { return GetValueOrDefault<string>(PeopleSortName, PeopleSortDefault); }
+            set { if (AddOrUpdateValue(PeopleSortName, value)) { Save(); } }
+        }
+        public bool PeopleSortAscSetting
+        {
+            get { return GetValueOrDefault<bool>(PeopleSortAscName, PeopleSortAscDefault); }
+            set { if (AddOrUpdateValue(PeopleSortAscName, value)) { Save(); } }
+        }
         //videosSort: "Title [Asc][]:[]Season [Asc]",
         //videosGroup: "Directory",
         //musicSort: "artist-asc",	//asdf

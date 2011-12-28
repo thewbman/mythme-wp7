@@ -89,6 +89,7 @@ namespace MythMe
             //menuListItems.Add(new NameContentViewModel() {Content = "search"});
             //menuListItems.Add(new NameContentViewModel() {Content = "videos"});
             //menuListItems.Add(new NameContentViewModel() {Content = "music"});
+            menuListItems.Add(new NameContentViewModel() { Content = "people" });
             menuListItems.Add(new NameContentViewModel() { Content = "status" });
             //menuListItems.Add(new NameContentViewModel() {Content = "log"});
 
@@ -608,6 +609,9 @@ namespace MythMe
                     break;
                 case "music":
                     //NavigationService.Navigate(new Uri("/Music.xaml", UriKind.Relative));
+                    break;
+                case "people":
+                    NavigationService.Navigate(new Uri("/People.xaml", UriKind.Relative));
                     break;
                 case "status":
                     NavigationService.Navigate(new Uri("/Status.xaml", UriKind.Relative));

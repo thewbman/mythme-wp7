@@ -7,6 +7,7 @@
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:local="clr-namespace:MythMe"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeLarge}"
@@ -23,7 +24,7 @@
                     <StackPanel>
                         <TextBlock Text="{Binding title}" TextWrapping="Wrap" Foreground="White"  />
                         <TextBlock Text="{Binding subtitle}" FontSize="26" Style="{StaticResource PhoneTextSubtleStyle}" TextWrapping="Wrap" Foreground="Silver"  />
-                        <TextBlock Text="{Binding category}" FontSize="26" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver"  />
+                        <TextBlock Text="{Binding category}" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver"  />
                         <Image Source="{Binding screenshot}" Width="420" />
                         <TextBlock Text="{Binding description}" Style="{StaticResource PhoneTextSubtleStyle}" TextWrapping="Wrap" Foreground="Silver" />
                     </StackPanel>
@@ -77,9 +78,9 @@
                 </ScrollViewer>
             </controls:PanoramaItem>
 
-            <controls:PanoramaItem Header="people" x:Name="peoplePivot" Foreground="White">
-                
-                    <ListBox x:Name="peopleList">
+            <controls:PanoramaItem Header="people" x:Name="peoplePivot" Foreground="White" local:TiltEffect.IsTiltEnabled="True">
+
+                <ListBox x:Name="peopleList"  local:TiltEffect.IsTiltEnabled="True" SelectionChanged="peopleList_SelectionChanged" >
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Margin="0,0,0,17" Width="432" Height="Auto">
