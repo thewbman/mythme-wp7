@@ -29,9 +29,11 @@
 
         <DataTemplate x:Key="peopleItemTemplate">
             <StackPanel>
-                <TextBlock Text="{Binding name}" TextWrapping="NoWrap" Margin="2,-6,12,0" Style="{StaticResource PhoneTextNormalStyle}" FontSize="48" Foreground="White" />
+                <TextBlock Text="{Binding name}" TextWrapping="NoWrap" Margin="2,-6,12,0" Style="{StaticResource PhoneTextNormalStyle}" FontSize="40" Foreground="White" />
+                <!-- 
                 <TextBlock Text="{Binding person}" TextWrapping="NoWrap" Margin="10,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
                 <TextBlock Text="{Binding videoPersonId}" TextWrapping="NoWrap" Margin="200,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                -->
             </StackPanel>
         </DataTemplate>
 
@@ -80,23 +82,15 @@
         </DataTemplate>
 
         <DataTemplate x:Key="videoItemTemplate">
-            <StackPanel>
-                <TextBlock Text="{Binding title}" TextWrapping="NoWrap" Margin="2,-6,12,0" Style="{StaticResource PhoneTextNormalStyle}" FontSize="24" Foreground="White" />
-                <TextBlock Text="{Binding subtitle}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
-                <StackPanel Orientation="Horizontal">
-                    <Image Width="100" MaxHeight="100" Source="{Binding chanicon}" Margin="0,-15,0,0" Visibility="{Binding showChanicon}"/>
-                    <StackPanel Margin="0,0,0,17" Height="Auto">
-                        <TextBlock Text="{Binding starttimespace}" TextWrapping="NoWrap" Margin="16,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
-                        <TextBlock Text="{Binding category}" TextWrapping="NoWrap" Margin="20,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding channum}" Margin="24,-6,0,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
-                            <TextBlock Text=" - " Margin="0,-6,0,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
-                            <TextBlock Text="{Binding channame}" Margin="0,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
-                        </StackPanel>
-                        <TextBlock Text="{Binding role}" TextWrapping="NoWrap" Margin="28,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                <StackPanel Orientation="Horizontal" Height="150" >
+                    <Image Width="80" MaxHeight="135" Source="{Binding coverart}" Margin="0,-15,0,0" Visibility="{Binding showCoverartList}"/>
+                    <StackPanel Margin="0,10,0,0" Height="Auto">
+                        <TextBlock Text="{Binding title}" TextWrapping="NoWrap" Margin="2,-6,12,0" Style="{StaticResource PhoneTextNormalStyle}" FontSize="24" Foreground="White" />
+                        <TextBlock Text="{Binding subtitle}" TextWrapping="NoWrap" Margin="6,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding category}" TextWrapping="NoWrap" Margin="10,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding fullEpisode}" TextWrapping="NoWrap" Margin="14,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
                     </StackPanel>
                 </StackPanel>
-            </StackPanel>
         </DataTemplate>
 
         <DataTemplate x:Key="videoItemHeader">
@@ -130,7 +124,7 @@
                     <toolkit:LongListSelector x:Name="PeopleLL"
                      GroupHeaderTemplate="{StaticResource peopleGroupHeader}"
                      ItemTemplate="{StaticResource peopleItemTemplate}" 
-                     GroupItemTemplate="{StaticResource peopleItemHeader}"
+                     GroupItemTemplate="{StaticResource peopleItemHeader}" 
                      ShowListFooter="False" ShowListHeader="False" SelectionChanged="PeopleLL_SelectionChanged">
                     </toolkit:LongListSelector>
 

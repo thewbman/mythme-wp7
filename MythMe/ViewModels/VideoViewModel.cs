@@ -24,8 +24,8 @@ namespace MythMe
         public string inetref { get; set; }
         public string homepage { get; set; }
         public string releasedate { get; set; }
-        public string season { get; set; }
-        public string epsiode { get; set; }
+        public int season { get; set; }
+        public int episode { get; set; }
         public string filename { get; set; }
         public string director { get; set; }
         public string year { get; set; }
@@ -37,7 +37,16 @@ namespace MythMe
         public string host { get; set; }
         public string insertdate { get; set; }
         public string type { get; set; }
-        
+
+
+        public string coverart { get; set; }
+        public string seasonText { get; set; }
+        public string episodeText { get; set; }
+        public string fullEpisode { get; set; }
+        public string group { get; set; }
+
+        public Visibility showCoverartList { get; set; }
+        public Visibility showCoverartDetails { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(String propertyName)

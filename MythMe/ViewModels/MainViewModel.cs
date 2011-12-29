@@ -36,6 +36,7 @@ namespace MythMe
             this.SelectedRecordedProgram = new ProgramViewModel();
             this.SelectedUpcomingProgram = new ProgramViewModel();
             this.SelectedGuideProgram = new ProgramViewModel();
+            this.SelectedPeopleProgram = new ProgramViewModel();
 
             this.SelectedPerson = new PeopleViewModel();
 
@@ -65,6 +66,7 @@ namespace MythMe
         public ProgramViewModel SelectedRecordedProgram;
         public ProgramViewModel SelectedUpcomingProgram;
         public ProgramViewModel SelectedGuideProgram;
+        public ProgramViewModel SelectedPeopleProgram;
 
         public PeopleViewModel SelectedPerson;
 

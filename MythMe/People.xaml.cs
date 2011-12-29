@@ -60,6 +60,9 @@ namespace MythMe
 
                 App.ViewModel.SelectedPerson.alpha = App.ViewModel.functions.FirstChar(App.ViewModel.SelectedPerson.name);
 
+                if (App.ViewModel.SelectedPerson.videoPersonId == "None")
+                    App.ViewModel.SelectedPerson.videoPersonId = "-1";
+
                 PeopleNames.Clear();
                 PeopleNames.Add(App.ViewModel.SelectedPerson);
 
@@ -78,11 +81,6 @@ namespace MythMe
             //NavigationContext.QueryString.Clear();
         }
 
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {
-            
-            base.OnNavigatedFrom(e);
-        }
 
 
 
@@ -114,7 +112,7 @@ namespace MythMe
 		        query += " LIMIT 1000 ";
 
 
-                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponse&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + randText()));
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponse&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + App.ViewModel.randText()));
                 webRequest.BeginGetResponse(new AsyncCallback(ProgramsCallback), webRequest);
 
             }
@@ -177,7 +175,7 @@ namespace MythMe
                             Programs[i].showChanicon = System.Windows.Visibility.Collapsed;
                     }
 
-                    this.GetVideos(App.ViewModel.SelectedPerson.videoPersonId);
+                    this.GetVideos();
 
                 });
 
@@ -187,13 +185,15 @@ namespace MythMe
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
                     //MessageBox.Show("Error getting people: " + ex.ToString());
+                    this.GetVideos();
                 });
             }
 
         }
 
-        private void GetVideos(string inVideoPersonId)
+        private void GetVideos()
         {
+            string inVideoPersonId = App.ViewModel.SelectedPerson.videoPersonId;
 
             try
             {
@@ -213,7 +213,7 @@ namespace MythMe
 		        query += " LIMIT 1000 ";
 
 
-                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponse&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + randText()));
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponse&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + App.ViewModel.randText()));
                 webRequest.BeginGetResponse(new AsyncCallback(VideosCallback), webRequest);
 
             }
@@ -269,14 +269,69 @@ namespace MythMe
 
                     for (int i = 0; i < Videos.Count; i++)
                     {
-                        /*
-                        Videos[i].chanicon = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Myth/GetChannelIcon?ChanId=" + Programs[i].chanid;
 
-                        if (App.ViewModel.appSettings.ChannelIconsSetting)
-                            Programs[i].showChanicon = System.Windows.Visibility.Visible;
+                        Videos[i].coverart = "http://" + App.ViewModel.appSettings.WebserverHostSetting + "/mythweb/pl/coverart/" + Videos[i].coverfile;
+
+                        if (App.ViewModel.appSettings.VideoListImagesSetting)
+                            Videos[i].showCoverartList = System.Windows.Visibility.Visible;
                         else
-                            Programs[i].showChanicon = System.Windows.Visibility.Collapsed;
-                         */
+                            Videos[i].showCoverartList = System.Windows.Visibility.Collapsed;
+
+
+                        if (App.ViewModel.appSettings.VideoDetailsImageSetting)
+                            Videos[i].showCoverartDetails = System.Windows.Visibility.Visible;
+                        else
+                            Videos[i].showCoverartDetails = System.Windows.Visibility.Collapsed;
+                         
+                        if(Videos[i].season == 0)
+                        {
+                            if(Videos[i].episode == 0)
+                            {
+                                Videos[i].fullEpisode = "N/A";
+                                Videos[i].seasonText = "None";
+                                Videos[i].group = "Regular";
+                            }
+                            else if(Videos[i].episode < 10)
+                            {
+                                Videos[i].fullEpisode = "Special0"+Videos[i].episode.ToString();
+                                Videos[i].seasonText = "Specials";
+                                Videos[i].group = "Specails";
+                            }
+                            else
+                            {
+                                Videos[i].fullEpisode = "Special"+Videos[i].episode.ToString();
+                                Videos[i].seasonText = "Specials";
+                                Videos[i].group = "Specails";
+                            }
+
+                        }
+                        else
+                        {
+                            if(Videos[i].season < 10)
+                            {
+                                Videos[i].fullEpisode = "S0"+Videos[i].season.ToString();
+                                Videos[i].seasonText = "Season  " + Videos[i].season.ToString();
+                            }
+                            else
+                            {
+                                Videos[i].fullEpisode = "S" + Videos[i].season.ToString();
+                                Videos[i].seasonText = "Season " + Videos[i].season.ToString();
+                            }
+
+                            if (Videos[i].episode < 10)
+                            {
+                                Videos[i].fullEpisode += "E0" + Videos[i].episode.ToString();
+                            }
+                            else
+                            {
+                                Videos[i].fullEpisode += "E" + Videos[i].episode.ToString();
+                            }
+
+                            Videos[i].group = "TV";
+                        }
+			
+			
+
                     }
 
                     this.SortAndDisplay();
@@ -327,7 +382,7 @@ namespace MythMe
                     foreach (var item in Programs)
                     {
                         item.guidesort = item.starttime;
-                        item.guidesortdisplay = item.starttime;
+                        item.guidesortdisplay = DateTime.Parse(item.starttime).ToString("dddd, MMMM dd, yyyy");
                     }
                     break;
                 case "title":
@@ -446,18 +501,14 @@ namespace MythMe
             #endregion
         }
 
-        private static string randText()
-        {
-            Random random = new Random();
-
-            return random.Next().ToString();
-        }
 
 
         private void searchBoxButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
 
             performanceProgressBarCustomized.IsIndeterminate = true;
+
+            PeoplePivot.SelectedIndex = 0;
 
             PeopleLL.ItemsSource = null;
             ProgramsLL.ItemsSource = null;
@@ -486,7 +537,7 @@ namespace MythMe
 		        query += " LIMIT 1000 ";
 
 
-                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponse&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + randText()));
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponse&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + App.ViewModel.randText()));
                 webRequest.BeginGetResponse(new AsyncCallback(ProgramPeopleCallback), webRequest);
 
             }
@@ -569,7 +620,7 @@ namespace MythMe
                 query += " LIMIT 1000 ";
 
 
-                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponse&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + randText()));
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponse&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + App.ViewModel.randText()));
                 webRequest.BeginGetResponse(new AsyncCallback(VideoPeopleCallback), webRequest);
 
             }
@@ -718,6 +769,14 @@ namespace MythMe
         private void ProgramsLL_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+            if (ProgramsLL.SelectedItem == null)
+                return;
+
+            App.ViewModel.SelectedPeopleProgram = (ProgramViewModel)ProgramsLL.SelectedItem;
+
+            NavigationService.Navigate(new Uri("/PeopleProgramDetails.xaml", UriKind.Relative));
+
+            ProgramsLL.SelectedItem = null;
         }
 
         private void VideosLL_SelectionChanged(object sender, SelectionChangedEventArgs e)
