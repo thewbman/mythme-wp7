@@ -48,3 +48,4 @@ C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\MythMe_62.png
 C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\RemoteSettings.g.i.cs
 C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\Downloads.g.i.cs
 C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\People.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\PeopleProgramDetails.g.i.cs

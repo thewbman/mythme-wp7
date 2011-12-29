@@ -88,7 +88,7 @@
 
         <controls:Pivot x:Name="guidePivot" Title="GUIDE" SelectionChanged="guidePivot_SelectionChanged" Foreground="White">
 
-            <controls:PivotItem x:Name="nowPivot" Header="Now" Foreground="White">
+            <controls:PivotItem x:Name="nowPivot" Header="now" Foreground="White">
                 
                 <toolkit:LongListSelector x:Name="NowGuideLL"
                      GroupHeaderTemplate="{StaticResource guideGroupHeader}"
@@ -99,14 +99,14 @@
 
             </controls:PivotItem>
 
-            <controls:PivotItem x:Name="timePivot" Header="Time" Foreground="White">
+            <controls:PivotItem x:Name="timePivot" Header="time" Foreground="White">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,-30,0,0">
                         <toolkit:DatePicker x:Name="guideDatePicker" Foreground="#800000" Background="Silver" />
                         <toolkit:TimePicker x:Name="guideTimePicker" Foreground="#800000" Background="Silver" />
                         <Button x:Name="guideTimePickerButton" Content="Go" Tap="guideTimePickerButton_Tap" Foreground="White" BorderBrush="White" />
@@ -119,7 +119,7 @@
                 </Grid>
             </controls:PivotItem>
 
-            <controls:PivotItem x:Name="channelPivot" Header="Channel"  Foreground="Silver">
+            <controls:PivotItem x:Name="channelPivot" Header="channel"  Foreground="Silver">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -127,7 +127,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <toolkit:ListPicker x:Name="guideChannelPicker" FullModeItemTemplate="{StaticResource channelPickerFullTemplate}" ItemTemplate="{StaticResource channelPickerTemplate}" Foreground="#800000" Background="Silver" />
+                    <toolkit:ListPicker x:Name="guideChannelPicker" FullModeItemTemplate="{StaticResource channelPickerFullTemplate}" ItemTemplate="{StaticResource channelPickerTemplate}" Foreground="#800000" Background="Silver" Margin="0,-30,0,0" />
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Grid.Row="1">
                         <toolkit:DatePicker x:Name="guideChannelDatePicker" Foreground="#800000" Background="Silver" />

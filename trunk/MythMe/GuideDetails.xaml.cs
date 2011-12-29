@@ -431,6 +431,12 @@ namespace MythMe
                 {
                     //MessageBox.Show("Got people: " + PeopleViewModel.Count);
 
+                    for (int i = 0; i < People.Count; i++)
+                    {
+                        if (People[i].videoPersonId == "None")
+                            People[i].videoPersonId = "-1";
+                    }
+
                     peopleList.ItemsSource = People;
 
                 });
