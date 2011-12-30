@@ -54,7 +54,8 @@ namespace MythMe
 		//upcomingGroup: "Upcoming",
         const string GuideSortName = "GuideSort";
         const string GuideSortAscName = "GuideSortAsc";
-        //searchSort: "Date [Asc]",
+        const string SearchSortName = "SearchSort";
+        const string SearchSortAscName = "SearchSortAsc";
         const string PeopleSortName = "PeopleSort";
         const string PeopleSortAscName = "PeopleSortAsc";
 		//videosSort: "Title [Asc][]:[]Season [Asc]",
@@ -134,8 +135,8 @@ namespace MythMe
         //upcomingGroup: "Upcoming",
         const string GuideSortDefault = "recstatus";
         const bool GuideSortAscDefault = false;
-        //guideSort: "Default",	//asdf
-        //searchSort: "Date [Asc]",
+        const string SearchSortDefault = "starttime";
+        const bool SearchSortAscDefault = true;
         const string PeopleSortDefault = "starttime";
         const bool PeopleSortAscDefault = true;
         //videosSort: "Title [Asc][]:[]Season [Asc]",
@@ -422,7 +423,16 @@ namespace MythMe
             get { return GetValueOrDefault<bool>(GuideSortAscName, GuideSortAscDefault); }
             set { if (AddOrUpdateValue(GuideSortAscName, value)) { Save(); } }
         }
-        //searchSort: "Date [Asc]",
+        public string SearchSortSetting
+        {
+            get { return GetValueOrDefault<string>(SearchSortName, SearchSortDefault); }
+            set { if (AddOrUpdateValue(SearchSortName, value)) { Save(); } }
+        }
+        public bool SearchSortAscSetting
+        {
+            get { return GetValueOrDefault<bool>(SearchSortAscName, SearchSortAscDefault); }
+            set { if (AddOrUpdateValue(SearchSortAscName, value)) { Save(); } }
+        }
         public string PeopleSortSetting
         {
             get { return GetValueOrDefault<string>(PeopleSortName, PeopleSortDefault); }

@@ -506,6 +506,15 @@ namespace MythMe
         private void searchBoxButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
 
+            this.StartPeopleSearch();
+
+        }
+
+        private void StartPeopleSearch()
+        {
+            //hide keyboard
+            Focus();
+
             performanceProgressBarCustomized.IsIndeterminate = true;
 
             PeoplePivot.SelectedIndex = 0;
@@ -790,6 +799,15 @@ namespace MythMe
             s.SearchQuery = searchBox.Text;
 
             s.Show();
+        }
+
+        private void searchBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            //debugText.Text = e.Key.ToString();
+
+            if (e.Key.ToString() == "Enter")
+                this.StartPeopleSearch();
+
         }
     }
 }

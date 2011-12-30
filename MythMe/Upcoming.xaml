@@ -60,7 +60,7 @@
 
         <controls:Pivot x:Name="upcomingHeader" Title="UPCOMING" Foreground="White">
 
-            <controls:PivotItem x:Name="UpcomingTitle" Header="Upcoming" Foreground="White">
+            <controls:PivotItem x:Name="UpcomingTitle" Header="upcoming" Foreground="White">
 
                 <toolkit:LongListSelector x:Name="UpcomingUpcomingLL"
                      GroupHeaderTemplate="{StaticResource upcomingGroupHeader}"
@@ -71,7 +71,7 @@
 
             </controls:PivotItem>
 
-            <controls:PivotItem x:Name="AllTitle" Header="All" Foreground="White">
+            <controls:PivotItem x:Name="AllTitle" Header="all" Foreground="White">
 
                 <toolkit:LongListSelector x:Name="AllUpcomingLL"
                      GroupHeaderTemplate="{StaticResource upcomingGroupHeader}"
@@ -82,7 +82,7 @@
                 
             </controls:PivotItem>
 
-            <controls:PivotItem x:Name="ConflictingTitle" Header="Conflicting" Foreground="White">
+            <controls:PivotItem x:Name="ConflictingTitle" Header="conflicting" Foreground="White">
 
                 <toolkit:LongListSelector x:Name="ConflictingUpcomingLL"
                      GroupHeaderTemplate="{StaticResource upcomingGroupHeader}"
@@ -93,7 +93,7 @@
                 
             </controls:PivotItem>
 
-            <controls:PivotItem x:Name="OverridesTitle" Header="Overrides" Foreground="White">
+            <controls:PivotItem x:Name="OverridesTitle" Header="overrides" Foreground="White">
 
                 <toolkit:LongListSelector x:Name="OverridesUpcomingLL"
                      GroupHeaderTemplate="{StaticResource upcomingGroupHeader}"
