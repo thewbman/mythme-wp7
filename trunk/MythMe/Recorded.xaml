@@ -68,7 +68,7 @@
 
 
         <controls:Pivot Title="RECORDED" Foreground="White">
-            <controls:PivotItem x:Name="DefaultTitle" Header="Default" Visibility="Collapsed" Foreground="White">
+            <controls:PivotItem x:Name="DefaultTitle" Header="default" Visibility="Collapsed" Foreground="White">
 
                 <toolkit:LongListSelector x:Name="DefaultRecordedLL"
                      GroupHeaderTemplate="{StaticResource recordedGroupHeader}"
@@ -79,7 +79,7 @@
                 
             </controls:PivotItem>
 
-            <controls:PivotItem x:Name="DeletedTitle" Header="Deleted" Visibility="Collapsed" Foreground="White">
+            <controls:PivotItem x:Name="DeletedTitle" Header="deleted" Visibility="Collapsed" Foreground="White">
 
                 <toolkit:LongListSelector x:Name="DeletedRecordedLL"
                      GroupHeaderTemplate="{StaticResource recordedGroupHeader}"
@@ -90,7 +90,7 @@
                 
             </controls:PivotItem>
 
-            <controls:PivotItem x:Name="LiveTVTitle" Header="LiveTV" Visibility="Collapsed" Foreground="White">
+            <controls:PivotItem x:Name="LiveTVTitle" Header="livetv" Visibility="Collapsed" Foreground="White">
 
                 <toolkit:LongListSelector x:Name="LiveTVRecordedLL"
                      GroupHeaderTemplate="{StaticResource recordedGroupHeader}"
@@ -101,7 +101,7 @@
                 
             </controls:PivotItem>
 
-            <controls:PivotItem x:Name="AllTitle" Header="All" Visibility="Collapsed" Foreground="White">
+            <controls:PivotItem x:Name="AllTitle" Header="all" Visibility="Collapsed" Foreground="White">
 
                 <toolkit:LongListSelector x:Name="AllRecordedLL"
                      GroupHeaderTemplate="{StaticResource recordedGroupHeader}"

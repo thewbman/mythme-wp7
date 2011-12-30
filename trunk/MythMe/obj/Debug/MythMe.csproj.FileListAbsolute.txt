@@ -49,3 +49,6 @@ C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\RemoteSettings.g.i.cs
 C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\Downloads.g.i.cs
 C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\People.g.i.cs
 C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\PeopleProgramDetails.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\Log.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\Search.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\SearchProgramDetails.g.i.cs

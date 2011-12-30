@@ -8,7 +8,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
-    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="728"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -20,9 +20,9 @@
         
         <toolkit:PerformanceProgressBar x:Name="performanceProgressBarCustomized" Foreground="Red" Background="Red" IsIndeterminate="True"/>
 
-        <controls:Panorama Title="status" Foreground="White">
+        <controls:Pivot Title="STATUS" Foreground="White">
 
-            <controls:PanoramaItem Header="encoders" Foreground="White">
+            <controls:PivotItem Header="encoders" Foreground="White">
                 <ListBox x:Name="EncodersListBox" >
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -36,9 +36,9 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-            </controls:PanoramaItem>
+            </controls:PivotItem>
 
-            <controls:PanoramaItem Header="scheduled" Foreground="White">
+            <controls:PivotItem Header="scheduled" Foreground="White">
                 <ListBox x:Name="ScheduledListBox" >
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -51,9 +51,9 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-            </controls:PanoramaItem>
+            </controls:PivotItem>
 
-            <controls:PanoramaItem Header="jobqueue" Foreground="White">
+            <controls:PivotItem Header="jobqueue" Foreground="White">
                 <ListBox x:Name="JobqueueListBox" >
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -67,9 +67,9 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-            </controls:PanoramaItem>
+            </controls:PivotItem>
 
-            <controls:PanoramaItem Header="storage" Foreground="White">
+            <controls:PivotItem Header="storage" Foreground="White">
                 <ListBox x:Name="StorageListBox" >
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -80,9 +80,9 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-            </controls:PanoramaItem>
+            </controls:PivotItem>
 
-            <controls:PanoramaItem Header="guide" Foreground="White">
+            <controls:PivotItem Header="guide" Foreground="White">
                 <ListBox x:Name="GuideListBox" >
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -93,9 +93,9 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-            </controls:PanoramaItem>
+            </controls:PivotItem>
 
-            <controls:PanoramaItem Header="other" Foreground="White">
+            <controls:PivotItem Header="other" Foreground="White">
                 <ListBox x:Name="OtherListBox">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -106,27 +106,23 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-            </controls:PanoramaItem>
+            </controls:PivotItem>
             
-        </controls:Panorama>
+        </controls:Pivot>
     </Grid>
 
 
-    <!--
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" BackgroundColor="Transparent">
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" BackgroundColor="#28000C" ForegroundColor="White" >
             <shell:ApplicationBarIconButton x:Name="appbarRefresh" IconUri="/Images/appbar.refresh.rest.png" Text="refresh" Click="appbarRefresh_Click" />
-            
-            <shell:ApplicationBarIconButton x:Name="appbarSort" IconUri="/Images/appbar.feature.settings.rest.png" Text="sort" Click="appbarSort_Click" />
-            
+            <!---->
             <shell:ApplicationBar.MenuItems>
-                 
+                <!-- 
                 <shell:ApplicationBarMenuItem Text="MenuItem 1"/>
                 <shell:ApplicationBarMenuItem Text="MenuItem 2"/>
-                
+                -->
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
-    -->
     
 </phone:PhoneApplicationPage>

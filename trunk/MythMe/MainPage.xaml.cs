@@ -86,20 +86,29 @@ namespace MythMe
             menuListItems.Add(new NameContentViewModel() { Content = "recorded" });
             menuListItems.Add(new NameContentViewModel() { Content = "upcoming" });
             menuListItems.Add(new NameContentViewModel() { Content = "guide" });
-            //menuListItems.Add(new NameContentViewModel() {Content = "search"});
             //menuListItems.Add(new NameContentViewModel() {Content = "videos"});
             //menuListItems.Add(new NameContentViewModel() {Content = "music"});
-            menuListItems.Add(new NameContentViewModel() { Content = "people" });
+
+            if (App.ViewModel.appSettings.UseScriptSetting)
+            {
+                menuListItems.Add(new NameContentViewModel() {Content = "search"});
+                menuListItems.Add(new NameContentViewModel() { Content = "people" });
+            }
+
             menuListItems.Add(new NameContentViewModel() { Content = "status" });
-            //menuListItems.Add(new NameContentViewModel() {Content = "log"});
+
+            if (App.ViewModel.appSettings.UseScriptSetting)
+            {
+                menuListItems.Add(new NameContentViewModel() { Content = "log" });
+            }
 
             if (App.ViewModel.appSettings.AllowDownloadsSetting)
             {
                 menuListItems.Add(new NameContentViewModel() { Content = "downloads" });
             }
 
-            menuListItems.Add(new NameContentViewModel() { Content = "preferences" });
-            menuListItems.Add(new NameContentViewModel() { Content = "help" });
+            //menuListItems.Add(new NameContentViewModel() { Content = "preferences" });
+            //menuListItems.Add(new NameContentViewModel() { Content = "help" });
 
             menuList.ItemsSource = menuListItems;
 
@@ -602,7 +611,7 @@ namespace MythMe
                     NavigationService.Navigate(new Uri("/Guide.xaml?SelectedNow=true", UriKind.Relative));
                     break;
                 case "search":
-                    //NavigationService.Navigate(new Uri("/Search.xaml", UriKind.Relative));
+                    NavigationService.Navigate(new Uri("/Search.xaml", UriKind.Relative));
                     break;
                 case "videos":
                     //NavigationService.Navigate(new Uri("/Videos.xaml", UriKind.Relative));
@@ -617,7 +626,7 @@ namespace MythMe
                     NavigationService.Navigate(new Uri("/Status.xaml", UriKind.Relative));
                     break;
                 case "log":
-                    //NavigationService.Navigate(new Uri("/Log.xaml", UriKind.Relative));
+                    NavigationService.Navigate(new Uri("/Log.xaml", UriKind.Relative));
                     break;
                 case "downloads":
                     NavigationService.Navigate(new Uri("/Downloads.xaml", UriKind.Relative));
@@ -630,6 +639,16 @@ namespace MythMe
                     break;
             }
 
+        }
+
+        private void preferencesButton_Click(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Preferences.xaml", UriKind.Relative));
+        }
+
+        private void helpButton_Click(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Help.xaml", UriKind.Relative));
         }
     }
 }

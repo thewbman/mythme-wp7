@@ -84,10 +84,10 @@ namespace MythMe
 
             performanceProgressBarCustomized.IsIndeterminate = true;
 
-            AllTitle.Header = "All";
-            ConflictingTitle.Header = "Conflicting";
-            OverridesTitle.Header = "Overrides";
-            UpcomingTitle.Header = "Upcoming";
+            AllTitle.Header = "all";
+            ConflictingTitle.Header = "conflicting";
+            OverridesTitle.Header = "overrides";
+            UpcomingTitle.Header = "upcoming";
 
             AllUpcoming.Clear();
             ConflictingUpcoming.Clear();
@@ -2017,10 +2017,10 @@ namespace MythMe
             OverridesUpcomingLL.ItemsSource = GroupedOverridesUpcoming;
 
 
-            AllTitle.Header = "All (" + AllUpcoming.Count + ")";
-            ConflictingTitle.Header = "Conflicting (" + ConflictingUpcoming.Count + ")";
-            OverridesTitle.Header = "Overrides (" + OverridesUpcoming.Count + ")";
-            UpcomingTitle.Header = "Upcoming (" + UpcomingUpcoming.Count + ")";
+            AllTitle.Header = "all (" + AllUpcoming.Count + ")";
+            ConflictingTitle.Header = "conflicting (" + ConflictingUpcoming.Count + ")";
+            OverridesTitle.Header = "overrides (" + OverridesUpcoming.Count + ")";
+            UpcomingTitle.Header = "upcoming (" + UpcomingUpcoming.Count + ")";
 
             performanceProgressBarCustomized.IsIndeterminate = false;
 

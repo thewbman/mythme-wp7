@@ -1,0 +1,137 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="MythMe.Log"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait"  Orientation="Portrait"
+    shell:SystemTray.IsVisible="True"
+    xmlns:local="clr-namespace:MythMe"
+    >
+
+    <phone:PhoneApplicationPage.Resources>
+
+        <DataTemplate x:Key="logGroupHeader">
+            <Border Background="#9f283f" Margin="0">
+                <TextBlock Text="{Binding Title}" FontSize="36" Foreground="Black"/>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="logItemTemplate">
+            <StackPanel>
+                <TextBlock Text="{Binding logdate}" TextWrapping="NoWrap" Margin="2,0,12,0" Style="{StaticResource PhoneTextNormalStyle}" FontSize="24" Foreground="White" />
+                <TextBlock Text="{Binding message}" TextWrapping="NoWrap" Margin="6,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />       
+                <TextBlock Text="{Binding details}" TextWrapping="NoWrap" Margin="10,-6,12,6" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+            </StackPanel>
+        </DataTemplate>
+        
+        <DataTemplate x:Key="allLogItemTemplate">
+            <StackPanel>
+                <TextBlock Text="{Binding module}" TextWrapping="NoWrap" Margin="2,0,12,0" Style="{StaticResource PhoneTextNormalStyle}" FontSize="24" Foreground="White" />
+                <TextBlock Text="{Binding logdate}" TextWrapping="NoWrap" Margin="6,-6,12,0" Style="{StaticResource PhoneTextNormalStyle}" FontSize="24" Foreground="White" />
+                <TextBlock Text="{Binding message}" TextWrapping="NoWrap" Margin="10,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                <TextBlock Text="{Binding details}" TextWrapping="NoWrap" Margin="14,-6,12,6" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="logItemHeader">
+            <Border Background="#9f283f" Margin="{StaticResource PhoneTouchTargetOverhang}" Padding="{StaticResource PhoneTouchTargetOverhang}">
+                <TextBlock Text="{Binding Title}" Width="460" Style="{StaticResource PhoneTextLargeStyle}" Foreground="Black"/>
+            </Border>
+        </DataTemplate>
+
+    </phone:PhoneApplicationPage.Resources>
+
+    <Grid x:Name="LayoutRoot" Background="#3e000c">
+
+        <toolkit:PerformanceProgressBar x:Name="performanceProgressBarCustomized" Foreground="Red" Background="Red" IsIndeterminate="False" />
+
+        <controls:Pivot Title="LOG">
+
+            <controls:PivotItem Header="all">
+                <toolkit:LongListSelector x:Name="AllLL"
+                     GroupHeaderTemplate="{StaticResource logGroupHeader}"
+                     ItemTemplate="{StaticResource allLogItemTemplate}" 
+                     GroupItemTemplate="{StaticResource logItemHeader}"
+                     ShowListFooter="False" ShowListHeader="False" >
+                </toolkit:LongListSelector>
+            </controls:PivotItem>
+
+            <controls:PivotItem Header="autoexpire">
+                <toolkit:LongListSelector x:Name="AutoexpireLL"
+                     GroupHeaderTemplate="{StaticResource logGroupHeader}"
+                     ItemTemplate="{StaticResource logItemTemplate}" 
+                     GroupItemTemplate="{StaticResource logItemHeader}"
+                     ShowListFooter="False" ShowListHeader="False" >
+                </toolkit:LongListSelector>
+            </controls:PivotItem>
+
+            <controls:PivotItem Header="commflag">
+                <toolkit:LongListSelector x:Name="CommflagLL"
+                     GroupHeaderTemplate="{StaticResource logGroupHeader}"
+                     ItemTemplate="{StaticResource logItemTemplate}" 
+                     GroupItemTemplate="{StaticResource logItemHeader}"
+                     ShowListFooter="False" ShowListHeader="False" >
+                </toolkit:LongListSelector>
+            </controls:PivotItem>
+
+            <controls:PivotItem Header="jobqueue">
+                <toolkit:LongListSelector x:Name="JobqueueLL"
+                     GroupHeaderTemplate="{StaticResource logGroupHeader}"
+                     ItemTemplate="{StaticResource logItemTemplate}" 
+                     GroupItemTemplate="{StaticResource logItemHeader}"
+                     ShowListFooter="False" ShowListHeader="False" >
+                </toolkit:LongListSelector>
+            </controls:PivotItem>
+
+            <controls:PivotItem Header="mythbackend">
+                <toolkit:LongListSelector x:Name="MythbackendLL"
+                     GroupHeaderTemplate="{StaticResource logGroupHeader}"
+                     ItemTemplate="{StaticResource logItemTemplate}" 
+                     GroupItemTemplate="{StaticResource logItemHeader}"
+                     ShowListFooter="False" ShowListHeader="False" >
+                </toolkit:LongListSelector>
+            </controls:PivotItem>
+
+            <controls:PivotItem Header="mythfilldatabase">
+                <toolkit:LongListSelector x:Name="MythfilldatabaseLL"
+                     GroupHeaderTemplate="{StaticResource logGroupHeader}"
+                     ItemTemplate="{StaticResource logItemTemplate}" 
+                     GroupItemTemplate="{StaticResource logItemHeader}"
+                     ShowListFooter="False" ShowListHeader="False" >
+                </toolkit:LongListSelector>
+            </controls:PivotItem>
+
+            <controls:PivotItem Header="scheduler">
+                <toolkit:LongListSelector x:Name="SchedulerLL"
+                     GroupHeaderTemplate="{StaticResource logGroupHeader}"
+                     ItemTemplate="{StaticResource logItemTemplate}" 
+                     GroupItemTemplate="{StaticResource logItemHeader}"
+                     ShowListFooter="False" ShowListHeader="False" >
+                </toolkit:LongListSelector>
+            </controls:PivotItem>
+        </controls:Pivot>
+    </Grid>
+
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" BackgroundColor="#28000C" ForegroundColor="White" >
+            <shell:ApplicationBarIconButton x:Name="appbarRefresh" IconUri="/Images/appbar.refresh.rest.png" Text="refresh" Click="appbarRefresh_Click" />
+            <!---->
+            <shell:ApplicationBar.MenuItems>
+                <!-- 
+                <shell:ApplicationBarMenuItem Text="MenuItem 1"/>
+                <shell:ApplicationBarMenuItem Text="MenuItem 2"/>
+                -->
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+    
+</phone:PhoneApplicationPage>

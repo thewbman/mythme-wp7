@@ -29,7 +29,6 @@ namespace MythMe
     {
         public PeopleProgramDetails()
         {
-            InitializeComponent();
 
             InitializeComponent();
 

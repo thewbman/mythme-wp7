@@ -68,10 +68,10 @@ namespace MythMe
 
             performanceProgressBarCustomized.IsIndeterminate = true;
 
-            AllTitle.Header = "All";
-            DefaultTitle.Header = "Default";
-            DeletedTitle.Header = "Deleted";
-            LiveTVTitle.Header = "LiveTV";
+            AllTitle.Header = "all";
+            DefaultTitle.Header = "default";
+            DeletedTitle.Header = "deleted";
+            LiveTVTitle.Header = "livetv";
 
             AllRecordedLL.ItemsSource = null;
             DefaultRecordedLL.ItemsSource = null;
@@ -523,10 +523,10 @@ namespace MythMe
             AllRecordedLL.ItemsSource = GroupedAllRecorded;
 
 
-            AllTitle.Header = "All (" + AllRecorded.Count + ")";
-            DefaultTitle.Header = "Default (" + DefaultRecorded.Count + ")";
-            DeletedTitle.Header = "Deleted (" + DeletedRecorded.Count + ")";
-            LiveTVTitle.Header = "LiveTV (" + LiveTVRecorded.Count + ")";
+            AllTitle.Header = "all (" + AllRecorded.Count + ")";
+            DefaultTitle.Header = "default (" + DefaultRecorded.Count + ")";
+            DeletedTitle.Header = "deleted (" + DeletedRecorded.Count + ")";
+            LiveTVTitle.Header = "livetv (" + LiveTVRecorded.Count + ")";
 
             performanceProgressBarCustomized.IsIndeterminate = false;
 
