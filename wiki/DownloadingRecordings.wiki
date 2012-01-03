@@ -1,11 +1,10 @@
-#summary How to setup streaming recordings to your phone.
+#summary How to setup downloading recordings to your phone.
 
 == General information ==
-  * Getting downloading/streaming to work is still a work in progress.  I welcome all feedback on the process as I still work out the kinks.  [mailto:webmyth.help@gmail.com webmyth.help@gmail.com]
-  * Downloading seems to work a lot better than streaming for some reason, so I recommend downloading to the device.
-  * When downloading the phone becomes very slow and somewhat unusable.  It is best to start the download and let the download complete before trying to use your phone again.  
-  * The downloaded videos will show up in the "videos" app and the filename is the name of the recording.  
-  * Currently streaming does not work if your mythweb is password protected.  Hopefully this will be fixed in a future release.  (You can setup your web server no not need a password just for your phone's IP address if you want).
+  * Downloading seems to work a lot better than streaming for some reason, so currently on downloading is supported in the app.
+  * When downloading, the phone becomes very slow and somewhat unusable.  It is best to start the download and let the download complete before trying to use your phone again.  
+  * Due to the large filesizes downloading will only occur when the phone is plugged in and connected to a Wi-Fi network.  
+  * Currently downloading does not work if your mythweb is password protected.  Hopefully this will be fixed in a future release.  (You can setup your web server no not need a password just for your phone's IP address if you want).
 
 == Transcoding recordings ==
   * Basically you need to make a H.264 recording for each recording you want to download and the filename needs to be the same base filename as the original recording but with an .mp4 extension.  e.g. a recording with an original filename of '3691_20101015022700.mpg' would need to have a transcoded filename of '3691_20101015022700.mp4'
