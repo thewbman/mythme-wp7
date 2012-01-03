@@ -51,11 +51,14 @@ namespace MythMe
             if (App.ViewModel.appSettings.UseScriptSetting)
             {
                 peoplePivot.Visibility = System.Windows.Visibility.Visible;
-
+                setupSchedulebutton.Visibility = System.Windows.Visibility.Visible;
+                titleSearchButton.Visibility = System.Windows.Visibility.Visible;
             }
             else
             {
                 peoplePivot.Visibility = System.Windows.Visibility.Collapsed;
+                setupSchedulebutton.Visibility = System.Windows.Visibility.Collapsed;
+                titleSearchButton.Visibility = System.Windows.Visibility.Collapsed;
             }
 
             this.Perform(() => GetDetails(), 50);
@@ -513,7 +516,7 @@ namespace MythMe
 
             App.ViewModel.SelectedPerson = s;
 
-            NavigationService.Navigate(new Uri("/People.xaml?Source=guide", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/People.xaml?Source=people", UriKind.Relative));
 
             peopleList.SelectedItem = null;
         }
@@ -521,6 +524,20 @@ namespace MythMe
         private void guidebutton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             NavigationService.Navigate(new Uri("/Guide.xaml?SelectedTime=" + App.ViewModel.SelectedPeopleProgram.starttime.Replace("asdf", ""), UriKind.Relative));
+        }
+
+        private void titleSearchButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            App.ViewModel.SelectedTitle = App.ViewModel.SelectedPeopleProgram.title;
+
+            NavigationService.Navigate(new Uri("/Search.xaml?Source=people", UriKind.Relative));
+        }
+
+        private void setupSchedulebutton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            App.ViewModel.SelectedSetupProgram = App.ViewModel.SelectedPeopleProgram;
+
+            NavigationService.Navigate(new Uri("/SetupSchedule.xaml?Source=people", UriKind.Relative));
         }
     }
 }

@@ -49,11 +49,14 @@ namespace MythMe
             if (App.ViewModel.appSettings.UseScriptSetting)
             {
                 peoplePivot.Visibility = System.Windows.Visibility.Visible;
-
+                setupSchedulebutton.Visibility = System.Windows.Visibility.Visible;
+                titleSearchButton.Visibility = System.Windows.Visibility.Visible;
             }
             else
             {
                 peoplePivot.Visibility = System.Windows.Visibility.Collapsed;
+                setupSchedulebutton.Visibility = System.Windows.Visibility.Collapsed;
+                titleSearchButton.Visibility = System.Windows.Visibility.Collapsed;
             }
 
             this.Perform(() => GetDetails(), 50);
@@ -513,6 +516,20 @@ namespace MythMe
             NavigationService.Navigate(new Uri("/People.xaml?Source=upcoming", UriKind.Relative));
 
             peopleList.SelectedItem = null;
+        }
+
+        private void titleSearchButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            App.ViewModel.SelectedTitle = App.ViewModel.SelectedUpcomingProgram.title;
+
+            NavigationService.Navigate(new Uri("/Search.xaml?Source=upcoming", UriKind.Relative));
+        }
+
+        private void setupSchedulebutton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            App.ViewModel.SelectedSetupProgram = App.ViewModel.SelectedUpcomingProgram;
+
+            NavigationService.Navigate(new Uri("/SetupSchedule.xaml?Source=upcoming", UriKind.Relative));
         }
     }
 }

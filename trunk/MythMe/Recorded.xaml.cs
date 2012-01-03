@@ -188,17 +188,13 @@ namespace MythMe
                     if (singleRecordedElement.Element("Recording").Element("EndTs").FirstNode != null) singleRecorded.recendts = (string)singleRecordedElement.Element("Recording").Element("EndTs").Value;
                     if (singleRecordedElement.Element("Recording").Element("RecordId").FirstNode != null) singleRecorded.recordid = int.Parse((string)singleRecordedElement.Element("Recording").Element("RecordId").Value);
 
-                    //not sure how to get plain text as child of "Recording"
-                    //singleRecorded.description = (string)singleRecordedElement.FirstNode.ToString();
-                    
-                    /*
-                     * foreach (XElement singleRecordedChild in singleRecordedElement.RemoveNodes())
-                    {
-                        if (singleRecordedChild.ToString().Substring(0, 1) != "<") 
-                            singleRecorded.description = singleRecordedChild.ToString();
-                    }
-                     */
 
+                    if (App.ViewModel.appSettings.ChannelIconsSetting)
+                        singleRecorded.showChanicon = System.Windows.Visibility.Visible;
+                    else
+                        singleRecorded.showChanicon = System.Windows.Visibility.Collapsed;
+
+                    singleRecorded.chanicon = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Myth/GetChannelIcon?ChanId=" + singleRecorded.chanid;
                     singleRecorded.screenshot = App.ViewModel.functions.CreateScreenshotUrl(singleRecorded);
 
                     if (singleRecorded.recstatus == -2)
@@ -353,6 +349,15 @@ namespace MythMe
 
                     singleRecorded.description = (string)singleRecordedElement.FirstNode.ToString();
                     if (singleRecorded.description.Contains("<Channel")) singleRecorded.description = "";
+                    
+                    
+                    if (App.ViewModel.appSettings.ChannelIconsSetting)
+                        singleRecorded.showChanicon = System.Windows.Visibility.Visible;
+                    else
+                        singleRecorded.showChanicon = System.Windows.Visibility.Collapsed;
+
+                    singleRecorded.chanicon = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Myth/GetChannelIcon?ChanId=" + singleRecorded.chanid;
+                    singleRecorded.screenshot = App.ViewModel.functions.CreateScreenshotUrl(singleRecorded);
 
                     singleRecorded.screenshot = App.ViewModel.functions.CreateScreenshotUrl(singleRecorded);
 

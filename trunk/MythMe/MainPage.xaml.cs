@@ -21,6 +21,7 @@ using Microsoft.Phone;
 using Microsoft.Phone.Controls;
 using System.Xml.Linq;
 using System.Security.Cryptography;
+using Microsoft.Phone.Tasks;
 
 namespace MythMe
 {
@@ -60,6 +61,8 @@ namespace MythMe
             {
                 App.ViewModel.LoadData();
 
+                App.ViewModel.appSettings.AppStartsSetting = App.ViewModel.appSettings.AppStartsSetting + 1;
+
                 if ((App.ViewModel.appSettings.FirstRunSetting) || (false))
                 {
                     MessageBox.Show("Welcome to MythMe.  This is an app for controlling a MythTV DVR system.  If you do not know what that means this app is not for you.  You will need to enter your master backend address in the preferences to get started. ", "MythMe", MessageBoxButton.OK);
@@ -68,6 +71,30 @@ namespace MythMe
 
                     NavigationService.Navigate(new Uri("/Preferences.xaml", UriKind.Relative));
                 }
+                else if ((!App.ViewModel.appSettings.PromptScriptSetting)&&(!App.ViewModel.appSettings.UseScriptSetting) && (App.ViewModel.appSettings.AppStartsSetting > 2))
+                {
+                    App.ViewModel.appSettings.PromptScriptSetting = true;
+
+                    if (MessageBox.Show("It is strongly recommended to use the optional script to unlock the full feature set of this app.  Using the script allows for scheduling recordings, queue jobs, searching for programs and viewing people details.  You can download the script from the app homepage.", "Script", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                    {
+                        WebBrowserTask webopen = new WebBrowserTask();
+
+                        webopen.Uri = new Uri("http://code.google.com/p/mythme-wp7/downloads/detail?name=webmyth.py");
+                        webopen.Show();
+                    }
+                }
+                else if ((!App.ViewModel.appSettings.ReviewedSetting) && (App.ViewModel.appSettings.AppStartsSetting > 5))
+                {
+                    App.ViewModel.appSettings.ReviewedSetting = true;
+
+                    if (MessageBox.Show("Would you mind taking a minute to review this app in the marketplace?", "App Review", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                    {
+                        MarketplaceDetailTask marketDetail = new MarketplaceDetailTask();
+                        marketDetail.ContentIdentifier = "455f5645-0b06-429b-9cac-9097b10ae6d2";
+                        marketDetail.Show();
+                    }
+                }
+                    
 
             }
 

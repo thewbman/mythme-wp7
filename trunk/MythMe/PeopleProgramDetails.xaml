@@ -99,11 +99,12 @@
                 <controls:PanoramaItem Header="actions" Foreground="White">
                     <ScrollViewer>
                         <StackPanel>
-                            <!-- use a list with context menu ? -->
-                        
+                            
                             <Button x:Name="playButton" Content="play channel on frontend"  Tap="playButton_Tap"  Foreground="White" BorderBrush="White"/>
                             <Button x:Name="mythwebButton" Content="mythweb"  Tap="scheduleButton_Tap"  Foreground="White" BorderBrush="White"/>
-                            <Button x:Name="guidebutton" Content="program guide"  Tap="guidebutton_Tap" Foreground="White" BorderBrush="White" />
+                        <Button x:Name="setupSchedulebutton" Content="setup schedule"  Tap="setupSchedulebutton_Tap" Foreground="White" BorderBrush="White" />
+                        <Button x:Name="guidebutton" Content="program guide"  Tap="guidebutton_Tap" Foreground="White" BorderBrush="White" />
+                        <Button x:Name="titleSearchButton" Content="title search"  Tap="titleSearchButton_Tap" Foreground="White" BorderBrush="White" />
 
                         </StackPanel>
                     </ScrollViewer>

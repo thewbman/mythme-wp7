@@ -343,6 +343,21 @@ namespace MythMe
             else
                 return true;
         }
+        public bool IntToBool(int inValue)
+        {
+            if (inValue == 0)
+                return false;
+            else
+                return true;
+        }
+
+        public int BoolToInt(bool inValue)
+        {
+            if (inValue == false)
+                return 0;
+            else
+                return 1;
+        }
 
         public void FrontendsFromBackends()
         {
