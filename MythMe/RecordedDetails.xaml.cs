@@ -82,6 +82,8 @@ namespace MythMe
                     {
                         peoplePivot.Visibility = System.Windows.Visibility.Visible;
                         jobsPivot.Visibility = System.Windows.Visibility.Visible;
+                        setupSchedulebutton.Visibility = System.Windows.Visibility.Visible;
+                        titleSearchButton.Visibility = System.Windows.Visibility.Visible;
 
                         userjob1.Content = App.ViewModel.appSettings.UserJobDesc1Setting;
                         userjob2.Content = App.ViewModel.appSettings.UserJobDesc2Setting;
@@ -97,6 +99,8 @@ namespace MythMe
                     {
                         peoplePivot.Visibility = System.Windows.Visibility.Collapsed;
                         jobsPivot.Visibility = System.Windows.Visibility.Collapsed;
+                        setupSchedulebutton.Visibility = System.Windows.Visibility.Collapsed;
+                        titleSearchButton.Visibility = System.Windows.Visibility.Collapsed;
                     }
 
                     HasLoaded = true;
@@ -304,7 +308,7 @@ namespace MythMe
             }
         }
 
-        private void scheduleButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        private void mythwebButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             try
             {
@@ -473,6 +477,21 @@ namespace MythMe
             peopleList.SelectedItem = null;
 
             NavigationService.Navigate(new Uri("/People.xaml?Source=recorded", UriKind.Relative));
+
+        }
+
+        private void titleSearchButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            App.ViewModel.SelectedTitle = App.ViewModel.SelectedRecordedProgram.title;
+
+            NavigationService.Navigate(new Uri("/Search.xaml?Source=recorded", UriKind.Relative));
+        }
+
+        private void setupSchedulebutton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            App.ViewModel.SelectedSetupProgram = App.ViewModel.SelectedRecordedProgram;
+
+            NavigationService.Navigate(new Uri("/SetupSchedule.xaml?Source=recorded", UriKind.Relative));
 
         }
     }

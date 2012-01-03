@@ -46,6 +46,7 @@ namespace MythMe
             {
                 performanceProgressBarCustomized.IsIndeterminate = true;
 
+                searchBox.Text = App.ViewModel.SelectedTitle;
                 
                 this.Perform(() => StartProgramSearch(), 50);
             }

@@ -38,6 +38,9 @@ namespace MythMe
             this.SelectedGuideProgram = new ProgramViewModel();
             this.SelectedSearchProgram = new ProgramViewModel();
             this.SelectedPeopleProgram = new ProgramViewModel();
+            this.SelectedSetupProgram = new ProgramViewModel();
+
+            //this.SelectedTitle = new string();
 
             this.SelectedPerson = new PeopleViewModel();
 
@@ -69,6 +72,9 @@ namespace MythMe
         public ProgramViewModel SelectedGuideProgram;
         public ProgramViewModel SelectedSearchProgram;
         public ProgramViewModel SelectedPeopleProgram;
+        public ProgramViewModel SelectedSetupProgram;
+
+        public string SelectedTitle;
 
         public PeopleViewModel SelectedPerson;
 

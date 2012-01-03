@@ -12,6 +12,9 @@ namespace MythMe
 
         // The isolated storage key names of our settings
         const string FirstRunName = "FirstRun";
+        const string AppStartsName = "AppStarts";
+        const string ReviewedName = "Reviewed";
+        const string PromptScriptName = "PromptScript";
 
         const string MasterBackendIpName = "MasterBackendIp";
         const string MasterBackendIpSettingName = "MasterBackendIpSetting";
@@ -92,6 +95,9 @@ namespace MythMe
 
         // The default value of our settings
         const bool FirstRunDefault = true;
+        const int AppStartsDefault = 0;
+        const bool ReviewedDefault = false;
+        const bool PromptScriptDefault = false;
 
 
         const string MasterBackendIpDefault = "";
@@ -252,6 +258,21 @@ namespace MythMe
         {
             get { return GetValueOrDefault<bool>(FirstRunName, FirstRunDefault); }
             set { if (AddOrUpdateValue(FirstRunName, value)) { Save(); } }
+        }
+        public int AppStartsSetting
+        {
+            get { return GetValueOrDefault<int>(AppStartsName, AppStartsDefault); }
+            set { if (AddOrUpdateValue(AppStartsName, value)) { Save(); } }
+        }
+        public bool ReviewedSetting
+        {
+            get { return GetValueOrDefault<bool>(ReviewedName, ReviewedDefault); }
+            set { if (AddOrUpdateValue(ReviewedName, value)) { Save(); } }
+        }
+        public bool PromptScriptSetting
+        {
+            get { return GetValueOrDefault<bool>(PromptScriptName, PromptScriptDefault); }
+            set { if (AddOrUpdateValue(PromptScriptName, value)) { Save(); } }
         }
 
         public string MasterBackendIpSetting
