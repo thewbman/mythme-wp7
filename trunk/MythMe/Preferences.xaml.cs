@@ -49,6 +49,8 @@ namespace MythMe
             //images
             ChannelIcons.IsChecked = App.ViewModel.appSettings.ChannelIconsSetting;
             UseScriptScreenshots.IsChecked = App.ViewModel.appSettings.UseScriptScreenshotsSetting;
+            VideoListImages.IsChecked = App.ViewModel.appSettings.VideoListImagesSetting;
+            VideoDetailsImage.IsChecked = App.ViewModel.appSettings.VideoDetailsImageSetting;
             
             //remote
 
@@ -85,6 +87,8 @@ namespace MythMe
             //images
             App.ViewModel.appSettings.ChannelIconsSetting = (bool)ChannelIcons.IsChecked;
             App.ViewModel.appSettings.UseScriptScreenshotsSetting = (bool)UseScriptScreenshots.IsChecked;
+            App.ViewModel.appSettings.VideoListImagesSetting = (bool)VideoListImages.IsChecked;
+            App.ViewModel.appSettings.VideoDetailsImageSetting = (bool)VideoDetailsImage.IsChecked;
 
             //remote
 

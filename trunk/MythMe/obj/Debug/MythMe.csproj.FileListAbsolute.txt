@@ -53,3 +53,4 @@ C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\Log.g.i.cs
 C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\Search.g.i.cs
 C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\SearchProgramDetails.g.i.cs
 C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\SetupSchedule.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\Videos.g.i.cs

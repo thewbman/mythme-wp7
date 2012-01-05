@@ -371,6 +371,8 @@ namespace MythMe
             try
             {
 
+                string prequery = "SET character_set_results = 'ascii';";
+
                 string query = "SELECT UPPER(`credits`.`role`) AS `role`, ";
                 query += " `people`.`name`, `people`.`person`, ";
                 query += " `videocast`.`intid` AS videoPersonId ";
@@ -381,7 +383,8 @@ namespace MythMe
                 query += " AND `credits`.`starttime` = \"" + App.ViewModel.SelectedPeopleProgram.starttime.Replace("T", " ") + "\" ) ";
                 query += " ORDER BY `role`,`name` ";
 
-                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponse&query64=" + Convert.ToBase64String(encoder.GetBytes(query)) + "&rand=" + randText()));
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponsePre&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&prequery64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(prequery)) + "&rand=" + App.ViewModel.randText()));
+                //HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponse64&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + App.ViewModel.randText()));
                 webRequest.BeginGetResponse(new AsyncCallback(PeopleCallback), webRequest);
 
             }

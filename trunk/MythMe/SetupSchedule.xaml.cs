@@ -452,21 +452,25 @@ namespace MythMe
             if(!int.TryParse(endoffset.Text, out value))
             {
                 MessageBox.Show("The end late value must be an integer");
+                NewRule = null;
                 return;
             }
             else if(!int.TryParse(maxepisodes.Text, out value))
             {
                 MessageBox.Show("The maximum episodes value must be an integer");
+                NewRule = null;
                 return;
             }
             else if (!int.TryParse(recpriority.Text, out value))
             {
                 MessageBox.Show("The recording priority value must be an integer");
+                NewRule = null;
                 return;
             }
             else if (!int.TryParse(startoffset.Text, out value))
             {
                 MessageBox.Show("The start early episodes value must be an integer");
+                NewRule = null;
                 return;
             }
 
