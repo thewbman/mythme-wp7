@@ -96,23 +96,30 @@
             <controls:PivotItem Header="options" FontSize="{StaticResource PhoneFontSizeLarge}">
                 <ScrollViewer>
                     <StackPanel>
-                        
-                        <TextBlock Text="priority" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
-                        <TextBox x:Name="recpriority" InputScope="Number" Width="100" HorizontalAlignment="Left" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="priority" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" Width="320" />
+                            <TextBox x:Name="recpriority" InputScope="Number" Width="100" HorizontalAlignment="Left" />
+                        </StackPanel>
                         <TextBlock Text="preferred input" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <!-- -->
                         <toolkit:ListPicker x:Name="prefinput" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource pickerFullTemplate2}" ItemTemplate="{StaticResource pickerTemplate2}" Foreground="#800000" Background="Silver" Margin="0,0,20,0" />
-                        
-                        <toolkit:ToggleSwitch x:Name="inactive" Content="inactive" Margin="0,-10,0,-20" />
-                        <toolkit:ToggleSwitch x:Name="autoexpire" Content="autoexpire" Margin="0,-10,0,-20" />
-                        <toolkit:ToggleSwitch x:Name="maxnewest" Content="record new, expire old" Margin="0,-10,0,-20" />
-                        
-                        <TextBlock Text="max episodes" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
-                        <TextBox x:Name="maxepisodes" InputScope="Number" Width="100" HorizontalAlignment="Left" />
-                        <TextBlock Text="start early" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
-                        <TextBox x:Name="startoffset" InputScope="Number" Width="100" HorizontalAlignment="Left" />
-                        <TextBlock Text="end late" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
-                        <TextBox x:Name="endoffset" InputScope="Number" Width="100" HorizontalAlignment="Left" />
-                        
+
+                        <toolkit:ToggleSwitch x:Name="inactive" Content="inactive" Margin="0,-10,0,-20" Foreground="Silver" />
+                        <toolkit:ToggleSwitch x:Name="autoexpire" Content="autoexpire" Margin="0,-10,0,-20" Foreground="Silver" />
+                        <toolkit:ToggleSwitch x:Name="maxnewest" Content="record new, expire old" Margin="0,-10,0,-20" Foreground="Silver" />
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="max episodes" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" Width="320" />
+                            <TextBox x:Name="maxepisodes" InputScope="Number" Width="100" HorizontalAlignment="Left" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="start early" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" Width="100" />
+                                <TextBox x:Name="startoffset" InputScope="Number" Width="100" HorizontalAlignment="Left" />
+                                <TextBlock Text="end late" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" Width="100" />
+                                <TextBox x:Name="endoffset" InputScope="Number" Width="100" HorizontalAlignment="Left" />
+                            
+                        </StackPanel>
+
                     </StackPanel>
                 </ScrollViewer>
             </controls:PivotItem>
@@ -120,12 +127,12 @@
             <controls:PivotItem Header="jobs" FontSize="{StaticResource PhoneFontSizeLarge}">
                 <ScrollViewer>
                     <StackPanel>
-                        <toolkit:ToggleSwitch x:Name="autocommflag" Content="commercial flag" Margin="0,-6,0,0" />
-                        <toolkit:ToggleSwitch x:Name="autotranscode" Content="transcode" Margin="0,-26,0,0" />
-                        <toolkit:ToggleSwitch x:Name="autouserjob1" Content="userjob1" Margin="0,-26,0,0" />
-                        <toolkit:ToggleSwitch x:Name="autouserjob2" Content="userjob2" Margin="0,-26,0,0" />
-                        <toolkit:ToggleSwitch x:Name="autouserjob3" Content="userjob3" Margin="0,-26,0,0" />
-                        <toolkit:ToggleSwitch x:Name="autouserjob4" Content="userjob4" Margin="0,-26,0,0" />
+                        <toolkit:ToggleSwitch x:Name="autocommflag" Content="commercial flag" Margin="0,-6,0,0" Foreground="Silver" />
+                        <toolkit:ToggleSwitch x:Name="autotranscode" Content="transcode" Margin="0,-26,0,0" Foreground="Silver" />
+                        <toolkit:ToggleSwitch x:Name="autouserjob1" Content="userjob1" Margin="0,-26,0,0" Foreground="Silver" />
+                        <toolkit:ToggleSwitch x:Name="autouserjob2" Content="userjob2" Margin="0,-26,0,0" Foreground="Silver" />
+                        <toolkit:ToggleSwitch x:Name="autouserjob3" Content="userjob3" Margin="0,-26,0,0" Foreground="Silver" />
+                        <toolkit:ToggleSwitch x:Name="autouserjob4" Content="userjob4" Margin="0,-26,0,0" Foreground="Silver" />
                     </StackPanel>
                 </ScrollViewer>
             </controls:PivotItem>

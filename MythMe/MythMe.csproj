@@ -134,6 +134,9 @@
     <Compile Include="UpcomingDetails.xaml.cs">
       <DependentUpon>UpcomingDetails.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Videos.xaml.cs">
+      <DependentUpon>Videos.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\AppSettings.cs" />
     <Compile Include="ViewModels\BackendViewModel.cs" />
     <Compile Include="ViewModels\ChannelViewModel.cs" />
@@ -226,6 +229,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UpcomingDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Videos.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

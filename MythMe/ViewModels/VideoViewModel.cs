@@ -14,9 +14,10 @@ namespace MythMe
 {
     public class VideoViewModel : INotifyPropertyChanged
     {
-
+        //people info
         public string name { get; set; }
         public string videoPersonId { get; set; }
+
         public string intid { get; set; }
         public string title { get; set; }
         public string subtitle { get; set; }
@@ -44,6 +45,8 @@ namespace MythMe
         public string episodeText { get; set; }
         public string fullEpisode { get; set; }
         public string group { get; set; }
+
+        public string alpha { get; set; }
 
         public Visibility showCoverartList { get; set; }
         public Visibility showCoverartDetails { get; set; }

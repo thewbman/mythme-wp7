@@ -11,7 +11,7 @@
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeLarge}"
-    Foreground="{StaticResource PhoneForegroundBrush}"
+    Foreground="White"
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="False">
 
@@ -124,11 +124,11 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
 
-                    <Button x:Name="comflag" Content="commercial flag"  Grid.Row="1" Grid.ColumnSpan="2" Click="comflag_Click" FontSize="20" />
-                    <Button x:Name="userjob1" Content="userjob1" Grid.Row="2" Grid.Column="0" Click="userjob1_Click" FontSize="20" />
-                    <Button x:Name="userjob2" Content="userjob2" Grid.Row="2" Grid.Column="1" Click="userjob2_Click" FontSize="20" />
-                    <Button x:Name="userjob3" Content="userjob3" Grid.Row="3" Grid.Column="0" Click="userjob3_Click" FontSize="20" />
-                    <Button x:Name="userjob4" Content="userjob4" Grid.Row="3" Grid.Column="1" Click="userjob4_Click" FontSize="20" />
+                    <Button x:Name="comflag" Content="commercial flag"  Grid.Row="1" Grid.ColumnSpan="2" Click="comflag_Click" FontSize="20" Foreground="White" BorderBrush="White" />
+                    <Button x:Name="userjob1" Content="userjob1" Grid.Row="2" Grid.Column="0" Click="userjob1_Click" FontSize="20" Foreground="White" BorderBrush="White" />
+                    <Button x:Name="userjob2" Content="userjob2" Grid.Row="2" Grid.Column="1" Click="userjob2_Click" FontSize="20" Foreground="White" BorderBrush="White" />
+                    <Button x:Name="userjob3" Content="userjob3" Grid.Row="3" Grid.Column="0" Click="userjob3_Click" FontSize="20" Foreground="White" BorderBrush="White" />
+                    <Button x:Name="userjob4" Content="userjob4" Grid.Row="3" Grid.Column="1" Click="userjob4_Click" FontSize="20" Foreground="White" BorderBrush="White" />
                 </Grid>
             </controls:PanoramaItem>
 

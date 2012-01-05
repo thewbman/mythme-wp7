@@ -122,7 +122,7 @@ namespace MythMe
         const bool AllowDownloadsDefault = false;
 
         const bool ChannelIconsDefault = true;
-        const bool VideoListImagesDefault = true;
+        const bool VideoListImagesDefault = false;
         const bool VideoDetailsImageDefault = true;
         const bool UseScriptScreenshotsDefault = false;
 

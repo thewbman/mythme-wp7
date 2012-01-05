@@ -71,7 +71,7 @@ namespace MythMe
 
                     NavigationService.Navigate(new Uri("/Preferences.xaml", UriKind.Relative));
                 }
-                else if ((!App.ViewModel.appSettings.PromptScriptSetting)&&(!App.ViewModel.appSettings.UseScriptSetting) && (App.ViewModel.appSettings.AppStartsSetting > 2))
+                else if ((!App.ViewModel.appSettings.PromptScriptSetting)&&(!App.ViewModel.appSettings.UseScriptSetting) && (App.ViewModel.appSettings.AppStartsSetting > 4))
                 {
                     App.ViewModel.appSettings.PromptScriptSetting = true;
 
@@ -83,7 +83,19 @@ namespace MythMe
                         webopen.Show();
                     }
                 }
-                else if ((!App.ViewModel.appSettings.ReviewedSetting) && (App.ViewModel.appSettings.AppStartsSetting > 5))
+                else if ((!App.ViewModel.appSettings.PromptScriptSetting) && (App.ViewModel.appSettings.UseScriptSetting) && (App.ViewModel.appSettings.AppStartsSetting > 0))
+                {
+                    App.ViewModel.appSettings.PromptScriptSetting = true;
+
+                    if (MessageBox.Show("If you had previously downloaded the webmyth.py script before January 4th, you will need to upgrade to the latest version (11) for this release of the MythMe app.  You can download the script from the app homepage.", "Script", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                    {
+                        WebBrowserTask webopen = new WebBrowserTask();
+
+                        webopen.Uri = new Uri("http://code.google.com/p/mythme-wp7/downloads/detail?name=webmyth.py");
+                        webopen.Show();
+                    }
+                }
+                else if ((!App.ViewModel.appSettings.ReviewedSetting) && (App.ViewModel.appSettings.AppStartsSetting > 9))
                 {
                     App.ViewModel.appSettings.ReviewedSetting = true;
 
@@ -113,11 +125,11 @@ namespace MythMe
             menuListItems.Add(new NameContentViewModel() { Content = "recorded" });
             menuListItems.Add(new NameContentViewModel() { Content = "upcoming" });
             menuListItems.Add(new NameContentViewModel() { Content = "guide" });
-            //menuListItems.Add(new NameContentViewModel() {Content = "videos"});
             //menuListItems.Add(new NameContentViewModel() {Content = "music"});
 
             if (App.ViewModel.appSettings.UseScriptSetting)
             {
+                menuListItems.Add(new NameContentViewModel() { Content = "videos" });
                 menuListItems.Add(new NameContentViewModel() {Content = "search"});
                 menuListItems.Add(new NameContentViewModel() { Content = "people" });
             }
@@ -641,7 +653,7 @@ namespace MythMe
                     NavigationService.Navigate(new Uri("/Search.xaml", UriKind.Relative));
                     break;
                 case "videos":
-                    //NavigationService.Navigate(new Uri("/Videos.xaml", UriKind.Relative));
+                    NavigationService.Navigate(new Uri("/Videos.xaml", UriKind.Relative));
                     break;
                 case "music":
                     //NavigationService.Navigate(new Uri("/Music.xaml", UriKind.Relative));
