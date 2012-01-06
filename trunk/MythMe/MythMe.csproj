@@ -134,6 +134,9 @@
     <Compile Include="UpcomingDetails.xaml.cs">
       <DependentUpon>UpcomingDetails.xaml</DependentUpon>
     </Compile>
+    <Compile Include="VideoDetails.xaml.cs">
+      <DependentUpon>VideoDetails.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Videos.xaml.cs">
       <DependentUpon>Videos.xaml</DependentUpon>
     </Compile>
@@ -149,6 +152,7 @@
     <Compile Include="ViewModels\PeopleViewModel.cs" />
     <Compile Include="ViewModels\ProgramViewModel.cs" />
     <Compile Include="ViewModels\RuleViewModel.cs" />
+    <Compile Include="ViewModels\StoragegroupViewModel.cs" />
     <Compile Include="ViewModels\VideoViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -229,6 +233,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UpcomingDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="VideoDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

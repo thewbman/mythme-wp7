@@ -569,16 +569,16 @@ namespace MythMe
 
                     string query = "UPDATE `record` SET ";
                     query += "type = "+NewRule.type;
-                    query += ", title = '"+NewRule.title;
-                    query += "', subtitle = '"+NewRule.subtitle;
+                    query += ", title = \""+NewRule.title;
+                    query += "\", subtitle = \""+NewRule.subtitle;
                     
-                    query += "', startdate = '"+NewRule.startdate;
+                    query += "\", startdate = '"+NewRule.startdate;
                     query += "', starttime = '"+NewRule.starttime;
-                    query += "', station = '"+NewRule.station;
-                    
-                    query += "', description = '"+NewRule.description;
-                    query += "', category = '"+NewRule.category;
-                    query += "', seriesid = '"+NewRule.seriesid;
+                    query += "', station = \"" + NewRule.station;
+
+                    query += "\", description = \"" + NewRule.description;
+                    query += "\", category = \"" + NewRule.category;
+                    query += "\", seriesid = '" + NewRule.seriesid;
                     
                     query += "', programid = '"+NewRule.programid;
                     query += "', chanid = '"+NewRule.chanid;
@@ -619,7 +619,7 @@ namespace MythMe
 
                     //MessageBox.Show("Query: " + query);
 
-                    HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponse&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + App.ViewModel.randText()));
+                    HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQL&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + App.ViewModel.randText()));
                     webRequest.BeginGetResponse(new AsyncCallback(SaveCallback), webRequest);
 
                 }
@@ -662,16 +662,16 @@ namespace MythMe
 
                     string query = "INSERT INTO `record` SET ";
                     query += "type = " + NewRule.type;
-                    query += ", title = '" + NewRule.title;
-                    query += "', subtitle = '" + NewRule.subtitle;
+                    query += ", title = \"" + NewRule.title;
+                    query += "\", subtitle = \"" + NewRule.subtitle;
 
-                    query += "', startdate = '" + NewRule.startdate;
+                    query += "\", startdate = '" + NewRule.startdate;
                     query += "', starttime = '" + NewRule.starttime;
-                    query += "', station = '" + NewRule.station;
+                    query += "', station = \"" + NewRule.station;
 
-                    query += "', description = '" + NewRule.description;
-                    query += "', category = '" + NewRule.category;
-                    query += "', seriesid = '" + NewRule.seriesid;
+                    query += "\", description = \"" + NewRule.description;
+                    query += "\", category = \"" + NewRule.category;
+                    query += "\", seriesid = '" + NewRule.seriesid;
 
                     query += "', programid = '" + NewRule.programid;
                     query += "', chanid = '" + NewRule.chanid;
@@ -713,7 +713,7 @@ namespace MythMe
 
                     //MessageBox.Show("Query: " + query);
 
-                    HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponse&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + App.ViewModel.randText()));
+                    HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQL&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + App.ViewModel.randText()));
                     webRequest.BeginGetResponse(new AsyncCallback(InsertCallback), webRequest);
 
                 }
@@ -742,7 +742,7 @@ namespace MythMe
 
                 string query = "DELETE FROM record WHERE recordid=" + CurrentRule.recordid.ToString() + " LIMIT 1; ";
 
-                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponse&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + App.ViewModel.randText()));
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQL&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + App.ViewModel.randText()));
                 webRequest.BeginGetResponse(new AsyncCallback(DeleteCallback), webRequest);
 
             }
@@ -775,7 +775,7 @@ namespace MythMe
 
                 string query = "UPDATE record SET type = " + newRuleType.ToString() + " WHERE recordid=" + CurrentRule.recordid.ToString() + " LIMIT 1; ";
 
-                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponse&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + App.ViewModel.randText()));
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQL&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + App.ViewModel.randText()));
                 webRequest.BeginGetResponse(new AsyncCallback(ToggleCallback), webRequest);
 
             }
@@ -801,16 +801,16 @@ namespace MythMe
 
             try
             {
-                
-                string query = "DELETE FROM `oldrecorded` WHERE title = '";
-                query += App.ViewModel.SelectedSetupProgram.title;
-                query += "' AND subtitle = '";
-                query += App.ViewModel.SelectedSetupProgram.subtitle;
-                query += "' AND description = '";
-                query += App.ViewModel.SelectedSetupProgram.description;
-                query += "' LIMIT 1; ";
 
-                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponse&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + App.ViewModel.randText()));
+                string query = "DELETE FROM `oldrecorded` WHERE title = \"";
+                query += App.ViewModel.SelectedSetupProgram.title;
+                query += "\" AND subtitle = \"";
+                query += App.ViewModel.SelectedSetupProgram.subtitle;
+                query += "\" AND description = \"";
+                query += App.ViewModel.SelectedSetupProgram.description;
+                query += "\" LIMIT 1; ";
+
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQL&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + App.ViewModel.randText()));
                 webRequest.BeginGetResponse(new AsyncCallback(ForgetOldCallback), webRequest);
 
             }
@@ -843,24 +843,24 @@ namespace MythMe
 
                 query += App.ViewModel.SelectedSetupProgram.chanid+",'";
                 query += App.ViewModel.SelectedSetupProgram.starttime.Replace("T"," ")+"','";
-                query += App.ViewModel.SelectedSetupProgram.endtime.Replace("T"," ")+"','";
-                query += App.ViewModel.SelectedSetupProgram.title+"','";
-                
-                query += App.ViewModel.SelectedSetupProgram.subtitle+"','";
-                query += App.ViewModel.SelectedSetupProgram.description+"','";
-                query += App.ViewModel.SelectedSetupProgram.category+"','";
+                query += App.ViewModel.SelectedSetupProgram.endtime.Replace("T", " ") + "',\"";
+                query += App.ViewModel.SelectedSetupProgram.title + "\",\"";
+
+                query += App.ViewModel.SelectedSetupProgram.subtitle + "\",\"";
+                query += App.ViewModel.SelectedSetupProgram.description + "\",\"";
+                query += App.ViewModel.SelectedSetupProgram.category + "\",'";
                 query += App.ViewModel.SelectedSetupProgram.seriesid+"','";
                 query += App.ViewModel.SelectedSetupProgram.programid+"',";
-                
-                query += CurrentRule.recordid+",'";
-                query += App.ViewModel.SelectedSetupProgram.callsign+"',";
+
+                query += CurrentRule.recordid + ",\"";
+                query += App.ViewModel.SelectedSetupProgram.callsign + "\",";
                 query += CurrentRule.type+",";
                 query += "11,";
                 query += "1) ;";
 
                 //MessageBox.Show("query: " + query);
                 
-                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponse&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + App.ViewModel.randText()));
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQL&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + App.ViewModel.randText()));
                 webRequest.BeginGetResponse(new AsyncCallback(NeverRecordCallback), webRequest);
 
             }

@@ -111,6 +111,7 @@
             </controls:PivotItem>
 
             <!--
+            -->
             <controls:PivotItem x:Name="videosPivot" Header="videos">
                 <Grid>
 
@@ -123,7 +124,6 @@
 
                 </Grid>
             </controls:PivotItem>
-            -->
             
         </controls:Pivot>
 

@@ -22,6 +22,7 @@ namespace MythMe
         public string title { get; set; }
         public string subtitle { get; set; }
         public string plot { get; set; }
+        public string category { get; set; }
         public string inetref { get; set; }
         public string homepage { get; set; }
         public string releasedate { get; set; }
@@ -32,7 +33,6 @@ namespace MythMe
         public string year { get; set; }
         public string rating { get; set; }
         public string length { get; set; }
-        public string category { get; set; }
         public string hash { get; set; }
         public string coverfile { get; set; }
         public string host { get; set; }
@@ -45,6 +45,8 @@ namespace MythMe
         public string episodeText { get; set; }
         public string fullEpisode { get; set; }
         public string group { get; set; }
+
+        public string fullFilename { get; set; }
 
         public string alpha { get; set; }
 

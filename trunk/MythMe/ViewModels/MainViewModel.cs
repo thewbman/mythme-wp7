@@ -33,12 +33,16 @@ namespace MythMe
 
             this.Channels = new ObservableCollection<ChannelViewModel>();
 
+            this.Storagegroups = new ObservableCollection<StoragegroupViewModel>();
+
             this.SelectedRecordedProgram = new ProgramViewModel();
             this.SelectedUpcomingProgram = new ProgramViewModel();
             this.SelectedGuideProgram = new ProgramViewModel();
             this.SelectedSearchProgram = new ProgramViewModel();
             this.SelectedPeopleProgram = new ProgramViewModel();
             this.SelectedSetupProgram = new ProgramViewModel();
+
+            this.SelectedVideo = new VideoViewModel();
 
             //this.SelectedTitle = new string();
 
@@ -67,12 +71,16 @@ namespace MythMe
 
         public ObservableCollection<ChannelViewModel> Channels { get; private set; }
 
+        public ObservableCollection<StoragegroupViewModel> Storagegroups { get; set; }
+
         public ProgramViewModel SelectedRecordedProgram;
         public ProgramViewModel SelectedUpcomingProgram;
         public ProgramViewModel SelectedGuideProgram;
         public ProgramViewModel SelectedSearchProgram;
         public ProgramViewModel SelectedPeopleProgram;
         public ProgramViewModel SelectedSetupProgram;
+
+        public VideoViewModel SelectedVideo;
 
         public string SelectedTitle;
 
