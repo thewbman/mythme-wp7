@@ -46,10 +46,19 @@ namespace MythMe
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            videoPivot.SelectedIndex = App.ViewModel.appSettings.VideoIndexSetting;
+
             if (TotalVideos.Count == 0)
             {
                 this.GetVideos();
             }
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            App.ViewModel.appSettings.VideoIndexSetting = videoPivot.SelectedIndex;
+
+            base.OnNavigatedFrom(e);
         }
 
 
@@ -162,7 +171,7 @@ namespace MythMe
                             TotalVideos[i].showCoverartDetails = System.Windows.Visibility.Collapsed;
 
 
-                        TotalVideos[i].alpha = TotalVideos[i].title.Substring(0, 1).ToUpper();
+                        TotalVideos[i].alpha = App.ViewModel.functions.FirstChar(TotalVideos[i].title);
 
 
                         if (TotalVideos[i].season == 0)
@@ -171,18 +180,21 @@ namespace MythMe
                             {
                                 TotalVideos[i].fullEpisode = "N/A";
                                 TotalVideos[i].seasonText = "None";
+                                TotalVideos[i].episodeText = "None";
                                 TotalVideos[i].group = "Regular";
                             }
                             else if (TotalVideos[i].episode < 10)
                             {
                                 TotalVideos[i].fullEpisode = "Special0" + TotalVideos[i].episode.ToString();
                                 TotalVideos[i].seasonText = "Specials";
+                                TotalVideos[i].episodeText = TotalVideos[i].episode.ToString();
                                 TotalVideos[i].group = "Specials";
                             }
                             else
                             {
                                 TotalVideos[i].fullEpisode = "Special" + TotalVideos[i].episode.ToString();
                                 TotalVideos[i].seasonText = "Specials";
+                                TotalVideos[i].episodeText = TotalVideos[i].episode.ToString();
                                 TotalVideos[i].group = "Specails";
                             }
 
@@ -203,14 +215,120 @@ namespace MythMe
                             if (TotalVideos[i].episode < 10)
                             {
                                 TotalVideos[i].fullEpisode += "E0" + TotalVideos[i].episode.ToString();
+                                TotalVideos[i].episodeText = "Episode  " + TotalVideos[i].episode.ToString();
                             }
                             else
                             {
                                 TotalVideos[i].fullEpisode += "E" + TotalVideos[i].episode.ToString();
+                                TotalVideos[i].episodeText = "Episode " + TotalVideos[i].episode.ToString();
                             }
 
                             TotalVideos[i].group = "TV";
                         }
+
+                    }
+
+                    //this.SortAndDisplay();
+                    this.GetStoragegroups();
+
+                });
+
+            }
+            catch (Exception ex)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("Error getting videos: " + ex.ToString());
+                    //this.SortAndDisplay();
+                    this.GetStoragegroups();
+                });
+            }
+
+        }
+
+        private void GetStoragegroups()
+        {
+            if (App.ViewModel.Storagegroups.Count == 0)
+            {
+                try
+                {
+
+                    string prequery = "SET character_set_results = 'ascii';";
+
+                    string query = "SELECT * FROM storagegroup ;";
+
+
+                    HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponsePre&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&prequery64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(prequery)) + "&rand=" + App.ViewModel.randText()));
+                    //HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponse64&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + App.ViewModel.randText()));
+                    webRequest.BeginGetResponse(new AsyncCallback(StoragegroupCallback), webRequest);
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error trying to get storagegroups: " + ex.ToString());
+                }
+            }
+            else
+            {
+                this.SortAndDisplay();
+            }
+        }
+        private void StoragegroupCallback(IAsyncResult asynchronousResult)
+        {
+            //string resultString;
+
+            HttpWebRequest request = (HttpWebRequest)asynchronousResult.AsyncState;
+
+            HttpWebResponse response;
+
+            //string resultString;
+            //byte[] resultBytes;
+            //Stream resultStream;
+
+            try
+            {
+                response = (HttpWebResponse)request.EndGetResponse(asynchronousResult);
+            }
+            catch (Exception ex)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    //MessageBox.Show("Failed to get storage group data: " + ex.ToString(), "Error", MessageBoxButton.OK);
+                });
+
+                return;
+            }
+
+            /*
+            using (StreamReader streamReader1 = new StreamReader(response.GetResponseStream()))
+            {
+                resultBytes = Convert.FromBase64String(streamReader1.ReadToEnd());
+            }
+
+            response.GetResponseStream().Close();
+            response.Close();
+
+            resultStream = new MemoryStream(resultBytes);
+            */
+
+            try
+            {
+
+                List<StoragegroupViewModel> l = new List<StoragegroupViewModel>();
+
+                DataContractJsonSerializer s = new DataContractJsonSerializer(typeof(List<StoragegroupViewModel>));
+
+                l = (List<StoragegroupViewModel>)s.ReadObject(response.GetResponseStream());
+
+
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    //MessageBox.Show("Got storage groups: " + l.Count);
+
+                    for (int i = 0; i < l.Count; i++)
+                    {
+
+                        App.ViewModel.Storagegroups.Add(l[i]);
 
                     }
 
@@ -223,13 +341,12 @@ namespace MythMe
             {
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
-                    MessageBox.Show("Error getting videos: " + ex.ToString());
+                    MessageBox.Show("Error getting storage groups: " + ex.ToString());
                     this.SortAndDisplay();
                 });
             }
 
         }
-
 
         private void SortAndDisplay()
         {
@@ -382,21 +499,50 @@ namespace MythMe
         private void AllVideosLL_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+            if (AllVideosLL.SelectedItem == null)
+                return;
+
+            App.ViewModel.SelectedVideo = (VideoViewModel)AllVideosLL.SelectedItem;
+
+            NavigationService.Navigate(new Uri("/VideoDetails.xaml", UriKind.Relative));
+
+            AllVideosLL.SelectedItem = null;
         }
 
         private void RegularVideosLL_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (RegularVideosLL.SelectedItem == null)
+                return;
 
+            App.ViewModel.SelectedVideo = (VideoViewModel)RegularVideosLL.SelectedItem;
+
+            NavigationService.Navigate(new Uri("/VideoDetails.xaml", UriKind.Relative));
+
+            RegularVideosLL.SelectedItem = null;
         }
 
         private void SpecialsVideosLL_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (SpecialsVideosLL.SelectedItem == null)
+                return;
 
+            App.ViewModel.SelectedVideo = (VideoViewModel)SpecialsVideosLL.SelectedItem;
+
+            NavigationService.Navigate(new Uri("/VideoDetails.xaml", UriKind.Relative));
+
+            SpecialsVideosLL.SelectedItem = null;
         }
 
         private void TvVideosLL_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (TvVideosLL.SelectedItem == null)
+                return;
 
+            App.ViewModel.SelectedVideo = (VideoViewModel)TvVideosLL.SelectedItem;
+
+            NavigationService.Navigate(new Uri("/VideoDetails.xaml", UriKind.Relative));
+
+            TvVideosLL.SelectedItem = null;
         }
     }
 }

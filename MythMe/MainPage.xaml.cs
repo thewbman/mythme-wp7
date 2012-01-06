@@ -260,6 +260,13 @@ namespace MythMe
                                 App.ViewModel.appSettings.AutoRunUserJob4Setting = App.ViewModel.functions.IntToBool(singleValueElement.FirstNode.ToString());
                                 break;
 
+                            case "DefaultStartOffset":
+                                App.ViewModel.appSettings.DefaultStartOffsetSetting = int.Parse(singleValueElement.FirstNode.ToString());
+                                break;
+                            case "DefaultEndOffset":
+                                App.ViewModel.appSettings.DefaultEndOffsetSetting = int.Parse(singleValueElement.FirstNode.ToString());
+                                break;
+
                             case "MythXML_key":
                                 App.ViewModel.appSettings.MythwebXmlKeySetting = singleValueElement.FirstNode.ToString();
                                 break;

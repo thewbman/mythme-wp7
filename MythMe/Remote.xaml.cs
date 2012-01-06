@@ -108,6 +108,12 @@ namespace MythMe
                             {
                                 this.Perform(() => SendPlay("chanid " + App.ViewModel.SelectedGuideProgram.chanid), 250);
                             }
+                            else if (command == "playVideo")
+                            {
+                                this.Perform(() => SendPlay("file " + App.ViewModel.SelectedVideo.fullFilename), 250);
+                            }
+
+                            NavigationContext.QueryString.Clear();
                         }
                     }
 

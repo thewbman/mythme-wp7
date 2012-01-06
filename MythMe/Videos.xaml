@@ -50,7 +50,7 @@
 
         <toolkit:PerformanceProgressBar x:Name="performanceProgressBarCustomized" Foreground="Red" Background="Red" IsIndeterminate="False" />
 
-        <controls:Pivot x:Name="videoHeader" Title="VIDEO" Foreground="White">
+        <controls:Pivot x:Name="videoPivot" Title="VIDEO" Foreground="White">
 
             <controls:PivotItem x:Name="AllTitle" Header="all" Foreground="White">
 

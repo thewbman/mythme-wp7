@@ -32,11 +32,11 @@ namespace MythMe
             InitializeComponent();
 
             Programs = new List<ProgramViewModel>();
-            Videos = new List<VideoViewModel>();
+            TotalVideos = new List<VideoViewModel>();
         }
 
         private List<ProgramViewModel> Programs;
-        private List<VideoViewModel> Videos;
+        private List<VideoViewModel> TotalVideos;
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -125,11 +125,11 @@ namespace MythMe
             performanceProgressBarCustomized.IsIndeterminate = true;
 
             ProgramsLL.ItemsSource = null;
-            //VideosLL.ItemsSource = null;
+            VideosLL.ItemsSource = null;
 
 
             this.Programs.Clear();
-            this.Videos.Clear();
+            this.TotalVideos.Clear();
 
             this.GetPrograms();
         }
@@ -178,7 +178,7 @@ namespace MythMe
             {
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
-                    MessageBox.Show("Failed to get details data: " + ex.ToString(), "Error", MessageBoxButton.OK);
+                    MessageBox.Show("Failed to get programs data: " + ex.ToString(), "Error", MessageBoxButton.OK);
                 });
 
                 return;
@@ -216,7 +216,7 @@ namespace MythMe
                             Programs[i].showChanicon = System.Windows.Visibility.Collapsed;
                     }
 
-                    this.GetVideos();
+                    this.GetTotalVideos();
 
                 });
 
@@ -226,47 +226,45 @@ namespace MythMe
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
                     //MessageBox.Show("Error getting people: " + ex.ToString());
-                    this.GetVideos();
+                    this.GetTotalVideos();
                 });
             }
 
         }
 
-        private void GetVideos()
+        private void GetTotalVideos()
         {
-            string inVideoPersonId = App.ViewModel.SelectedPerson.videoPersonId;
-
+            
             try
             {
 
+                string prequery = "SET character_set_results = 'ascii';";
 
-                string query = "SELECT `videocast`.`cast` AS name, `videocast`.`intid` AS videoPersonId,  ";
-                query += " videometadata.intid, videometadata.title, videometadata.subtitle, videometadata.plot, videometadata.inetref,  ";
-                query += " videometadata.homepage, videometadata.releasedate, videometadata.season, videometadata.episode, videometadata.filename, ";
-                query += " videometadata.director, videometadata.year, videometadata.rating, videometadata.length, videocategory.category, ";
-                query += " videometadata.hash, videometadata.coverfile, videometadata.host, videometadata.insertdate, ";
-                query += " 'video' AS type ";
-                query += " FROM `videocast` ";
-                query += " LEFT OUTER JOIN `videometadatacast` ON `videometadatacast`.`idcast` = `videocast`.`intid` ";
-                query += " LEFT OUTER JOIN `videometadata` ON `videometadata`.`intid` = `videometadatacast`.`idvideo` ";
+                string query = "SELECT videometadata.intid, videometadata.title, videometadata.subtitle, videometadata.plot, videometadata.releasedate, ";
+                query += " videometadata.homepage, videometadata.director, videometadata.year, videometadata.rating, videometadata.length, ";	//asdf
+                query += " videometadata.hash, videometadata.host, videometadata.insertdate, videometadata.inetref, ";	//asdf
+                query += " videocategory.category, videometadata.coverfile, videometadata.season, videometadata.episode, videometadata.filename ";
+                query += " FROM videometadata ";
                 query += " LEFT OUTER JOIN videocategory ON videocategory.intid = videometadata.category ";
-                query += " WHERE `videocast`.`intid` = " + inVideoPersonId + " ";
+                query += " WHERE `title` LIKE '%" + searchBox.Text + "%' ";
+                query += " ORDER BY title, season, episode ";
                 query += " LIMIT 1000 ";
 
 
-                //HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponse&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + App.ViewModel.randText()));
-                //webRequest.BeginGetResponse(new AsyncCallback(VideosCallback), webRequest);
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponsePre&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&prequery64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(prequery)) + "&rand=" + App.ViewModel.randText()));
+                //HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponse64&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + App.ViewModel.randText()));
+                webRequest.BeginGetResponse(new AsyncCallback(TotalVideosCallback), webRequest);
 
-                SortAndDisplay();
+                //SortAndDisplay();
 
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error requesting programs data: " + ex.ToString());
+                MessageBox.Show("Error requesting TotalVideos data: " + ex.ToString());
             }
 
         }
-        private void VideosCallback(IAsyncResult asynchronousResult)
+        private void TotalVideosCallback(IAsyncResult asynchronousResult)
         {
             //string resultString;
 
@@ -303,74 +301,79 @@ namespace MythMe
 
                 DataContractJsonSerializer s = new DataContractJsonSerializer(typeof(List<VideoViewModel>));
 
-                Videos = (List<VideoViewModel>)s.ReadObject(response.GetResponseStream());
+                TotalVideos = (List<VideoViewModel>)s.ReadObject(response.GetResponseStream());
 
 
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
                     //MessageBox.Show("Got programs: " + Programs.Count);
 
-                    for (int i = 0; i < Videos.Count; i++)
+                    for (int i = 0; i < TotalVideos.Count; i++)
                     {
 
-                        Videos[i].coverart = "http://" + App.ViewModel.appSettings.WebserverHostSetting + "/mythweb/pl/coverart/" + Videos[i].coverfile;
+                        TotalVideos[i].coverart = "http://" + App.ViewModel.appSettings.WebserverHostSetting + "/mythweb/pl/coverart/" + TotalVideos[i].coverfile;
 
                         if (App.ViewModel.appSettings.VideoListImagesSetting)
-                            Videos[i].showCoverartList = System.Windows.Visibility.Visible;
+                            TotalVideos[i].showCoverartList = System.Windows.Visibility.Visible;
                         else
-                            Videos[i].showCoverartList = System.Windows.Visibility.Collapsed;
+                            TotalVideos[i].showCoverartList = System.Windows.Visibility.Collapsed;
 
 
                         if (App.ViewModel.appSettings.VideoDetailsImageSetting)
-                            Videos[i].showCoverartDetails = System.Windows.Visibility.Visible;
+                            TotalVideos[i].showCoverartDetails = System.Windows.Visibility.Visible;
                         else
-                            Videos[i].showCoverartDetails = System.Windows.Visibility.Collapsed;
+                            TotalVideos[i].showCoverartDetails = System.Windows.Visibility.Collapsed;
 
-                        if (Videos[i].season == 0)
+                        if (TotalVideos[i].season == 0)
                         {
-                            if (Videos[i].episode == 0)
+                            if (TotalVideos[i].episode == 0)
                             {
-                                Videos[i].fullEpisode = "N/A";
-                                Videos[i].seasonText = "None";
-                                Videos[i].group = "Regular";
+                                TotalVideos[i].fullEpisode = "N/A";
+                                TotalVideos[i].seasonText = "None";
+                                TotalVideos[i].episodeText = "None";
+                                TotalVideos[i].group = "Regular";
                             }
-                            else if (Videos[i].episode < 10)
+                            else if (TotalVideos[i].episode < 10)
                             {
-                                Videos[i].fullEpisode = "Special0" + Videos[i].episode.ToString();
-                                Videos[i].seasonText = "Specials";
-                                Videos[i].group = "Specails";
+                                TotalVideos[i].fullEpisode = "Special0" + TotalVideos[i].episode.ToString();
+                                TotalVideos[i].seasonText = "Specials";
+                                TotalVideos[i].episodeText = TotalVideos[i].episode.ToString();
+                                TotalVideos[i].group = "Specails";
                             }
                             else
                             {
-                                Videos[i].fullEpisode = "Special" + Videos[i].episode.ToString();
-                                Videos[i].seasonText = "Specials";
-                                Videos[i].group = "Specails";
+                                TotalVideos[i].fullEpisode = "Special" + TotalVideos[i].episode.ToString();
+                                TotalVideos[i].seasonText = "Specials";
+                                TotalVideos[i].episodeText = TotalVideos[i].episode.ToString();
+                                TotalVideos[i].group = "Specails";
                             }
 
                         }
                         else
                         {
-                            if (Videos[i].season < 10)
+                            if (TotalVideos[i].season < 10)
                             {
-                                Videos[i].fullEpisode = "S0" + Videos[i].season.ToString();
-                                Videos[i].seasonText = "Season  " + Videos[i].season.ToString();
+                                TotalVideos[i].fullEpisode = "S0" + TotalVideos[i].season.ToString();
+                                TotalVideos[i].seasonText = "Season  " + TotalVideos[i].season.ToString();
                             }
                             else
                             {
-                                Videos[i].fullEpisode = "S" + Videos[i].season.ToString();
-                                Videos[i].seasonText = "Season " + Videos[i].season.ToString();
+                                TotalVideos[i].fullEpisode = "S" + TotalVideos[i].season.ToString();
+                                TotalVideos[i].seasonText = "Season " + TotalVideos[i].season.ToString();
                             }
 
-                            if (Videos[i].episode < 10)
+                            if (TotalVideos[i].episode < 10)
                             {
-                                Videos[i].fullEpisode += "E0" + Videos[i].episode.ToString();
+                                TotalVideos[i].fullEpisode += "E0" + TotalVideos[i].episode.ToString();
+                                TotalVideos[i].episodeText = "Episode  " + TotalVideos[i].episode.ToString();
                             }
                             else
                             {
-                                Videos[i].fullEpisode += "E" + Videos[i].episode.ToString();
+                                TotalVideos[i].fullEpisode += "E" + TotalVideos[i].episode.ToString();
+                                TotalVideos[i].episodeText = "Episode " + TotalVideos[i].episode.ToString();
                             }
 
-                            Videos[i].group = "TV";
+                            TotalVideos[i].group = "TV";
                         }
 
 
@@ -457,16 +460,16 @@ namespace MythMe
 
 
 
-            var v = Videos.OrderBy(x => x.title).ToArray();
+            var v = TotalVideos.OrderBy(x => x.title).ToArray();
 
-            var GroupedVideos = from t in v
+            var GroupedTotalVideos = from t in v
                                 //group t by t.starttime.Substring(0, 10) into c
                                 group t by t.title into c
                                 //orderby c.Key
                                 select new Group<VideoViewModel>(c.Key, c);
 
 
-            //VideosLL.ItemsSource = GroupedVideos;
+            VideosLL.ItemsSource = GroupedTotalVideos;
 
             performanceProgressBarCustomized.IsIndeterminate = false;
 
@@ -511,6 +514,16 @@ namespace MythMe
 
         private void VideosLL_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            //seperate video details page?
+
+            if (VideosLL.SelectedItem == null)
+                return;
+
+            App.ViewModel.SelectedVideo = (VideoViewModel)VideosLL.SelectedItem;
+
+            NavigationService.Navigate(new Uri("/VideoDetails.xaml", UriKind.Relative));
+
+            VideosLL.SelectedItem = null;
 
         }
     }

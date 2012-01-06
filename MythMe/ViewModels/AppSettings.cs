@@ -91,6 +91,8 @@ namespace MythMe
 
         const string ThemeKeyName = "Theme";
 
+        const string VideoIndexName = "VideoIndex";
+
 
 
         // The default value of our settings
@@ -174,6 +176,8 @@ namespace MythMe
         const int DBSchemaVerDefault = 0;
 
         const string ThemeDefault = "black";
+
+        const int VideoIndexDefault = 0;
 
 
 
@@ -560,6 +564,12 @@ namespace MythMe
         {
             get { return GetValueOrDefault<string>(ThemeKeyName, ThemeDefault); }
             set { if (AddOrUpdateValue(ThemeKeyName, value)) { Save(); } }
+        }
+
+        public int VideoIndexSetting
+        {
+            get { return GetValueOrDefault<int>(VideoIndexName, VideoIndexDefault); }
+            set { if (AddOrUpdateValue(VideoIndexName, value)) { Save(); } }
         }
 
         

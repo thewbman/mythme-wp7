@@ -168,7 +168,7 @@ namespace MythMe
             {
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
-                    MessageBox.Show("Failed to get details data: " + ex.ToString(), "Error", MessageBoxButton.OK);
+                    MessageBox.Show("Failed to get people data: " + ex.ToString(), "Error", MessageBoxButton.OK);
                 });
 
                 return;
