@@ -1,0 +1,159 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="MythMe.RecordedDetails"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:local="clr-namespace:MythMe"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeLarge}"
+    Foreground="White"
+    SupportedOrientations="Portrait"  Orientation="Portrait"
+    shell:SystemTray.IsVisible="False">
+
+    <Grid x:Name="LayoutRoot" Background="#3e000c">
+        <controls:Panorama Name="topPanorama" Title="recorded" Foreground="White">
+
+            <controls:PanoramaItem Header="program" Foreground="White">
+                <ScrollViewer>
+                    <StackPanel>
+                        <TextBlock Text="{Binding title}" TextWrapping="Wrap" Foreground="White"  />
+                        <TextBlock Text="{Binding subtitle}" FontSize="26" Style="{StaticResource PhoneTextSubtleStyle}" TextWrapping="Wrap" Foreground="Silver"  />
+                        <TextBlock Text="{Binding category}" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver"  />
+                        <Image Source="{Binding screenshot}" Width="420" />
+                        <TextBlock Text="{Binding description}" Style="{StaticResource PhoneTextSubtleStyle}" TextWrapping="Wrap" Foreground="Silver" />
+                    </StackPanel>
+                </ScrollViewer>
+            </controls:PanoramaItem>
+
+            <controls:PanoramaItem Header="details" Foreground="White">
+                <ScrollViewer>
+                    <StackPanel>
+                        <TextBlock Text="start time" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding starttime}" Foreground="White" />
+                        <TextBlock Text="end time" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding endtime}" Foreground="White" />
+                        <TextBlock Text="series id" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding seriesid}" Foreground="White" />
+                        <TextBlock Text="program id" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding programid}" Foreground="White" />
+                        <TextBlock Text="original airdate" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding airdate}" Foreground="White" />
+                    </StackPanel>
+                </ScrollViewer>
+            </controls:PanoramaItem>
+
+            <controls:PanoramaItem Header="channel" Foreground="White">
+                <ScrollViewer>
+                    <StackPanel>
+                        <TextBlock Text="channel number" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding channum}" Foreground="White" />
+                        <TextBlock Text="channel name" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding channame}" Foreground="White" />
+                        <TextBlock Text="chanid" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding chanid}" Foreground="White" />
+                    </StackPanel>
+                </ScrollViewer>
+            </controls:PanoramaItem>
+
+            <controls:PanoramaItem Header="recording" Foreground="White">
+                <ScrollViewer>
+                    <StackPanel>
+                        <TextBlock Text="recording start" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding recstartts}" Foreground="White" />
+                        <TextBlock Text="recording end" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding recendts}" Foreground="White" />
+                        <TextBlock Text="hostname" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding hostname}" Foreground="White" />
+                        <TextBlock Text="recording group" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding recgroup}" Foreground="White" />
+                        <TextBlock Text="filesize" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding filesize}" Foreground="White" />
+                    </StackPanel>
+                </ScrollViewer>
+            </controls:PanoramaItem>
+
+            <controls:PanoramaItem Header="people" x:Name="peoplePivot" Foreground="White" local:TiltEffect.IsTiltEnabled="True">
+
+                <ListBox x:Name="peopleList"  local:TiltEffect.IsTiltEnabled="True" SelectionChanged="peopleList_SelectionChanged" >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,0,0,17" Width="432" Height="Auto">
+                                    <TextBlock Text="{Binding name}" TextWrapping="NoWrap" Style="{StaticResource PhoneTextNormalStyle}" FontSize="24" Foreground="White" />                           
+                                    <TextBlock Text="{Binding role}" TextWrapping="NoWrap" Margin="20,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver"/>                        
+                                    <!--
+                                    <TextBlock Text="{Binding person}" TextWrapping="NoWrap" Margin="10,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver"/>                               
+                                    <TextBlock Text="{Binding videoPersonId}" TextWrapping="NoWrap" Margin="30,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver"/>
+                                    -->
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+            </controls:PanoramaItem>
+
+            <controls:PanoramaItem Header="jobs" x:Name="jobsPivot" Foreground="White">
+                <Grid ShowGridLines="False">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    
+                    <ListBox x:Name="jobsList" Grid.Row="0" Grid.ColumnSpan="2">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,0,0,17" Width="432" Height="Auto">
+                                    <TextBlock Text="{Binding Content}" TextWrapping="NoWrap" Style="{StaticResource PhoneTextNormalStyle}" FontSize="24" Foreground="White" />
+                                    <TextBlock Text="{Binding First}" TextWrapping="NoWrap" Margin="20,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver"/>
+                                    <TextBlock Text="{Binding Second}" TextWrapping="NoWrap" Margin="30,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver"/>
+                                    <TextBlock Text="{Binding Third}" TextWrapping="NoWrap" Margin="40,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver"/>
+                                    <TextBlock Text="{Binding Fourth}" TextWrapping="NoWrap" Margin="50,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <Button x:Name="comflag" Content="commercial flag"  Grid.Row="1" Grid.ColumnSpan="2" Click="comflag_Click" FontSize="20" Foreground="White" BorderBrush="White" />
+                    <Button x:Name="userjob1" Content="userjob1" Grid.Row="2" Grid.Column="0" Click="userjob1_Click" FontSize="20" Foreground="White" BorderBrush="White" />
+                    <Button x:Name="userjob2" Content="userjob2" Grid.Row="2" Grid.Column="1" Click="userjob2_Click" FontSize="20" Foreground="White" BorderBrush="White" />
+                    <Button x:Name="userjob3" Content="userjob3" Grid.Row="3" Grid.Column="0" Click="userjob3_Click" FontSize="20" Foreground="White" BorderBrush="White" />
+                    <Button x:Name="userjob4" Content="userjob4" Grid.Row="3" Grid.Column="1" Click="userjob4_Click" FontSize="20" Foreground="White" BorderBrush="White" />
+                </Grid>
+            </controls:PanoramaItem>
+
+            <controls:PanoramaItem Header="actions" Foreground="White">
+                <ScrollViewer>
+                    <StackPanel>
+                        <!-- use a list with context menu ? 
+                        <TextBlock x:Name="deleteButton" Text="delete" />
+                        <TextBlock x:Name="undeleteButton" Text="undelete" />
+                        -->
+                        <Button x:Name="playButton" Content="play on frontend"  Tap="playButton_Tap" Foreground="White" BorderBrush="White"/>
+                        <Button x:Name="downloadButton" Content="download to phone"  Tap="downloadButton_Tap" Foreground="White" BorderBrush="White"/>
+                        <Button x:Name="deleteButton" Content="delete" Tap="deleteButton_Tap" Foreground="White" BorderBrush="White"/>
+                        <Button x:Name="undeleteButton" Content="undelete" Tap="undeleteButton_Tap" Foreground="White" BorderBrush="White" Visibility="Collapsed"/>
+                        <Button x:Name="mythwebButton" Content="mythweb"  Tap="mythwebButton_Tap" Foreground="White" BorderBrush="White"/>
+                        <Button x:Name="setupSchedulebutton" Content="setup schedule"  Tap="setupSchedulebutton_Tap" Foreground="White" BorderBrush="White" />
+                        <Button x:Name="guidebutton" Content="program guide"  Tap="guideButton_Tap" Foreground="White" BorderBrush="White" />
+                        <Button x:Name="titleSearchButton" Content="title search"  Tap="titleSearchButton_Tap" Foreground="White" BorderBrush="White" />
+
+                    </StackPanel>
+                </ScrollViewer>
+            </controls:PanoramaItem>
+
+        </controls:Panorama>
+    </Grid>
+
+    <!--Panorama-based applications should not show an ApplicationBar-->
+
+</phone:PhoneApplicationPage>

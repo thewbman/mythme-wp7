@@ -1,0 +1,97 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="MythMe.Downloads"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="White"
+    SupportedOrientations="Portrait"  Orientation="Portrait"
+    shell:SystemTray.IsVisible="True"
+    xmlns:local="clr-namespace:MythMe"
+    local:TiltEffect.IsTiltEnabled="True"
+    >
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="#3e000c">
+        
+        <controls:Pivot Title="DOWNLOADS">
+            <!--Pivot item one-->
+            <controls:PivotItem Header="completed">
+                <Grid>
+
+                    <ListBox x:Name="completedList" SelectionChanged="completedList_SelectionChanged" >
+
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+
+                                <StackPanel>
+
+                                    <toolkit:ContextMenuService.ContextMenu>
+                                        <toolkit:ContextMenu >
+                                            <!--<toolkit:MenuItem x:Name="playFile" Header="play" Click="playFile_Click" />-->
+                                            <toolkit:MenuItem x:Name="deleteFile" Header="delete file" Click="deleteFile_Click" />
+                                        </toolkit:ContextMenu>
+                                    </toolkit:ContextMenuService.ContextMenu>
+
+                                    <TextBlock Text="{Binding Third}" TextWrapping="NoWrap" Margin="2,16,12,6" Style="{StaticResource PhoneTextNormalStyle}" FontSize="24" Foreground="White" />
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="150" MaxHeight="100" Source="{Binding Name}"  Margin="0,-15,0,0" />
+                                        <StackPanel Margin="0,0,0,17" Height="Auto">
+                                            <TextBlock Text="{Binding Fourth}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                                            <TextBlock Text="{Binding First}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                                            <TextBlock Text="{Binding Second}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                                            <TextBlock Text="{Binding Content}" TextWrapping="NoWrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                </StackPanel>
+                                
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+
+
+                    </ListBox>
+                </Grid>
+            </controls:PivotItem>
+
+            <controls:PivotItem Header="in progress">
+                <Grid>
+
+                    <ListBox x:Name="inprogressList" >
+
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+
+                                <StackPanel>
+
+
+                                    <TextBlock Text="{Binding Content}" TextWrapping="NoWrap" Margin="50,0,0,0" Style="{StaticResource PhoneTextExtraLargeStyle}" Foreground="White" />
+                                    <TextBlock Text="{Binding Name}" TextWrapping="NoWrap" Margin="50,0,0,0" Foreground="White" />
+                                    <TextBlock Text="{Binding First}" TextWrapping="NoWrap" Margin="50,0,0,0" Foreground="White" />
+                                    <TextBlock Text="{Binding Second}" TextWrapping="NoWrap" Margin="50,0,0,0" Foreground="White" />
+                                    <TextBlock Text="{Binding Third}" TextWrapping="NoWrap" Margin="50,0,0,0" Foreground="White" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+
+                    </ListBox>
+                </Grid>
+            </controls:PivotItem>
+            
+            
+        </controls:Pivot>
+    </Grid>
+
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" BackgroundColor="#28000C" ForegroundColor="White" >
+            <shell:ApplicationBarIconButton x:Name="appbarRefresh" IconUri="/Images/appbar.refresh.rest.png" Text="refresh" Click="appbarRefresh_Click" />
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+    
+</phone:PhoneApplicationPage>
