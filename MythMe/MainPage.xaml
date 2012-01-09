@@ -17,8 +17,8 @@
     local:TiltEffect.IsTiltEnabled="True"
     >
 
+    
     <Grid x:Name="LayoutRoot" Background="#3e000c">
-        
         
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -58,7 +58,7 @@
             
             <shell:ApplicationBar.MenuItems>
                 
-                <shell:ApplicationBarMenuItem x:Name="reload" Text="reload backends and setting" Click="reload_Click"/>
+                <shell:ApplicationBarMenuItem x:Name="reload" Text="reload backends and settings" Click="reload_Click"/>
                 
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>

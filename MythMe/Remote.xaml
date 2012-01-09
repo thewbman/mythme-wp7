@@ -86,12 +86,13 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Grid ShowGridLines="False">
+                    <Grid ShowGridLines="False" Grid.Row="0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
@@ -100,7 +101,7 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        
+
                         <!--
                         <TextBlock x:Name="previous" Text="previous" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="previous_Tap" FontSize="40" />
                         <TextBlock x:Name="pause" Text="pause" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Tap="pause_Tap" FontSize="40" />
@@ -127,7 +128,23 @@
 
                     </Grid>
 
-                    <Grid ShowGridLines="False" Grid.Row="1">
+                    <Grid ShowGridLines="True" Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <HyperlinkButton x:Name="guideButton" Content="guide" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="center" FontSize="40" BorderThickness="0" Margin="0" Foreground="White" FontStyle="Normal" Click="guideButton_Click" />
+                        <HyperlinkButton x:Name="inputButton" Content="input" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="center" FontSize="40" BorderThickness="0" Margin="0" Foreground="White" FontStyle="Normal" Click="inputButton_Click" />
+                        <HyperlinkButton x:Name="zoomButton" Content="zoom" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="center" FontSize="40" BorderThickness="0" Margin="0" Foreground="White" FontStyle="Normal" Click="zoomButton_Click" />
+
+                    </Grid>
+
+                    <Grid ShowGridLines="False" Grid.Row="2">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
@@ -163,7 +180,7 @@
 
                     </Grid>
 
-                    <Grid ShowGridLines="True" Grid.Row="2">
+                    <Grid ShowGridLines="True" Grid.Row="3">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
@@ -179,7 +196,7 @@
 
                     </Grid>
                     
-                    <Grid ShowGridLines="True" Grid.Row="3">
+                    <Grid ShowGridLines="True" Grid.Row="4">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
@@ -203,16 +220,44 @@
                 <Grid ShowGridLines="False">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <TextBox x:Name="keyboardBox" Grid.Column="0" Grid.Row="0" KeyUp="keyboardBox_KeyUp" Background="White" />
+                    <HyperlinkButton x:Name="num1button" Content="1" Grid.Row="0" Grid.Column="0" Click="num1button_Click" VerticalAlignment="Center" HorizontalAlignment="center" FontSize="40" BorderThickness="0" Margin="0" Foreground="White" FontStyle="Normal"  />
+                    <HyperlinkButton x:Name="num2button" Content="2" Grid.Row="0" Grid.Column="1" Click="num2button_Click" VerticalAlignment="Center" HorizontalAlignment="center" FontSize="40" BorderThickness="0" Margin="0" Foreground="White" FontStyle="Normal"  />
+                    <HyperlinkButton x:Name="num3button" Content="3" Grid.Row="0" Grid.Column="2" Click="num3button_Click" VerticalAlignment="Center" HorizontalAlignment="center" FontSize="40" BorderThickness="0" Margin="0" Foreground="White" FontStyle="Normal"  />
+                    <HyperlinkButton x:Name="num4button" Content="4" Grid.Row="0" Grid.Column="3" Click="num4button_Click" VerticalAlignment="Center" HorizontalAlignment="center" FontSize="40" BorderThickness="0" Margin="0" Foreground="White" FontStyle="Normal"  />
+                    <HyperlinkButton x:Name="num5button" Content="5" Grid.Row="0" Grid.Column="4" Click="num5button_Click" VerticalAlignment="Center" HorizontalAlignment="center" FontSize="40" BorderThickness="0" Margin="0" Foreground="White" FontStyle="Normal"  />
+                    <HyperlinkButton x:Name="num6button" Content="6" Grid.Row="0" Grid.Column="5" Click="num6button_Click" VerticalAlignment="Center" HorizontalAlignment="center" FontSize="40" BorderThickness="0" Margin="0" Foreground="White" FontStyle="Normal"  />
+                    <HyperlinkButton x:Name="num7button" Content="7" Grid.Row="0" Grid.Column="6" Click="num7button_Click" VerticalAlignment="Center" HorizontalAlignment="center" FontSize="40" BorderThickness="0" Margin="0" Foreground="White" FontStyle="Normal"  />
+                    <HyperlinkButton x:Name="num8button" Content="8" Grid.Row="0" Grid.Column="7" Click="num8button_Click" VerticalAlignment="Center" HorizontalAlignment="center" FontSize="40" BorderThickness="0" Margin="0" Foreground="White" FontStyle="Normal"  />
+                    <HyperlinkButton x:Name="num9button" Content="9" Grid.Row="0" Grid.Column="8" Click="num9button_Click" VerticalAlignment="Center" HorizontalAlignment="center" FontSize="40" BorderThickness="0" Margin="0" Foreground="White" FontStyle="Normal"  />
+                    <HyperlinkButton x:Name="num0button" Content="0" Grid.Row="0" Grid.Column="9" Click="num0button_Click" VerticalAlignment="Center" HorizontalAlignment="center" FontSize="40" BorderThickness="0" Margin="0" Foreground="White" FontStyle="Normal"  />
+                    
+                    
+                    <TextBox x:Name="keyboardBox" Grid.ColumnSpan="10" Grid.Row="1" KeyUp="keyboardBox_KeyUp" Background="White" />
                     
                 </Grid>
+            </controls:PivotItem>
+
+            <controls:PivotItem Header="screenshot" Foreground="White">
+                <StackPanel>
+                    <Button x:Name="screenshotButton" Content="take screenshot" Foreground="White" BorderBrush="White" Click="screenshotButton_Click" />
+                    <Image x:Name="screenshot" Width="480" />
+                </StackPanel>
             </controls:PivotItem>
 
             <controls:PivotItem Header="query" Foreground="White">

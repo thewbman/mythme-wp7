@@ -324,7 +324,7 @@ namespace MythMe
             if (CurrentRule.type == 0)
             {
                 RuleTypes.Add(new NameContentViewModel(){Name = "Anytime on any channel", Content = "4"});
-                RuleTypes.Add(new NameContentViewModel(){Name = "Anytime on channel", Content = "3"});
+                RuleTypes.Add(new NameContentViewModel(){Name = "Anytime on this channel", Content = "3"});
                 RuleTypes.Add(new NameContentViewModel(){Name = "Find one each week", Content = "10"});
                 RuleTypes.Add(new NameContentViewModel(){Name = "Find one each day", Content = "9"});
                 RuleTypes.Add(new NameContentViewModel(){Name = "Find one showing", Content = "6"});
@@ -336,7 +336,7 @@ namespace MythMe
             else if ((CurrentRule.type < 7)||(CurrentRule.type > 8))
             {
                 RuleTypes.Add(new NameContentViewModel(){Name = "Anytime on any channel", Content = "4" });
-                RuleTypes.Add(new NameContentViewModel(){Name = "Anytime on channel", Content = "3"});
+                RuleTypes.Add(new NameContentViewModel(){Name = "Anytime on this channel", Content = "3"});
                 RuleTypes.Add(new NameContentViewModel(){Name = "Find one each week", Content = "10"});
                 RuleTypes.Add(new NameContentViewModel(){Name = "Find one each day", Content = "9"});
                 RuleTypes.Add(new NameContentViewModel(){Name = "Find one showing", Content = "6"});

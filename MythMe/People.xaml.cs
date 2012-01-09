@@ -36,7 +36,7 @@ namespace MythMe
             PeopleNames = new List<PeopleViewModel>(); 
 
             Programs = new List<ProgramViewModel>();
-            Videos = new List<VideoViewModel>();
+            TotalVideos = new List<VideoViewModel>();
 
         }
 
@@ -45,7 +45,7 @@ namespace MythMe
         private List<PeopleViewModel> PeopleNames;
 
         private List<ProgramViewModel> Programs;
-        private List<VideoViewModel> Videos;
+        private List<VideoViewModel> TotalVideos;
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -78,7 +78,8 @@ namespace MythMe
                 performanceProgressBarCustomized.IsIndeterminate = false;
             }
 
-            //NavigationContext.QueryString.Clear();
+            NavigationContext.QueryString.Clear();
+
         }
 
 
@@ -93,7 +94,7 @@ namespace MythMe
 
             Programs.Clear();
             ProgramsLL.ItemsSource = null;
-            Videos.Clear();
+            TotalVideos.Clear();
             VideosLL.ItemsSource = null;
 
             try
@@ -176,9 +177,12 @@ namespace MythMe
                             Programs[i].showChanicon = System.Windows.Visibility.Visible;
                         else
                             Programs[i].showChanicon = System.Windows.Visibility.Collapsed;
+
+                        if ((Programs[i].subtitle == null) || (Programs[i].subtitle == ""))
+                            Programs[i].subtitle = ".";
                     }
 
-                    this.GetVideos();
+                    this.GetTotalVideos();
 
                 });
 
@@ -188,13 +192,13 @@ namespace MythMe
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
                     //MessageBox.Show("Error getting people: " + ex.ToString());
-                    this.GetVideos();
+                    this.GetTotalVideos();
                 });
             }
 
         }
 
-        private void GetVideos()
+        private void GetTotalVideos()
         {
             string inVideoPersonId = App.ViewModel.SelectedPerson.videoPersonId;
 
@@ -219,7 +223,7 @@ namespace MythMe
 
                 HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponsePre&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&prequery64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(prequery)) + "&rand=" + App.ViewModel.randText()));
                 //HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponse64&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + App.ViewModel.randText()));
-                webRequest.BeginGetResponse(new AsyncCallback(VideosCallback), webRequest);
+                webRequest.BeginGetResponse(new AsyncCallback(TotalVideosCallback), webRequest);
 
             }
             catch (Exception ex)
@@ -228,7 +232,7 @@ namespace MythMe
             }
 
         }
-        private void VideosCallback(IAsyncResult asynchronousResult)
+        private void TotalVideosCallback(IAsyncResult asynchronousResult)
         {
             //string resultString;
 
@@ -265,74 +269,75 @@ namespace MythMe
 
                 DataContractJsonSerializer s = new DataContractJsonSerializer(typeof(List<VideoViewModel>));
 
-                Videos = (List<VideoViewModel>)s.ReadObject(response.GetResponseStream());
+                TotalVideos = (List<VideoViewModel>)s.ReadObject(response.GetResponseStream());
 
 
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
-                    //MessageBox.Show("Got programs: " + Programs.Count);
+                    //MessageBox.Show("Got videos: " + TotalVideos.Count);
 
-                    for (int i = 0; i < Videos.Count; i++)
+                    for (int i = 0; i < TotalVideos.Count; i++)
                     {
 
-                        Videos[i].coverart = "http://" + App.ViewModel.appSettings.WebserverHostSetting + "/mythweb/pl/coverart/" + Videos[i].coverfile;
+                        if ((App.ViewModel.appSettings.VideoListImagesSetting))
+                            TotalVideos[i].coverart = "http://" + App.ViewModel.appSettings.WebserverHostSetting + "/mythweb/pl/coverart/" + TotalVideos[i].coverfile;
 
                         if (App.ViewModel.appSettings.VideoListImagesSetting)
-                            Videos[i].showCoverartList = System.Windows.Visibility.Visible;
+                            TotalVideos[i].showCoverartList = System.Windows.Visibility.Visible;
                         else
-                            Videos[i].showCoverartList = System.Windows.Visibility.Collapsed;
+                            TotalVideos[i].showCoverartList = System.Windows.Visibility.Collapsed;
 
 
                         if (App.ViewModel.appSettings.VideoDetailsImageSetting)
-                            Videos[i].showCoverartDetails = System.Windows.Visibility.Visible;
+                            TotalVideos[i].showCoverartDetails = System.Windows.Visibility.Visible;
                         else
-                            Videos[i].showCoverartDetails = System.Windows.Visibility.Collapsed;
+                            TotalVideos[i].showCoverartDetails = System.Windows.Visibility.Collapsed;
                          
-                        if(Videos[i].season == 0)
+                        if(TotalVideos[i].season == 0)
                         {
-                            if(Videos[i].episode == 0)
+                            if(TotalVideos[i].episode == 0)
                             {
-                                Videos[i].fullEpisode = "N/A";
-                                Videos[i].seasonText = "None";
-                                Videos[i].group = "Regular";
+                                TotalVideos[i].fullEpisode = "N/A";
+                                TotalVideos[i].seasonText = "None";
+                                TotalVideos[i].group = "Regular";
                             }
-                            else if(Videos[i].episode < 10)
+                            else if(TotalVideos[i].episode < 10)
                             {
-                                Videos[i].fullEpisode = "Special0"+Videos[i].episode.ToString();
-                                Videos[i].seasonText = "Specials";
-                                Videos[i].group = "Specails";
+                                TotalVideos[i].fullEpisode = "Special0"+TotalVideos[i].episode.ToString();
+                                TotalVideos[i].seasonText = "Specials";
+                                TotalVideos[i].group = "Specails";
                             }
                             else
                             {
-                                Videos[i].fullEpisode = "Special"+Videos[i].episode.ToString();
-                                Videos[i].seasonText = "Specials";
-                                Videos[i].group = "Specails";
+                                TotalVideos[i].fullEpisode = "Special"+TotalVideos[i].episode.ToString();
+                                TotalVideos[i].seasonText = "Specials";
+                                TotalVideos[i].group = "Specails";
                             }
 
                         }
                         else
                         {
-                            if(Videos[i].season < 10)
+                            if(TotalVideos[i].season < 10)
                             {
-                                Videos[i].fullEpisode = "S0"+Videos[i].season.ToString();
-                                Videos[i].seasonText = "Season  " + Videos[i].season.ToString();
+                                TotalVideos[i].fullEpisode = "S0"+TotalVideos[i].season.ToString();
+                                TotalVideos[i].seasonText = "Season  " + TotalVideos[i].season.ToString();
                             }
                             else
                             {
-                                Videos[i].fullEpisode = "S" + Videos[i].season.ToString();
-                                Videos[i].seasonText = "Season " + Videos[i].season.ToString();
+                                TotalVideos[i].fullEpisode = "S" + TotalVideos[i].season.ToString();
+                                TotalVideos[i].seasonText = "Season " + TotalVideos[i].season.ToString();
                             }
 
-                            if (Videos[i].episode < 10)
+                            if (TotalVideos[i].episode < 10)
                             {
-                                Videos[i].fullEpisode += "E0" + Videos[i].episode.ToString();
+                                TotalVideos[i].fullEpisode += "E0" + TotalVideos[i].episode.ToString();
                             }
                             else
                             {
-                                Videos[i].fullEpisode += "E" + Videos[i].episode.ToString();
+                                TotalVideos[i].fullEpisode += "E" + TotalVideos[i].episode.ToString();
                             }
 
-                            Videos[i].group = "TV";
+                            TotalVideos[i].group = "TV";
                         }
 			
 			
@@ -434,16 +439,16 @@ namespace MythMe
 
 
 
-            var v = Videos.OrderBy(x => x.title).ToArray();
+            var v = TotalVideos.OrderBy(x => x.title).ToArray();
 
-            var GroupedVideos = from t in v
+            var GroupedTotalVideos = from t in v
                                   //group t by t.starttime.Substring(0, 10) into c
                                   group t by t.title into c
                                   //orderby c.Key
                                   select new Group<VideoViewModel>(c.Key, c);
 
 
-            VideosLL.ItemsSource = GroupedVideos;
+            VideosLL.ItemsSource = GroupedTotalVideos;
 
             performanceProgressBarCustomized.IsIndeterminate = false;
 
@@ -533,7 +538,7 @@ namespace MythMe
             this.PeopleNames.Clear();
 
             this.Programs.Clear();
-            this.Videos.Clear();
+            this.TotalVideos.Clear();
 
             this.GetProgramPeople();
 
@@ -799,6 +804,14 @@ namespace MythMe
         private void VideosLL_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+            if (VideosLL.SelectedItem == null)
+                return;
+
+            App.ViewModel.SelectedVideo = (VideoViewModel)VideosLL.SelectedItem;
+
+            NavigationService.Navigate(new Uri("/VideoDetails.xaml", UriKind.Relative));
+
+            VideosLL.SelectedItem = null;
         }
 
         private void appbarSearch_Click(object sender, EventArgs e)

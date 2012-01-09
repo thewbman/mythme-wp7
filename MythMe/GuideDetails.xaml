@@ -22,6 +22,7 @@
             <controls:PanoramaItem Header="program" Foreground="White">
                 <ScrollViewer>
                     <StackPanel>
+                        <TextBlock x:Name="timetext" Text="time text" FontSize="26" Style="{StaticResource PhoneTextSubtleStyle}" TextWrapping="Wrap" Foreground="Silver" HorizontalAlignment="Right" />
                         <TextBlock x:Name="recstatustext" Text="{Binding recstatustext}" FontSize="26" Style="{StaticResource PhoneTextSubtleStyle}" TextWrapping="Wrap" FontStyle="Italic" Foreground="Silver" />
                         <TextBlock x:Name="title" Text="{Binding title}" TextWrapping="Wrap"  Foreground="White" />
                         <TextBlock x:Name="subtitle" Text="{Binding subtitle}" FontSize="26" Style="{StaticResource PhoneTextSubtleStyle}" TextWrapping="Wrap" Foreground="Silver"  />

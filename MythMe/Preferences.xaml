@@ -96,7 +96,7 @@
                         -->
                         <toolkit:ToggleSwitch x:Name="UseScriptScreenshots" Content="script screenshots" Foreground="Silver" Checked="UseScriptScreenshots_Checked" />
 
-                        <toolkit:ToggleSwitch x:Name="VideoListImages" Content="video list" Foreground="Silver" />
+                        <toolkit:ToggleSwitch x:Name="VideoListImages" Content="videos list" Foreground="Silver" />
 
                         <toolkit:ToggleSwitch x:Name="VideoDetailsImage" Content="video details" Foreground="Silver" />
 

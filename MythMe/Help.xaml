@@ -14,16 +14,16 @@
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="True"
     xmlns:local="clr-namespace:MythMe"
-    local:TiltEffect.IsTiltEnabled="True"
+    local:TiltEffect.IsTiltEnabled="False"
     >
 
     <!--LayoutRoot contains the root grid where all other page content is placed-->
     <Grid x:Name="LayoutRoot" Background="#3e000c" >
-        <controls:Panorama Title="help" Foreground="White" local:TiltEffect.IsTiltEnabled="True" >
+        <controls:Panorama Title="help" Foreground="White" >
 
-            <controls:PanoramaItem Header="faqs" Foreground="White" local:TiltEffect.IsTiltEnabled="True">
-                <Grid>
-                    <ListBox x:Name="QuestionListBox" Margin="0,0,-12,0" ItemsSource="{Binding Questions}">
+            <controls:PanoramaItem Header="faqs" Foreground="White" local:TiltEffect.IsTiltEnabled="False">
+                <Grid local:TiltEffect.IsTiltEnabled="False">
+                    <ListBox x:Name="QuestionListBox" Margin="0,0,-12,0" ItemsSource="{Binding Questions}" local:TiltEffect.IsTiltEnabled="False">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Margin="0,0,0,17" Width="432">
@@ -36,7 +36,7 @@
                 </Grid>
             </controls:PanoramaItem>
 
-            <controls:PanoramaItem Header="support" Foreground="White" >
+            <controls:PanoramaItem Header="support" Foreground="White" local:TiltEffect.IsTiltEnabled="True" >
                 <Grid>
                     <ListBox x:Name="SupportListBox" Margin="0,0,-12,0" ItemsSource="{Binding Support}" SelectionChanged="SupportListBox_SelectionChanged">
                         <ListBox.ItemTemplate>
@@ -51,7 +51,7 @@
                 </Grid>
             </controls:PanoramaItem>
 
-            <controls:PanoramaItem Header="other apps" Foreground="White" >
+            <controls:PanoramaItem Header="other apps" Foreground="White" local:TiltEffect.IsTiltEnabled="True" >
                 <Grid>
                     <ListBox x:Name="AppsListBox" Margin="0,0,-12,0" ItemsSource="{Binding Apps}" SelectionChanged="AppsListBox_SelectionChanged">
                         <ListBox.ItemTemplate>
