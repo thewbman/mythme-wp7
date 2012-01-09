@@ -78,6 +78,8 @@ namespace MythMe
                     }
 
 
+
+
                     if (App.ViewModel.appSettings.UseScriptSetting)
                     {
                         peoplePivot.Visibility = System.Windows.Visibility.Visible;
@@ -92,6 +94,18 @@ namespace MythMe
 
                         Jobqueue.Clear();
 
+
+                        if (App.ViewModel.SelectedRecordedProgram.recgroup.ToUpper() == "DELETED")
+                        {
+                            deleteButton.Visibility = System.Windows.Visibility.Collapsed;
+                            undeleteButton.Visibility = System.Windows.Visibility.Visible;
+                        }
+                        else
+                        {
+                            deleteButton.Visibility = System.Windows.Visibility.Visible;
+                            undeleteButton.Visibility = System.Windows.Visibility.Collapsed;
+                        }
+
                         this.GetPeople();
 
                     }
@@ -101,6 +115,9 @@ namespace MythMe
                         jobsPivot.Visibility = System.Windows.Visibility.Collapsed;
                         setupSchedulebutton.Visibility = System.Windows.Visibility.Collapsed;
                         titleSearchButton.Visibility = System.Windows.Visibility.Collapsed;
+
+                        deleteButton.Visibility = System.Windows.Visibility.Collapsed;
+                        undeleteButton.Visibility = System.Windows.Visibility.Collapsed;
                     }
 
                     HasLoaded = true;
@@ -428,24 +445,30 @@ namespace MythMe
 
         private void callQueueJob(string jobTypeNum)
         {
-            string query = "INSERT INTO `jobqueue` SET `chanid` = " + App.ViewModel.SelectedRecordedProgram.chanid;
-            query += ", starttime = \"" + App.ViewModel.SelectedRecordedProgram.recstartts.Replace("T", " ");
-            query += "\", inserttime = \"" + DateTime.Now.ToString("s").Replace("T", " ");
-            query += "\", hostname = \"";
-            query += "\", args = \"";
-            query += "\", status = \"1";
-            query += "\", statustime = \"" + DateTime.Now.ToString("s").Replace("T", " ");
-            query += "\", schedruntime = \"" + DateTime.Now.ToString("s").Replace("T", " ");
-            query += "\", comment = \"Queued by MythMe app";
-            query += "\", flags = \"0";
-            query += "\", type = " + jobTypeNum;
-            query += ";";
+            try
+            {
+                string query = "INSERT INTO `jobqueue` SET `chanid` = " + App.ViewModel.SelectedRecordedProgram.chanid;
+                query += ", starttime = \"" + App.ViewModel.SelectedRecordedProgram.recstartts.Replace("T", " ");
+                query += "\", inserttime = \"" + DateTime.Now.ToString("s").Replace("T", " ");
+                query += "\", hostname = \"";
+                query += "\", args = \"";
+                query += "\", status = \"1";
+                query += "\", statustime = \"" + DateTime.Now.ToString("s").Replace("T", " ");
+                query += "\", schedruntime = \"" + DateTime.Now.ToString("s").Replace("T", " ");
+                query += "\", comment = \"Queued by MythMe app";
+                query += "\", flags = \"0";
+                query += "\", type = " + jobTypeNum;
+                query += ";";
 
 
-            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQL&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + randText()));
-            webRequest.BeginGetResponse(new AsyncCallback(QueueJobCallback), webRequest);
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQL&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + randText()));
+                webRequest.BeginGetResponse(new AsyncCallback(QueueJobCallback), webRequest);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error queuing a new job: " + ex.ToString());
+            }
         }
-
         private void QueueJobCallback(IAsyncResult asynchronousResult)
         {
 
@@ -496,6 +519,58 @@ namespace MythMe
 
             NavigationService.Navigate(new Uri("/SetupSchedule.xaml?Source=recorded", UriKind.Relative));
 
+        }
+
+        private void deleteButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            string datestring = App.ViewModel.SelectedRecordedProgram.recstartts.Replace("T", "").Replace(":", "").Replace(":", "").Replace("-", "").Replace("-", "");
+
+            string command = "DELETE_RECORDING " + App.ViewModel.SelectedRecordedProgram.chanid + " " + datestring;
+
+
+            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=backendCommand&command64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(command)) + "&rand=" + randText()));
+            webRequest.BeginGetResponse(new AsyncCallback(DeleteCallback), webRequest);
+        }
+
+        private void DeleteCallback(IAsyncResult asynchronousResult)
+        {
+
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+            {
+                MessageBox.Show("Successfully deleted.");
+            });
+
+        }
+
+        private void undeleteButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
+            try
+            {
+                string query = "UPDATE `recorded` SET `recgroup` = 'Default' WHERE `chanid` = ";
+                query += App.ViewModel.SelectedRecordedProgram.chanid;
+                query += " AND `starttime` = '";    //starttime here is actual recstartts
+                query += App.ViewModel.SelectedRecordedProgram.recstartts.Replace("T"," ");
+                query += "' LIMIT 1; ";
+
+
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQL&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + randText()));
+                webRequest.BeginGetResponse(new AsyncCallback(UndeleteCallback), webRequest);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error queuing a new job: " + ex.ToString());
+            }
+        }
+        private void UndeleteCallback(IAsyncResult asynchronousResult)
+        {
+
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+            {
+                MessageBox.Show("Successfully undeleted.");
+            });
+
+            this.GetJobs();
         }
     }
 }

@@ -55,7 +55,7 @@ namespace MythMe
                 performanceProgressBarCustomized.IsIndeterminate = false;
             }
 
-            //NavigationContext.QueryString.Clear();
+            NavigationContext.QueryString.Clear();
         }
 
 
@@ -214,6 +214,9 @@ namespace MythMe
                             Programs[i].showChanicon = System.Windows.Visibility.Visible;
                         else
                             Programs[i].showChanicon = System.Windows.Visibility.Collapsed;
+
+                        if ((Programs[i].subtitle == null) || (Programs[i].subtitle == ""))
+                            Programs[i].subtitle = ".";
                     }
 
                     this.GetTotalVideos();
@@ -280,7 +283,7 @@ namespace MythMe
             {
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
-                    MessageBox.Show("Failed to get details data: " + ex.ToString(), "Error", MessageBoxButton.OK);
+                    MessageBox.Show("Failed to get videos data: " + ex.ToString(), "Error", MessageBoxButton.OK);
                 });
 
                 return;
@@ -311,7 +314,8 @@ namespace MythMe
                     for (int i = 0; i < TotalVideos.Count; i++)
                     {
 
-                        TotalVideos[i].coverart = "http://" + App.ViewModel.appSettings.WebserverHostSetting + "/mythweb/pl/coverart/" + TotalVideos[i].coverfile;
+                        if ((App.ViewModel.appSettings.VideoListImagesSetting))
+                            TotalVideos[i].coverart = "http://" + App.ViewModel.appSettings.WebserverHostSetting + "/mythweb/pl/coverart/" + TotalVideos[i].coverfile;
 
                         if (App.ViewModel.appSettings.VideoListImagesSetting)
                             TotalVideos[i].showCoverartList = System.Windows.Visibility.Visible;

@@ -17,6 +17,7 @@ using System.Threading;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using Microsoft.Phone.Controls;
+using System.Windows.Media.Imaging;
 
 namespace MythMe
 {
@@ -594,6 +595,81 @@ namespace MythMe
             worker.RunWorkerCompleted += (s, e) => myMethod.Invoke();
 
             worker.RunWorkerAsync();
+        }
+
+        private void guideButton_Click(object sender, RoutedEventArgs e)
+        {
+            SendKey("s");
+        }
+
+        private void inputButton_Click(object sender, RoutedEventArgs e)
+        {
+            SendKey("y");
+        }
+
+        private void zoomButton_Click(object sender, RoutedEventArgs e)
+        {
+            SendKey("w");
+        }
+
+        private void num1button_Click(object sender, RoutedEventArgs e)
+        {
+            SendKey("1");
+        }
+
+        private void num2button_Click(object sender, RoutedEventArgs e)
+        {
+            SendKey("2");
+        }
+
+        private void num3button_Click(object sender, RoutedEventArgs e)
+        {
+            SendKey("3");
+        }
+
+        private void num4button_Click(object sender, RoutedEventArgs e)
+        {
+            SendKey("4");
+        }
+
+        private void num5button_Click(object sender, RoutedEventArgs e)
+        {
+            SendKey("5");
+        }
+
+        private void num6button_Click(object sender, RoutedEventArgs e)
+        {
+            SendKey("6");
+        }
+
+        private void num7button_Click(object sender, RoutedEventArgs e)
+        {
+            SendKey("7");
+        }
+
+        private void num8button_Click(object sender, RoutedEventArgs e)
+        {
+            SendKey("8");
+        }
+
+        private void num9button_Click(object sender, RoutedEventArgs e)
+        {
+            SendKey("9");
+        }
+
+        private void num0button_Click(object sender, RoutedEventArgs e)
+        {
+            SendKey("0");
+        }
+
+        private void screenshotButton_Click(object sender, RoutedEventArgs e)
+        {
+            string screenshotUrl = "http://"+currentFrontend.Address+":6547/MythFE/GetScreenShot?rand="+App.ViewModel.randText();	//Height=#&width=#
+
+            ImageSource screenshotsource = new BitmapImage(new Uri(screenshotUrl));
+
+            screenshot.Source = screenshotsource;
+		
         }
 
 

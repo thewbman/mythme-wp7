@@ -96,6 +96,28 @@
 
             </controls:PivotItem>
 
+            <controls:PivotItem x:Name="YearTitle" Header="year" Foreground="White">
+
+                <toolkit:LongListSelector x:Name="YearVideosLL"
+                     GroupHeaderTemplate="{StaticResource videoGroupHeader}"
+                     ItemTemplate="{StaticResource videoItemTemplate}" 
+                     GroupItemTemplate="{StaticResource videoItemHeader}"
+                     ShowListFooter="False" ShowListHeader="False" SelectionChanged="YearVideosLL_SelectionChanged">
+                </toolkit:LongListSelector>
+
+            </controls:PivotItem>
+
+            <controls:PivotItem x:Name="RecentTitle" Header="added" Foreground="White">
+
+                <toolkit:LongListSelector x:Name="RecentVideosLL"
+                     GroupHeaderTemplate="{StaticResource videoGroupHeader}"
+                     ItemTemplate="{StaticResource videoItemTemplate}" 
+                     GroupItemTemplate="{StaticResource videoItemHeader}"
+                     ShowListFooter="False" ShowListHeader="False" SelectionChanged="RecentVideosLL_SelectionChanged">
+                </toolkit:LongListSelector>
+
+            </controls:PivotItem>
+            
         </controls:Pivot>
     </Grid>
 

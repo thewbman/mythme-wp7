@@ -28,11 +28,9 @@ namespace MythMe
         {
             InitializeComponent();
 
-            DataContext = App.ViewModel.SelectedVideo;
-
             People = new List<PeopleViewModel>();
 
-            HasLoaded = false;
+            //HasLoaded = false;
 
             peopleList.ItemsSource = People;
         }
@@ -40,7 +38,7 @@ namespace MythMe
         
         private List<PeopleViewModel> People;
 
-        private bool HasLoaded;
+        private bool HasLoaded = false;
 
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -48,6 +46,12 @@ namespace MythMe
 
             try
             {
+
+                App.ViewModel.SelectedVideo.coverart = "http://" + App.ViewModel.appSettings.WebserverHostSetting + "/mythweb/pl/coverart/" + App.ViewModel.SelectedVideo.coverfile;
+
+                DataContext = App.ViewModel.SelectedVideo;
+
+
                 if (!HasLoaded)
                 {
 

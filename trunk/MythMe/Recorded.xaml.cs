@@ -46,6 +46,8 @@ namespace MythMe
         List<ProgramViewModel> DeletedRecorded = new List<ProgramViewModel>();
         List<ProgramViewModel> LiveTVRecorded = new List<ProgramViewModel>();
 
+        private bool HasLoaded = false;
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
 
@@ -54,12 +56,19 @@ namespace MythMe
                 MessageBox.Show("You need to enter a valid backend address in the preferences.");
                 NavigationService.GoBack();
             }
-            else if (App.ViewModel.Recorded.Count == 0) this.Perform(() => GetRecorded(), 50);
+            else if (App.ViewModel.Recorded.Count == 0) 
+            {
+                GetRecorded();
+            }
+            else if (!HasLoaded)
+            {
+
+                SortAndDisplay();
+
+            }
             else
             {
-                
-                this.Perform(() => SortAndDisplay(), 50);
-
+                //do nothing
             }
         }
 
@@ -534,6 +543,8 @@ namespace MythMe
             LiveTVTitle.Header = "livetv (" + LiveTVRecorded.Count + ")";
 
             performanceProgressBarCustomized.IsIndeterminate = false;
+
+            HasLoaded = true;
 
         }
 

@@ -43,6 +43,9 @@ namespace MythMe
         private List<VideoViewModel> RegularVideos = new List<VideoViewModel>();
         private List<VideoViewModel> SpecialsVideos = new List<VideoViewModel>();
         private List<VideoViewModel> TvVideos = new List<VideoViewModel>();
+        private List<VideoViewModel> YearVideos = new List<VideoViewModel>();
+
+        private List<VideoViewModel> RecentVideos = new List<VideoViewModel>();
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -70,11 +73,16 @@ namespace MythMe
             RegularTitle.Header = "regular";
             SpecialsTitle.Header = "specials";
             TvTitle.Header = "tv";
+            YearTitle.Header = "year";
+            RecentTitle.Header = "added";
 
             AllVideosLL.ItemsSource = null;
             RegularVideosLL.ItemsSource = null;
             SpecialsVideosLL.ItemsSource = null;
             TvVideosLL.ItemsSource = null;
+            YearVideosLL.ItemsSource = null;
+
+            RecentVideosLL.ItemsSource = null;
 
             TotalVideos.Clear();
 
@@ -157,7 +165,9 @@ namespace MythMe
                     for (int i = 0; i < TotalVideos.Count; i++)
                     {
 
-                        TotalVideos[i].coverart = "http://" + App.ViewModel.appSettings.WebserverHostSetting + "/mythweb/pl/coverart/" + TotalVideos[i].coverfile;
+                        if ((App.ViewModel.appSettings.VideoListImagesSetting))
+                            TotalVideos[i].coverart = "http://" + App.ViewModel.appSettings.WebserverHostSetting + "/mythweb/pl/coverart/" + TotalVideos[i].coverfile;
+
 
                         if (App.ViewModel.appSettings.VideoListImagesSetting)
                             TotalVideos[i].showCoverartList = System.Windows.Visibility.Visible;
@@ -355,6 +365,9 @@ namespace MythMe
             RegularVideos.Clear();
             SpecialsVideos.Clear();
             TvVideos.Clear();
+            YearVideos.Clear();
+
+            RecentVideos.Clear();
 
             var y = TotalVideos.OrderBy(x => x.fullEpisode);
 
@@ -380,6 +393,10 @@ namespace MythMe
                     TvVideos.Add(item);
                 }
 
+                YearVideos.Add(item);
+
+                RecentVideos.Add(item);
+
             }
 
 
@@ -387,6 +404,9 @@ namespace MythMe
             var b = RegularVideos.OrderBy(x => x.title).ToArray();
             var d = SpecialsVideos.OrderBy(x => x.title).ToArray();
             var e = TvVideos.OrderBy(x => x.title).ToArray();
+            var f = YearVideos.OrderBy(x => x.year).ToArray();
+
+            var g = RecentVideos.OrderByDescending(x => x.insertdate).ToArray();
 
 
             var GroupedAll = from t in a
@@ -409,18 +429,35 @@ namespace MythMe
                                           group t by t.title into c
                                           //orderby c.Key
                             select new Group<VideoViewModel>(c.Key, c);
+            var GroupedYear = from t in f
+                            //group t by t.starttime.Substring(0, 10) into c
+                            group t by t.year into c
+                            //orderby c.Key
+                            select new Group<VideoViewModel>(c.Key, c);
+
+            var GroupedRecent = from t in g
+                            //group t by t.starttime.Substring(0, 10) into c
+                            group t by t.insertdate.Substring(0,10) into c
+                            //orderby c.Key
+                            select new Group<VideoViewModel>(c.Key, c);
 
 
             AllVideosLL.ItemsSource = GroupedAll;
             RegularVideosLL.ItemsSource = GroupedRegular;
             SpecialsVideosLL.ItemsSource = GroupedSpecials;
             TvVideosLL.ItemsSource = GroupedTv;
+            YearVideosLL.ItemsSource = GroupedYear;
+
+            RecentVideosLL.ItemsSource = GroupedRecent;
 
 
             AllTitle.Header = "all (" + AllVideos.Count + ")";
             RegularTitle.Header = "regular (" + RegularVideos.Count + ")";
             SpecialsTitle.Header = "specials (" + SpecialsVideos.Count + ")";
             TvTitle.Header = "tv (" + TvVideos.Count + ")";
+            YearTitle.Header = "year";
+
+            RecentTitle.Header = "added";
 
             performanceProgressBarCustomized.IsIndeterminate = false;
 
@@ -543,6 +580,23 @@ namespace MythMe
             NavigationService.Navigate(new Uri("/VideoDetails.xaml", UriKind.Relative));
 
             TvVideosLL.SelectedItem = null;
+        }
+
+        private void RecentVideosLL_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (RecentVideosLL.SelectedItem == null)
+                return;
+
+            App.ViewModel.SelectedVideo = (VideoViewModel)RecentVideosLL.SelectedItem;
+
+            NavigationService.Navigate(new Uri("/VideoDetails.xaml", UriKind.Relative));
+
+            RecentVideosLL.SelectedItem = null;
+        }
+
+        private void YearVideosLL_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

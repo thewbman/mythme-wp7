@@ -55,6 +55,8 @@ namespace MythMe
         ObservableCollection<ProgramViewModel> OverridesUpcoming = new ObservableCollection<ProgramViewModel>();
         ObservableCollection<ProgramViewModel> UpcomingUpcoming = new ObservableCollection<ProgramViewModel>();
 
+        private bool HasLoaded = false;
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             
@@ -68,12 +70,19 @@ namespace MythMe
             else
             {
 
-                if (App.ViewModel.Upcoming.Count == 0) this.Perform(() => GetUpcoming(), 50);
-                else
+                if (App.ViewModel.Upcoming.Count == 0)
+                {
+                    GetUpcoming();
+                }
+                else if (!HasLoaded)
                 {
 
-                    this.Perform(() => SortAndDisplay(""), 50);
+                    SortAndDisplay("");
 
+                }
+                else
+                {
+                    //do nothing
                 }
             }
 
@@ -2027,6 +2036,8 @@ namespace MythMe
             if ((inConflicting == "1") || (ConflictingUpcoming.Count > 0)) BannerMessage("There are conflicting scheduled recordings");
 
             performanceProgressBarCustomized.IsIndeterminate = false;
+
+            HasLoaded = true;
             
         }
 

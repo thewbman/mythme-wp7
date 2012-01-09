@@ -140,6 +140,8 @@
                         -->
                         <Button x:Name="playButton" Content="play on frontend"  Tap="playButton_Tap" Foreground="White" BorderBrush="White"/>
                         <Button x:Name="downloadButton" Content="download to phone"  Tap="downloadButton_Tap" Foreground="White" BorderBrush="White"/>
+                        <Button x:Name="deleteButton" Content="delete" Tap="deleteButton_Tap" Foreground="White" BorderBrush="White"/>
+                        <Button x:Name="undeleteButton" Content="undelete" Tap="undeleteButton_Tap" Foreground="White" BorderBrush="White" Visibility="Collapsed"/>
                         <Button x:Name="mythwebButton" Content="mythweb"  Tap="mythwebButton_Tap" Foreground="White" BorderBrush="White"/>
                         <Button x:Name="setupSchedulebutton" Content="setup schedule"  Tap="setupSchedulebutton_Tap" Foreground="White" BorderBrush="White" />
                         <Button x:Name="guidebutton" Content="program guide"  Tap="guideButton_Tap" Foreground="White" BorderBrush="White" />

@@ -60,7 +60,23 @@ namespace MythMe
                 titleSearchButton.Visibility = System.Windows.Visibility.Collapsed;
             }
 
-            this.Perform(() => GetDetails(), 50);
+
+            if (DateTime.Parse(App.ViewModel.SelectedGuideProgram.endtime) < DateTime.Now)
+            {
+                timetext.Text = "In the past";
+            }
+            else if (DateTime.Parse(App.ViewModel.SelectedGuideProgram.starttime) > DateTime.Now)
+            {
+                timetext.Text = "In the future";
+            }
+            else
+            {
+                timetext.Text = "";
+            }
+
+
+
+            GetDetails();
         }
 
         private void GetDetails()

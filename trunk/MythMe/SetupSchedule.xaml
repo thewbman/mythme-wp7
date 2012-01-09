@@ -97,8 +97,8 @@
                 <ScrollViewer>
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="priority" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" Width="320" />
-                            <TextBox x:Name="recpriority" InputScope="Number" Width="100" HorizontalAlignment="Left" />
+                            <TextBlock Text="priority" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" Width="300" />
+                            <TextBox x:Name="recpriority" InputScope="Number" Width="110" HorizontalAlignment="Left" />
                         </StackPanel>
                         <TextBlock Text="preferred input" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
                         <!-- -->
@@ -109,14 +109,14 @@
                         <toolkit:ToggleSwitch x:Name="maxnewest" Content="record new, expire old" Margin="0,-10,0,-20" Foreground="Silver" />
 
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="max episodes" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" Width="320" />
-                            <TextBox x:Name="maxepisodes" InputScope="Number" Width="100" HorizontalAlignment="Left" />
+                            <TextBlock Text="max episodes" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" Width="300" />
+                            <TextBox x:Name="maxepisodes" InputScope="Number" Width="110" HorizontalAlignment="Left" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="start early" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" Width="100" />
-                                <TextBox x:Name="startoffset" InputScope="Number" Width="100" HorizontalAlignment="Left" />
-                                <TextBlock Text="end late" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" Width="100" />
-                                <TextBox x:Name="endoffset" InputScope="Number" Width="100" HorizontalAlignment="Left" />
+                            <TextBlock Text="start early" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" Width="100" Margin="0,0,0,0" />
+                                <TextBox x:Name="startoffset" InputScope="Number" Width="110" HorizontalAlignment="Left" />
+                            <TextBlock Text="end late" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" Width="80" Margin="20,0,15,0" />
+                                <TextBox x:Name="endoffset" InputScope="Number" Width="110" HorizontalAlignment="Left" />
                             
                         </StackPanel>
 

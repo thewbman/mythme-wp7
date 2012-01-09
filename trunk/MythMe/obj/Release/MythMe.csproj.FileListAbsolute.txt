@@ -30,3 +30,11 @@ C:\Users\wes\SVN\MythMe\MythMe\obj\Release\MythMe.dll
 C:\Users\wes\SVN\MythMe\MythMe\obj\Release\MythMe.pdb
 C:\Users\wes\SVN\MythMe\MythMe\obj\Release\XapCacheFile.xml
 C:\Users\wes\SVN\MythMe\MythMe\obj\Release\Downloads.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Release\Log.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Release\People.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Release\PeopleProgramDetails.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Release\Search.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Release\SearchProgramDetails.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Release\SetupSchedule.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Release\VideoDetails.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Release\Videos.g.i.cs
