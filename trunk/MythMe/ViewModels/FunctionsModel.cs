@@ -136,6 +136,9 @@ namespace MythMe
 
             switch (inProto)
             {
+                case 71:
+                    response = "MYTH_PROTO_VERSION 71 05e82186";
+                    break;
                 case 70:
                     response = "MYTH_PROTO_VERSION 70 53153836";
                     break;
