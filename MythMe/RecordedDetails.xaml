@@ -16,7 +16,10 @@
     shell:SystemTray.IsVisible="False">
 
     <Grid x:Name="LayoutRoot" Background="#3e000c">
-        <controls:Panorama Name="topPanorama" Title="recorded" Foreground="White">
+        <controls:Panorama Name="topPanorama" Title="recorded" Foreground="White" >
+            <controls:Panorama.Background>
+                <ImageBrush ImageSource="Images/3e000c.png"/>
+            </controls:Panorama.Background>
 
             <controls:PanoramaItem Header="program" Foreground="White">
                 <ScrollViewer>
@@ -34,9 +37,9 @@
                 <ScrollViewer>
                     <StackPanel>
                         <TextBlock Text="start time" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
-                        <TextBlock Text="{Binding starttime}" Foreground="White" />
+                        <TextBlock Text="{Binding starttimespace}" Foreground="White" />
                         <TextBlock Text="end time" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
-                        <TextBlock Text="{Binding endtime}" Foreground="White" />
+                        <TextBlock Text="{Binding endtimespace}" Foreground="White" />
                         <TextBlock Text="series id" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
                         <TextBlock Text="{Binding seriesid}" Foreground="White" />
                         <TextBlock Text="program id" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
@@ -77,6 +80,19 @@
                 </ScrollViewer>
             </controls:PanoramaItem>
 
+            <controls:PanoramaItem Header="images" x:Name="imagesPivot" Foreground="White">
+                <ScrollViewer>
+                    <StackPanel>
+
+                        <Button x:Name="coverartButton" Content="cover art"  Tap="coverartButton_Tap" Foreground="White" BorderBrush="White"/>
+                        <Button x:Name="fanartButton" Content="fan art" Tap="fanartButton_Tap" Foreground="White" BorderBrush="White" />
+                        <Button x:Name="bannerButton" Content="banner"  Tap="bannerButton_Tap" Foreground="White" BorderBrush="White" />
+                        <Button x:Name="screenshotButton" Content="screenshot"  Tap="screenshotButton_Tap" Foreground="White" BorderBrush="White" />
+
+                    </StackPanel>
+                </ScrollViewer>
+            </controls:PanoramaItem>
+            
             <controls:PanoramaItem Header="people" x:Name="peoplePivot" Foreground="White" local:TiltEffect.IsTiltEnabled="True">
 
                 <ListBox x:Name="peopleList"  local:TiltEffect.IsTiltEnabled="True" SelectionChanged="peopleList_SelectionChanged" >

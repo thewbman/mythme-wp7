@@ -73,6 +73,19 @@
                 </ScrollViewer>
             </controls:PanoramaItem>
 
+            <controls:PanoramaItem Header="images" x:Name="imagesPivot" Foreground="White">
+                <ScrollViewer>
+                    <StackPanel>
+                        
+                        <Button x:Name="coverartButton" Content="cover art"  Tap="coverartButton_Tap" Foreground="White" BorderBrush="White"/>
+                        <Button x:Name="fanartButton" Content="fan art" Tap="fanartButton_Tap" Foreground="White" BorderBrush="White" />
+                        <Button x:Name="bannerButton" Content="banner"  Tap="bannerButton_Tap" Foreground="White" BorderBrush="White" />
+                        <Button x:Name="screenshotButton" Content="screenshot"  Tap="screenshotButton_Tap" Foreground="White" BorderBrush="White" />
+
+                    </StackPanel>
+                </ScrollViewer>
+            </controls:PanoramaItem>
+
 
             <controls:PanoramaItem Header="people" x:Name="peoplePivot" Foreground="White" local:TiltEffect.IsTiltEnabled="True">
 

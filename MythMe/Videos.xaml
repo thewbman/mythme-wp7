@@ -28,7 +28,7 @@
 
         <DataTemplate x:Key="videoItemTemplate">
             <StackPanel Orientation="Horizontal" Height="150" >
-                <Image Width="80" MaxHeight="135" Source="{Binding coverart}" Margin="0,-15,0,0" Visibility="{Binding showCoverartList}"/>
+                <Image Width="80" MaxHeight="135" Source="{Binding smallcoverart}" Margin="0,-15,0,0" Visibility="{Binding showCoverartList}"/>
                 <StackPanel Margin="0,10,0,0" Height="Auto">
                     <TextBlock Text="{Binding title}" TextWrapping="NoWrap" Margin="2,-6,12,0" Style="{StaticResource PhoneTextNormalStyle}" FontSize="24" Foreground="White" />
                     <TextBlock Text="{Binding subtitle}" TextWrapping="NoWrap" Margin="6,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />

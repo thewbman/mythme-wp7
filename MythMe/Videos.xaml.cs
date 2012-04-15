@@ -47,6 +47,8 @@ namespace MythMe
 
         private List<VideoViewModel> RecentVideos = new List<VideoViewModel>();
 
+        private string getVideos25String = "http://{0}:{1}/Video/GetVideoList?random={2}";
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             videoPivot.SelectedIndex = App.ViewModel.appSettings.VideoIndexSetting;
@@ -88,20 +90,27 @@ namespace MythMe
 
             try
             {
+                if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
+                {
+                    HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(String.Format(getVideos25String, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting, App.ViewModel.randText())));
+                    webRequest.BeginGetResponse(new AsyncCallback(Videos25TimeCallback), webRequest);
+                }
+                else
+                {
+                    string prequery = "SET character_set_results = 'ascii';";
 
-                string prequery = "SET character_set_results = 'ascii';";
-
-                string query = "SELECT videometadata.intid, videometadata.title, videometadata.subtitle, videometadata.plot, videometadata.releasedate, ";
-                query += " videometadata.homepage, videometadata.director, videometadata.year, videometadata.rating, videometadata.length, ";	//asdf
-                query += " videometadata.hash, videometadata.host, videometadata.insertdate, videometadata.inetref, ";	//asdf
-                query += " videocategory.category, videometadata.coverfile, videometadata.season, videometadata.episode, videometadata.filename ";
-                query += " FROM videometadata ";
-                query += " LEFT OUTER JOIN videocategory ON videocategory.intid = videometadata.category ";
+                    string query = "SELECT videometadata.intid, videometadata.title, videometadata.subtitle, videometadata.plot, videometadata.releasedate, ";
+                    query += " videometadata.homepage, videometadata.director, videometadata.year, videometadata.rating, videometadata.length, ";	//asdf
+                    query += " videometadata.hash, videometadata.host, videometadata.insertdate, videometadata.inetref, ";	//asdf
+                    query += " videocategory.category, videometadata.coverfile, videometadata.season, videometadata.episode, videometadata.filename ";
+                    query += " FROM videometadata ";
+                    query += " LEFT OUTER JOIN videocategory ON videocategory.intid = videometadata.category ";
 
 
-                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponsePre&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&prequery64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(prequery)) + "&rand=" + App.ViewModel.randText()));
-                //HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponse64&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + App.ViewModel.randText()));
-                webRequest.BeginGetResponse(new AsyncCallback(VideosCallback), webRequest);
+                    HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponsePre&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&prequery64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(prequery)) + "&rand=" + App.ViewModel.randText()));
+                    //HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponse64&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + App.ViewModel.randText()));
+                    webRequest.BeginGetResponse(new AsyncCallback(VideosCallback), webRequest);
+                }
 
             }
             catch(Exception ex)
@@ -109,6 +118,124 @@ namespace MythMe
                 MessageBox.Show("Error trying to get videos: " + ex.ToString());
             }
 
+        }
+        private void Videos25TimeCallback(IAsyncResult asynchronousResult)
+        {
+
+            string resultString;
+
+            HttpWebRequest request = (HttpWebRequest)asynchronousResult.AsyncState;
+
+            HttpWebResponse response;
+
+            try
+            {
+                response = (HttpWebResponse)request.EndGetResponse(asynchronousResult);
+            }
+            catch (Exception ex)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("Failed to get videos data: " + ex.ToString(), "Error", MessageBoxButton.OK);
+                    NavigationService.GoBack();
+                });
+
+                return;
+            }
+
+            using (StreamReader streamReader1 = new StreamReader(response.GetResponseStream()))
+            {
+                resultString = streamReader1.ReadToEnd();
+            }
+
+            response.GetResponseStream().Close();
+            response.Close();
+
+            XDocument xdoc = XDocument.Parse(resultString, LoadOptions.None);
+
+
+            foreach (XElement singleVideoElement in xdoc.Element("VideoMetadataInfoList").Element("VideoMetadataInfos").Elements("VideoMetadataInfo"))
+            {
+                VideoViewModel singleVideo = new VideoViewModel() { };
+
+                if (singleVideoElement.Element("Id").FirstNode != null) singleVideo.intid = (string)singleVideoElement.Element("Id").Value;
+                if (singleVideoElement.Element("Title").FirstNode != null) singleVideo.title = (string)singleVideoElement.Element("Title").Value;
+                if (singleVideoElement.Element("SubTitle").FirstNode != null) singleVideo.subtitle = (string)singleVideoElement.Element("SubTitle").Value;
+                if (singleVideoElement.Element("Tagline").FirstNode != null) singleVideo.tagline = (string)singleVideoElement.Element("Tagline").Value;
+                if (singleVideoElement.Element("Director").FirstNode != null) singleVideo.director = (string)singleVideoElement.Element("Director").Value;
+                if (singleVideoElement.Element("Studio").FirstNode != null) singleVideo.studio = (string)singleVideoElement.Element("Studio").Value;
+                if (singleVideoElement.Element("Description").FirstNode != null) singleVideo.plot = (string)singleVideoElement.Element("Description").Value;
+                if (singleVideoElement.Element("Certification").FirstNode != null) singleVideo.category = (string)singleVideoElement.Element("Certification").Value;
+                if (singleVideoElement.Element("Inetref").FirstNode != null) singleVideo.inetref = (string)singleVideoElement.Element("Inetref").Value;
+
+                if (singleVideoElement.Element("HomePage").FirstNode != null) singleVideo.homepage = (string)singleVideoElement.Element("HomePage").Value;
+                if (singleVideoElement.Element("ReleaseDate").FirstNode != null) singleVideo.releasedate = singleVideoElement.Element("ReleaseDate").Value.ToString().Substring(0, 10);
+                if (singleVideoElement.Element("ReleaseDate").FirstNode != null) singleVideo.year = singleVideoElement.Element("ReleaseDate").Value.ToString().Substring(0,4);
+                if (singleVideoElement.Element("AddDate").FirstNode != null) singleVideo.insertdate = (string)singleVideoElement.Element("AddDate").Value;
+                if (singleVideoElement.Element("Length").FirstNode != null) singleVideo.length = (string)singleVideoElement.Element("Length").Value;
+                if (singleVideoElement.Element("Season").FirstNode != null) singleVideo.season = int.Parse(singleVideoElement.Element("Season").Value);
+                if (singleVideoElement.Element("Episode").FirstNode != null) singleVideo.episode = int.Parse(singleVideoElement.Element("Episode").Value);
+                if (singleVideoElement.Element("ContentType").FirstNode != null) singleVideo.contenttype = (string)singleVideoElement.Element("ContentType").Value;
+
+                if (singleVideoElement.Element("FileName").FirstNode != null) singleVideo.filename = (string)singleVideoElement.Element("FileName").Value;
+                if (singleVideoElement.Element("HostName").FirstNode != null) singleVideo.host = (string)singleVideoElement.Element("HostName").Value;
+
+
+                if (singleVideoElement.Element("Artwork").Element("ArtworkInfos").FirstNode != null)
+                {
+                    foreach (var singleArtworkInfoElement in singleVideoElement.Element("Artwork").Element("ArtworkInfos").Elements("ArtworkInfo"))
+                    {
+                        string arturlbase = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/";
+                        string arturlend = "";
+                        //string arturlend = "&Height=800&Width=1024";
+
+                        switch (singleArtworkInfoElement.Element("Type").FirstNode.ToString())
+                        {
+                            case "coverart":
+                                singleVideo.smallcoverart = arturlbase + singleArtworkInfoElement.Element("URL").FirstNode.ToString() + "&Height=160";
+                                singleVideo.coverart = arturlbase + singleArtworkInfoElement.Element("URL").FirstNode.ToString() + arturlend;
+                                break;
+                            case "fanart":
+                                singleVideo.fanart = arturlbase + singleArtworkInfoElement.Element("URL").FirstNode.ToString() + arturlend;
+                                break;
+                            case "banner":
+                                singleVideo.banner = arturlbase + singleArtworkInfoElement.Element("URL").FirstNode.ToString() + arturlend;
+                                break;
+                            case "screenshot":
+                                singleVideo.screenshot = arturlbase + singleArtworkInfoElement.Element("URL").FirstNode.ToString() + arturlend;
+                                break;
+                            default:
+                                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                                {
+                                    //MessageBox.Show("Unknown Artwork: " + singleArtworkInfoElement.Element("Type").FirstNode.ToString());
+                                });
+                                break;
+                        }
+                    }
+                }
+
+
+                Deployment.Current.Dispatcher.BeginInvoke(() => { TotalVideos.Add(singleVideo); });
+            }
+
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+            {
+                this.CreateVideoFields();
+
+                //this.SortAndDisplay();
+            });
+
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("Failed to get videos data: " + ex.ToString(), "Error", MessageBoxButton.OK);
+                });
+            }
         }
         private void VideosCallback(IAsyncResult asynchronousResult)
         {
@@ -166,80 +293,18 @@ namespace MythMe
                     {
 
                         if ((App.ViewModel.appSettings.VideoListImagesSetting))
+                        {
                             TotalVideos[i].coverart = "http://" + App.ViewModel.appSettings.WebserverHostSetting + "/mythweb/pl/coverart/" + TotalVideos[i].coverfile;
-
-
-                        if (App.ViewModel.appSettings.VideoListImagesSetting)
-                            TotalVideos[i].showCoverartList = System.Windows.Visibility.Visible;
-                        else
-                            TotalVideos[i].showCoverartList = System.Windows.Visibility.Collapsed;
-
-
-                        if (App.ViewModel.appSettings.VideoDetailsImageSetting)
-                            TotalVideos[i].showCoverartDetails = System.Windows.Visibility.Visible;
-                        else
-                            TotalVideos[i].showCoverartDetails = System.Windows.Visibility.Collapsed;
-
-
-                        TotalVideos[i].alpha = App.ViewModel.functions.FirstChar(TotalVideos[i].title);
-
-
-                        if (TotalVideos[i].season == 0)
-                        {
-                            if (TotalVideos[i].episode == 0)
-                            {
-                                TotalVideos[i].fullEpisode = "N/A";
-                                TotalVideos[i].seasonText = "None";
-                                TotalVideos[i].episodeText = "None";
-                                TotalVideos[i].group = "Regular";
-                            }
-                            else if (TotalVideos[i].episode < 10)
-                            {
-                                TotalVideos[i].fullEpisode = "Special0" + TotalVideos[i].episode.ToString();
-                                TotalVideos[i].seasonText = "Specials";
-                                TotalVideos[i].episodeText = TotalVideos[i].episode.ToString();
-                                TotalVideos[i].group = "Specials";
-                            }
-                            else
-                            {
-                                TotalVideos[i].fullEpisode = "Special" + TotalVideos[i].episode.ToString();
-                                TotalVideos[i].seasonText = "Specials";
-                                TotalVideos[i].episodeText = TotalVideos[i].episode.ToString();
-                                TotalVideos[i].group = "Specails";
-                            }
-
+                            TotalVideos[i].smallcoverart = "http://" + App.ViewModel.appSettings.WebserverHostSetting + "/mythweb/pl/coverart/" + TotalVideos[i].coverfile;
                         }
-                        else
-                        {
-                            if (TotalVideos[i].season < 10)
-                            {
-                                TotalVideos[i].fullEpisode = "S0" + TotalVideos[i].season.ToString();
-                                TotalVideos[i].seasonText = "Season  " + TotalVideos[i].season.ToString();
-                            }
-                            else
-                            {
-                                TotalVideos[i].fullEpisode = "S" + TotalVideos[i].season.ToString();
-                                TotalVideos[i].seasonText = "Season " + TotalVideos[i].season.ToString();
-                            }
 
-                            if (TotalVideos[i].episode < 10)
-                            {
-                                TotalVideos[i].fullEpisode += "E0" + TotalVideos[i].episode.ToString();
-                                TotalVideos[i].episodeText = "Episode  " + TotalVideos[i].episode.ToString();
-                            }
-                            else
-                            {
-                                TotalVideos[i].fullEpisode += "E" + TotalVideos[i].episode.ToString();
-                                TotalVideos[i].episodeText = "Episode " + TotalVideos[i].episode.ToString();
-                            }
 
-                            TotalVideos[i].group = "TV";
-                        }
+                        
 
                     }
 
                     //this.SortAndDisplay();
-                    this.GetStoragegroups();
+                    this.CreateVideoFields();
 
                 });
 
@@ -254,6 +319,90 @@ namespace MythMe
                 });
             }
 
+        }
+
+        private void CreateVideoFields()
+        {
+            for (int i = 0; i < TotalVideos.Count; i++)
+            {
+
+                if (App.ViewModel.appSettings.VideoListImagesSetting)
+                    TotalVideos[i].showCoverartList = System.Windows.Visibility.Visible;
+                else
+                    TotalVideos[i].showCoverartList = System.Windows.Visibility.Collapsed;
+
+
+                if (App.ViewModel.appSettings.VideoDetailsImageSetting)
+                    TotalVideos[i].showCoverartDetails = System.Windows.Visibility.Visible;
+                else
+                    TotalVideos[i].showCoverartDetails = System.Windows.Visibility.Collapsed;
+
+
+                TotalVideos[i].alpha = App.ViewModel.functions.FirstChar(TotalVideos[i].title);
+
+
+                if (TotalVideos[i].season == 0)
+                {
+                    if (TotalVideos[i].episode == 0)
+                    {
+                        TotalVideos[i].fullEpisode = "N/A";
+                        TotalVideos[i].seasonText = "None";
+                        TotalVideos[i].episodeText = "None";
+                        TotalVideos[i].group = "Regular";
+                    }
+                    else if (TotalVideos[i].episode < 10)
+                    {
+                        TotalVideos[i].fullEpisode = "Special0" + TotalVideos[i].episode.ToString();
+                        TotalVideos[i].seasonText = "Specials";
+                        TotalVideos[i].episodeText = TotalVideos[i].episode.ToString();
+                        TotalVideos[i].group = "Specials";
+                    }
+                    else
+                    {
+                        TotalVideos[i].fullEpisode = "Special" + TotalVideos[i].episode.ToString();
+                        TotalVideos[i].seasonText = "Specials";
+                        TotalVideos[i].episodeText = TotalVideos[i].episode.ToString();
+                        TotalVideos[i].group = "Specials";
+                    }
+
+                }
+                else
+                {
+                    if (TotalVideos[i].season < 10)
+                    {
+                        TotalVideos[i].fullEpisode = "S0" + TotalVideos[i].season.ToString();
+                        TotalVideos[i].seasonText = "Season  " + TotalVideos[i].season.ToString();
+                    }
+                    else
+                    {
+                        TotalVideos[i].fullEpisode = "S" + TotalVideos[i].season.ToString();
+                        TotalVideos[i].seasonText = "Season " + TotalVideos[i].season.ToString();
+                    }
+
+                    if (TotalVideos[i].episode < 10)
+                    {
+                        TotalVideos[i].fullEpisode += "E0" + TotalVideos[i].episode.ToString();
+                        TotalVideos[i].episodeText = "Episode  " + TotalVideos[i].episode.ToString();
+                    }
+                    else
+                    {
+                        TotalVideos[i].fullEpisode += "E" + TotalVideos[i].episode.ToString();
+                        TotalVideos[i].episodeText = "Episode " + TotalVideos[i].episode.ToString();
+                    }
+
+                    TotalVideos[i].group = "TV";
+                }
+
+            }
+
+            if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
+            {
+                this.SortAndDisplay();
+            }
+            else
+            {
+                this.GetStoragegroups();
+            }
         }
 
         private void GetStoragegroups()
@@ -596,7 +745,14 @@ namespace MythMe
 
         private void YearVideosLL_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (YearVideosLL.SelectedItem == null)
+                return;
 
+            App.ViewModel.SelectedVideo = (VideoViewModel)YearVideosLL.SelectedItem;
+
+            NavigationService.Navigate(new Uri("/VideoDetails.xaml", UriKind.Relative));
+
+            YearVideosLL.SelectedItem = null;
         }
     }
 }

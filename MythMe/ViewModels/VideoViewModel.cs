@@ -40,7 +40,16 @@ namespace MythMe
         public string type { get; set; }
 
 
+        public string tagline { get; set; }
+        public string studio { get; set; }
+        public string certification { get; set; }
+        public string contenttype { get; set; }
+
+        public string smallcoverart { get; set; }
         public string coverart { get; set; }
+        public string fanart { get; set; }
+        public string banner { get; set; }
+        public string screenshot { get; set; }
         public string seasonText { get; set; }
         public string episodeText { get; set; }
         public string fullEpisode { get; set; }

@@ -42,7 +42,7 @@ namespace MythMe
             //ChannelGuideListBox.ItemsSource = ChannelPrograms;
         }
 
-        private string getGuide25String = "http://{0}:{1}/Guide/GetProgramGuide?StartTime={2}&EndTime={3}&NumOfChannels={4}&StartChanId={5}&random={6}";
+        private string getGuide25String = "http://{0}:{1}/Guide/GetProgramGuide?StartTime={2}&EndTime={3}&NumChannels={4}&StartChanId={5}&random={6}";
         private string getGuideString = "http://{0}:{1}/Myth/GetProgramGuide?StartTime={2}&EndTime={3}&NumOfChannels={4}&StartChanId={5}&random={6}";
 
         private string externalTime;
@@ -53,6 +53,7 @@ namespace MythMe
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+
             string SelectedTime;
 
             if (App.ViewModel.appSettings.MasterBackendIpSetting == "")
@@ -104,7 +105,11 @@ namespace MythMe
 
             if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
             {
-                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(String.Format(getGuide25String, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting, App.ViewModel.randText())));
+                //0.25 uses UTC time
+                string newStartTime = DateTime.Parse(startTime).ToUniversalTime().ToString("s");
+                string newEndTime = DateTime.Parse(endTime).ToUniversalTime().ToString("s");
+
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(String.Format(getGuide25String, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting, newStartTime, newEndTime, numChannels, startChanid, App.ViewModel.randText())));
                 webRequest.BeginGetResponse(new AsyncCallback(Guide25NowCallback), webRequest);
             }
             else
@@ -123,7 +128,12 @@ namespace MythMe
 
             if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
             {
-                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(String.Format(getGuide25String, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting, App.ViewModel.randText())));
+
+                //0.25 uses UTC time
+                string newStartTime = DateTime.Parse(startTime).ToUniversalTime().ToString("s");
+                string newEndTime = DateTime.Parse(endTime).ToUniversalTime().ToString("s");
+
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(String.Format(getGuide25String, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting, newStartTime, newEndTime, numChannels, startChanid, App.ViewModel.randText())));
                 webRequest.BeginGetResponse(new AsyncCallback(Guide25TimeCallback), webRequest);
             }
             else
@@ -142,7 +152,12 @@ namespace MythMe
 
             if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
             {
-                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(String.Format(getGuide25String, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting, App.ViewModel.randText())));
+                //0.25 uses UTC time
+                string newStartTime = DateTime.Parse(startTime).ToUniversalTime().ToString("s");
+                string newEndTime = DateTime.Parse(endTime).ToUniversalTime().ToString("s");
+
+                
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(String.Format(getGuide25String, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting, newStartTime, newEndTime, numChannels, startChanid, App.ViewModel.randText())));
                 webRequest.BeginGetResponse(new AsyncCallback(Guide25ChannelCallback), webRequest);
             }
             else
@@ -186,9 +201,6 @@ namespace MythMe
             response.GetResponseStream().Close();
             response.Close();
 
-            try
-            {
-
                 XDocument xdoc = XDocument.Parse(resultString, LoadOptions.None);
 
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
@@ -200,7 +212,7 @@ namespace MythMe
 
                 });
 
-                foreach (XElement singleChannelElement in xdoc.Element("ProgramGuide").Element("Channels").Descendants("Channel"))
+                foreach (XElement singleChannelElement in xdoc.Element("ProgramGuide").Element("Channels").Descendants("ChannelInfo"))
                 {
                     ChannelViewModel singleChannel = new ChannelViewModel() { };
 
@@ -225,18 +237,28 @@ namespace MythMe
 
                         //singleProgram.programflags = (string)singleProgramElement.Attribute("programFlags").FirstNode.ToString();
                         if (singleProgramElement.Element("Category").FirstNode != null) singleProgram.category = (string)singleProgramElement.Element("Category").FirstNode.ToString();
-                        if (singleProgramElement.Element("FileSize").FirstNode != null) singleProgram.filesize = Int64.Parse((string)singleProgramElement.Element("FileSize").FirstNode.ToString());
-                        if (singleProgramElement.Element("SeriesId").FirstNode != null) singleProgram.seriesid = (string)singleProgramElement.Element("SeriesId").FirstNode.ToString();
-                        if (singleProgramElement.Element("Hostname").FirstNode != null) singleProgram.hostname = (string)singleProgramElement.Element("Hostname").FirstNode.ToString();
+                        //if (singleProgramElement.Element("FileSize").FirstNode != null) singleProgram.filesize = Int64.Parse((string)singleProgramElement.Element("FileSize").FirstNode.ToString());
+                        //if (singleProgramElement.Element("SeriesId").FirstNode != null) singleProgram.seriesid = (string)singleProgramElement.Element("SeriesId").FirstNode.ToString();
+                        //if (singleProgramElement.Element("HostName").FirstNode != null) singleProgram.hostname = (string)singleProgramElement.Element("HostName").FirstNode.ToString();
                         //singleProgram.cattype = (string)singleProgramElement.Element("CatType").FirstNode.ToString();
-                        if (singleProgramElement.Element("ProgramId").FirstNode != null) singleProgram.programid = (string)singleProgramElement.Element("ProgramId").FirstNode.ToString();
+                        //if (singleProgramElement.Element("ProgramId").FirstNode != null) singleProgram.programid = (string)singleProgramElement.Element("ProgramId").FirstNode.ToString();
                         //singleProgram.repeat = (string)singleProgramElement.Element("Repeat").FirstNode.ToString();
                         //singleProgram.stars = (string)singleProgramElement.Element("Stars").FirstNode.ToString();
-                        if (singleProgramElement.Element("EndTime").FirstNode != null) singleProgram.endtime = (string)singleProgramElement.Element("EndTime").FirstNode.ToString();
-                        if (singleProgramElement.Element("EndTime").FirstNode != null) singleProgram.endtimespace = (string)singleProgramElement.Element("EndTime").FirstNode.ToString().Replace("T", " ");
-                        if (singleProgramElement.Element("Airdate").FirstNode != null) singleProgram.airdate = (string)singleProgramElement.Element("Airdate").FirstNode.ToString();
-                        if (singleProgramElement.Element("StartTime").FirstNode != null) singleProgram.starttime = (string)singleProgramElement.Element("StartTime").FirstNode.ToString();
-                        if (singleProgramElement.Element("StartTime").FirstNode != null) singleProgram.starttimespace = (string)singleProgramElement.Element("StartTime").FirstNode.ToString().Replace("T", " ");
+                        if (singleProgramElement.Element("EndTime").FirstNode != null)
+                        {
+                            DateTime newEndTime = DateTime.Parse((string)singleProgramElement.Element("EndTime").FirstNode.ToString());
+
+                            singleProgram.endtime = newEndTime.ToLocalTime().ToString("s");
+                            singleProgram.endtimespace = newEndTime.ToLocalTime().ToString("s").Replace("T"," ");
+                        } 
+                        //if (singleProgramElement.Element("Airdate").FirstNode != null) singleProgram.airdate = (string)singleProgramElement.Element("Airdate").FirstNode.ToString();
+                        if (singleProgramElement.Element("StartTime").FirstNode != null)
+                        {
+                            DateTime newStartTime = DateTime.Parse((string)singleProgramElement.Element("StartTime").FirstNode.ToString());
+
+                            singleProgram.starttime = newStartTime.ToLocalTime().ToString("s");
+                            singleProgram.starttimespace = newStartTime.ToLocalTime().ToString("s").Replace("T", " ");
+                        }
                         //singleProgram.lastmodified = (string)singleProgramElement.Element("lastModified").FirstNode.ToString();
 
 
@@ -254,10 +276,10 @@ namespace MythMe
                             if (singleProgramElement.Element("Recording").Element("Priority").FirstNode != null) singleProgram.recpriority = int.Parse((string)singleProgramElement.Element("Recording").Element("Priority").Value);
                             if (singleProgramElement.Element("Recording").Element("Status").FirstNode != null) singleProgram.recstatus = int.Parse((string)singleProgramElement.Element("Recording").Element("Status").Value);
                             //singleProgram.recstatustext = App.ViewModel.functions.RecStatusDecode(singleProgram.recstatus);
-                            if (singleProgramElement.Element("Recording").Element("RecGroup").FirstNode != null) singleProgram.recgroup = (string)singleProgramElement.Element("Recording").Element("RecGroup").Value;
-                            if (singleProgramElement.Element("Recording").Element("StartTs").FirstNode != null) singleProgram.recstartts = (string)singleProgramElement.Element("Recording").Element("StartTs").Value;
-                            if (singleProgramElement.Element("Recording").Element("EndTs").FirstNode != null) singleProgram.recendts = (string)singleProgramElement.Element("Recording").Element("EndTs").Value;
-                            if (singleProgramElement.Element("Recording").Element("RecordId").FirstNode != null) singleProgram.recordid = int.Parse((string)singleProgramElement.Element("Recording").Element("RecordId").Value);
+                            //if (singleProgramElement.Element("Recording").Element("RecGroup").FirstNode != null) singleProgram.recgroup = (string)singleProgramElement.Element("Recording").Element("RecGroup").Value;
+                            //if (singleProgramElement.Element("Recording").Element("StartTs").FirstNode != null) singleProgram.recstartts = (string)singleProgramElement.Element("Recording").Element("StartTs").Value;
+                            //if (singleProgramElement.Element("Recording").Element("EndTs").FirstNode != null) singleProgram.recendts = (string)singleProgramElement.Element("Recording").Element("EndTs").Value;
+                            //if (singleProgramElement.Element("Recording").Element("RecordId").FirstNode != null) singleProgram.recordid = int.Parse((string)singleProgramElement.Element("Recording").Element("RecordId").Value);
 
                         }
                         else
@@ -271,7 +293,7 @@ namespace MythMe
                         //singleProgram.description = (string)singleProgramElement.FirstNode.ToString();
                         
                         
-                        singleProgram.chanicon = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Myth/GetChannelIcon?ChanId=" + singleProgram.chanid;
+                        singleProgram.chanicon = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Guide/GetChannelIcon?ChanId=" + singleProgram.chanid;
 
                         
 
@@ -294,6 +316,9 @@ namespace MythMe
 
                     //performanceProgressBarCustomized.IsIndeterminate = false;
                 });
+
+                try
+                {
 
             }
             catch (Exception ex)
@@ -494,7 +519,7 @@ namespace MythMe
 
                 });
 
-                foreach (XElement singleChannelElement in xdoc.Element("ProgramGuide").Element("Channels").Descendants("Channel"))
+                foreach (XElement singleChannelElement in xdoc.Element("ProgramGuide").Element("Channels").Descendants("ChannelInfo"))
                 {
                     ChannelViewModel singleChannel = new ChannelViewModel() { };
 
@@ -519,18 +544,28 @@ namespace MythMe
 
                         //singleProgram.programflags = (string)singleProgramElement.Attribute("programFlags").FirstNode.ToString();
                         if (singleProgramElement.Element("Category").FirstNode != null) singleProgram.category = (string)singleProgramElement.Element("Category").FirstNode.ToString();
-                        if (singleProgramElement.Element("FileSize").FirstNode != null) singleProgram.filesize = Int64.Parse((string)singleProgramElement.Element("FileSize").FirstNode.ToString());
-                        if (singleProgramElement.Element("SeriesId").FirstNode != null) singleProgram.seriesid = (string)singleProgramElement.Element("SeriesId").FirstNode.ToString();
-                        if (singleProgramElement.Element("Hostname").FirstNode != null) singleProgram.hostname = (string)singleProgramElement.Element("Hostname").FirstNode.ToString();
+                        //if (singleProgramElement.Element("FileSize").FirstNode != null) singleProgram.filesize = Int64.Parse((string)singleProgramElement.Element("FileSize").FirstNode.ToString());
+                        //if (singleProgramElement.Element("SeriesId").FirstNode != null) singleProgram.seriesid = (string)singleProgramElement.Element("SeriesId").FirstNode.ToString();
+                        //if (singleProgramElement.Element("HostName").FirstNode != null) singleProgram.hostname = (string)singleProgramElement.Element("HostName").FirstNode.ToString();
                         //singleProgram.cattype = (string)singleProgramElement.Element("CatType").FirstNode.ToString();
-                        if (singleProgramElement.Element("ProgramId").FirstNode != null) singleProgram.programid = (string)singleProgramElement.Element("ProgramId").FirstNode.ToString();
+                        //if (singleProgramElement.Element("ProgramId").FirstNode != null) singleProgram.programid = (string)singleProgramElement.Element("ProgramId").FirstNode.ToString();
                         //singleProgram.repeat = (string)singleProgramElement.Element("Repeat").FirstNode.ToString();
                         //singleProgram.stars = (string)singleProgramElement.Element("Stars").FirstNode.ToString();
-                        if (singleProgramElement.Element("EndTime").FirstNode != null) singleProgram.endtime = (string)singleProgramElement.Element("EndTime").FirstNode.ToString();
-                        if (singleProgramElement.Element("EndTime").FirstNode != null) singleProgram.endtimespace = (string)singleProgramElement.Element("EndTime").FirstNode.ToString().Replace("T", " ");
-                        if (singleProgramElement.Element("Airdate").FirstNode != null) singleProgram.airdate = (string)singleProgramElement.Element("Airdate").FirstNode.ToString();
-                        if (singleProgramElement.Element("StartTime").FirstNode != null) singleProgram.starttime = (string)singleProgramElement.Element("StartTime").FirstNode.ToString();
-                        if (singleProgramElement.Element("StartTime").FirstNode != null) singleProgram.starttimespace = (string)singleProgramElement.Element("StartTime").FirstNode.ToString().Replace("T", " ");
+                        if (singleProgramElement.Element("EndTime").FirstNode != null)
+                        {
+                            DateTime newEndTime = DateTime.Parse((string)singleProgramElement.Element("EndTime").FirstNode.ToString());
+
+                            singleProgram.endtime = newEndTime.ToLocalTime().ToString("s");
+                            singleProgram.endtimespace = newEndTime.ToLocalTime().ToString("s").Replace("T", " ");
+                        }
+                        //if (singleProgramElement.Element("Airdate").FirstNode != null) singleProgram.airdate = (string)singleProgramElement.Element("Airdate").FirstNode.ToString();
+                        if (singleProgramElement.Element("StartTime").FirstNode != null)
+                        {
+                            DateTime newStartTime = DateTime.Parse((string)singleProgramElement.Element("StartTime").FirstNode.ToString());
+
+                            singleProgram.starttime = newStartTime.ToLocalTime().ToString("s");
+                            singleProgram.starttimespace = newStartTime.ToLocalTime().ToString("s").Replace("T", " ");
+                        }
                         //singleProgram.lastmodified = (string)singleProgramElement.Element("lastModified").FirstNode.ToString();
 
 
@@ -548,10 +583,10 @@ namespace MythMe
                             if (singleProgramElement.Element("Recording").Element("Priority").FirstNode != null) singleProgram.recpriority = int.Parse((string)singleProgramElement.Element("Recording").Element("Priority").Value);
                             if (singleProgramElement.Element("Recording").Element("Status").FirstNode != null) singleProgram.recstatus = int.Parse((string)singleProgramElement.Element("Recording").Element("Status").Value);
                             //singleProgram.recstatustext = App.ViewModel.functions.RecStatusDecode(singleProgram.recstatus);
-                            if (singleProgramElement.Element("Recording").Element("RecGroup").FirstNode != null) singleProgram.recgroup = (string)singleProgramElement.Element("Recording").Element("RecGroup").Value;
-                            if (singleProgramElement.Element("Recording").Element("StartTs").FirstNode != null) singleProgram.recstartts = (string)singleProgramElement.Element("Recording").Element("StartTs").Value;
-                            if (singleProgramElement.Element("Recording").Element("EndTs").FirstNode != null) singleProgram.recendts = (string)singleProgramElement.Element("Recording").Element("EndTs").Value;
-                            if (singleProgramElement.Element("Recording").Element("RecordId").FirstNode != null) singleProgram.recordid = int.Parse((string)singleProgramElement.Element("Recording").Element("RecordId").Value);
+                            //if (singleProgramElement.Element("Recording").Element("RecGroup").FirstNode != null) singleProgram.recgroup = (string)singleProgramElement.Element("Recording").Element("RecGroup").Value;
+                            //if (singleProgramElement.Element("Recording").Element("StartTs").FirstNode != null) singleProgram.recstartts = (string)singleProgramElement.Element("Recording").Element("StartTs").Value;
+                            //if (singleProgramElement.Element("Recording").Element("EndTs").FirstNode != null) singleProgram.recendts = (string)singleProgramElement.Element("Recording").Element("EndTs").Value;
+                            //if (singleProgramElement.Element("Recording").Element("RecordId").FirstNode != null) singleProgram.recordid = int.Parse((string)singleProgramElement.Element("Recording").Element("RecordId").Value);
 
                         }
                         else
@@ -565,7 +600,7 @@ namespace MythMe
                         //singleProgram.description = (string)singleProgramElement.FirstNode.ToString();
 
 
-                        singleProgram.chanicon = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Myth/GetChannelIcon?ChanId=" + singleProgram.chanid;
+                        singleProgram.chanicon = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Guide/GetChannelIcon?ChanId=" + singleProgram.chanid;
 
 
 
@@ -787,7 +822,7 @@ namespace MythMe
 
                 });
 
-                foreach (XElement singleChannelElement in xdoc.Element("ProgramGuide").Element("Channels").Descendants("Channel"))
+                foreach (XElement singleChannelElement in xdoc.Element("ProgramGuide").Element("Channels").Descendants("ChannelInfo"))
                 {
                     ChannelViewModel singleChannel = new ChannelViewModel() { };
 
@@ -812,18 +847,28 @@ namespace MythMe
 
                         //singleProgram.programflags = (string)singleProgramElement.Attribute("programFlags").FirstNode.ToString();
                         if (singleProgramElement.Element("Category").FirstNode != null) singleProgram.category = (string)singleProgramElement.Element("Category").FirstNode.ToString();
-                        if (singleProgramElement.Element("FileSize").FirstNode != null) singleProgram.filesize = Int64.Parse((string)singleProgramElement.Element("FileSize").FirstNode.ToString());
-                        if (singleProgramElement.Element("SeriesId").FirstNode != null) singleProgram.seriesid = (string)singleProgramElement.Element("SeriesId").FirstNode.ToString();
-                        if (singleProgramElement.Element("Hostname").FirstNode != null) singleProgram.hostname = (string)singleProgramElement.Element("Hostname").FirstNode.ToString();
+                        //if (singleProgramElement.Element("FileSize").FirstNode != null) singleProgram.filesize = Int64.Parse((string)singleProgramElement.Element("FileSize").FirstNode.ToString());
+                        //if (singleProgramElement.Element("SeriesId").FirstNode != null) singleProgram.seriesid = (string)singleProgramElement.Element("SeriesId").FirstNode.ToString();
+                        //if (singleProgramElement.Element("HostName").FirstNode != null) singleProgram.hostname = (string)singleProgramElement.Element("HostName").FirstNode.ToString();
                         //singleProgram.cattype = (string)singleProgramElement.Element("CatType").FirstNode.ToString();
-                        if (singleProgramElement.Element("ProgramId").FirstNode != null) singleProgram.programid = (string)singleProgramElement.Element("ProgramId").FirstNode.ToString();
+                        //if (singleProgramElement.Element("ProgramId").FirstNode != null) singleProgram.programid = (string)singleProgramElement.Element("ProgramId").FirstNode.ToString();
                         //singleProgram.repeat = (string)singleProgramElement.Element("Repeat").FirstNode.ToString();
                         //singleProgram.stars = (string)singleProgramElement.Element("Stars").FirstNode.ToString();
-                        if (singleProgramElement.Element("EndTime").FirstNode != null) singleProgram.endtime = (string)singleProgramElement.Element("EndTime").FirstNode.ToString();
-                        if (singleProgramElement.Element("EndTime").FirstNode != null) singleProgram.endtimespace = (string)singleProgramElement.Element("EndTime").FirstNode.ToString().Replace("T", " ");
-                        if (singleProgramElement.Element("Airdate").FirstNode != null) singleProgram.airdate = (string)singleProgramElement.Element("Airdate").FirstNode.ToString();
-                        if (singleProgramElement.Element("StartTime").FirstNode != null) singleProgram.starttime = (string)singleProgramElement.Element("StartTime").FirstNode.ToString();
-                        if (singleProgramElement.Element("StartTime").FirstNode != null) singleProgram.starttimespace = (string)singleProgramElement.Element("StartTime").FirstNode.ToString().Replace("T", " ");
+                        if (singleProgramElement.Element("EndTime").FirstNode != null)
+                        {
+                            DateTime newEndTime = DateTime.Parse((string)singleProgramElement.Element("EndTime").FirstNode.ToString());
+
+                            singleProgram.endtime = newEndTime.ToLocalTime().ToString("s");
+                            singleProgram.endtimespace = newEndTime.ToLocalTime().ToString("s").Replace("T", " ");
+                        }
+                        //if (singleProgramElement.Element("Airdate").FirstNode != null) singleProgram.airdate = (string)singleProgramElement.Element("Airdate").FirstNode.ToString();
+                        if (singleProgramElement.Element("StartTime").FirstNode != null)
+                        {
+                            DateTime newStartTime = DateTime.Parse((string)singleProgramElement.Element("StartTime").FirstNode.ToString());
+
+                            singleProgram.starttime = newStartTime.ToLocalTime().ToString("s");
+                            singleProgram.starttimespace = newStartTime.ToLocalTime().ToString("s").Replace("T", " ");
+                        }
                         //singleProgram.lastmodified = (string)singleProgramElement.Element("lastModified").FirstNode.ToString();
 
 
@@ -841,10 +886,10 @@ namespace MythMe
                             if (singleProgramElement.Element("Recording").Element("Priority").FirstNode != null) singleProgram.recpriority = int.Parse((string)singleProgramElement.Element("Recording").Element("Priority").Value);
                             if (singleProgramElement.Element("Recording").Element("Status").FirstNode != null) singleProgram.recstatus = int.Parse((string)singleProgramElement.Element("Recording").Element("Status").Value);
                             //singleProgram.recstatustext = App.ViewModel.functions.RecStatusDecode(singleProgram.recstatus);
-                            if (singleProgramElement.Element("Recording").Element("RecGroup").FirstNode != null) singleProgram.recgroup = (string)singleProgramElement.Element("Recording").Element("RecGroup").Value;
-                            if (singleProgramElement.Element("Recording").Element("StartTs").FirstNode != null) singleProgram.recstartts = (string)singleProgramElement.Element("Recording").Element("StartTs").Value;
-                            if (singleProgramElement.Element("Recording").Element("EndTs").FirstNode != null) singleProgram.recendts = (string)singleProgramElement.Element("Recording").Element("EndTs").Value;
-                            if (singleProgramElement.Element("Recording").Element("RecordId").FirstNode != null) singleProgram.recordid = int.Parse((string)singleProgramElement.Element("Recording").Element("RecordId").Value);
+                            //if (singleProgramElement.Element("Recording").Element("RecGroup").FirstNode != null) singleProgram.recgroup = (string)singleProgramElement.Element("Recording").Element("RecGroup").Value;
+                            //if (singleProgramElement.Element("Recording").Element("StartTs").FirstNode != null) singleProgram.recstartts = (string)singleProgramElement.Element("Recording").Element("StartTs").Value;
+                            //if (singleProgramElement.Element("Recording").Element("EndTs").FirstNode != null) singleProgram.recendts = (string)singleProgramElement.Element("Recording").Element("EndTs").Value;
+                            //if (singleProgramElement.Element("Recording").Element("RecordId").FirstNode != null) singleProgram.recordid = int.Parse((string)singleProgramElement.Element("Recording").Element("RecordId").Value);
 
                         }
                         else
@@ -858,7 +903,7 @@ namespace MythMe
                         //singleProgram.description = (string)singleProgramElement.FirstNode.ToString();
 
 
-                        singleProgram.chanicon = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Myth/GetChannelIcon?ChanId=" + singleProgram.chanid;
+                        singleProgram.chanicon = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Guide/GetChannelIcon?ChanId=" + singleProgram.chanid;
 
 
 
