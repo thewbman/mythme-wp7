@@ -252,6 +252,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\3e000c.png" />
     <Content Include="Images\appbar.add.rest.png" />
     <Content Include="Images\appbar.back.rest.png" />
     <Content Include="Images\appbar.delete.rest.png" />

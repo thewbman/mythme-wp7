@@ -136,6 +136,9 @@ namespace MythMe
 
             switch (inProto)
             {
+                case 72:
+                    response = "MYTH_PROTO_VERSION 72 D78EFD6F";
+                    break;
                 case 71:
                     response = "MYTH_PROTO_VERSION 71 05e82186";
                     break;
@@ -411,8 +414,18 @@ namespace MythMe
                     }
                 }
 
-                screenshot = "http://"+hostaddress+":"+hostport+ "/Myth/GetPreviewImage?ChanId=";
-                screenshot += inProgram.chanid+ "&StartTime=" + inProgram.recstartts.Replace("T", " ");
+                if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
+                {
+                    string newStartTime = DateTime.Parse(inProgram.recstartts).ToUniversalTime().ToString("s");
+
+                    screenshot = "http://" + hostaddress + ":" + hostport + "/Content/GetPreviewImage?ChanId=";
+                    screenshot += inProgram.chanid + "&StartTime=" + newStartTime.Replace("T", " ");
+                }
+                else
+                {
+                    screenshot = "http://" + hostaddress + ":" + hostport + "/Myth/GetPreviewImage?ChanId=";
+                    screenshot += inProgram.chanid + "&StartTime=" + inProgram.recstartts.Replace("T", " ");
+                }
             }
 
             return screenshot;

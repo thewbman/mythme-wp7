@@ -22,6 +22,7 @@ using Microsoft.Phone.Tasks;
 using System.Xml.Linq;
 using System.Security.Cryptography;
 using System.Runtime.Serialization.Json;
+using System.Windows.Media.Imaging;
 
 namespace MythMe
 {
@@ -67,7 +68,10 @@ namespace MythMe
 
             if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
             {
-                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(String.Format(getDetails25String, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting, App.ViewModel.SelectedUpcomingProgram.starttime, App.ViewModel.SelectedUpcomingProgram.chanid, App.ViewModel.randText())));
+                //0.25 uses UTC time
+                string newStartTime = DateTime.Parse(App.ViewModel.SelectedUpcomingProgram.starttime).ToUniversalTime().ToString("s");
+
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(String.Format(getDetails25String, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting, newStartTime, App.ViewModel.SelectedUpcomingProgram.chanid, App.ViewModel.randText())));
                 webRequest.BeginGetResponse(new AsyncCallback(Details25Callback), webRequest);
             }
             else
@@ -110,9 +114,9 @@ namespace MythMe
             response.GetResponseStream().Close();
             response.Close();
 
+
             try
             {
-
                 XDocument xdoc = XDocument.Parse(resultString, LoadOptions.None);
 
                 XElement singleProgramElement = xdoc.Element("Program");
@@ -124,21 +128,33 @@ namespace MythMe
                 if (singleProgramElement.Element("Category").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.category = (string)singleProgramElement.Element("Category").FirstNode.ToString();
                 if (singleProgramElement.Element("FileSize").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.filesize = Int64.Parse((string)singleProgramElement.Element("FileSize").FirstNode.ToString());
                 if (singleProgramElement.Element("SeriesId").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.seriesid = (string)singleProgramElement.Element("SeriesId").FirstNode.ToString();
-                if (singleProgramElement.Element("Hostname").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.hostname = (string)singleProgramElement.Element("Hostname").FirstNode.ToString();
+                if (singleProgramElement.Element("HostName").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.hostname = (string)singleProgramElement.Element("HostName").FirstNode.ToString();
                 //App.ViewModel.SelectedUpcomingProgram.cattype = (string)singleProgramElement.Element("CatType").FirstNode.ToString();
                 if (singleProgramElement.Element("ProgramId").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.programid = (string)singleProgramElement.Element("ProgramId").FirstNode.ToString();
                 //App.ViewModel.SelectedUpcomingProgram.repeat = (string)singleProgramElement.Element("Repeat").FirstNode.ToString();
                 //App.ViewModel.SelectedUpcomingProgram.stars = (string)singleProgramElement.Element("Stars").FirstNode.ToString();
-                if (singleProgramElement.Element("EndTime").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.endtime = (string)singleProgramElement.Element("EndTime").FirstNode.ToString();
-                if (singleProgramElement.Element("EndTime").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.endtimespace = (string)singleProgramElement.Element("EndTime").FirstNode.ToString().Replace("T", " ");
+                if (singleProgramElement.Element("EndTime").FirstNode != null)
+                {
+                    DateTime newEndTime = DateTime.Parse((string)singleProgramElement.Element("EndTime").FirstNode.ToString());
+
+                    App.ViewModel.SelectedUpcomingProgram.endtime = newEndTime.ToLocalTime().ToString("s");
+                    App.ViewModel.SelectedUpcomingProgram.endtimespace = newEndTime.ToLocalTime().ToString("s").Replace("T", " ");
+                }
                 if (singleProgramElement.Element("Airdate").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.airdate = (string)singleProgramElement.Element("Airdate").FirstNode.ToString();
-                if (singleProgramElement.Element("StartTime").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.starttime = (string)singleProgramElement.Element("StartTime").FirstNode.ToString();
-                if (singleProgramElement.Element("StartTime").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.starttimespace = (string)singleProgramElement.Element("StartTime").FirstNode.ToString().Replace("T", " ");
+                if (singleProgramElement.Element("EndTime").FirstNode != null)
+                {
+                    DateTime newStartTime = DateTime.Parse((string)singleProgramElement.Element("StartTime").FirstNode.ToString());
+
+                    App.ViewModel.SelectedUpcomingProgram.starttime = newStartTime.ToLocalTime().ToString("s");
+                    App.ViewModel.SelectedUpcomingProgram.starttimespace = newStartTime.ToLocalTime().ToString("s").Replace("T", " ");
+                }
                 //App.ViewModel.SelectedUpcomingProgram.lastmodified = (string)singleProgramElement.Element("lastModified").FirstNode.ToString();
 
 
                 App.ViewModel.SelectedUpcomingProgram.description = singleProgramElement.Element("Airdate").NextNode.ToString();
+                if (singleProgramElement.Element("Description").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.description = (string)singleProgramElement.Element("Description").FirstNode.ToString();
                 if (App.ViewModel.SelectedUpcomingProgram.description.Contains("<Inet")) App.ViewModel.SelectedUpcomingProgram.description = "";
+                if (App.ViewModel.SelectedUpcomingProgram.description.Contains("<Desc")) App.ViewModel.SelectedUpcomingProgram.description = "";
 
 
                 if (App.ViewModel.SelectedUpcomingProgram.subtitle == "") App.ViewModel.SelectedUpcomingProgram.subtitle = ".";
@@ -162,10 +178,23 @@ namespace MythMe
                     if (singleProgramElement.Element("Recording").Element("Status").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.recstatus = int.Parse((string)singleProgramElement.Element("Recording").Element("Status").Value);
                     //App.ViewModel.SelectedUpcomingProgram.recstatustext = App.ViewModel.functions.RecStatusDecode(App.ViewModel.SelectedUpcomingProgram.recstatus);
                     if (singleProgramElement.Element("Recording").Element("RecGroup").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.recgroup = (string)singleProgramElement.Element("Recording").Element("RecGroup").Value;
-                    if (singleProgramElement.Element("Recording").Element("StartTs").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.recstartts = (string)singleProgramElement.Element("Recording").Element("StartTs").Value;
-                    if (singleProgramElement.Element("Recording").Element("EndTs").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.recendts = (string)singleProgramElement.Element("Recording").Element("EndTs").Value;
+                    //if (singleProgramElement.Element("Recording").Element("StartTs").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.recstartts = (string)singleProgramElement.Element("Recording").Element("StartTs").Value;
+                    //if (singleProgramElement.Element("Recording").Element("EndTs").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.recendts = (string)singleProgramElement.Element("Recording").Element("EndTs").Value;
                     if (singleProgramElement.Element("Recording").Element("RecordId").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.recordid = int.Parse((string)singleProgramElement.Element("Recording").Element("RecordId").Value);
 
+                    if (singleProgramElement.Element("Recording").Element("StartTs").FirstNode != null)
+                    {
+                        DateTime newStartTime = DateTime.Parse((string)singleProgramElement.Element("Recording").Element("StartTs").FirstNode.ToString());
+
+                        App.ViewModel.SelectedUpcomingProgram.recstartts = newStartTime.ToLocalTime().ToString("s");
+                    }
+
+                    if (singleProgramElement.Element("Recording").Element("EndTs").FirstNode != null)
+                    {
+                        DateTime newEndTime = DateTime.Parse((string)singleProgramElement.Element("Recording").Element("EndTs").FirstNode.ToString());
+
+                        App.ViewModel.SelectedUpcomingProgram.recendts = newEndTime.ToLocalTime().ToString("s");
+                    }
                 }
                 else
                 {
@@ -185,6 +214,35 @@ namespace MythMe
                 }
 
 
+
+                if (singleProgramElement.Element("Artwork").Element("ArtworkInfos").FirstNode != null)
+                {
+                    foreach (var singleArtworkInfoElement in singleProgramElement.Element("Artwork").Element("ArtworkInfos").Elements("ArtworkInfo"))
+                    {
+                        string arturlbase = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/";
+                        //string arturlend = "";
+                        string arturlend = "&Height=800&Width=1024";
+
+                        switch (singleArtworkInfoElement.Element("Type").FirstNode.ToString())
+                        {
+                            case "coverart":
+                                App.ViewModel.SelectedUpcomingProgram.coverart = arturlbase + singleArtworkInfoElement.Element("URL").FirstNode.ToString() + arturlend;
+                                break;
+                            case "fanart":
+                                App.ViewModel.SelectedUpcomingProgram.fanart = arturlbase + singleArtworkInfoElement.Element("URL").FirstNode.ToString() + arturlend;
+                                break;
+                            case "banner":
+                                App.ViewModel.SelectedUpcomingProgram.banner = arturlbase + singleArtworkInfoElement.Element("URL").FirstNode.ToString() + arturlend;
+                                break;
+                            default:
+                                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                                {
+                                    //MessageBox.Show("Unknown Artwork: " + singleArtworkInfoElement.Element("Type").FirstNode.ToString());
+                                });
+                                break;
+                        }
+                    }
+                }
 
 
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
@@ -216,8 +274,26 @@ namespace MythMe
                     //hostname.Text = App.ViewModel.SelectedUpcomingProgram.hostname;
                     recgroup.Text = App.ViewModel.SelectedUpcomingProgram.recgroup;
 
+
+                    if (App.ViewModel.SelectedGuideProgram.fanart != null)
+                    {
+
+                        System.Windows.Media.Imaging.BitmapImage bmp = new BitmapImage(new Uri(App.ViewModel.SelectedUpcomingProgram.fanart));
+
+                        var imageBrush = new ImageBrush
+                        {
+                            ImageSource = bmp,
+                            Opacity = 0.5d
+                        };
+
+                        this.topPanorama.Background = imageBrush;
+                    }
+
                 });
+
             }
+
+
             catch (Exception ex)
             {
                 Deployment.Current.Dispatcher.BeginInvoke(() => { MessageBox.Show("Error parsing details: " + ex.ToString()); });

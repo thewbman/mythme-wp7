@@ -55,6 +55,8 @@ namespace MythMe
 
         private bool HasLoaded;
 
+        private int images;
+
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -62,6 +64,35 @@ namespace MythMe
 
             //BitmapImage bitmapImage = new BitmapImage(new Uri(App.ViewModel.SelectedRecordedProgram.screenshot));
             //panoramaBackground.ImageSource = bitmapImage;
+
+
+            images = 4;     //assume we have all 4
+            if (App.ViewModel.SelectedRecordedProgram.fanart == null)
+            {
+                this.fanartButton.Visibility = System.Windows.Visibility.Collapsed;
+                images--;
+            }
+            if (App.ViewModel.SelectedRecordedProgram.coverart == null)
+            {
+                this.coverartButton.Visibility = System.Windows.Visibility.Collapsed;
+                images--;
+            }
+            if (App.ViewModel.SelectedRecordedProgram.banner == null)
+            {
+                this.bannerButton.Visibility = System.Windows.Visibility.Collapsed;
+                images--;
+            }
+            if (App.ViewModel.SelectedRecordedProgram.screenshot == null)
+            {
+                this.screenshotButton.Visibility = System.Windows.Visibility.Collapsed;
+                images--;
+            }
+
+            if (images < 1)
+            {
+                this.imagesPivot.Visibility = System.Windows.Visibility.Collapsed;
+            }
+
 
             try
             {
@@ -78,6 +109,21 @@ namespace MythMe
                     }
 
 
+                    if (App.ViewModel.SelectedRecordedProgram.fanart != null)
+                    {
+
+                        System.Windows.Media.Imaging.BitmapImage bmp = new BitmapImage(new Uri(App.ViewModel.SelectedRecordedProgram.fanart));
+
+                        var imageBrush = new ImageBrush
+                        {
+                            ImageSource = bmp,
+                            Opacity = 0.5d
+                        };
+                        
+                        this.topPanorama.Background = imageBrush;
+
+                        //int i = int.Parse("asdf");
+                    }
 
 
                     if (App.ViewModel.appSettings.UseScriptSetting)
@@ -124,7 +170,10 @@ namespace MythMe
                 }
                 else
                 {
-                    this.GetPeople();
+                    if (App.ViewModel.appSettings.UseScriptSetting)
+                    {
+                        this.GetPeople();
+                    }
                 }
 
             }
@@ -571,6 +620,40 @@ namespace MythMe
             });
 
             this.GetJobs();
+        }
+
+
+
+        private void coverartButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            WebBrowserTask webopen = new WebBrowserTask();
+
+            webopen.Uri = new Uri(App.ViewModel.SelectedRecordedProgram.coverart);
+            webopen.Show();
+        }
+
+        private void fanartButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            WebBrowserTask webopen = new WebBrowserTask();
+
+            webopen.Uri = new Uri(App.ViewModel.SelectedRecordedProgram.fanart);
+            webopen.Show();
+        }
+
+        private void bannerButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            WebBrowserTask webopen = new WebBrowserTask();
+
+            webopen.Uri = new Uri(App.ViewModel.SelectedRecordedProgram.banner);
+            webopen.Show();
+        }
+
+        private void screenshotButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            WebBrowserTask webopen = new WebBrowserTask();
+
+            webopen.Uri = new Uri(App.ViewModel.SelectedRecordedProgram.screenshot);
+            webopen.Show();
         }
     }
 }

@@ -38,7 +38,7 @@ namespace MythMe
             //LiveTVRecordedListBox.ItemsSource = LiveTVRecorded;
         }
 
-        private string getRecorded25String = "http://{0}:{1}/Dvr/GetRecorded?random={2}";
+        private string getRecorded25String = "http://{0}:{1}/Dvr/GetFilteredRecordedList?Count=1000&TitleRegEx=[A-Za-z0-9_]&random={2}";
         private string getRecordedString = "http://{0}:{1}/Myth/GetRecorded?random={2}";
 
         List<ProgramViewModel> AllRecorded = new List<ProgramViewModel>();
@@ -70,6 +70,8 @@ namespace MythMe
             {
                 //do nothing
             }
+
+
         }
 
         private void GetRecorded()
@@ -115,8 +117,9 @@ namespace MythMe
             HttpWebResponse response;
 
             try
-            {
+            { 
                 response = (HttpWebResponse)request.EndGetResponse(asynchronousResult);
+
             }
             catch (Exception ex)
             {
@@ -138,8 +141,6 @@ namespace MythMe
             response.GetResponseStream().Close();
             response.Close();
             
-            try
-            {
             
 
                 XDocument xdoc = XDocument.Parse(resultString, LoadOptions.None);
@@ -163,21 +164,31 @@ namespace MythMe
 
                     if (singleRecordedElement.Element("Title").FirstNode != null) singleRecorded.title = (string)singleRecordedElement.Element("Title").FirstNode.ToString();
                     if (singleRecordedElement.Element("SubTitle").FirstNode != null) singleRecorded.subtitle = (string)singleRecordedElement.Element("SubTitle").FirstNode.ToString();
-
+                    
                     //singleRecorded.programflags = (string)singleRecordedElement.Attribute("programFlags").FirstNode.ToString();
                     if (singleRecordedElement.Element("Category").FirstNode != null) singleRecorded.category = (string)singleRecordedElement.Element("Category").FirstNode.ToString();
                     if (singleRecordedElement.Element("FileSize").FirstNode != null) singleRecorded.filesize = Int64.Parse((string)singleRecordedElement.Element("FileSize").FirstNode.ToString());
                     if (singleRecordedElement.Element("SeriesId").FirstNode != null) singleRecorded.seriesid = (string)singleRecordedElement.Element("SeriesId").FirstNode.ToString();
-                    if (singleRecordedElement.Element("Hostname").FirstNode != null) singleRecorded.hostname = (string)singleRecordedElement.Element("Hostname").FirstNode.ToString();
+                    if (singleRecordedElement.Element("HostName").FirstNode != null) singleRecorded.hostname = (string)singleRecordedElement.Element("HostName").FirstNode.ToString();
                     //singleRecorded.cattype = (string)singleRecordedElement.Element("CatType").FirstNode.ToString();
                     if (singleRecordedElement.Element("ProgramId").FirstNode != null) singleRecorded.programid = (string)singleRecordedElement.Element("ProgramId").FirstNode.ToString();
                     //singleRecorded.repeat = (string)singleRecordedElement.Element("Repeat").FirstNode.ToString();
                     //singleRecorded.stars = (string)singleRecordedElement.Element("Stars").FirstNode.ToString();
-                    if (singleRecordedElement.Element("EndTime").FirstNode != null) singleRecorded.endtime = (string)singleRecordedElement.Element("EndTime").FirstNode.ToString();
-                    if (singleRecordedElement.Element("EndTime").FirstNode != null) singleRecorded.endtimespace = (string)singleRecordedElement.Element("EndTime").FirstNode.ToString().Replace("T", " ");
+                    if (singleRecordedElement.Element("EndTime").FirstNode != null)
+                    {
+                        DateTime newEndTime = DateTime.Parse((string)singleRecordedElement.Element("EndTime").FirstNode.ToString());
+
+                        singleRecorded.endtime = newEndTime.ToLocalTime().ToString("s");
+                        singleRecorded.endtimespace = newEndTime.ToLocalTime().ToString("s").Replace("T", " ");
+                    } 
                     if (singleRecordedElement.Element("Airdate").FirstNode != null) singleRecorded.airdate = (string)singleRecordedElement.Element("Airdate").FirstNode.ToString();
-                    if (singleRecordedElement.Element("StartTime").FirstNode != null) singleRecorded.starttime = (string)singleRecordedElement.Element("StartTime").FirstNode.ToString();
-                    if (singleRecordedElement.Element("StartTime").FirstNode != null) singleRecorded.starttimespace = (string)singleRecordedElement.Element("StartTime").FirstNode.ToString().Replace("T", " ");
+                    if (singleRecordedElement.Element("StartTime").FirstNode != null)
+                    {
+                        DateTime newStartTime = DateTime.Parse((string)singleRecordedElement.Element("StartTime").FirstNode.ToString());
+
+                        singleRecorded.starttime = newStartTime.ToLocalTime().ToString("s");
+                        singleRecorded.starttimespace = newStartTime.ToLocalTime().ToString("s").Replace("T", " ");
+                    } 
                     //singleRecorded.lastmodified = (string)singleRecordedElement.Element("lastModified").FirstNode.ToString();
 
                     if (singleRecordedElement.Element("Channel").Element("InputId").FirstNode != null) singleRecorded.inputid = int.Parse((string)singleRecordedElement.Element("Channel").Element("InputId").Value);
@@ -193,9 +204,53 @@ namespace MythMe
                     if (singleRecordedElement.Element("Recording").Element("Status").FirstNode != null) singleRecorded.recstatus = int.Parse((string)singleRecordedElement.Element("Recording").Element("Status").Value);
                     singleRecorded.recstatustext = App.ViewModel.functions.RecStatusDecode(singleRecorded.recstatus);
                     if (singleRecordedElement.Element("Recording").Element("RecGroup").FirstNode != null) singleRecorded.recgroup = (string)singleRecordedElement.Element("Recording").Element("RecGroup").Value;
-                    if (singleRecordedElement.Element("Recording").Element("StartTs").FirstNode != null) singleRecorded.recstartts = (string)singleRecordedElement.Element("Recording").Element("StartTs").Value;
-                    if (singleRecordedElement.Element("Recording").Element("EndTs").FirstNode != null) singleRecorded.recendts = (string)singleRecordedElement.Element("Recording").Element("EndTs").Value;
+                    //if (singleRecordedElement.Element("Recording").Element("StartTs").FirstNode != null) singleRecorded.recstartts = (string)singleRecordedElement.Element("Recording").Element("StartTs").Value;
+                    //if (singleRecordedElement.Element("Recording").Element("EndTs").FirstNode != null) singleRecorded.recendts = (string)singleRecordedElement.Element("Recording").Element("EndTs").Value;
                     if (singleRecordedElement.Element("Recording").Element("RecordId").FirstNode != null) singleRecorded.recordid = int.Parse((string)singleRecordedElement.Element("Recording").Element("RecordId").Value);
+
+                    if (singleRecordedElement.Element("Recording").Element("StartTs").FirstNode != null)
+                    {
+                        DateTime newStartTime = DateTime.Parse((string)singleRecordedElement.Element("Recording").Element("StartTs").FirstNode.ToString());
+
+                        singleRecorded.recstartts = newStartTime.ToLocalTime().ToString("s");
+                    }
+                    if (singleRecordedElement.Element("Recording").Element("EndTs").FirstNode != null)
+                    {
+                        DateTime newEndTime = DateTime.Parse((string)singleRecordedElement.Element("Recording").Element("EndTs").FirstNode.ToString());
+
+                        singleRecorded.recendts = newEndTime.ToLocalTime().ToString("s");
+                    } 
+
+                    if(singleRecordedElement.Element("Artwork").Element("ArtworkInfos").FirstNode != null)
+                    {
+                        foreach (var singleArtworkInfoElement in singleRecordedElement.Element("Artwork").Element("ArtworkInfos").Elements("ArtworkInfo"))
+                        {
+                            string arturlbase = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/";
+                            string arturlend = "";
+                            //string arturlend = "&Height=800&Width=1024";
+
+                            switch (singleArtworkInfoElement.Element("Type").FirstNode.ToString())
+                            {
+                                case "coverart":
+                                    singleRecorded.coverart = arturlbase + singleArtworkInfoElement.Element("URL").FirstNode.ToString() + arturlend;
+                                    break;
+                                case "fanart":
+                                    singleRecorded.fanart = arturlbase + singleArtworkInfoElement.Element("URL").FirstNode.ToString() + arturlend;
+                                    break;
+                                case "banner":
+                                    singleRecorded.banner = arturlbase + singleArtworkInfoElement.Element("URL").FirstNode.ToString() + arturlend;
+                                    break;
+                                default:
+                                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                                    {
+                                        //MessageBox.Show("Unknown Artwork: " + singleArtworkInfoElement.Element("Type").FirstNode.ToString());
+                                    });
+                                    break;
+                            }
+                        }
+                    }
+
+
 
 
                     if (App.ViewModel.appSettings.ChannelIconsSetting)
@@ -217,8 +272,10 @@ namespace MythMe
 
                     if (singleRecorded.subtitle == "") singleRecorded.subtitle = ".";
 
-                    singleRecorded.description = singleRecordedElement.Element("Airdate").NextNode.ToString();
+                    singleRecorded.description = singleRecordedElement.Element("Airdate").NextNode.ToString(); 
+                    if (singleRecordedElement.Element("Description").FirstNode != null) singleRecorded.description = (string)singleRecordedElement.Element("Description").FirstNode.ToString();
                     if (singleRecorded.description.Contains("<Inet")) singleRecorded.description = "";
+                    if (singleRecorded.description.Contains("<Desc")) singleRecorded.description = "";
 
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
@@ -250,7 +307,11 @@ namespace MythMe
                 {
                     SortAndDisplay();
                 });
-            
+
+
+                try
+                {
+
             }
             catch (Exception ex)
             {

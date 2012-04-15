@@ -71,6 +71,9 @@ namespace MythMe
 
         public string screenshot { get; set; }
         public string chanicon { get; set; }
+        public string coverart { get; set; }
+        public string fanart { get; set; }
+        public string banner { get; set; }
 
         public string recordedfourthline { get; set; }
         public string upcomingfourthline { get; set; }

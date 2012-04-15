@@ -40,31 +40,109 @@ namespace MythMe
 
         private bool HasLoaded = false;
 
+        private int images;     //assume we have all 4
+
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
 
+            if (App.ViewModel.appSettings.UseScriptSetting)
+            {
+                this.peoplePivot.Visibility = System.Windows.Visibility.Visible;
+
+                this.titleSearchButton.Visibility = System.Windows.Visibility.Visible;
+            }
+            else
+            {
+                this.peoplePivot.Visibility = System.Windows.Visibility.Collapsed;
+
+                this.titleSearchButton.Visibility = System.Windows.Visibility.Collapsed;
+            }
+
+            images = 4;     //assume we have all 4
+            if(App.ViewModel.SelectedVideo.fanart == null)
+            {
+                this.fanartButton.Visibility = System.Windows.Visibility.Collapsed;
+                images--;
+            }
+            if (App.ViewModel.SelectedVideo.coverart == null)
+            {
+                this.coverartButton.Visibility = System.Windows.Visibility.Collapsed;
+                images--;
+            }
+            if (App.ViewModel.SelectedVideo.banner == null)
+            {
+                this.bannerButton.Visibility = System.Windows.Visibility.Collapsed;
+                images--;
+            }
+            if (App.ViewModel.SelectedVideo.screenshot == null)
+            {
+                this.screenshotButton.Visibility = System.Windows.Visibility.Collapsed;
+                images--;
+            }
+
+            if (images < 1)
+            {
+                this.imagesPivot.Visibility = System.Windows.Visibility.Collapsed;
+            }
+
+
+            if (App.ViewModel.SelectedVideo.fanart != null)
+            {
+
+                System.Windows.Media.Imaging.BitmapImage bmp = new BitmapImage(new Uri(App.ViewModel.SelectedVideo.fanart));
+
+                var imageBrush = new ImageBrush
+                {
+                    ImageSource = bmp,
+                    Opacity = 0.5d
+                };
+
+                this.topPanorama.Background = imageBrush;
+            }
+            else if (App.ViewModel.SelectedVideo.banner != null)
+            {
+
+                System.Windows.Media.Imaging.BitmapImage bmp = new BitmapImage(new Uri(App.ViewModel.SelectedVideo.banner));
+
+                var imageBrush = new ImageBrush
+                {
+                    ImageSource = bmp,
+                    Opacity = 0.5d
+                };
+
+                this.topPanorama.Background = imageBrush;
+            }
+
+
             try
             {
 
-                App.ViewModel.SelectedVideo.coverart = "http://" + App.ViewModel.appSettings.WebserverHostSetting + "/mythweb/pl/coverart/" + App.ViewModel.SelectedVideo.coverfile;
+                //App.ViewModel.SelectedVideo.coverart = "http://" + App.ViewModel.appSettings.WebserverHostSetting + "/mythweb/pl/coverart/" + App.ViewModel.SelectedVideo.coverfile;
 
                 DataContext = App.ViewModel.SelectedVideo;
 
 
-                if (!HasLoaded)
+                if (App.ViewModel.appSettings.UseScriptSetting)
                 {
+                    if (!HasLoaded)
+                    {
 
-                    this.GetPeople();
+                        this.GetPeople();
 
-                    HasLoaded = true;
+                        HasLoaded = true;
+                    }
+                    else
+                    {
+                        this.GetPeople();
+                    }
+
+                    this.GetStoragegroups();
                 }
                 else
                 {
-                    this.GetPeople();
+                    HasLoaded = true;
                 }
-
-                this.GetStoragegroups();
 
             }
             catch (Exception ex)
@@ -341,6 +419,39 @@ namespace MythMe
             App.ViewModel.SelectedTitle = App.ViewModel.SelectedVideo.title;
 
             NavigationService.Navigate(new Uri("/Search.xaml?Source=video", UriKind.Relative));
+        }
+
+
+        private void coverartButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            WebBrowserTask webopen = new WebBrowserTask();
+
+            webopen.Uri = new Uri(App.ViewModel.SelectedVideo.coverart);
+            webopen.Show();
+        }
+
+        private void fanartButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            WebBrowserTask webopen = new WebBrowserTask();
+
+            webopen.Uri = new Uri(App.ViewModel.SelectedVideo.fanart);
+            webopen.Show();
+        }
+
+        private void bannerButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            WebBrowserTask webopen = new WebBrowserTask();
+
+            webopen.Uri = new Uri(App.ViewModel.SelectedVideo.banner);
+            webopen.Show();
+        }
+
+        private void screenshotButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            WebBrowserTask webopen = new WebBrowserTask();
+
+            webopen.Uri = new Uri(App.ViewModel.SelectedVideo.screenshot);
+            webopen.Show();
         }
     }
 }

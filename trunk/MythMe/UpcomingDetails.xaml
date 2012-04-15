@@ -36,9 +36,9 @@
                 <ScrollViewer>
                     <StackPanel>
                         <TextBlock Text="start time" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
-                        <TextBlock x:Name="starttime" Text="{Binding starttime}" Foreground="White" />
+                        <TextBlock x:Name="starttime" Text="{Binding starttimespace}" Foreground="White" />
                         <TextBlock Text="end time" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
-                        <TextBlock x:Name="endtime" Text="{Binding endtime}" Foreground="White" />
+                        <TextBlock x:Name="endtime" Text="{Binding endtimespace}" Foreground="White" />
                         <TextBlock Text="series id" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
                         <TextBlock x:Name="seriesid" Text="{Binding seriesid}" Foreground="White" />
                         <TextBlock Text="program id" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
