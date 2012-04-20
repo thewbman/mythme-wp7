@@ -41,7 +41,7 @@ namespace MythMe
         private List<PeopleViewModel> People;
         private UTF8Encoding encoder;
 
-        private string getDetails25String = "http://{0}:{1}/Guide/GetProgramDetails?StartTime={2}&ChanId={3}&random={2}";
+        private string getDetails25String = "http://{0}:{1}/Guide/GetProgramDetails?StartTime={2}&ChanId={3}&random={4}";
         private string getDetailsString = "http://{0}:{1}/Myth/GetProgramDetails?StartTime={2}&ChanId={3}&random={4}";
 
 
@@ -52,6 +52,12 @@ namespace MythMe
                 peoplePivot.Visibility = System.Windows.Visibility.Visible;
                 setupSchedulebutton.Visibility = System.Windows.Visibility.Visible;
                 titleSearchButton.Visibility = System.Windows.Visibility.Visible;
+            }
+            else if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
+            {
+                peoplePivot.Visibility = System.Windows.Visibility.Collapsed;
+                setupSchedulebutton.Visibility = System.Windows.Visibility.Visible;
+                titleSearchButton.Visibility = System.Windows.Visibility.Collapsed;
             }
             else
             {

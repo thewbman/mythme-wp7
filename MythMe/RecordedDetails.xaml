@@ -162,6 +162,7 @@
                         <Button x:Name="setupSchedulebutton" Content="setup schedule"  Tap="setupSchedulebutton_Tap" Foreground="White" BorderBrush="White" />
                         <Button x:Name="guidebutton" Content="program guide"  Tap="guideButton_Tap" Foreground="White" BorderBrush="White" />
                         <Button x:Name="titleSearchButton" Content="title search"  Tap="titleSearchButton_Tap" Foreground="White" BorderBrush="White" />
+                        <Button x:Name="streamButton" Content="stream"  Tap="streamButton_Tap" Foreground="White" BorderBrush="White" Visibility="Collapsed" />
 
                     </StackPanel>
                 </ScrollViewer>

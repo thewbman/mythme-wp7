@@ -79,7 +79,9 @@ namespace MythMe
 		const string AutoRunUserJob2Name = "AutoRunUserJob2";
 		const string AutoRunUserJob3Name = "AutoRunUserJob3";
 		const string AutoRunUserJob4Name = "AutoRunUserJob4";
-		const string DefaultStartOffsetName = "DefaultStartOffset";
+        const string AutoMetadataLookupName = "AutoMetadataLookup";
+		
+        const string DefaultStartOffsetName = "DefaultStartOffset";
 		const string DefaultEndOffsetName = "DefaultEndOffset";
 		const string UserJobDesc1Name = "UserJobDesc1";
 		const string UserJobDesc2Name = "UserJobDesc2";
@@ -165,6 +167,8 @@ namespace MythMe
         const bool AutoRunUserJob2Default = false;
         const bool AutoRunUserJob3Default = false;
         const bool AutoRunUserJob4Default = false;
+        const bool AutoMetadataLookupDefault = true;
+
         const int DefaultStartOffsetDefault = 0;
         const int DefaultEndOffsetDefault = 0;
         const string UserJobDesc1Default = "UserJob1";
@@ -518,6 +522,12 @@ namespace MythMe
             get { return GetValueOrDefault<bool>(AutoRunUserJob4Name, AutoRunUserJob4Default); }
             set { if (AddOrUpdateValue(AutoRunUserJob4Name, value)) { Save(); } }
         }
+        public bool AutoMetadataLookupSetting
+        {
+            get { return GetValueOrDefault<bool>(AutoMetadataLookupName, AutoMetadataLookupDefault); }
+            set { if (AddOrUpdateValue(AutoMetadataLookupName, value)) { Save(); } }
+        }
+
         public int DefaultStartOffsetSetting
         {
             get { return GetValueOrDefault<int>(DefaultStartOffsetName, DefaultStartOffsetDefault); }

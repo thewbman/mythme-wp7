@@ -130,7 +130,14 @@ namespace MythMe
                         s.Third = Uri.UnescapeDataString(filesplit[2]); //title
                         s.Fourth = Uri.UnescapeDataString(filesplit[3].Replace(".mp4", "")); //subtitle
 
-                        s.Name = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Myth/GetChannelIcon?ChanId=" + s.Second;
+                        if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
+                        {
+                            s.Name = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Guide/GetChannelIcon?ChanId=" + s.Second;
+                        }
+                        else
+                        {
+                            s.Name = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Myth/GetChannelIcon?ChanId=" + s.Second;
+                        }
                     }
                     else if (filesplit.Count() == 3)
                     {
@@ -141,7 +148,14 @@ namespace MythMe
                         s.Third = Uri.UnescapeDataString(filesplit[2].Replace(".mp4", "")); ; //title
                         //s.Fourth = filesplit[3].Replace(".mp4", ""); //subtitle
 
-                        s.Name = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Myth/GetChannelIcon?ChanId=" + s.Second;
+                        if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
+                        {
+                            s.Name = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Guide/GetChannelIcon?ChanId=" + s.Second;
+                        }
+                        else
+                        {
+                            s.Name = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Myth/GetChannelIcon?ChanId=" + s.Second;
+                        }
                     }
                     else
                     {

@@ -357,12 +357,160 @@ namespace MythMe
                 return true;
         }
 
+        public string IntToBoolText(string inValue)
+        {
+            if (inValue == "0")
+                return "false";
+            else
+                return "true";
+        }
+        public string IntToBoolText(int inValue)
+        {
+            if (inValue == 0)
+                return "false";
+            else
+                return "true";
+        }
+
         public int BoolToInt(bool inValue)
         {
             if (inValue == false)
                 return 0;
             else
                 return 1;
+        }
+
+        public int BoolTextToInt(string inValue)
+        {
+            if (inValue.ToLower() == "false")
+                return 0;
+            else
+                return 1;
+        }
+
+        public int ApiRecTypeToInt(string inValue, int inRecstatus)
+        {
+            int type = -1;
+
+            /*
+                RuleTypes.Add(new NameContentViewModel(){Name = "Anytime on any channel", Content = "4"});
+                RuleTypes.Add(new NameContentViewModel(){Name = "Anytime on this channel", Content = "3"});
+                RuleTypes.Add(new NameContentViewModel(){Name = "Find one each week", Content = "10"});
+                RuleTypes.Add(new NameContentViewModel(){Name = "Find one each day", Content = "9"});
+                RuleTypes.Add(new NameContentViewModel(){Name = "Force dont record", Content = "8"});
+                RuleTypes.Add(new NameContentViewModel(){Name = "Force record", Content = "7"});
+                RuleTypes.Add(new NameContentViewModel(){Name = "Find one showing", Content = "6"});
+                RuleTypes.Add(new NameContentViewModel(){Name = "This timeslot each week", Content = "5"});
+                RuleTypes.Add(new NameContentViewModel(){Name = "This timeslot each day", Content = "2"});
+                RuleTypes.Add(new NameContentViewModel(){Name = "Only this showing", Content = "1"});
+                RuleTypes.Add(new NameContentViewModel(){Name = "No recording rule", Content = "0"});
+             */
+
+
+            switch (inValue.ToLower())
+            {
+                case "find weekly":
+                    type = 10;
+                    break;
+                case "find daily":
+                    type = 9;
+                    break;
+                case "override recording":
+                    if (inRecstatus == 1)
+                    {
+                        //force record
+                        type = 7;
+                    }
+                    else
+                    {
+                        type = 8;
+                    }
+                    break;
+                case "find one":
+                    type = 6;
+                    break;
+                case "record weekly":
+                    type = 5;
+                    break;
+                case "record all":
+                    type = 4;
+                    break;
+                case "channel record":
+                    type = 3;
+                    break;
+                case "record daily":
+                    type = 2;
+                    break;
+                case "single record":
+                    type = 1;
+                    break;
+                case "not recording":
+                    type = 0;
+                    break;
+            }
+
+
+            return type;
+        }
+
+        public string IntToApiRecType(int inValue)
+        {
+            string type = "not recording";
+
+            /*
+                RuleTypes.Add(new NameContentViewModel(){Name = "Anytime on any channel", Content = "4"});
+                RuleTypes.Add(new NameContentViewModel(){Name = "Anytime on this channel", Content = "3"});
+                RuleTypes.Add(new NameContentViewModel(){Name = "Find one each week", Content = "10"});
+                RuleTypes.Add(new NameContentViewModel(){Name = "Find one each day", Content = "9"});
+                RuleTypes.Add(new NameContentViewModel(){Name = "Force dont record", Content = "8"});
+                RuleTypes.Add(new NameContentViewModel(){Name = "Force record", Content = "7"});
+                RuleTypes.Add(new NameContentViewModel(){Name = "Find one showing", Content = "6"});
+                RuleTypes.Add(new NameContentViewModel(){Name = "This timeslot each week", Content = "5"});
+                RuleTypes.Add(new NameContentViewModel(){Name = "This timeslot each day", Content = "2"});
+                RuleTypes.Add(new NameContentViewModel(){Name = "Only this showing", Content = "1"});
+                RuleTypes.Add(new NameContentViewModel(){Name = "No recording rule", Content = "0"});
+             */
+
+
+            switch (inValue)
+            {
+                case 10:
+                    type = "Find Weekly";
+                    break;
+                case 9:
+                    type = "Find Daily";
+                    break;
+                case 8:
+                    type = "Dont Record";       //not actual text, but is the final else statement  http://code.mythtv.org/doxygen/recordingtypes_8cpp_source.html
+                    break;
+                case 7:
+                    type = "Override Recording";
+                    break;
+                case 6:
+                    type = "Find One";
+                    break;
+                case 5:
+                    type = "Record Weekly";
+                    break;
+                case 4:
+                    type = "Record All";
+                    break;
+                case 3:
+                    type = "Channel Record";
+                    break;
+                case 2:
+                    type = "Record Daily";
+                    break;
+                case 1:
+                    type = "Single Record";
+                    break;
+                case 0:
+                    type = "Not Recording";
+                    break;
+            }
+
+
+            return type;
         }
 
         public void FrontendsFromBackends()

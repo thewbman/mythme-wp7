@@ -14,7 +14,8 @@
     FontSize="{StaticResource PhoneFontSizeLarge}"
     Foreground="White"
     SupportedOrientations="Portrait"  Orientation="Portrait"
-    shell:SystemTray.IsVisible="True">
+    shell:SystemTray.IsVisible="True"
+    >
 
 
 
@@ -127,12 +128,13 @@
             <controls:PivotItem Header="jobs" FontSize="{StaticResource PhoneFontSizeLarge}">
                 <ScrollViewer>
                     <StackPanel>
-                        <toolkit:ToggleSwitch x:Name="autocommflag" Content="commercial flag" Margin="0,-6,0,0" Foreground="Silver" />
-                        <toolkit:ToggleSwitch x:Name="autotranscode" Content="transcode" Margin="0,-26,0,0" Foreground="Silver" />
-                        <toolkit:ToggleSwitch x:Name="autouserjob1" Content="userjob1" Margin="0,-26,0,0" Foreground="Silver" />
-                        <toolkit:ToggleSwitch x:Name="autouserjob2" Content="userjob2" Margin="0,-26,0,0" Foreground="Silver" />
-                        <toolkit:ToggleSwitch x:Name="autouserjob3" Content="userjob3" Margin="0,-26,0,0" Foreground="Silver" />
-                        <toolkit:ToggleSwitch x:Name="autouserjob4" Content="userjob4" Margin="0,-26,0,0" Foreground="Silver" />
+                        <toolkit:ToggleSwitch x:Name="autometalookup" Content="metadata lookup" Margin="0,-6,0,0" Foreground="Silver" />
+                        <toolkit:ToggleSwitch x:Name="autocommflag" Content="commercial flag" Margin="0,-30,0,0" Foreground="Silver" />
+                        <toolkit:ToggleSwitch x:Name="autotranscode" Content="transcode" Margin="0,-30,0,0" Foreground="Silver" />
+                        <toolkit:ToggleSwitch x:Name="autouserjob1" Content="userjob1" Margin="0,-30,0,0" Foreground="Silver" />
+                        <toolkit:ToggleSwitch x:Name="autouserjob2" Content="userjob2" Margin="0,-30,0,0" Foreground="Silver" />
+                        <toolkit:ToggleSwitch x:Name="autouserjob3" Content="userjob3" Margin="0,-30,0,0" Foreground="Silver" />
+                        <toolkit:ToggleSwitch x:Name="autouserjob4" Content="userjob4" Margin="0,-30,0,0" Foreground="Silver" />
                     </StackPanel>
                 </ScrollViewer>
             </controls:PivotItem>

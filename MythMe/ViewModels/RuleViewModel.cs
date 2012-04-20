@@ -38,6 +38,8 @@ namespace MythMe
         public string recgroup { get; set; }
         public int dupmethod { get; set; }
         public int dupin { get; set; }
+        public string dupmethodtext { get; set; }
+        public string dupintext { get; set; }
         public string station { get; set; }
         public string seriesid { get; set; }
         public string programid { get; set; }
@@ -49,6 +51,7 @@ namespace MythMe
         public int autouserjob2 { get; set; }
         public int autouserjob3 { get; set; }
         public int autouserjob4 { get; set; }
+        public int autometalookup { get; set; }
 
         public int findday { get; set; }
         public string findtime { get; set; }
@@ -63,6 +66,11 @@ namespace MythMe
         public string last_delete { get; set; }
         public string storagegroup { get; set; }
 
+        public string season { get; set; }
+        public string episode { get; set; }
+        public string inetref { get; set; }
+        public int filter { get; set; }
+        public string searchtype { get; set; }
 
 
         public event PropertyChangedEventHandler PropertyChanged;
