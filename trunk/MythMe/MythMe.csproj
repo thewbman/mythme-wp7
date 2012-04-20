@@ -59,6 +59,25 @@
     <Reference Include="Microsoft.Phone.Controls, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Interop" />
+    <Reference Include="Microsoft.SilverlightMediaFramework.Compatibility.Phone">
+      <HintPath>..\..\..\Downloads\microsoft-smf-binwp7-2.2012.0214.0\Microsoft.SilverlightMediaFramework.Compatibility.Phone.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SilverlightMediaFramework.Core.Phone">
+      <HintPath>..\..\..\Downloads\microsoft-smf-binwp7-2.2012.0214.0\Microsoft.SilverlightMediaFramework.Core.Phone.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SilverlightMediaFramework.Plugins.Phone">
+      <HintPath>..\..\..\Downloads\microsoft-smf-binwp7-2.2012.0214.0\Microsoft.SilverlightMediaFramework.Plugins.Phone.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SilverlightMediaFramework.Plugins.Progressive.Phone">
+      <HintPath>..\..\..\Downloads\microsoft-smf-binwp7-2.2012.0214.0\Microsoft.SilverlightMediaFramework.Plugins.Progressive.Phone.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SilverlightMediaFramework.Plugins.SmoothStreaming.Phone">
+      <HintPath>..\..\..\Downloads\microsoft-smf-binwp7-2.2012.0214.0\Microsoft.SilverlightMediaFramework.Plugins.SmoothStreaming.Phone.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SilverlightMediaFramework.Utilities.Phone">
+      <HintPath>..\..\..\Downloads\microsoft-smf-binwp7-2.2012.0214.0\Microsoft.SilverlightMediaFramework.Utilities.Phone.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Servicemodel" />
     <Reference Include="System.Servicemodel.Web" />
@@ -126,6 +145,12 @@
     </Compile>
     <Compile Include="Status.xaml.cs">
       <DependentUpon>Status.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Stream.xaml.cs">
+      <DependentUpon>Stream.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="StreamPlayer.xaml.cs">
+      <DependentUpon>StreamPlayer.xaml</DependentUpon>
     </Compile>
     <Compile Include="TiltEffect.cs" />
     <Compile Include="Upcoming.xaml.cs">
@@ -225,6 +250,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Status.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Stream.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StreamPlayer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

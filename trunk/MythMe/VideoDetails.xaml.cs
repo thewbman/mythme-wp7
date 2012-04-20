@@ -401,7 +401,7 @@ namespace MythMe
             if (App.ViewModel.appSettings.ProtoVerSetting > 64)
             {
                 //Fixed this playback at https://github.com/MythTV/mythtv/blob/7422f241a9c62216da5a3cfc698c3f22431cd084/mythtv/programs/mythfrontend/networkcontrol.cpp
-                App.ViewModel.SelectedVideo.fullFilename = "'myth://Videos@" + App.ViewModel.SelectedVideo.host + "/" + filebase + "/" + App.ViewModel.SelectedVideo.filename + "'";
+                App.ViewModel.SelectedVideo.fullFilename = "myth://Videos@" + App.ViewModel.SelectedVideo.host + "/" + App.ViewModel.SelectedVideo.filename + "";
             }
             else
             {

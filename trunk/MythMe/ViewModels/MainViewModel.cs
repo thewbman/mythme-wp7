@@ -84,6 +84,8 @@ namespace MythMe
 
         public string SelectedTitle;
 
+        public string SelectedStream { get; set; }
+
         public PeopleViewModel SelectedPerson;
 
         public string GuideTime { get; set; }

@@ -13,8 +13,8 @@ namespace MythMe
         public string title { get; set; }
         public string subtitle { get; set; }
         public string description { get; set; }
-        //public string season { get; set; }
-        //public string epsiode { get; set; }
+        public string season { get; set; }
+        public string epsiode { get; set; }
         public string category { get; set; }
         public int chanid { get; set; }
         public string channum { get; set; }

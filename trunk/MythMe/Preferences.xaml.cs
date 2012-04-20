@@ -110,6 +110,13 @@ namespace MythMe
         private void UseScript_Checked(object sender, RoutedEventArgs e)
         {
             //MessageBox.Show("You can download a script to improve the reliability of listing the upcoming recordings.  And in the future the script may also be used for additional functionality.  The script can be found on the app homepage under downloads.  (Use the help view to get the app homepage.)", "Download script", MessageBoxButton.OK);
+
+            if (((bool)UseScript.IsChecked)&&(App.ViewModel.appSettings.DBSchemaVerSetting > 1269))
+            {
+                MessageBox.Show("The script is not compatible with MythTV version 0.25.");
+                UseScript.IsChecked = false;
+            }
+
         }
 
         private void UseScriptScreenshots_Checked(object sender, RoutedEventArgs e)

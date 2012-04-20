@@ -49,6 +49,8 @@ namespace MythMe
         }
 
 
+        private string deleteRecorded25String = "http://{0}:{1}/Dvr/RemoveRecorded?StartTime={2}&ChanId={3}&random={4}";
+
         private List<NameContentViewModel> Jobqueue;
         private List<PeopleViewModel> People;
         //private UTF8Encoding encoder;
@@ -133,6 +135,8 @@ namespace MythMe
                         setupSchedulebutton.Visibility = System.Windows.Visibility.Visible;
                         titleSearchButton.Visibility = System.Windows.Visibility.Visible;
 
+                        streamButton.Visibility = System.Windows.Visibility.Collapsed;
+
                         userjob1.Content = App.ViewModel.appSettings.UserJobDesc1Setting;
                         userjob2.Content = App.ViewModel.appSettings.UserJobDesc2Setting;
                         userjob3.Content = App.ViewModel.appSettings.UserJobDesc3Setting;
@@ -155,8 +159,26 @@ namespace MythMe
                         this.GetPeople();
 
                     }
-                    else
+                    else if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
                     {
+                        if (App.ViewModel.SelectedRecordedProgram.recgroup.ToUpper() != "DELETED")
+                        {
+                            deleteButton.Visibility = System.Windows.Visibility.Visible;
+                        }
+
+                        peoplePivot.Visibility = System.Windows.Visibility.Collapsed;
+                        jobsPivot.Visibility = System.Windows.Visibility.Collapsed;
+
+                        setupSchedulebutton.Visibility = System.Windows.Visibility.Visible;
+
+                        titleSearchButton.Visibility = System.Windows.Visibility.Collapsed;
+
+                        undeleteButton.Visibility = System.Windows.Visibility.Collapsed;
+
+                        //streamButton.Visibility = System.Windows.Visibility.Visible;
+                    }
+                    else {
+
                         peoplePivot.Visibility = System.Windows.Visibility.Collapsed;
                         jobsPivot.Visibility = System.Windows.Visibility.Collapsed;
                         setupSchedulebutton.Visibility = System.Windows.Visibility.Collapsed;
@@ -164,6 +186,9 @@ namespace MythMe
 
                         deleteButton.Visibility = System.Windows.Visibility.Collapsed;
                         undeleteButton.Visibility = System.Windows.Visibility.Collapsed;
+
+                        streamButton.Visibility = System.Windows.Visibility.Collapsed;
+
                     }
 
                     HasLoaded = true;
@@ -421,17 +446,38 @@ namespace MythMe
                 return;
             }
 
-            DateTime dateResult;
-            DateTime.TryParse(App.ViewModel.SelectedRecordedProgram.recstartts, out dateResult);
+            string downloadUrl = "";
 
-            //TimeSpan s = (DateTime.Now - new DateTime(1970, 1, 1, ));
-            TimeSpan t = (dateResult - new DateTime(1970, 1, 1));
-            //TimeSpan u = (dateResult - DateTime.Now);
-            Int64 timestamp = (Int64)t.TotalSeconds - (Int64)TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalSeconds;
-            //Int64 timestamp = (Int64)s.TotalSeconds + (Int64)u.TotalSeconds;
+            if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
+            {
+                downloadUrl = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting;
+                downloadUrl += "/Content/GetFile?StorageGroup=";
+                downloadUrl += App.ViewModel.SelectedRecordedProgram.storagegroup;
+                downloadUrl += "&FileName=";
+                downloadUrl += App.ViewModel.SelectedRecordedProgram.chanid;
+                downloadUrl += "_";
+                downloadUrl += App.ViewModel.SelectedRecordedProgram.recstartts.Replace("-","").Replace("-","").Replace(" ","").Replace("T","").Replace(":","").Replace(":","");
+                downloadUrl += ".mp4";
+
+            }
+            else
+            {
+
+                DateTime dateResult;
+                DateTime.TryParse(App.ViewModel.SelectedRecordedProgram.recstartts, out dateResult);
+
+                //TimeSpan s = (DateTime.Now - new DateTime(1970, 1, 1, ));
+                TimeSpan t = (dateResult - new DateTime(1970, 1, 1));
+                //TimeSpan u = (dateResult - DateTime.Now);
+                Int64 timestamp = (Int64)t.TotalSeconds - (Int64)TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalSeconds;
+                //Int64 timestamp = (Int64)s.TotalSeconds + (Int64)u.TotalSeconds;
+
+                downloadUrl = "http://" + App.ViewModel.appSettings.WebserverHostSetting + "/mythweb/pl/stream/" + App.ViewModel.SelectedRecordedProgram.chanid + "/" + timestamp + ".mp4";
+
+            }
 
 
-            Uri transferUri = new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/mythweb/pl/stream/" + App.ViewModel.SelectedRecordedProgram.chanid + "/" + timestamp + ".mp4", UriKind.RelativeOrAbsolute);
+            Uri transferUri = new Uri(downloadUrl, UriKind.Absolute);
 
             // Create the new transfer request, passing in the URI of the file to 
             // be transferred.
@@ -572,13 +618,24 @@ namespace MythMe
 
         private void deleteButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            string datestring = App.ViewModel.SelectedRecordedProgram.recstartts.Replace("T", "").Replace(":", "").Replace(":", "").Replace("-", "").Replace("-", "");
+            if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
+            {
+                string newStartTime = DateTime.Parse(App.ViewModel.SelectedRecordedProgram.recstartts).ToUniversalTime().ToString("s");
 
-            string command = "DELETE_RECORDING " + App.ViewModel.SelectedRecordedProgram.chanid + " " + datestring;
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(String.Format(deleteRecorded25String, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting, newStartTime, App.ViewModel.SelectedRecordedProgram.chanid, App.ViewModel.randText())));
+                webRequest.BeginGetResponse(new AsyncCallback(DeleteCallback), webRequest);
+            }
+            else
+            {
 
+                string datestring = App.ViewModel.SelectedRecordedProgram.recstartts.Replace("T", "").Replace(":", "").Replace(":", "").Replace("-", "").Replace("-", "");
 
-            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=backendCommand&command64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(command)) + "&rand=" + randText()));
-            webRequest.BeginGetResponse(new AsyncCallback(DeleteCallback), webRequest);
+                string command = "DELETE_RECORDING " + App.ViewModel.SelectedRecordedProgram.chanid + " " + datestring;
+
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=backendCommand&command64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(command)) + "&rand=" + randText()));
+                webRequest.BeginGetResponse(new AsyncCallback(DeleteCallback), webRequest);
+            
+            }
         }
 
         private void DeleteCallback(IAsyncResult asynchronousResult)
@@ -654,6 +711,11 @@ namespace MythMe
 
             webopen.Uri = new Uri(App.ViewModel.SelectedRecordedProgram.screenshot);
             webopen.Show();
+        }
+
+        private void streamButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Stream.xaml", UriKind.Relative));
         }
     }
 }

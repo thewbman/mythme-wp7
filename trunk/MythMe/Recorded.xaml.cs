@@ -140,8 +140,10 @@ namespace MythMe
 
             response.GetResponseStream().Close();
             response.Close();
-            
-            
+
+
+            try
+            {
 
                 XDocument xdoc = XDocument.Parse(resultString, LoadOptions.None);
 
@@ -309,8 +311,6 @@ namespace MythMe
                 });
 
 
-                try
-                {
 
             }
             catch (Exception ex)

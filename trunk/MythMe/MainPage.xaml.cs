@@ -72,7 +72,7 @@ namespace MythMe
 
                     NavigationService.Navigate(new Uri("/Preferences.xaml", UriKind.Relative));
                 }
-                else if ((!App.ViewModel.appSettings.PromptScriptSetting)&&(!App.ViewModel.appSettings.UseScriptSetting) && (App.ViewModel.appSettings.AppStartsSetting > 4))
+                else if ((!App.ViewModel.appSettings.PromptScriptSetting)&&(!App.ViewModel.appSettings.UseScriptSetting) && (App.ViewModel.appSettings.AppStartsSetting > 4) && (App.ViewModel.appSettings.DBSchemaVerSetting <= 1269))
                 {
                     App.ViewModel.appSettings.PromptScriptSetting = true;
 
@@ -120,41 +120,7 @@ namespace MythMe
             MasterBackendTitle.Text = App.ViewModel.appSettings.MasterBackendIpSetting;
 
 
-            menuListItems = new List<NameContentViewModel>();
-
-            menuListItems.Add(new NameContentViewModel() { Content = "remote" });
-            menuListItems.Add(new NameContentViewModel() { Content = "recorded" });
-            menuListItems.Add(new NameContentViewModel() { Content = "upcoming" });
-            menuListItems.Add(new NameContentViewModel() { Content = "guide" });
-            //menuListItems.Add(new NameContentViewModel() {Content = "music"});
-
-            if ((App.ViewModel.appSettings.UseScriptSetting) || (App.ViewModel.appSettings.DBSchemaVerSetting > 1269))
-            {
-                menuListItems.Add(new NameContentViewModel() { Content = "videos" });
-            }
-
-            if (App.ViewModel.appSettings.UseScriptSetting)
-            {
-                menuListItems.Add(new NameContentViewModel() { Content = "search" });
-                menuListItems.Add(new NameContentViewModel() { Content = "people" });
-            }
-
-            menuListItems.Add(new NameContentViewModel() { Content = "status" });
-
-            if (App.ViewModel.appSettings.UseScriptSetting)
-            {
-                menuListItems.Add(new NameContentViewModel() { Content = "log" });
-            }
-
-            if (App.ViewModel.appSettings.AllowDownloadsSetting)
-            {
-                menuListItems.Add(new NameContentViewModel() { Content = "downloads" });
-            }
-
-            //menuListItems.Add(new NameContentViewModel() { Content = "preferences" });
-            //menuListItems.Add(new NameContentViewModel() { Content = "help" });
-
-            menuList.ItemsSource = menuListItems;
+            this.UpdateMenu();
 
 
             if ((!GotSettings)&&(App.ViewModel.appSettings.MasterBackendIpSetting.Length > 0))
@@ -174,6 +140,11 @@ namespace MythMe
             if ((App.ViewModel.appSettings.UseScriptScreenshotsSetting) && (!App.ViewModel.appSettings.UseScriptSetting))
             {
                 App.ViewModel.appSettings.UseScriptScreenshotsSetting = false;
+            }
+
+            if ((App.ViewModel.appSettings.UseScriptSetting) && (App.ViewModel.appSettings.DBSchemaVerSetting > 1269))
+            {
+                App.ViewModel.appSettings.UseScriptSetting = false;
             }
 
         }
@@ -264,6 +235,9 @@ namespace MythMe
                             case "AutoRunUserJob4":
                                 App.ViewModel.appSettings.AutoRunUserJob4Setting = App.ViewModel.functions.IntToBool(singleValueElement.FirstNode.ToString());
                                 break;
+                            case "AutoMetadataLookup":
+                                App.ViewModel.appSettings.AutoMetadataLookupSetting = App.ViewModel.functions.IntToBool(singleValueElement.FirstNode.ToString());
+                                break;
 
                             case "DefaultStartOffset":
                                 App.ViewModel.appSettings.DefaultStartOffsetSetting = int.Parse(singleValueElement.FirstNode.ToString());
@@ -334,6 +308,9 @@ namespace MythMe
                             case "AutoRunUserJob4":
                                 App.ViewModel.appSettings.AutoRunUserJob4Setting = App.ViewModel.functions.IntToBool(singleValueElement.Element("Value").FirstNode.ToString());
                                 break;
+                            case "AutoMetadataLookup":
+                                App.ViewModel.appSettings.AutoMetadataLookupSetting = App.ViewModel.functions.IntToBool(singleValueElement.Element("Value").FirstNode.ToString());
+                                break;
 
                             case "MythXML_key":
                                 App.ViewModel.appSettings.MythwebXmlKeySetting = singleValueElement.Element("Value").FirstNode.ToString();
@@ -390,6 +367,8 @@ namespace MythMe
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
                     performanceProgressBarCustomized.IsIndeterminate = false;
+
+                    this.UpdateMenu();
                 });
 
             }
@@ -706,6 +685,8 @@ namespace MythMe
                     performanceProgressBarCustomized.IsIndeterminate = false;
                     //MessageBox.Show("finished getting settings for "+App.ViewModel.Backends.Count+" hosts");
 
+                    this.UpdateMenu();
+
                 }
                 else
                 {
@@ -822,6 +803,8 @@ namespace MythMe
                     performanceProgressBarCustomized.IsIndeterminate = false;
                     //MessageBox.Show("finished getting settings for "+App.ViewModel.Backends.Count+" hosts");
 
+                    this.UpdateMenu();
+
                 }
                 else
                 {
@@ -895,6 +878,9 @@ namespace MythMe
                 case "downloads":
                     NavigationService.Navigate(new Uri("/Downloads.xaml", UriKind.Relative));
                     break;
+                case "stream":
+                    NavigationService.Navigate(new Uri("/Stream.xaml", UriKind.Relative));
+                    break;
                 case "preferences":
                     NavigationService.Navigate(new Uri("/Preferences.xaml", UriKind.Relative));
                     break;
@@ -914,5 +900,58 @@ namespace MythMe
         {
             NavigationService.Navigate(new Uri("/Help.xaml", UriKind.Relative));
         }
+
+
+        private void UpdateMenu()
+        {
+
+            menuListItems = new List<NameContentViewModel>();
+
+            menuListItems.Add(new NameContentViewModel() { Content = "remote" });
+            menuListItems.Add(new NameContentViewModel() { Content = "recorded" });
+            menuListItems.Add(new NameContentViewModel() { Content = "upcoming" });
+            menuListItems.Add(new NameContentViewModel() { Content = "guide" });
+            //menuListItems.Add(new NameContentViewModel() {Content = "music"});
+
+            if ((App.ViewModel.appSettings.UseScriptSetting) || (App.ViewModel.appSettings.DBSchemaVerSetting > 1269))
+            {
+                menuListItems.Add(new NameContentViewModel() { Content = "videos" });
+            }
+
+            if (App.ViewModel.appSettings.UseScriptSetting)
+            {
+                menuListItems.Add(new NameContentViewModel() { Content = "search" });
+                menuListItems.Add(new NameContentViewModel() { Content = "people" });
+            }
+
+            menuListItems.Add(new NameContentViewModel() { Content = "status" });
+
+            if ((App.ViewModel.appSettings.UseScriptSetting) )
+            {
+                menuListItems.Add(new NameContentViewModel() { Content = "log" });
+            }
+
+            if (App.ViewModel.appSettings.AllowDownloadsSetting)
+            {
+                menuListItems.Add(new NameContentViewModel() { Content = "downloads" });
+            }
+
+            if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
+            {
+                //stream format from mythtv doesnt work on WP7
+                //menuListItems.Add(new NameContentViewModel() { Content = "stream" });
+            }
+
+            //menuListItems.Add(new NameContentViewModel() { Content = "preferences" });
+            //menuListItems.Add(new NameContentViewModel() { Content = "help" });
+
+
+
+            menuList.ItemsSource = menuListItems;
+
+        }
+
+
+
     }
 }

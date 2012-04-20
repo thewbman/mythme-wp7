@@ -54,6 +54,12 @@ namespace MythMe
                 setupSchedulebutton.Visibility = System.Windows.Visibility.Visible;
                 titleSearchButton.Visibility = System.Windows.Visibility.Visible;
             }
+            else if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
+            {
+                peoplePivot.Visibility = System.Windows.Visibility.Collapsed;
+                setupSchedulebutton.Visibility = System.Windows.Visibility.Visible;
+                titleSearchButton.Visibility = System.Windows.Visibility.Collapsed;
+            }
             else
             {
                 peoplePivot.Visibility = System.Windows.Visibility.Collapsed;
