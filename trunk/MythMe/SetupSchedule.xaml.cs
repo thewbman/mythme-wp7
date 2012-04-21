@@ -23,6 +23,7 @@ using Microsoft.Phone.Controls.Primitives;
 using System.Xml.Linq;
 using System.Security.Cryptography;
 using System.Runtime.Serialization.Json;
+using Microsoft.Phone.Shell;
 
 namespace MythMe
 {
@@ -58,6 +59,7 @@ namespace MythMe
         private string disableRule25String = "http://{0}:{1}/Dvr/DisableRecordSchedule";  //POST
         private string enableRule25String = "http://{0}:{1}/Dvr/EnableRecordSchedule";  //POST
 
+
         private bool HasLoaded;
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -85,14 +87,88 @@ namespace MythMe
             autouserjob4.Content = App.ViewModel.appSettings.UserJobDesc4Setting;
 
 
+            ApplicationBar = new ApplicationBar();
+
+            ApplicationBar.Mode = ApplicationBarMode.Default;
+            ApplicationBar.Opacity = 1.0; 
+            ApplicationBar.IsVisible = true;
+            ApplicationBar.IsMenuEnabled = true;
+            ApplicationBar.BackgroundColor = Color.FromArgb(255,40,0,12);
+            ApplicationBar.ForegroundColor = Colors.White;
+
+            ApplicationBarIconButton appbarBack = new ApplicationBarIconButton();
+            appbarBack.IconUri = new Uri("/Images/appbar.back.rest.png", UriKind.Relative);
+            appbarBack.Text = "go back";
+            appbarBack.Click += new EventHandler(appbarBack_Click);
+            ApplicationBar.Buttons.Add(appbarBack);
+
+            ApplicationBarIconButton appbarSave = new ApplicationBarIconButton();
+            appbarSave.IconUri = new Uri("/Images/appbar.save.rest.png", UriKind.Relative);
+            appbarSave.Text = "save";
+            appbarSave.Click += new EventHandler(appbarSave_Click);
+            ApplicationBar.Buttons.Add(appbarSave);
+
+            ApplicationBarIconButton appbarDelete = new ApplicationBarIconButton();
+            appbarDelete.IconUri = new Uri("/Images/appbar.delete.rest.png", UriKind.Relative);
+            appbarDelete.Text = "delete";
+            appbarDelete.Click += new EventHandler(appbarDelete_Click);
+            ApplicationBar.Buttons.Add(appbarDelete);
+
+            ApplicationBarIconButton mythweb = new ApplicationBarIconButton();
+            mythweb.IconUri = new Uri("/Images/website.png", UriKind.Relative);
+            mythweb.Text = "mythweb";
+            mythweb.Click += new EventHandler(mythweb_Click);
+            ApplicationBar.Buttons.Add(mythweb);
+
+
             if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
             {
                 autometalookup.Visibility = System.Windows.Visibility.Visible;
+
+                //0.25 Services API wont create new force record rules, it overwrites the parent rule
+
+
+                ApplicationBarMenuItem enableRule = new ApplicationBarMenuItem();
+                enableRule.Text = "enable rule";
+                enableRule.Click += new EventHandler(enableRule_Click);
+                ApplicationBar.MenuItems.Add(enableRule);
+
+                ApplicationBarMenuItem disableRule = new ApplicationBarMenuItem();
+                disableRule.Text = "disable rule";
+                disableRule.Click += new EventHandler(disableRule_Click);
+                ApplicationBar.MenuItems.Add(disableRule);
             }
             else
             {
                 autometalookup.Visibility = System.Windows.Visibility.Collapsed;
+
+                ApplicationBarMenuItem forceRecord = new ApplicationBarMenuItem();
+                forceRecord.Text = "force record";
+                forceRecord.Click += new EventHandler(forceRecord_Click);
+                ApplicationBar.MenuItems.Add(forceRecord);
+
+                ApplicationBarMenuItem forceDontRecord = new ApplicationBarMenuItem();
+                forceDontRecord.Text = "force don't record";
+                forceDontRecord.Click += new EventHandler(forceDontRecord_Click);
+                ApplicationBar.MenuItems.Add(forceDontRecord);
+
+                ApplicationBarMenuItem forgetOld = new ApplicationBarMenuItem();
+                forgetOld.Text = "forget old";
+                forgetOld.Click += new EventHandler(forgetOld_Click);
+                ApplicationBar.MenuItems.Add(forgetOld);
+
+                ApplicationBarMenuItem neverRecord = new ApplicationBarMenuItem();
+                neverRecord.Text = "never record";
+                neverRecord.Click += new EventHandler(neverRecord_Click);
+                ApplicationBar.MenuItems.Add(neverRecord);
             }
+
+            /*
+            ApplicationBarMenuItem mythweb = new ApplicationBarMenuItem();
+            mythweb.Text = "mythweb";
+            mythweb.Click += new EventHandler(mythweb_Click);
+            ApplicationBar.MenuItems.Add(mythweb);
+             */
 
 
             if (!HasLoaded)
@@ -332,7 +408,7 @@ namespace MythMe
                 if (recRuleElement.Element("Day").FirstNode != null) recRule.findday = int.Parse(recRuleElement.Element("Day").FirstNode.ToString());
                 if (recRuleElement.Element("Time").FirstNode != null) recRule.findtime = recRuleElement.Element("Time").FirstNode.ToString();
                 if (recRuleElement.Element("FindId").FirstNode != null) recRule.findid = int.Parse(recRuleElement.Element("FindId").FirstNode.ToString());
-                if (recRuleElement.Element("Type").FirstNode != null) recRule.type = App.ViewModel.functions.ApiRecTypeToInt(recRuleElement.Element("Type").FirstNode.ToString(), App.ViewModel.SelectedSetupProgram.recordid);
+                if (recRuleElement.Element("Type").FirstNode != null) recRule.type = App.ViewModel.functions.ApiRecTypeToInt(recRuleElement.Element("Type").FirstNode.ToString(), App.ViewModel.SelectedSetupProgram.recstatus);
                 if (recRuleElement.Element("SearchType").FirstNode != null) recRule.searchtype = recRuleElement.Element("SearchType").FirstNode.ToString();
                 
                 if (recRuleElement.Element("RecPriority").FirstNode != null) recRule.recpriority = int.Parse(recRuleElement.Element("RecPriority").FirstNode.ToString());
@@ -491,6 +567,8 @@ namespace MythMe
             CurrentRule.playgroup = "Default";
             CurrentRule.storagegroup = "Default";
 
+            CurrentRule.filter = 0;
+
             CurrentRule.recordid = -1;
 
             this.Display();
@@ -510,7 +588,8 @@ namespace MythMe
                 RuleTypes.Add(new NameContentViewModel(){Name = "This timeslot each week", Content = "5"});
                 RuleTypes.Add(new NameContentViewModel(){Name = "This timeslot each day", Content = "2"});
                 RuleTypes.Add(new NameContentViewModel(){Name = "Only this showing", Content = "1"});
-                RuleTypes.Add(new NameContentViewModel(){Name = "No recording rule", Content = "0"});
+                RuleTypes.Add(new NameContentViewModel() { Name = "No recording rule", Content = "0" });
+
             }
             else if ((CurrentRule.type < 7)||(CurrentRule.type > 8))
             {
@@ -528,11 +607,13 @@ namespace MythMe
             {
                 RuleTypes.Add(new NameContentViewModel(){Name = "Force record", Content = "7"});
                 //RuleTypes.Add(new NameContentViewModel(){Name = "Force don't record", Content = "8"});
+
             }
             else if(CurrentRule.type == 8)
             {
                 //RuleTypes.Add(new NameContentViewModel(){Name = "Force record", Content = "7"});
                 RuleTypes.Add(new NameContentViewModel(){Name = "Force don't record", Content = "8"});
+
             }
 
 
@@ -695,6 +776,11 @@ namespace MythMe
             NewRule.title = App.ViewModel.SelectedSetupProgram.title;
             NewRule.transcoder = CurrentRule.transcoder;
 
+            NewRule.season = App.ViewModel.SelectedSetupProgram.season;
+            NewRule.episode = App.ViewModel.SelectedSetupProgram.episode;
+            NewRule.inetref = App.ViewModel.SelectedSetupProgram.inetref;
+            NewRule.filter = CurrentRule.filter;
+
             /*
             NewRule.prefinput
             NewRule.recordid
@@ -832,7 +918,7 @@ namespace MythMe
         {
             //MessageBox.Show("InsertRule");
 
-            if(NewRule == null)
+            if (NewRule == null)
                 this.CreateNewRule();
 
             if (NewRule == null)
@@ -852,11 +938,13 @@ namespace MythMe
 
                 if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
                 {
-                    Deployment.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        MessageBox.Show("Not yet supprt in 0.25");
 
-                    });
+                    HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(String.Format(addRule25String, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting)));
+                    webRequest.Method = "POST";
+                    webRequest.ContentType = "application/x-www-form-urlencoded";
+
+                    // Start the request
+                    webRequest.BeginGetRequestStream(new AsyncCallback(AddRuleStreamCallback), webRequest);
                 }
                 else
                 {
@@ -927,7 +1015,97 @@ namespace MythMe
                     }
                 }
             }
+
+        }
+        private void AddRuleStreamCallback(IAsyncResult asynchronousResult)
+        {
+            HttpWebRequest webRequest = (HttpWebRequest)asynchronousResult.AsyncState;
+            // End the stream request operation
+            System.IO.Stream postStream = webRequest.EndGetRequestStream(asynchronousResult);
+
+            string newStartTime = DateTime.Parse(App.ViewModel.SelectedSetupProgram.starttime).ToUniversalTime().ToString("s");
+
+            // Create the post data
+            string postData = "";
+            postData += "ChanId=" + NewRule.chanid;
+            postData += "&StartTime=" + newStartTime;
+            postData += "&ParentId=" + NewRule.parentid;
+            postData += "&Inactive=" + App.ViewModel.functions.IntToBoolText(NewRule.inactive);
+            postData += "&Season=" + NewRule.season;
+            postData += "&Episode=" + NewRule.episode;
+            postData += "&Inetref=" + NewRule.inetref;
             
+            //postData += "&FindId=" + NewRule.findid;
+            postData += "&Type=" + App.ViewModel.functions.IntToApiRecType(NewRule.type);
+            postData += "&SearchType=" + "None";
+            postData += "&RecPriority=" + NewRule.recpriority;
+            postData += "&PreferredInput=" + NewRule.prefinput;
+            postData += "&StartOffset=" + NewRule.startoffset;
+            postData += "&EndOffset=" + NewRule.endoffset;
+            //dupmethod
+            //dupi
+            postData += "&Filter=" + NewRule.filter;
+
+            postData += "&RecProfile=" + NewRule.profile;
+            postData += "&RecGroup=" + NewRule.recgroup;
+            postData += "&StorageGroup=" + NewRule.storagegroup;
+            postData += "&PlayGroup=" + NewRule.playgroup;
+            postData += "&AutoExpire=" + App.ViewModel.functions.IntToBoolText(NewRule.autoexpire);
+            postData += "&MaxEpisodes=" + NewRule.maxepisodes;
+            postData += "&MaxNewest=" + App.ViewModel.functions.IntToBoolText(NewRule.maxnewest);
+
+            postData += "&AutoCommflag=" + App.ViewModel.functions.IntToBoolText(NewRule.autocommflag);
+            postData += "&AutoTranscode=" + App.ViewModel.functions.IntToBoolText(NewRule.autotranscode);
+            postData += "&AutoMetaLookup=" + App.ViewModel.functions.IntToBoolText(NewRule.autometalookup);
+            postData += "&AutoUserJob1=" + App.ViewModel.functions.IntToBoolText(NewRule.autouserjob1);
+            postData += "&AutoUserJob2=" + App.ViewModel.functions.IntToBoolText(NewRule.autouserjob2);
+            postData += "&AutoUserJob3=" + App.ViewModel.functions.IntToBoolText(NewRule.autouserjob3);
+            postData += "&AutoUserJob4=" + App.ViewModel.functions.IntToBoolText(NewRule.autouserjob4);
+
+            postData += "&Transcoder=" + NewRule.transcoder;
+
+
+            byte[] byteArray = Encoding.UTF8.GetBytes(postData);
+
+            // Add the post data to the web request
+            postStream.Write(byteArray, 0, byteArray.Length);
+            postStream.Close();
+
+            // Start the web request
+            webRequest.BeginGetResponse(new AsyncCallback(AddRuleCallback), webRequest);
+        }
+        private void AddRuleCallback(IAsyncResult asynchronousResult)
+        {
+            try
+            {
+                HttpWebRequest webRequest = (HttpWebRequest)asynchronousResult.AsyncState;
+                HttpWebResponse response;
+
+                // End the get response operation
+                response = (HttpWebResponse)webRequest.EndGetResponse(asynchronousResult);
+                System.IO.Stream streamResponse = response.GetResponseStream();
+                StreamReader streamReader = new StreamReader(streamResponse);
+                var Response = streamReader.ReadToEnd();
+                streamResponse.Close();
+                streamReader.Close();
+                response.Close();
+
+
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    //MessageBox.Show("Success: " + Response, "SUCCESS", MessageBoxButton.OK);
+
+                    this.Perform(() => ClosePage(), 10000);
+                });
+
+            }
+            catch (WebException e)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("Error: " + e.ToString(), "ERROR", MessageBoxButton.OK);
+                });
+            }
         }
         private void InsertCallback(IAsyncResult asynchronousResult)
         {
@@ -1184,6 +1362,103 @@ namespace MythMe
         }
 
 
+        private void EnableRule()
+        {
+
+            savingPopup.IsOpen = true;
+            performanceProgressBarCustomized.IsIndeterminate = true;
+
+            if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
+            {
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(String.Format(enableRule25String, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting)));
+                webRequest.Method = "POST";
+                webRequest.ContentType = "application/x-www-form-urlencoded";
+
+                // Start the request
+                webRequest.BeginGetRequestStream(new AsyncCallback(EnableRuleStreamCallback), webRequest);
+            }
+            else
+            {
+
+                MessageBox.Show("This option is not avaible for pre-0.25 versions 0f MythTV");
+                
+            }
+        }
+        private void DisableRule()
+        {
+
+            savingPopup.IsOpen = true;
+            performanceProgressBarCustomized.IsIndeterminate = true;
+
+            if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
+            {
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(String.Format(disableRule25String, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting)));
+                webRequest.Method = "POST";
+                webRequest.ContentType = "application/x-www-form-urlencoded";
+
+                // Start the request
+                webRequest.BeginGetRequestStream(new AsyncCallback(EnableRuleStreamCallback), webRequest);
+            }
+            else
+            {
+
+                MessageBox.Show("This option is not avaible for pre-0.25 versions 0f MythTV");
+
+            }
+        }
+        private void EnableRuleStreamCallback(IAsyncResult asynchronousResult)
+        {
+            HttpWebRequest webRequest = (HttpWebRequest)asynchronousResult.AsyncState;
+            // End the stream request operation
+            System.IO.Stream postStream = webRequest.EndGetRequestStream(asynchronousResult);
+
+            // Create the post data
+            // Demo POST data 
+            string postData = "RecordId=" + CurrentRule.recordid.ToString();
+
+            byte[] byteArray = Encoding.UTF8.GetBytes(postData);
+
+            // Add the post data to the web request
+            postStream.Write(byteArray, 0, byteArray.Length);
+            postStream.Close();
+
+            // Start the web request
+            webRequest.BeginGetResponse(new AsyncCallback(EnableRuleCallback), webRequest);
+        }
+        private void EnableRuleCallback(IAsyncResult asynchronousResult)
+        {
+            try
+            {
+                HttpWebRequest webRequest = (HttpWebRequest)asynchronousResult.AsyncState;
+                HttpWebResponse response;
+
+                // End the get response operation
+                response = (HttpWebResponse)webRequest.EndGetResponse(asynchronousResult);
+                System.IO.Stream streamResponse = response.GetResponseStream();
+                StreamReader streamReader = new StreamReader(streamResponse);
+                var Response = streamReader.ReadToEnd();
+                streamResponse.Close();
+                streamReader.Close();
+                response.Close();
+
+
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    //MessageBox.Show("Success: " + Response, "SUCCESS", MessageBoxButton.OK);
+
+                    this.Perform(() => ClosePage(), 10000);
+                });
+
+            }
+            catch (WebException e)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("Error: " + e.ToString(), "ERROR", MessageBoxButton.OK);
+                });
+            }
+        }
+
         private void Reschedule()
         {
             try
@@ -1294,6 +1569,7 @@ namespace MythMe
                 this.CreateNewRule();
 
                 NewRule.type = 7;
+                NewRule.parentid = App.ViewModel.SelectedSetupProgram.recordid;
 
                 this.InsertRule();
             }
@@ -1320,6 +1596,7 @@ namespace MythMe
                 this.CreateNewRule();
 
                 NewRule.type = 8;
+                NewRule.parentid = App.ViewModel.SelectedSetupProgram.recordid;
 
                 this.InsertRule();
             }
@@ -1354,7 +1631,21 @@ namespace MythMe
             }
         }
 
+        private void enableRule_Click(object sender, EventArgs e)
+        {
+            this.EnableRule();
+        }
+
+        private void disableRule_Click(object sender, EventArgs e)
+        {
+            this.DisableRule();
+        }
+
         private void mythweb_Click(object sender, EventArgs e)
+        {
+            this.OpenMythweb();
+        }
+        private void OpenMythweb()
         {
             try
             {
@@ -1379,69 +1670,5 @@ namespace MythMe
         }
 
 
-        private void SendPost()
-        {
-            var url = "http://192.168.1.105:6544/Dvr/RemoveRecordSchedule";
-
-            // Create the web request object
-            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
-            webRequest.Method = "POST";
-            webRequest.ContentType = "application/x-www-form-urlencoded";
-
-            // Start the request
-            webRequest.BeginGetRequestStream(new AsyncCallback(GetRequestStreamCallback), webRequest);
-        }
-
-        private void GetRequestStreamCallback(IAsyncResult asynchronousResult)
-        {
-            HttpWebRequest webRequest = (HttpWebRequest)asynchronousResult.AsyncState;
-            // End the stream request operation
-            System.IO.Stream postStream = webRequest.EndGetRequestStream(asynchronousResult);
-
-            // Create the post data
-            // Demo POST data 
-            string postData = "Name=ASDF&RecordId=7102";
-
-            byte[] byteArray = Encoding.UTF8.GetBytes(postData);
-
-            // Add the post data to the web request
-            postStream.Write(byteArray, 0, byteArray.Length);
-            postStream.Close();
-
-            // Start the web request
-            webRequest.BeginGetResponse(new AsyncCallback(GetResponseCallback), webRequest);
-        }
-
-        private void GetResponseCallback(IAsyncResult asynchronousResult)
-        {
-            try
-            {
-                HttpWebRequest webRequest = (HttpWebRequest)asynchronousResult.AsyncState;
-                HttpWebResponse response;
-
-                // End the get response operation
-                response = (HttpWebResponse)webRequest.EndGetResponse(asynchronousResult);
-                System.IO.Stream streamResponse = response.GetResponseStream();
-                StreamReader streamReader = new StreamReader(streamResponse);
-                var Response = streamReader.ReadToEnd();
-                streamResponse.Close();
-                streamReader.Close();
-                response.Close();
-
-
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
-                {
-                    MessageBox.Show("Success: " + Response, "SUCCESS", MessageBoxButton.OK);
-                });
-
-            }
-            catch (WebException e)
-            {
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
-                {
-                    MessageBox.Show("Error: " + e.ToString(), "ERROR", MessageBoxButton.OK);
-                });
-            }
-        }
     }
 }

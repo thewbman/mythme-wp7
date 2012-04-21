@@ -305,6 +305,7 @@
     <Resource Include="Images\mute.png" />
     <Resource Include="Images\volup.png" />
     <Resource Include="Images\voldown.png" />
+    <Content Include="Images\website.png" />
     <Content Include="MythMe_173.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

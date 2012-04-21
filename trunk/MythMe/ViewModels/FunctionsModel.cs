@@ -419,11 +419,11 @@ namespace MythMe
                     if (inRecstatus == 1)
                     {
                         //force record
-                        type = 7;
+                        type = 8;
                     }
                     else
                     {
-                        type = 8;
+                        type = 7;
                     }
                     break;
                 case "find one":
