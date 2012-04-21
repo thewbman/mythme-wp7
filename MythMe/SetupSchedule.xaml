@@ -9,7 +9,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:toolkit2="clr-namespace:Microsoft.Phone.Controls.Primitives;assembly=Microsoft.Phone.Controls.Toolkit"
-    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeLarge}"
     Foreground="White"
@@ -142,12 +142,14 @@
         </controls:Pivot>
     </Grid>
 
+    <!--
+    moved to c# so i can hide some rows for 0.25
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" BackgroundColor="#28000C" ForegroundColor="White" >
             <shell:ApplicationBarIconButton x:Name="appbarBack" IconUri="/Images/appbar.back.rest.png" Text="go back" Click="appbarBack_Click" />
             <shell:ApplicationBarIconButton x:Name="appbarSave" IconUri="/Images/appbar.save.rest.png" Text="save" Click="appbarSave_Click" />
             <shell:ApplicationBarIconButton x:Name="appbarDelete" IconUri="/Images/appbar.delete.rest.png" Text="delete" Click="appbarDelete_Click" />
-            <!---->
+            
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem x:Name="forceRecord" Text="force record" Click="forceRecord_Click"/>
                 <shell:ApplicationBarMenuItem x:Name="forceDontRecord" Text="force don't record" Click="forceDontRecord_Click"/>
@@ -157,5 +159,5 @@
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
-    
+    -->
 </phone:PhoneApplicationPage>

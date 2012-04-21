@@ -312,6 +312,13 @@ namespace MythMe
                                 App.ViewModel.appSettings.AutoMetadataLookupSetting = App.ViewModel.functions.IntToBool(singleValueElement.Element("Value").FirstNode.ToString());
                                 break;
 
+                            case "DefaultStartOffset":
+                                App.ViewModel.appSettings.DefaultStartOffsetSetting = int.Parse(singleValueElement.Element("Value").FirstNode.ToString());
+                                break;
+                            case "DefaultEndOffset":
+                                App.ViewModel.appSettings.DefaultEndOffsetSetting = int.Parse(singleValueElement.Element("Value").FirstNode.ToString());
+                                break;
+
                             case "MythXML_key":
                                 App.ViewModel.appSettings.MythwebXmlKeySetting = singleValueElement.Element("Value").FirstNode.ToString();
                                 break;

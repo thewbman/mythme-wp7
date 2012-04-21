@@ -14,13 +14,14 @@ namespace MythMe
         public string subtitle { get; set; }
         public string description { get; set; }
         public string season { get; set; }
-        public string epsiode { get; set; }
+        public string episode { get; set; }
         public string category { get; set; }
         public int chanid { get; set; }
         public string channum { get; set; }
         public int channumint { get; set; }
         public string callsign { get; set; }
         public string channame { get; set; }
+        public string inetref { get; set; }
 
         public string filename { get; set; }
         public Int64 filesize { get; set; }
