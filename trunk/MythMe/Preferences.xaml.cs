@@ -44,6 +44,7 @@ namespace MythMe
             WebserverHost.Text = App.ViewModel.appSettings.WebserverHostSetting;
             UseScript.IsChecked = App.ViewModel.appSettings.UseScriptSetting;
             PythonFileName.Text = App.ViewModel.appSettings.PythonFileSetting;
+            UseServicesUpcoming.IsChecked = App.ViewModel.appSettings.UseServicesUpcomingSetting;
             AllowDownloads.IsChecked = App.ViewModel.appSettings.AllowDownloadsSetting;
 
             //images
@@ -57,6 +58,28 @@ namespace MythMe
             if ((WebserverHost.Text == "") && (App.ViewModel.appSettings.WebserverHostSetting == ""))
             {
                 WebserverHost.Text = App.ViewModel.appSettings.MasterBackendIpSetting;
+            }
+
+
+            if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
+            {
+                UseScript.Visibility = System.Windows.Visibility.Collapsed;
+                scriptcaption.Visibility = System.Windows.Visibility.Collapsed;
+                PythonFileName.Visibility = System.Windows.Visibility.Collapsed;
+
+                UseServicesUpcoming.Visibility = System.Windows.Visibility.Visible;
+
+                UseScriptScreenshots.Visibility = System.Windows.Visibility.Collapsed;
+            }
+            else
+            {
+                UseScript.Visibility = System.Windows.Visibility.Visible;
+                scriptcaption.Visibility = System.Windows.Visibility.Visible;
+                PythonFileName.Visibility = System.Windows.Visibility.Visible;
+
+                UseServicesUpcoming.Visibility = System.Windows.Visibility.Collapsed;
+
+                UseScriptScreenshots.Visibility = System.Windows.Visibility.Visible;
             }
 
         }
@@ -82,6 +105,7 @@ namespace MythMe
             App.ViewModel.appSettings.UseScriptSetting = (bool)UseScript.IsChecked;
             App.ViewModel.appSettings.PythonFileSetting = PythonFileName.Text;
             App.ViewModel.appSettings.AllowDownloadsSetting = (bool)AllowDownloads.IsChecked;
+            App.ViewModel.appSettings.UseServicesUpcomingSetting = (bool)UseServicesUpcoming.IsChecked;
 
 
             //images
@@ -148,6 +172,12 @@ namespace MythMe
             if ((bool)AllowDownloads.IsChecked)
                 MessageBox.Show("In order to play videos on your phone you need to transcode the recordings to a mobile-friendly format.  You can download the script to do that from the app homepage under downloads.", "Download", MessageBoxButton.OK);
         
+        }
+
+        private void UseServicesUpcoming_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            if ((bool)UseServicesUpcoming.IsChecked)
+                MessageBox.Show("If you are getting errors when loading the Upcoming program list, are connecting to a development version of MythTV or are trying to reduce bandwith usage it is recommend to enable this setting.  You will only see the programs that will actually be recorded and not all programs that match a recording rule.", "XML for upcoming", MessageBoxButton.OK);
         }
     }
 }

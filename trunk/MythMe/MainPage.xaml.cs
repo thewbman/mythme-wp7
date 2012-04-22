@@ -142,9 +142,13 @@ namespace MythMe
                 App.ViewModel.appSettings.UseScriptScreenshotsSetting = false;
             }
 
-            if ((App.ViewModel.appSettings.UseScriptSetting) && (App.ViewModel.appSettings.DBSchemaVerSetting > 1269))
+            if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
             {
                 App.ViewModel.appSettings.UseScriptSetting = false;
+            }
+            else
+            {
+                App.ViewModel.appSettings.UseServicesUpcomingSetting = false;
             }
 
         }

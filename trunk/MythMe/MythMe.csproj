@@ -59,24 +59,6 @@
     <Reference Include="Microsoft.Phone.Controls, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Interop" />
-    <Reference Include="Microsoft.SilverlightMediaFramework.Compatibility.Phone">
-      <HintPath>..\..\..\Downloads\microsoft-smf-binwp7-2.2012.0214.0\Microsoft.SilverlightMediaFramework.Compatibility.Phone.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.SilverlightMediaFramework.Core.Phone">
-      <HintPath>..\..\..\Downloads\microsoft-smf-binwp7-2.2012.0214.0\Microsoft.SilverlightMediaFramework.Core.Phone.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.SilverlightMediaFramework.Plugins.Phone">
-      <HintPath>..\..\..\Downloads\microsoft-smf-binwp7-2.2012.0214.0\Microsoft.SilverlightMediaFramework.Plugins.Phone.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.SilverlightMediaFramework.Plugins.Progressive.Phone">
-      <HintPath>..\..\..\Downloads\microsoft-smf-binwp7-2.2012.0214.0\Microsoft.SilverlightMediaFramework.Plugins.Progressive.Phone.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.SilverlightMediaFramework.Plugins.SmoothStreaming.Phone">
-      <HintPath>..\..\..\Downloads\microsoft-smf-binwp7-2.2012.0214.0\Microsoft.SilverlightMediaFramework.Plugins.SmoothStreaming.Phone.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.SilverlightMediaFramework.Utilities.Phone">
-      <HintPath>..\..\..\Downloads\microsoft-smf-binwp7-2.2012.0214.0\Microsoft.SilverlightMediaFramework.Utilities.Phone.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Xna.Framework" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Servicemodel" />

@@ -834,9 +834,18 @@ namespace MythMe
                 {
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
-                        MessageBox.Show("Not yet supprt in 0.25");
+                        //MessageBox.Show("Not yet supprt in 0.25");
 
                     });
+
+                    //With services API adding at same time seems to just update rule, so we can use the add API 
+
+                    HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(String.Format(addRule25String, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting)));
+                    webRequest.Method = "POST";
+                    webRequest.ContentType = "application/x-www-form-urlencoded";
+
+                    // Start the request
+                    webRequest.BeginGetRequestStream(new AsyncCallback(AddRuleStreamCallback), webRequest);
                 }
                 else
                 {
@@ -1650,7 +1659,12 @@ namespace MythMe
             try
             {
                 DateTime dateResult;
-                DateTime.TryParse(App.ViewModel.SelectedSetupProgram.recstartts, out dateResult);
+                DateTime.TryParse(App.ViewModel.SelectedSetupProgram.starttime, out dateResult);
+
+                if ((App.ViewModel.SelectedSetupProgram.recstatus <= -2)&&(App.ViewModel.SelectedSetupProgram.recstatus >= -10)) 
+                {
+                    DateTime.TryParse(App.ViewModel.SelectedSetupProgram.recstartts, out dateResult);
+                }
 
                 //TimeSpan s = (DateTime.Now - new DateTime(1970, 1, 1, ));
                 TimeSpan t = (dateResult - new DateTime(1970, 1, 1));

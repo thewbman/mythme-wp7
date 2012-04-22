@@ -5,12 +5,5 @@
     <AssemblyPart x:Name="FlurryWP7SDK" Source="FlurryWP7SDK.dll" />
     <AssemblyPart x:Name="Microsoft.Phone.Controls" Source="Microsoft.Phone.Controls.dll" />
     <AssemblyPart x:Name="Microsoft.Phone.Controls.Toolkit" Source="Microsoft.Phone.Controls.Toolkit.dll" />
-    <AssemblyPart x:Name="Microsoft.SilverlightMediaFramework.Compatibility.Phone" Source="Microsoft.SilverlightMediaFramework.Compatibility.Phone.dll" />
-    <AssemblyPart x:Name="Microsoft.SilverlightMediaFramework.Core.Phone" Source="Microsoft.SilverlightMediaFramework.Core.Phone.dll" />
-    <AssemblyPart x:Name="Microsoft.SilverlightMediaFramework.Plugins.Phone" Source="Microsoft.SilverlightMediaFramework.Plugins.Phone.dll" />
-    <AssemblyPart x:Name="Microsoft.SilverlightMediaFramework.Plugins.Progressive.Phone" Source="Microsoft.SilverlightMediaFramework.Plugins.Progressive.Phone.dll" />
-    <AssemblyPart x:Name="Microsoft.SilverlightMediaFramework.Plugins.SmoothStreaming.Phone" Source="Microsoft.SilverlightMediaFramework.Plugins.SmoothStreaming.Phone.dll" />
-    <AssemblyPart x:Name="Microsoft.SilverlightMediaFramework.Utilities.Phone" Source="Microsoft.SilverlightMediaFramework.Utilities.Phone.dll" />
-    <AssemblyPart x:Name="System.Windows.Interactivity" Source="System.Windows.Interactivity.dll" />
   </Deployment.Parts>
 </Deployment>
