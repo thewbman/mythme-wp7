@@ -46,18 +46,20 @@
                         <TextBlock Text="use optional script" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
                         <CheckBox x:Name="UseScript" AllowDrop="False" Foreground="White" BorderBrush="White" Checked="UseScript_Checked" Tap="UseScript_Tap" Background="Silver" />
                         -->
-                        <toolkit:ToggleSwitch x:Name="UseScript" Content="use optional script" Foreground="Silver" Checked="UseScript_Checked" Tap="UseScript_Tap"  />
+                        <toolkit:ToggleSwitch x:Name="UseScript" Content="use optional script" Foreground="Silver" Checked="UseScript_Checked" Tap="UseScript_Tap" Margin="0,0,0,-20"  />
                         
-                        <TextBlock Text="script location" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock x:Name="scriptcaption" Text="script location" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
                         <TextBox x:Name="PythonFileName" Foreground="#800000" Text="script" Background="Silver" />
+                        
+                        <toolkit:ToggleSwitch x:Name="UseServicesUpcoming" Content="XML for upcoming" Foreground="Silver" Tap="UseServicesUpcoming_Tap" Margin="0,0,0,-20" />
                         
                         <!--
                         <TextBlock Text="allow downloads of recordingss" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
                         <CheckBox x:Name="AllowDownloads" AllowDrop="False" Foreground="White" BorderBrush="White" Tap="AllowDownloads_Tap" Background="Silver" />
                         -->
-                        <toolkit:ToggleSwitch x:Name="AllowDownloads" Content="allow downloads" Foreground="Silver" Tap="AllowDownloads_Tap" />
+                        <toolkit:ToggleSwitch x:Name="AllowDownloads" Content="allow downloads" Foreground="Silver" Tap="AllowDownloads_Tap" Margin="0,0,0,-20"  />
 
-                        <TextBlock Text="open app homepage" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,40,0,0" Foreground="Silver" Tap="TextBlock_Tap" />
+                        <TextBlock Text="open app homepage" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,20,0,0" Foreground="Silver" Tap="TextBlock_Tap" />
 
                     </StackPanel>
                 </ScrollViewer>

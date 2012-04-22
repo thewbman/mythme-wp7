@@ -136,6 +136,9 @@ namespace MythMe
 
             switch (inProto)
             {
+                case 73:
+                    response = "MYTH_PROTO_VERSION 73 D7FE8D6F";
+                    break;
                 case 72:
                     response = "MYTH_PROTO_VERSION 72 D78EFD6F";
                     break;
@@ -260,7 +263,10 @@ namespace MythMe
 			        break;
 		        case 2:
 			        jobType = "Commercial Flagging";
-			        break;
+                    break;
+                case 4:
+                    jobType = "Look up Metadata";
+                    break;
 		        case 256:
 			        jobType = App.ViewModel.appSettings.UserJobDesc1Setting;
 			        break;

@@ -160,72 +160,72 @@ namespace MythMe
                 //int recordedCount = 0;
 
 
-                foreach (XElement singleRecordedElement in xdoc.Element("ProgramList").Element("Programs").Descendants("Program"))
+                foreach (XElement singleUpcomingElement in xdoc.Element("ProgramList").Element("Programs").Descendants("Program"))
                 {
-                    ProgramViewModel singleRecorded = new ProgramViewModel() { };
+                    ProgramViewModel singleUpcoming = new ProgramViewModel() { };
 
-                    if (singleRecordedElement.Element("Title").FirstNode != null) singleRecorded.title = (string)singleRecordedElement.Element("Title").FirstNode.ToString();
-                    if (singleRecordedElement.Element("SubTitle").FirstNode != null) singleRecorded.subtitle = (string)singleRecordedElement.Element("SubTitle").FirstNode.ToString();
+                    if (singleUpcomingElement.Element("Title").FirstNode != null) singleUpcoming.title = (string)singleUpcomingElement.Element("Title").FirstNode.ToString();
+                    if (singleUpcomingElement.Element("SubTitle").FirstNode != null) singleUpcoming.subtitle = (string)singleUpcomingElement.Element("SubTitle").FirstNode.ToString();
                     
-                    //singleRecorded.programflags = (string)singleRecordedElement.Attribute("programFlags").FirstNode.ToString();
-                    if (singleRecordedElement.Element("Category").FirstNode != null) singleRecorded.category = (string)singleRecordedElement.Element("Category").FirstNode.ToString();
-                    if (singleRecordedElement.Element("FileSize").FirstNode != null) singleRecorded.filesize = Int64.Parse((string)singleRecordedElement.Element("FileSize").FirstNode.ToString());
-                    if (singleRecordedElement.Element("SeriesId").FirstNode != null) singleRecorded.seriesid = (string)singleRecordedElement.Element("SeriesId").FirstNode.ToString();
-                    if (singleRecordedElement.Element("HostName").FirstNode != null) singleRecorded.hostname = (string)singleRecordedElement.Element("HostName").FirstNode.ToString();
-                    //singleRecorded.cattype = (string)singleRecordedElement.Element("CatType").FirstNode.ToString();
-                    if (singleRecordedElement.Element("ProgramId").FirstNode != null) singleRecorded.programid = (string)singleRecordedElement.Element("ProgramId").FirstNode.ToString();
-                    //singleRecorded.repeat = (string)singleRecordedElement.Element("Repeat").FirstNode.ToString();
-                    //singleRecorded.stars = (string)singleRecordedElement.Element("Stars").FirstNode.ToString();
-                    if (singleRecordedElement.Element("EndTime").FirstNode != null)
+                    //singleUpcoming.programflags = (string)singleUpcomingElement.Attribute("programFlags").FirstNode.ToString();
+                    if (singleUpcomingElement.Element("Category").FirstNode != null) singleUpcoming.category = (string)singleUpcomingElement.Element("Category").FirstNode.ToString();
+                    if (singleUpcomingElement.Element("FileSize").FirstNode != null) singleUpcoming.filesize = Int64.Parse((string)singleUpcomingElement.Element("FileSize").FirstNode.ToString());
+                    if (singleUpcomingElement.Element("SeriesId").FirstNode != null) singleUpcoming.seriesid = (string)singleUpcomingElement.Element("SeriesId").FirstNode.ToString();
+                    if (singleUpcomingElement.Element("HostName").FirstNode != null) singleUpcoming.hostname = (string)singleUpcomingElement.Element("HostName").FirstNode.ToString();
+                    //singleUpcoming.cattype = (string)singleUpcomingElement.Element("CatType").FirstNode.ToString();
+                    if (singleUpcomingElement.Element("ProgramId").FirstNode != null) singleUpcoming.programid = (string)singleUpcomingElement.Element("ProgramId").FirstNode.ToString();
+                    //singleUpcoming.repeat = (string)singleUpcomingElement.Element("Repeat").FirstNode.ToString();
+                    //singleUpcoming.stars = (string)singleUpcomingElement.Element("Stars").FirstNode.ToString();
+                    if (singleUpcomingElement.Element("EndTime").FirstNode != null)
                     {
-                        DateTime newEndTime = DateTime.Parse((string)singleRecordedElement.Element("EndTime").FirstNode.ToString());
+                        DateTime newEndTime = DateTime.Parse((string)singleUpcomingElement.Element("EndTime").FirstNode.ToString());
 
-                        singleRecorded.endtime = newEndTime.ToLocalTime().ToString("s");
-                        singleRecorded.endtimespace = newEndTime.ToLocalTime().ToString("s").Replace("T", " ");
+                        singleUpcoming.endtime = newEndTime.ToLocalTime().ToString("s");
+                        singleUpcoming.endtimespace = newEndTime.ToLocalTime().ToString("s").Replace("T", " ");
                     } 
-                    if (singleRecordedElement.Element("Airdate").FirstNode != null) singleRecorded.airdate = (string)singleRecordedElement.Element("Airdate").FirstNode.ToString();
-                    if (singleRecordedElement.Element("StartTime").FirstNode != null)
+                    if (singleUpcomingElement.Element("Airdate").FirstNode != null) singleUpcoming.airdate = (string)singleUpcomingElement.Element("Airdate").FirstNode.ToString();
+                    if (singleUpcomingElement.Element("StartTime").FirstNode != null)
                     {
-                        DateTime newStartTime = DateTime.Parse((string)singleRecordedElement.Element("StartTime").FirstNode.ToString());
+                        DateTime newStartTime = DateTime.Parse((string)singleUpcomingElement.Element("StartTime").FirstNode.ToString());
 
-                        singleRecorded.starttime = newStartTime.ToLocalTime().ToString("s");
-                        singleRecorded.starttimespace = newStartTime.ToLocalTime().ToString("s").Replace("T", " ");
+                        singleUpcoming.starttime = newStartTime.ToLocalTime().ToString("s");
+                        singleUpcoming.starttimespace = newStartTime.ToLocalTime().ToString("s").Replace("T", " ");
                     } 
-                    //singleRecorded.lastmodified = (string)singleRecordedElement.Element("lastModified").FirstNode.ToString();
+                    //singleUpcoming.lastmodified = (string)singleUpcomingElement.Element("lastModified").FirstNode.ToString();
 
-                    if (singleRecordedElement.Element("Channel").Element("InputId").FirstNode != null) singleRecorded.inputid = int.Parse((string)singleRecordedElement.Element("Channel").Element("InputId").Value);
-                    if (singleRecordedElement.Element("Channel").Element("ChannelName").FirstNode != null) singleRecorded.channame = (string)singleRecordedElement.Element("Channel").Element("ChannelName").Value;
-                    if (singleRecordedElement.Element("Channel").Element("SourceId").FirstNode != null) singleRecorded.sourceid = int.Parse((string)singleRecordedElement.Element("Channel").Element("SourceId").Value);
-                    if (singleRecordedElement.Element("Channel").Element("ChanId").FirstNode != null) singleRecorded.chanid = int.Parse((string)singleRecordedElement.Element("Channel").Element("ChanId").Value);
-                    if (singleRecordedElement.Element("Channel").Element("ChanNum").FirstNode != null) singleRecorded.channum = (string)singleRecordedElement.Element("Channel").Element("ChanNum").Value;
-                    if (singleRecordedElement.Element("Channel").Element("CallSign").FirstNode != null) singleRecorded.callsign = (string)singleRecordedElement.Element("Channel").Element("CallSign").Value;
+                    if (singleUpcomingElement.Element("Channel").Element("InputId").FirstNode != null) singleUpcoming.inputid = int.Parse((string)singleUpcomingElement.Element("Channel").Element("InputId").Value);
+                    if (singleUpcomingElement.Element("Channel").Element("ChannelName").FirstNode != null) singleUpcoming.channame = (string)singleUpcomingElement.Element("Channel").Element("ChannelName").Value;
+                    if (singleUpcomingElement.Element("Channel").Element("SourceId").FirstNode != null) singleUpcoming.sourceid = int.Parse((string)singleUpcomingElement.Element("Channel").Element("SourceId").Value);
+                    if (singleUpcomingElement.Element("Channel").Element("ChanId").FirstNode != null) singleUpcoming.chanid = int.Parse((string)singleUpcomingElement.Element("Channel").Element("ChanId").Value);
+                    if (singleUpcomingElement.Element("Channel").Element("ChanNum").FirstNode != null) singleUpcoming.channum = (string)singleUpcomingElement.Element("Channel").Element("ChanNum").Value;
+                    if (singleUpcomingElement.Element("Channel").Element("CallSign").FirstNode != null) singleUpcoming.callsign = (string)singleUpcomingElement.Element("Channel").Element("CallSign").Value;
                     /*
                     */
 
-                    if (singleRecordedElement.Element("Recording").Element("Priority").FirstNode != null) singleRecorded.recpriority = int.Parse((string)singleRecordedElement.Element("Recording").Element("Priority").Value);
-                    if (singleRecordedElement.Element("Recording").Element("Status").FirstNode != null) singleRecorded.recstatus = int.Parse((string)singleRecordedElement.Element("Recording").Element("Status").Value);
-                    singleRecorded.recstatustext = App.ViewModel.functions.RecStatusDecode(singleRecorded.recstatus);
-                    if (singleRecordedElement.Element("Recording").Element("RecGroup").FirstNode != null) singleRecorded.recgroup = (string)singleRecordedElement.Element("Recording").Element("RecGroup").Value;
-                    //if (singleRecordedElement.Element("Recording").Element("StartTs").FirstNode != null) singleRecorded.recstartts = (string)singleRecordedElement.Element("Recording").Element("StartTs").Value;
-                    //if (singleRecordedElement.Element("Recording").Element("EndTs").FirstNode != null) singleRecorded.recendts = (string)singleRecordedElement.Element("Recording").Element("EndTs").Value;
-                    if (singleRecordedElement.Element("Recording").Element("RecordId").FirstNode != null) singleRecorded.recordid = int.Parse((string)singleRecordedElement.Element("Recording").Element("RecordId").Value);
+                    if (singleUpcomingElement.Element("Recording").Element("Priority").FirstNode != null) singleUpcoming.recpriority = int.Parse((string)singleUpcomingElement.Element("Recording").Element("Priority").Value);
+                    if (singleUpcomingElement.Element("Recording").Element("Status").FirstNode != null) singleUpcoming.recstatus = int.Parse((string)singleUpcomingElement.Element("Recording").Element("Status").Value);
+                    singleUpcoming.recstatustext = App.ViewModel.functions.RecStatusDecode(singleUpcoming.recstatus);
+                    if (singleUpcomingElement.Element("Recording").Element("RecGroup").FirstNode != null) singleUpcoming.recgroup = (string)singleUpcomingElement.Element("Recording").Element("RecGroup").Value;
+                    //if (singleUpcomingElement.Element("Recording").Element("StartTs").FirstNode != null) singleUpcoming.recstartts = (string)singleUpcomingElement.Element("Recording").Element("StartTs").Value;
+                    //if (singleUpcomingElement.Element("Recording").Element("EndTs").FirstNode != null) singleUpcoming.recendts = (string)singleUpcomingElement.Element("Recording").Element("EndTs").Value;
+                    if (singleUpcomingElement.Element("Recording").Element("RecordId").FirstNode != null) singleUpcoming.recordid = int.Parse((string)singleUpcomingElement.Element("Recording").Element("RecordId").Value);
 
-                    if (singleRecordedElement.Element("Recording").Element("StartTs").FirstNode != null)
+                    if (singleUpcomingElement.Element("Recording").Element("StartTs").FirstNode != null)
                     {
-                        DateTime newStartTime = DateTime.Parse((string)singleRecordedElement.Element("Recording").Element("StartTs").FirstNode.ToString());
+                        DateTime newStartTime = DateTime.Parse((string)singleUpcomingElement.Element("Recording").Element("StartTs").FirstNode.ToString());
 
-                        singleRecorded.recstartts = newStartTime.ToLocalTime().ToString("s");
+                        singleUpcoming.recstartts = newStartTime.ToLocalTime().ToString("s");
                     }
-                    if (singleRecordedElement.Element("Recording").Element("EndTs").FirstNode != null)
+                    if (singleUpcomingElement.Element("Recording").Element("EndTs").FirstNode != null)
                     {
-                        DateTime newEndTime = DateTime.Parse((string)singleRecordedElement.Element("Recording").Element("EndTs").FirstNode.ToString());
+                        DateTime newEndTime = DateTime.Parse((string)singleUpcomingElement.Element("Recording").Element("EndTs").FirstNode.ToString());
 
-                        singleRecorded.recendts = newEndTime.ToLocalTime().ToString("s");
+                        singleUpcoming.recendts = newEndTime.ToLocalTime().ToString("s");
                     } 
 
-                    if(singleRecordedElement.Element("Artwork").Element("ArtworkInfos").FirstNode != null)
+                    if(singleUpcomingElement.Element("Artwork").Element("ArtworkInfos").FirstNode != null)
                     {
-                        foreach (var singleArtworkInfoElement in singleRecordedElement.Element("Artwork").Element("ArtworkInfos").Elements("ArtworkInfo"))
+                        foreach (var singleArtworkInfoElement in singleUpcomingElement.Element("Artwork").Element("ArtworkInfos").Elements("ArtworkInfo"))
                         {
                             string arturlbase = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/";
                             string arturlend = "";
@@ -234,13 +234,13 @@ namespace MythMe
                             switch (singleArtworkInfoElement.Element("Type").FirstNode.ToString())
                             {
                                 case "coverart":
-                                    singleRecorded.coverart = arturlbase + singleArtworkInfoElement.Element("URL").FirstNode.ToString() + arturlend;
+                                    singleUpcoming.coverart = arturlbase + singleArtworkInfoElement.Element("URL").FirstNode.ToString() + arturlend;
                                     break;
                                 case "fanart":
-                                    singleRecorded.fanart = arturlbase + singleArtworkInfoElement.Element("URL").FirstNode.ToString() + arturlend;
+                                    singleUpcoming.fanart = arturlbase + singleArtworkInfoElement.Element("URL").FirstNode.ToString() + arturlend;
                                     break;
                                 case "banner":
-                                    singleRecorded.banner = arturlbase + singleArtworkInfoElement.Element("URL").FirstNode.ToString() + arturlend;
+                                    singleUpcoming.banner = arturlbase + singleArtworkInfoElement.Element("URL").FirstNode.ToString() + arturlend;
                                     break;
                                 default:
                                     Deployment.Current.Dispatcher.BeginInvoke(() =>
@@ -256,48 +256,48 @@ namespace MythMe
 
 
                     if (App.ViewModel.appSettings.ChannelIconsSetting)
-                        singleRecorded.showChanicon = System.Windows.Visibility.Visible;
+                        singleUpcoming.showChanicon = System.Windows.Visibility.Visible;
                     else
-                        singleRecorded.showChanicon = System.Windows.Visibility.Collapsed;
+                        singleUpcoming.showChanicon = System.Windows.Visibility.Collapsed;
 
-                    singleRecorded.chanicon = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Myth/GetChannelIcon?ChanId=" + singleRecorded.chanid;
-                    singleRecorded.screenshot = App.ViewModel.functions.CreateScreenshotUrl(singleRecorded);
+                    singleUpcoming.chanicon = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Myth/GetChannelIcon?ChanId=" + singleUpcoming.chanid;
+                    singleUpcoming.screenshot = App.ViewModel.functions.CreateScreenshotUrl(singleUpcoming);
 
-                    if (singleRecorded.recstatus == -2)
+                    if (singleUpcoming.recstatus == -2)
                     {
-                        singleRecorded.recordedfourthline = "Currently recording (" + singleRecorded.channum + " - " + singleRecorded.channame + ")";
+                        singleUpcoming.recordedfourthline = "Currently recording (" + singleUpcoming.channum + " - " + singleUpcoming.channame + ")";
                     }
                     else
                     {
-                        singleRecorded.recordedfourthline = singleRecorded.channum + " - " + singleRecorded.channame;
+                        singleUpcoming.recordedfourthline = singleUpcoming.channum + " - " + singleUpcoming.channame;
                     }
 
-                    if (singleRecorded.subtitle == "") singleRecorded.subtitle = ".";
+                    if (singleUpcoming.subtitle == "") singleUpcoming.subtitle = ".";
 
-                    singleRecorded.description = singleRecordedElement.Element("Airdate").NextNode.ToString(); 
-                    if (singleRecordedElement.Element("Description").FirstNode != null) singleRecorded.description = (string)singleRecordedElement.Element("Description").FirstNode.ToString();
-                    if (singleRecorded.description.Contains("<Inet")) singleRecorded.description = "";
-                    if (singleRecorded.description.Contains("<Desc")) singleRecorded.description = "";
+                    singleUpcoming.description = singleUpcomingElement.Element("Airdate").NextNode.ToString(); 
+                    if (singleUpcomingElement.Element("Description").FirstNode != null) singleUpcoming.description = (string)singleUpcomingElement.Element("Description").FirstNode.ToString();
+                    if (singleUpcoming.description.Contains("<Inet")) singleUpcoming.description = "";
+                    if (singleUpcoming.description.Contains("<Desc")) singleUpcoming.description = "";
 
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
-                        //programlist.Add(singleRecorded);
-                        App.ViewModel.Recorded.Add(singleRecorded);
+                        //programlist.Add(singleUpcoming);
+                        App.ViewModel.Recorded.Add(singleUpcoming);
 
                         /*
-                        if (singleRecorded.recgroup == "Default")
+                        if (singleUpcoming.recgroup == "Default")
                         {
-                            DefaultRecorded.Add(singleRecorded);
+                            DefaultRecorded.Add(singleUpcoming);
                            // DefaultRecorded.OrderBy(p => p.title);
                         }
-                        else if (singleRecorded.recgroup == "Deleted")
+                        else if (singleUpcoming.recgroup == "Deleted")
                         {
-                            DeletedRecorded.Add(singleRecorded);
+                            DeletedRecorded.Add(singleUpcoming);
                             //DeletedRecorded.OrderBy(p => p.title);
                         }
-                        else if (singleRecorded.recgroup == "LiveTV")
+                        else if (singleUpcoming.recgroup == "LiveTV")
                         {
-                            LiveTVRecorded.Add(singleRecorded);
+                            LiveTVRecorded.Add(singleUpcoming);
                             //LiveTVRecorded.OrderBy(p => p.title);
                         }
                          */
@@ -378,89 +378,89 @@ namespace MythMe
                 //int recordedCount = 0;
 
 
-                foreach (XElement singleRecordedElement in xdoc.Element("GetRecordedResponse").Element("Recorded").Element("Programs").Descendants("Program")) 
+                foreach (XElement singleUpcomingElement in xdoc.Element("GetRecordedResponse").Element("Recorded").Element("Programs").Descendants("Program")) 
                 {
-                    ProgramViewModel singleRecorded = new ProgramViewModel() { };
+                    ProgramViewModel singleUpcoming = new ProgramViewModel() { };
 
-                    singleRecorded.title = (string)singleRecordedElement.Attribute("title").Value;
-                    singleRecorded.subtitle = (string)singleRecordedElement.Attribute("subTitle").Value;
+                    singleUpcoming.title = (string)singleUpcomingElement.Attribute("title").Value;
+                    singleUpcoming.subtitle = (string)singleUpcomingElement.Attribute("subTitle").Value;
 
-                    //singleRecorded.programflags = (string)singleRecordedElement.Attribute("programFlags").Value;
-                    singleRecorded.category = (string)singleRecordedElement.Attribute("category").Value;
-                    if (singleRecordedElement.Attributes("fileSize").Count() > 0) singleRecorded.filesize = Int64.Parse((string)singleRecordedElement.Attribute("fileSize").Value);
-                    singleRecorded.seriesid = (string)singleRecordedElement.Attribute("seriesId").Value;
-                    singleRecorded.hostname = (string)singleRecordedElement.Attribute("hostname").Value;
-                    //singleRecorded.cattype = (string)singleRecordedElement.Attribute("catType").Value;
-                    singleRecorded.programid = (string)singleRecordedElement.Attribute("programId").Value;
-                    //singleRecorded.repeat = (string)singleRecordedElement.Attribute("repeat").Value;
-                    //singleRecorded.stars = (string)singleRecordedElement.Attribute("stars").Value;
-                    singleRecorded.endtime = (string)singleRecordedElement.Attribute("endTime").Value;
-                    singleRecorded.endtimespace = (string)singleRecordedElement.Attribute("endTime").Value.Replace("T", " ");
-                    if (singleRecordedElement.Attributes("airdate").Count() > 0) singleRecorded.airdate = (string)singleRecordedElement.Attribute("airdate").Value;
-                    singleRecorded.starttime = (string)singleRecordedElement.Attribute("startTime").Value;
-                    singleRecorded.starttimespace = (string)singleRecordedElement.Attribute("startTime").Value.Replace("T"," ");
-                    //singleRecorded.lastmodified = (string)singleRecordedElement.Attribute("lastModified").Value;
+                    //singleUpcoming.programflags = (string)singleUpcomingElement.Attribute("programFlags").Value;
+                    singleUpcoming.category = (string)singleUpcomingElement.Attribute("category").Value;
+                    if (singleUpcomingElement.Attributes("fileSize").Count() > 0) singleUpcoming.filesize = Int64.Parse((string)singleUpcomingElement.Attribute("fileSize").Value);
+                    singleUpcoming.seriesid = (string)singleUpcomingElement.Attribute("seriesId").Value;
+                    singleUpcoming.hostname = (string)singleUpcomingElement.Attribute("hostname").Value;
+                    //singleUpcoming.cattype = (string)singleUpcomingElement.Attribute("catType").Value;
+                    singleUpcoming.programid = (string)singleUpcomingElement.Attribute("programId").Value;
+                    //singleUpcoming.repeat = (string)singleUpcomingElement.Attribute("repeat").Value;
+                    //singleUpcoming.stars = (string)singleUpcomingElement.Attribute("stars").Value;
+                    singleUpcoming.endtime = (string)singleUpcomingElement.Attribute("endTime").Value;
+                    singleUpcoming.endtimespace = (string)singleUpcomingElement.Attribute("endTime").Value.Replace("T", " ");
+                    if (singleUpcomingElement.Attributes("airdate").Count() > 0) singleUpcoming.airdate = (string)singleUpcomingElement.Attribute("airdate").Value;
+                    singleUpcoming.starttime = (string)singleUpcomingElement.Attribute("startTime").Value;
+                    singleUpcoming.starttimespace = (string)singleUpcomingElement.Attribute("startTime").Value.Replace("T"," ");
+                    //singleUpcoming.lastmodified = (string)singleUpcomingElement.Attribute("lastModified").Value;
                     
-                    singleRecorded.inputid = int.Parse((string)singleRecordedElement.Element("Channel").Attribute("inputId").Value);
-                    singleRecorded.channame = (string)singleRecordedElement.Element("Channel").Attribute("channelName").Value;
-                    singleRecorded.sourceid = int.Parse((string)singleRecordedElement.Element("Channel").Attribute("sourceId").Value);
-                    singleRecorded.chanid = int.Parse((string)singleRecordedElement.Element("Channel").Attribute("chanId").Value);
-                    singleRecorded.channum = (string)singleRecordedElement.Element("Channel").Attribute("chanNum").Value;
-                    singleRecorded.callsign = (string)singleRecordedElement.Element("Channel").Attribute("callSign").Value;
+                    singleUpcoming.inputid = int.Parse((string)singleUpcomingElement.Element("Channel").Attribute("inputId").Value);
+                    singleUpcoming.channame = (string)singleUpcomingElement.Element("Channel").Attribute("channelName").Value;
+                    singleUpcoming.sourceid = int.Parse((string)singleUpcomingElement.Element("Channel").Attribute("sourceId").Value);
+                    singleUpcoming.chanid = int.Parse((string)singleUpcomingElement.Element("Channel").Attribute("chanId").Value);
+                    singleUpcoming.channum = (string)singleUpcomingElement.Element("Channel").Attribute("chanNum").Value;
+                    singleUpcoming.callsign = (string)singleUpcomingElement.Element("Channel").Attribute("callSign").Value;
                     
 
-                    singleRecorded.recpriority = int.Parse((string)singleRecordedElement.Element("Recording").Attribute("recPriority").Value);
-                    singleRecorded.recstatus = int.Parse((string)singleRecordedElement.Element("Recording").Attribute("recStatus").Value);
-                    singleRecorded.recstatustext = App.ViewModel.functions.RecStatusDecode(singleRecorded.recstatus);
-                    singleRecorded.recgroup = (string)singleRecordedElement.Element("Recording").Attribute("recGroup").Value;
-                    singleRecorded.recstartts = (string)singleRecordedElement.Element("Recording").Attribute("recStartTs").Value;
-                    singleRecorded.recendts = (string)singleRecordedElement.Element("Recording").Attribute("recEndTs").Value;
-                    singleRecorded.recordid = int.Parse((string)singleRecordedElement.Element("Recording").Attribute("recordId").Value);
+                    singleUpcoming.recpriority = int.Parse((string)singleUpcomingElement.Element("Recording").Attribute("recPriority").Value);
+                    singleUpcoming.recstatus = int.Parse((string)singleUpcomingElement.Element("Recording").Attribute("recStatus").Value);
+                    singleUpcoming.recstatustext = App.ViewModel.functions.RecStatusDecode(singleUpcoming.recstatus);
+                    singleUpcoming.recgroup = (string)singleUpcomingElement.Element("Recording").Attribute("recGroup").Value;
+                    singleUpcoming.recstartts = (string)singleUpcomingElement.Element("Recording").Attribute("recStartTs").Value;
+                    singleUpcoming.recendts = (string)singleUpcomingElement.Element("Recording").Attribute("recEndTs").Value;
+                    singleUpcoming.recordid = int.Parse((string)singleUpcomingElement.Element("Recording").Attribute("recordId").Value);
 
-                    singleRecorded.description = (string)singleRecordedElement.FirstNode.ToString();
-                    if (singleRecorded.description.Contains("<Channel")) singleRecorded.description = "";
+                    singleUpcoming.description = (string)singleUpcomingElement.FirstNode.ToString();
+                    if (singleUpcoming.description.Contains("<Channel")) singleUpcoming.description = "";
                     
                     
                     if (App.ViewModel.appSettings.ChannelIconsSetting)
-                        singleRecorded.showChanicon = System.Windows.Visibility.Visible;
+                        singleUpcoming.showChanicon = System.Windows.Visibility.Visible;
                     else
-                        singleRecorded.showChanicon = System.Windows.Visibility.Collapsed;
+                        singleUpcoming.showChanicon = System.Windows.Visibility.Collapsed;
 
-                    singleRecorded.chanicon = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Myth/GetChannelIcon?ChanId=" + singleRecorded.chanid;
-                    singleRecorded.screenshot = App.ViewModel.functions.CreateScreenshotUrl(singleRecorded);
+                    singleUpcoming.chanicon = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Myth/GetChannelIcon?ChanId=" + singleUpcoming.chanid;
+                    singleUpcoming.screenshot = App.ViewModel.functions.CreateScreenshotUrl(singleUpcoming);
 
-                    singleRecorded.screenshot = App.ViewModel.functions.CreateScreenshotUrl(singleRecorded);
+                    singleUpcoming.screenshot = App.ViewModel.functions.CreateScreenshotUrl(singleUpcoming);
 
-                    if (singleRecorded.recstatus == -2)
+                    if (singleUpcoming.recstatus == -2)
                     {
-                        singleRecorded.recordedfourthline = "Currently recording (" + singleRecorded.channum + " - " + singleRecorded.channame+")";
+                        singleUpcoming.recordedfourthline = "Currently recording (" + singleUpcoming.channum + " - " + singleUpcoming.channame+")";
                     }
                     else
                     {
-                        singleRecorded.recordedfourthline = singleRecorded.channum+" - "+singleRecorded.channame;
+                        singleUpcoming.recordedfourthline = singleUpcoming.channum+" - "+singleUpcoming.channame;
                     }
 
-                    if (singleRecorded.subtitle == "") singleRecorded.subtitle = ".";
+                    if (singleUpcoming.subtitle == "") singleUpcoming.subtitle = ".";
 
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {   
-                        //programlist.Add(singleRecorded);
-                        App.ViewModel.Recorded.Add(singleRecorded);
+                        //programlist.Add(singleUpcoming);
+                        App.ViewModel.Recorded.Add(singleUpcoming);
 
                         /*
-                        if (singleRecorded.recgroup == "Default")
+                        if (singleUpcoming.recgroup == "Default")
                         {
-                            DefaultRecorded.Add(singleRecorded);
+                            DefaultRecorded.Add(singleUpcoming);
                            // DefaultRecorded.OrderBy(p => p.title);
                         }
-                        else if (singleRecorded.recgroup == "Deleted")
+                        else if (singleUpcoming.recgroup == "Deleted")
                         {
-                            DeletedRecorded.Add(singleRecorded);
+                            DeletedRecorded.Add(singleUpcoming);
                             //DeletedRecorded.OrderBy(p => p.title);
                         }
-                        else if (singleRecorded.recgroup == "LiveTV")
+                        else if (singleUpcoming.recgroup == "LiveTV")
                         {
-                            LiveTVRecorded.Add(singleRecorded);
+                            LiveTVRecorded.Add(singleUpcoming);
                             //LiveTVRecorded.OrderBy(p => p.title);
                         }
                          */
