@@ -46,6 +46,10 @@
                         <TextBlock Text="{Binding programid}" Foreground="White" />
                         <TextBlock Text="original airdate" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
                         <TextBlock Text="{Binding airdate}" Foreground="White" />
+                        <TextBlock Text="season" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding season}" Foreground="White" />
+                        <TextBlock Text="episode" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock Text="{Binding episode}" Foreground="White" />
                     </StackPanel>
                 </ScrollViewer>
             </controls:PanoramaItem>

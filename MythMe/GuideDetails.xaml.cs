@@ -154,6 +154,8 @@ namespace MythMe
                     if (singleProgramElement.Element("HostName").FirstNode != null) App.ViewModel.SelectedGuideProgram.hostname = (string)singleProgramElement.Element("HostName").FirstNode.ToString();
                     //App.ViewModel.SelectedGuideProgram.cattype = (string)singleProgramElement.Element("CatType").FirstNode.ToString();
                     if (singleProgramElement.Element("ProgramId").FirstNode != null) App.ViewModel.SelectedGuideProgram.programid = (string)singleProgramElement.Element("ProgramId").FirstNode.ToString();
+                    if (singleProgramElement.Element("Season").FirstNode != null) App.ViewModel.SelectedGuideProgram.season = (string)singleProgramElement.Element("Season").FirstNode.ToString();
+                    if (singleProgramElement.Element("Episode").FirstNode != null) App.ViewModel.SelectedGuideProgram.episode = (string)singleProgramElement.Element("Episode").FirstNode.ToString();
                     //App.ViewModel.SelectedGuideProgram.repeat = (string)singleProgramElement.Element("Repeat").FirstNode.ToString();
                     //App.ViewModel.SelectedGuideProgram.stars = (string)singleProgramElement.Element("Stars").FirstNode.ToString();
                     if (singleProgramElement.Element("EndTime").FirstNode != null)
@@ -290,6 +292,8 @@ namespace MythMe
                     seriesid.Text = App.ViewModel.SelectedGuideProgram.seriesid;
                     programid.Text = App.ViewModel.SelectedGuideProgram.programid;
                     airdate.Text = App.ViewModel.SelectedGuideProgram.airdate;
+                    season.Text = App.ViewModel.SelectedGuideProgram.season;
+                    episode.Text = App.ViewModel.SelectedGuideProgram.episode;
 
                     channum.Text = App.ViewModel.SelectedGuideProgram.channum;
                     channame.Text = App.ViewModel.SelectedGuideProgram.channame;
