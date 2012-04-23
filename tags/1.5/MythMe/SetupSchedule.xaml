@@ -1,0 +1,163 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="MythMe.SetupSchedule"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:toolkit2="clr-namespace:Microsoft.Phone.Controls.Primitives;assembly=Microsoft.Phone.Controls.Toolkit"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeLarge}"
+    Foreground="White"
+    SupportedOrientations="Portrait"  Orientation="Portrait"
+    shell:SystemTray.IsVisible="True"
+    >
+
+
+
+
+    <phone:PhoneApplicationPage.Resources>
+        
+        <DataTemplate x:Key="pickerTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Name}" />
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="pickerFullTemplate">
+            <StackPanel Orientation="Horizontal" >
+                <TextBlock Text="{Binding Name}" FontSize="36" />
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="pickerTemplate2">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Name}" />
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="pickerFullTemplate2">
+            <StackPanel Orientation="Horizontal" >
+                <TextBlock Text="{Binding Name}" FontSize="36" />
+            </StackPanel>
+        </DataTemplate>
+
+    </phone:PhoneApplicationPage.Resources>
+
+
+    <Grid x:Name="LayoutRoot" Background="#3e000c">
+
+        <toolkit:PerformanceProgressBar x:Name="performanceProgressBarCustomized" Foreground="Red" Background="Red" IsIndeterminate="False" VerticalAlignment="Bottom" Margin="0,0,0,50"/>
+
+        <Popup Height="100" Width="200" x:Name="savingPopup" IsOpen="False">
+            <TextBox Text="Saving ..." />
+        </Popup>
+        
+        <controls:Pivot Title="SETUP SCHEDULE" FontSize="{StaticResource PhoneFontSizeNormal}" >
+            
+            <controls:PivotItem Header="program" FontSize="{StaticResource PhoneFontSizeLarge}">
+                <ScrollViewer>
+                    <StackPanel>
+                        <toolkit:ListPicker x:Name="ruletype" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource pickerFullTemplate}" ItemTemplate="{StaticResource pickerTemplate}" Foreground="#800000" Background="Silver" Margin="0,0,20,0" /> 
+                        <TextBlock x:Name="recstatustext" Text="{Binding recstatustext}" FontSize="26" Style="{StaticResource PhoneTextSubtleStyle}" TextWrapping="Wrap"  FontStyle="Italic" Foreground="Silver" />
+                        <TextBlock x:Name="title" Text="{Binding title}" TextWrapping="Wrap" Foreground="White"  />
+                        <TextBlock x:Name="subtitle" Text="{Binding subtitle}" FontSize="26" Style="{StaticResource PhoneTextSubtleStyle}" TextWrapping="Wrap" Foreground="Silver"  />
+                        <TextBlock x:Name="category" Text="{Binding category}" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver"  />
+                        <Image Source="{Binding chanicon}" Width="150"/>
+                        <TextBlock x:Name="description" Text="{Binding description}" Style="{StaticResource PhoneTextSubtleStyle}" TextWrapping="Wrap" Foreground="Silver" />
+                    </StackPanel>
+                </ScrollViewer>
+            </controls:PivotItem>
+
+            <controls:PivotItem Header="details" FontSize="{StaticResource PhoneFontSizeLarge}">
+                <ScrollViewer>
+                    <StackPanel>
+                        <TextBlock Text="start time" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock x:Name="starttime" Text="{Binding starttime}" Foreground="White" />
+                        <TextBlock Text="end time" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock x:Name="endtime" Text="{Binding endtime}" Foreground="White" />
+                        <TextBlock Text="series id" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock x:Name="seriesid" Text="{Binding seriesid}" Foreground="White" />
+                        <TextBlock Text="program id" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock x:Name="programid" Text="{Binding programid}" Foreground="White" />
+                        <TextBlock Text="channel number" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock x:Name="channum" Text="{Binding channum}" Foreground="White" />
+                        <TextBlock Text="channel name" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock x:Name="channame" Text="{Binding channame}" Foreground="White" />
+                        <TextBlock Text="chanid" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <TextBlock x:Name="chanid" Text="{Binding chanid}" Foreground="White" />
+                    </StackPanel>
+                </ScrollViewer>
+            </controls:PivotItem>
+
+            <controls:PivotItem Header="options" FontSize="{StaticResource PhoneFontSizeLarge}">
+                <ScrollViewer>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="priority" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" Width="300" />
+                            <TextBox x:Name="recpriority" InputScope="Number" Width="110" HorizontalAlignment="Left" />
+                        </StackPanel>
+                        <TextBlock Text="preferred input" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" />
+                        <!-- -->
+                        <toolkit:ListPicker x:Name="prefinput" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource pickerFullTemplate2}" ItemTemplate="{StaticResource pickerTemplate2}" Foreground="#800000" Background="Silver" Margin="0,0,20,0" />
+
+                        <toolkit:ToggleSwitch x:Name="inactive" Content="inactive" Margin="0,-10,0,-20" Foreground="Silver" />
+                        <toolkit:ToggleSwitch x:Name="autoexpire" Content="autoexpire" Margin="0,-10,0,-20" Foreground="Silver" />
+                        <toolkit:ToggleSwitch x:Name="maxnewest" Content="record new, expire old" Margin="0,-10,0,-20" Foreground="Silver" />
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="max episodes" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" Width="300" />
+                            <TextBox x:Name="maxepisodes" InputScope="Number" Width="110" HorizontalAlignment="Left" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="start early" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" Width="100" Margin="0,0,0,0" />
+                                <TextBox x:Name="startoffset" InputScope="Number" Width="110" HorizontalAlignment="Left" />
+                            <TextBlock Text="end late" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="Silver" Width="80" Margin="20,0,15,0" />
+                                <TextBox x:Name="endoffset" InputScope="Number" Width="110" HorizontalAlignment="Left" />
+                            
+                        </StackPanel>
+
+                    </StackPanel>
+                </ScrollViewer>
+            </controls:PivotItem>
+
+            <controls:PivotItem Header="jobs" FontSize="{StaticResource PhoneFontSizeLarge}">
+                <ScrollViewer>
+                    <StackPanel>
+                        <toolkit:ToggleSwitch x:Name="autometalookup" Content="metadata lookup" Margin="0,-6,0,0" Foreground="Silver" />
+                        <toolkit:ToggleSwitch x:Name="autocommflag" Content="commercial flag" Margin="0,-30,0,0" Foreground="Silver" />
+                        <toolkit:ToggleSwitch x:Name="autotranscode" Content="transcode" Margin="0,-30,0,0" Foreground="Silver" />
+                        <toolkit:ToggleSwitch x:Name="autouserjob1" Content="userjob1" Margin="0,-30,0,0" Foreground="Silver" />
+                        <toolkit:ToggleSwitch x:Name="autouserjob2" Content="userjob2" Margin="0,-30,0,0" Foreground="Silver" />
+                        <toolkit:ToggleSwitch x:Name="autouserjob3" Content="userjob3" Margin="0,-30,0,0" Foreground="Silver" />
+                        <toolkit:ToggleSwitch x:Name="autouserjob4" Content="userjob4" Margin="0,-30,0,0" Foreground="Silver" />
+                    </StackPanel>
+                </ScrollViewer>
+            </controls:PivotItem>
+
+        </controls:Pivot>
+    </Grid>
+
+    <!--
+    moved to c# so i can hide some rows for 0.25
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" BackgroundColor="#28000C" ForegroundColor="White" >
+            <shell:ApplicationBarIconButton x:Name="appbarBack" IconUri="/Images/appbar.back.rest.png" Text="go back" Click="appbarBack_Click" />
+            <shell:ApplicationBarIconButton x:Name="appbarSave" IconUri="/Images/appbar.save.rest.png" Text="save" Click="appbarSave_Click" />
+            <shell:ApplicationBarIconButton x:Name="appbarDelete" IconUri="/Images/appbar.delete.rest.png" Text="delete" Click="appbarDelete_Click" />
+            
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem x:Name="forceRecord" Text="force record" Click="forceRecord_Click"/>
+                <shell:ApplicationBarMenuItem x:Name="forceDontRecord" Text="force don't record" Click="forceDontRecord_Click"/>
+                <shell:ApplicationBarMenuItem x:Name="forgetOld" Text="forget old" Click="forgetOld_Click"/>
+                <shell:ApplicationBarMenuItem x:Name="neverRecord" Text="never record" Click="neverRecord_Click"/>
+                <shell:ApplicationBarMenuItem x:Name="mythweb" Text="mythweb" Click="mythweb_Click"/>
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+    -->
+</phone:PhoneApplicationPage>

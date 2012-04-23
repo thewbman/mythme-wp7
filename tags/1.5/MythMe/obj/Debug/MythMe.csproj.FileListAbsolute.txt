@@ -1,0 +1,57 @@
+c:\users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\Bin\Debug\ApplicationIcon.png
+c:\users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\Bin\Debug\Background.png
+c:\users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\Bin\Debug\MythMe.dll
+c:\users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\Bin\Debug\MythMe.pdb
+c:\users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\Bin\Debug\AppManifest.xaml
+c:\users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\Bin\Debug\MythMe.xap
+c:\users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\obj\Debug\ResolveAssemblyReference.cache
+c:\users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\obj\Debug\App.g.i.cs
+c:\users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\obj\Debug\MainPage.g.i.cs
+c:\users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\obj\Debug\MythMe.g.resources
+c:\users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\obj\Debug\MythMe.dll
+c:\users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\obj\Debug\MythMe.pdb
+c:\users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\obj\Debug\XapCacheFile.xml
+c:\users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\Bin\Debug\FlurryWP7SDK.dll
+C:\Users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\Bin\Debug\Microsoft.Phone.Controls.dll
+C:\Users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\Bin\Debug\Microsoft.Phone.Controls.xml
+C:\Users\wes\documents\visual studio 2010\Projects\MythMe\MythMe\obj\Debug\Remote.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\MythMe.dll
+C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\MythMe.pdb
+C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\AppManifest.xaml
+C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\MythMe.xap
+C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\Microsoft.Phone.Controls.dll
+C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\Microsoft.Phone.Controls.xml
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\App.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\MainPage.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\Remote.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\MythMe.g.resources
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\MythMe.dll
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\MythMe.pdb
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\XapCacheFile.xml
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\Recorded.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\Microsoft.Phone.Controls.Toolkit.dll
+C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\Microsoft.Phone.Controls.Toolkit.pdb
+C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\Microsoft.Phone.Controls.Toolkit.xml
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\RecordedDetails.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\Upcoming.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\UpcomingDetails.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\Coding4Fun.Phone.Controls.dll
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\Status.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\FlurryWP7SDK.dll
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\Guide.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\GuideDetails.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\Preferences.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\Help.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\MythMe_173.png
+C:\Users\wes\SVN\MythMe\MythMe\Bin\Debug\MythMe_62.png
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\RemoteSettings.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\Downloads.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\People.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\PeopleProgramDetails.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\Log.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\Search.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\SearchProgramDetails.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\SetupSchedule.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\Videos.g.i.cs
+C:\Users\wes\SVN\MythMe\MythMe\obj\Debug\VideoDetails.g.i.cs

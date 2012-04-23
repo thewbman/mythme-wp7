@@ -1,0 +1,8 @@
+﻿Todo:
+
+ - webmyth script (upcoming, mysql, etc)
+ - selectable theme/colors?
+ - clean sort popup
+ - save download data and screenshot
+ - status, help, prefs as pivot
+ - rec, up, guide details as pivot?

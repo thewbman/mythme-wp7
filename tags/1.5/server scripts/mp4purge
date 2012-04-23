@@ -1,0 +1,63 @@
+#!/usr/bin/perl
+#
+# Checks the myth recording directory for .mp4 files that don't have a corresponding .mpg. If found, it deletes them.
+#
+# It works best to run this script as a cron job regularly
+#
+
+# Change below to your myth recordings directories (you can delete the extras if you only have one directory)
+
+$directory1 = "/internal/mythtv/";
+$directory2 = "/var/mythtv/";
+$directory3 = "/mythtv/";
+
+
+foreach $f (<$directory1/*>) {
+        if ( $f =~ /\.mp4$/ )
+        {
+			$g = $f;
+			$h = $f;
+		
+            $f =~ s/\.mp4$//;
+			$g =~ s/mp4/mpg/;
+			$h =~ s/mp4/nuv/;
+
+            if (!( -e $g ) && !( -e $h)) {
+				`rm -f $f.mp4`; 
+			};
+        }
+}
+
+
+foreach $f (<$directory2/*>) {
+        if ( $f =~ /\.mp4$/ )
+        {
+			$g = $f;
+			$h = $f;
+		
+            $f =~ s/\.mp4$//;
+			$g =~ s/mp4/mpg/;
+			$h =~ s/mp4/nuv/;
+
+            if (!( -e $g ) && !( -e $h)) {
+				`rm -f $f.mp4`; 
+			};
+        }
+}
+
+
+foreach $f (<$directory3/*>) {
+        if ( $f =~ /\.mp4$/ )
+        {
+			$g = $f;
+			$h = $f;
+		
+            $f =~ s/\.mp4$//;
+			$g =~ s/mp4/mpg/;
+			$h =~ s/mp4/nuv/;
+
+            if (!( -e $g ) && !( -e $h)) {
+				`rm -f $f.mp4`; 
+			};
+        }
+}
