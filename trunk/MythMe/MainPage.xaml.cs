@@ -144,7 +144,7 @@ namespace MythMe
 
             if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
             {
-                App.ViewModel.appSettings.UseScriptSetting = false;
+                //App.ViewModel.appSettings.UseScriptSetting = false;
             }
             else
             {
@@ -918,44 +918,50 @@ namespace MythMe
 
             menuListItems = new List<NameContentViewModel>();
 
-            menuListItems.Add(new NameContentViewModel() { Content = "remote" });
-            menuListItems.Add(new NameContentViewModel() { Content = "recorded" });
-            menuListItems.Add(new NameContentViewModel() { Content = "upcoming" });
-            menuListItems.Add(new NameContentViewModel() { Content = "guide" });
-            //menuListItems.Add(new NameContentViewModel() {Content = "music"});
-
-            if ((App.ViewModel.appSettings.UseScriptSetting) || (App.ViewModel.appSettings.DBSchemaVerSetting > 1269))
+            if (App.ViewModel.appSettings.DBSchemaVerSetting > 0)
             {
-                menuListItems.Add(new NameContentViewModel() { Content = "videos" });
-            }
+                menuListItems.Add(new NameContentViewModel() { Content = "remote" });
+                menuListItems.Add(new NameContentViewModel() { Content = "recorded" });
+                menuListItems.Add(new NameContentViewModel() { Content = "upcoming" });
+                menuListItems.Add(new NameContentViewModel() { Content = "guide" });
+                //menuListItems.Add(new NameContentViewModel() {Content = "music"});
 
-            if (App.ViewModel.appSettings.UseScriptSetting)
+                if ((App.ViewModel.appSettings.UseScriptSetting) || (App.ViewModel.appSettings.DBSchemaVerSetting > 1269))
+                {
+                    menuListItems.Add(new NameContentViewModel() { Content = "videos" });
+                }
+
+                if (App.ViewModel.appSettings.UseScriptSetting)
+                {
+                    menuListItems.Add(new NameContentViewModel() { Content = "search" });
+                    menuListItems.Add(new NameContentViewModel() { Content = "people" });
+                }
+
+                menuListItems.Add(new NameContentViewModel() { Content = "status" });
+
+                if ((App.ViewModel.appSettings.UseScriptSetting) && (App.ViewModel.appSettings.DBSchemaVerSetting <= 1269))
+                {
+                    menuListItems.Add(new NameContentViewModel() { Content = "log" });
+                }
+
+                if (App.ViewModel.appSettings.AllowDownloadsSetting)
+                {
+                    menuListItems.Add(new NameContentViewModel() { Content = "downloads" });
+                }
+
+                if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
+                {
+                    //stream format from mythtv doesnt work on WP7
+                    //menuListItems.Add(new NameContentViewModel() { Content = "stream" });
+                }
+
+                //menuListItems.Add(new NameContentViewModel() { Content = "preferences" });
+                //menuListItems.Add(new NameContentViewModel() { Content = "help" });
+            }
+            else
             {
-                menuListItems.Add(new NameContentViewModel() { Content = "search" });
-                menuListItems.Add(new NameContentViewModel() { Content = "people" });
+                menuListItems.Add(new NameContentViewModel() { Content = "preferences" });
             }
-
-            menuListItems.Add(new NameContentViewModel() { Content = "status" });
-
-            if ((App.ViewModel.appSettings.UseScriptSetting) )
-            {
-                menuListItems.Add(new NameContentViewModel() { Content = "log" });
-            }
-
-            if (App.ViewModel.appSettings.AllowDownloadsSetting)
-            {
-                menuListItems.Add(new NameContentViewModel() { Content = "downloads" });
-            }
-
-            if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
-            {
-                //stream format from mythtv doesnt work on WP7
-                //menuListItems.Add(new NameContentViewModel() { Content = "stream" });
-            }
-
-            //menuListItems.Add(new NameContentViewModel() { Content = "preferences" });
-            //menuListItems.Add(new NameContentViewModel() { Content = "help" });
-
 
 
             menuList.ItemsSource = menuListItems;

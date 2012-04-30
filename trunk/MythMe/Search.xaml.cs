@@ -208,7 +208,15 @@ namespace MythMe
 
                     for (int i = 0; i < Programs.Count; i++)
                     {
-                        Programs[i].chanicon = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Myth/GetChannelIcon?ChanId=" + Programs[i].chanid;
+                        if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
+                        {
+                            Programs[i].chanicon = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Guide/GetChannelIcon?ChanId=" + Programs[i].chanid;
+                        }
+                        else
+                        {
+                            Programs[i].chanicon = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/Myth/GetChannelIcon?ChanId=" + Programs[i].chanid;
+                        }
+
 
                         if (App.ViewModel.appSettings.ChannelIconsSetting)
                             Programs[i].showChanicon = System.Windows.Visibility.Visible;

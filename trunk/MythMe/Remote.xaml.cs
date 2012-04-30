@@ -664,11 +664,18 @@ namespace MythMe
 
         private void screenshotButton_Click(object sender, RoutedEventArgs e)
         {
-            string screenshotUrl = "http://"+currentFrontend.Address+":6547/MythFE/GetScreenShot?rand="+App.ViewModel.randText();	//Height=#&width=#
+            try
+            {
+                string screenshotUrl = "http://" + currentFrontend.Address + ":6547/MythFE/GetScreenShot?rand=" + App.ViewModel.randText();	//Height=#&width=#
 
-            ImageSource screenshotsource = new BitmapImage(new Uri(screenshotUrl));
+                ImageSource screenshotsource = new BitmapImage(new Uri(screenshotUrl));
 
-            screenshot.Source = screenshotsource;
+                screenshot.Source = screenshotsource;
+            }
+            catch (Exception ex)
+            {
+                //
+            }
 		
         }
 

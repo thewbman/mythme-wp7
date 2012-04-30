@@ -121,26 +121,8 @@ namespace MythMe
             ApplicationBar.Buttons.Add(mythweb);
 
 
-            if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
+            if (App.ViewModel.appSettings.UseScriptSetting)
             {
-                autometalookup.Visibility = System.Windows.Visibility.Visible;
-
-                //0.25 Services API wont create new force record rules, it overwrites the parent rule
-
-
-                ApplicationBarMenuItem enableRule = new ApplicationBarMenuItem();
-                enableRule.Text = "enable rule";
-                enableRule.Click += new EventHandler(enableRule_Click);
-                ApplicationBar.MenuItems.Add(enableRule);
-
-                ApplicationBarMenuItem disableRule = new ApplicationBarMenuItem();
-                disableRule.Text = "disable rule";
-                disableRule.Click += new EventHandler(disableRule_Click);
-                ApplicationBar.MenuItems.Add(disableRule);
-            }
-            else
-            {
-                autometalookup.Visibility = System.Windows.Visibility.Collapsed;
 
                 ApplicationBarMenuItem forceRecord = new ApplicationBarMenuItem();
                 forceRecord.Text = "force record";
@@ -161,6 +143,31 @@ namespace MythMe
                 neverRecord.Text = "never record";
                 neverRecord.Click += new EventHandler(neverRecord_Click);
                 ApplicationBar.MenuItems.Add(neverRecord);
+            }
+            else
+            {
+
+                //0.25 Services API wont create new force record rules, it overwrites the parent rule
+
+                ApplicationBarMenuItem enableRule = new ApplicationBarMenuItem();
+                enableRule.Text = "enable rule";
+                enableRule.Click += new EventHandler(enableRule_Click);
+                ApplicationBar.MenuItems.Add(enableRule);
+
+                ApplicationBarMenuItem disableRule = new ApplicationBarMenuItem();
+                disableRule.Text = "disable rule";
+                disableRule.Click += new EventHandler(disableRule_Click);
+                ApplicationBar.MenuItems.Add(disableRule);
+            }
+
+
+            if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
+            {
+                autometalookup.Visibility = System.Windows.Visibility.Visible;
+            }
+            else
+            {
+                autometalookup.Visibility = System.Windows.Visibility.Collapsed;
             }
 
             /*
@@ -192,7 +199,14 @@ namespace MythMe
         {
             try
             {
-                if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
+                if (App.ViewModel.appSettings.UseScriptSetting)
+                {
+                    string query = "SELECT cardinputid AS Content, displayname AS Name FROM cardinput ORDER BY Content; ";
+
+                    HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponse&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + App.ViewModel.randText()));
+                    webRequest.BeginGetResponse(new AsyncCallback(InputsCallback), webRequest);
+                }
+                else
                 {
                     //no method for getting inputs :(
                     
@@ -201,13 +215,6 @@ namespace MythMe
                     Inputs.Add(new NameContentViewModel() { Name = "None", Content = "0" });
 
                     this.GetRule();
-                }
-                else
-                {
-                    string query = "SELECT cardinputid AS Content, displayname AS Name FROM cardinput ORDER BY Content; ";
-
-                    HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQLwithResponse&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + App.ViewModel.randText()));
-                    webRequest.BeginGetResponse(new AsyncCallback(InputsCallback), webRequest);
                 }
 
             }
@@ -830,26 +837,8 @@ namespace MythMe
 
                 this.SchedulerRule = NewRule.recordid;
 
-                if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
+                if (App.ViewModel.appSettings.UseScriptSetting)
                 {
-                    Deployment.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        //MessageBox.Show("Not yet supprt in 0.25");
-
-                    });
-
-                    //With services API adding at same time seems to just update rule, so we can use the add API 
-
-                    HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(String.Format(addRule25String, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting)));
-                    webRequest.Method = "POST";
-                    webRequest.ContentType = "application/x-www-form-urlencoded";
-
-                    // Start the request
-                    webRequest.BeginGetRequestStream(new AsyncCallback(AddRuleStreamCallback), webRequest);
-                }
-                else
-                {
-
                     try
                     {
 
@@ -900,6 +889,11 @@ namespace MythMe
                         query += "', autouserjob3 = '" + NewRule.autouserjob3;
                         query += "', autouserjob4 = '" + NewRule.autouserjob4;
 
+                        if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
+                        {
+                            query += "', autometadata = '" + NewRule.autometalookup;
+                        }
+
                         query += "' WHERE recordid = " + NewRule.recordid;
                         query += " LIMIT 1; ";
 
@@ -913,6 +907,18 @@ namespace MythMe
                     {
                         MessageBox.Show("Error saving rule: " + ex.ToString());
                     }
+                }
+                else
+                {
+
+                    //With services API adding at same time seems to just update rule, so we can use the add API 
+
+                    HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(String.Format(addRule25String, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting)));
+                    webRequest.Method = "POST";
+                    webRequest.ContentType = "application/x-www-form-urlencoded";
+
+                    // Start the request
+                    webRequest.BeginGetRequestStream(new AsyncCallback(AddRuleStreamCallback), webRequest);
                 }
             }
         }
@@ -945,17 +951,7 @@ namespace MythMe
                 this.SchedulerRule = -1;
 
 
-                if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
-                {
-
-                    HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(String.Format(addRule25String, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting)));
-                    webRequest.Method = "POST";
-                    webRequest.ContentType = "application/x-www-form-urlencoded";
-
-                    // Start the request
-                    webRequest.BeginGetRequestStream(new AsyncCallback(AddRuleStreamCallback), webRequest);
-                }
-                else
+                if (App.ViewModel.appSettings.UseScriptSetting)
                 {
 
                     try
@@ -1008,20 +1004,37 @@ namespace MythMe
                         query += "', autouserjob3 = '" + NewRule.autouserjob3;
                         query += "', autouserjob4 = '" + NewRule.autouserjob4;
 
-                        //query += "' WHERE recordid = " + NewRule.recordid;
-                        //query += " LIMIT 1; ";
+                        if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
+                        {
+                            query += "', autometadata = '" + NewRule.autometalookup;
+                        }
+
                         query += "' ;";
+                        
 
                         //MessageBox.Show("Query: " + query);
 
                         HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQL&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + App.ViewModel.randText()));
-                        webRequest.BeginGetResponse(new AsyncCallback(InsertCallback), webRequest);
+                        webRequest.BeginGetResponse(new AsyncCallback(SaveCallback), webRequest);
 
                     }
                     catch (Exception ex)
                     {
                         MessageBox.Show("Error saving rule: " + ex.ToString());
                     }
+
+
+                }
+                else
+                {
+
+                    HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(String.Format(addRule25String, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting)));
+                    webRequest.Method = "POST";
+                    webRequest.ContentType = "application/x-www-form-urlencoded";
+
+                    // Start the request
+                    webRequest.BeginGetRequestStream(new AsyncCallback(AddRuleStreamCallback), webRequest);
+
                 }
             }
 
@@ -1217,7 +1230,7 @@ namespace MythMe
 
         private void ToggleRule()
         {
-            
+
             savingPopup.IsOpen = true;
             performanceProgressBarCustomized.IsIndeterminate = true;
 
@@ -1227,31 +1240,20 @@ namespace MythMe
             if (CurrentRule.type == 7)
                 newRuleType = 8;
 
-            if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
-            {
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
-                {
-                    MessageBox.Show("Not yet supprt in 0.25");
-
-                });
-            }
-            else
+            try
             {
 
-                try
-                {
+                string query = "UPDATE record SET type = " + newRuleType.ToString() + " WHERE recordid=" + CurrentRule.recordid.ToString() + " LIMIT 1; ";
 
-                    string query = "UPDATE record SET type = " + newRuleType.ToString() + " WHERE recordid=" + CurrentRule.recordid.ToString() + " LIMIT 1; ";
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQL&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + App.ViewModel.randText()));
+                webRequest.BeginGetResponse(new AsyncCallback(ToggleCallback), webRequest);
 
-                    HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQL&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + App.ViewModel.randText()));
-                    webRequest.BeginGetResponse(new AsyncCallback(ToggleCallback), webRequest);
-
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error creating rule: " + ex.ToString());
-                }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error creating rule: " + ex.ToString());
+            }
+
         }
         private void ToggleCallback(IAsyncResult asynchronousResult)
         {
@@ -1262,44 +1264,33 @@ namespace MythMe
 
         private void ForgetOld()
         {
-            
+
             savingPopup.IsOpen = true;
             performanceProgressBarCustomized.IsIndeterminate = true;
 
             this.SchedulerRule = CurrentRule.recordid;
 
 
-            if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
-            {
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
-                {
-                    MessageBox.Show("Not yet supprt in 0.25");
-
-                });
-            }
-            else
+            try
             {
 
-                try
-                {
+                string query = "DELETE FROM `oldrecorded` WHERE title = \"";
+                query += App.ViewModel.SelectedSetupProgram.title;
+                query += "\" AND subtitle = \"";
+                query += App.ViewModel.SelectedSetupProgram.subtitle;
+                query += "\" AND description = \"";
+                query += App.ViewModel.SelectedSetupProgram.description;
+                query += "\" LIMIT 1; ";
 
-                    string query = "DELETE FROM `oldrecorded` WHERE title = \"";
-                    query += App.ViewModel.SelectedSetupProgram.title;
-                    query += "\" AND subtitle = \"";
-                    query += App.ViewModel.SelectedSetupProgram.subtitle;
-                    query += "\" AND description = \"";
-                    query += App.ViewModel.SelectedSetupProgram.description;
-                    query += "\" LIMIT 1; ";
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQL&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + App.ViewModel.randText()));
+                webRequest.BeginGetResponse(new AsyncCallback(ForgetOldCallback), webRequest);
 
-                    HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQL&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + App.ViewModel.randText()));
-                    webRequest.BeginGetResponse(new AsyncCallback(ForgetOldCallback), webRequest);
-
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error setting to forget old: " + ex.ToString());
-                }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error setting to forget old: " + ex.ToString());
+            }
+
         }
         private void ForgetOldCallback(IAsyncResult asynchronousResult)
         {
@@ -1316,52 +1307,41 @@ namespace MythMe
 
             this.SchedulerRule = CurrentRule.recordid;
 
-            if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
-            {
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
-                {
-                    MessageBox.Show("Not yet supprt in 0.25");
-
-                });
-            }
-            else
+            try
             {
 
-                try
-                {
+                string query = "REPLACE INTO oldrecorded (chanid,starttime,endtime,title,";
+                query += "subtitle,description,category,seriesid,programid,";
+                query += "recordid,station,rectype,recstatus,duplicate) VALUES (";
 
-                    string query = "REPLACE INTO oldrecorded (chanid,starttime,endtime,title,";
-                    query += "subtitle,description,category,seriesid,programid,";
-                    query += "recordid,station,rectype,recstatus,duplicate) VALUES (";
+                query += App.ViewModel.SelectedSetupProgram.chanid + ",'";
+                query += App.ViewModel.SelectedSetupProgram.starttime.Replace("T", " ") + "','";
+                query += App.ViewModel.SelectedSetupProgram.endtime.Replace("T", " ") + "',\"";
+                query += App.ViewModel.SelectedSetupProgram.title + "\",\"";
 
-                    query += App.ViewModel.SelectedSetupProgram.chanid + ",'";
-                    query += App.ViewModel.SelectedSetupProgram.starttime.Replace("T", " ") + "','";
-                    query += App.ViewModel.SelectedSetupProgram.endtime.Replace("T", " ") + "',\"";
-                    query += App.ViewModel.SelectedSetupProgram.title + "\",\"";
+                query += App.ViewModel.SelectedSetupProgram.subtitle + "\",\"";
+                query += App.ViewModel.SelectedSetupProgram.description + "\",\"";
+                query += App.ViewModel.SelectedSetupProgram.category + "\",'";
+                query += App.ViewModel.SelectedSetupProgram.seriesid + "','";
+                query += App.ViewModel.SelectedSetupProgram.programid + "',";
 
-                    query += App.ViewModel.SelectedSetupProgram.subtitle + "\",\"";
-                    query += App.ViewModel.SelectedSetupProgram.description + "\",\"";
-                    query += App.ViewModel.SelectedSetupProgram.category + "\",'";
-                    query += App.ViewModel.SelectedSetupProgram.seriesid + "','";
-                    query += App.ViewModel.SelectedSetupProgram.programid + "',";
+                query += CurrentRule.recordid + ",\"";
+                query += App.ViewModel.SelectedSetupProgram.callsign + "\",";
+                query += CurrentRule.type + ",";
+                query += "11,";
+                query += "1) ;";
 
-                    query += CurrentRule.recordid + ",\"";
-                    query += App.ViewModel.SelectedSetupProgram.callsign + "\",";
-                    query += CurrentRule.type + ",";
-                    query += "11,";
-                    query += "1) ;";
+                //MessageBox.Show("query: " + query);
 
-                    //MessageBox.Show("query: " + query);
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQL&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + App.ViewModel.randText()));
+                webRequest.BeginGetResponse(new AsyncCallback(NeverRecordCallback), webRequest);
 
-                    HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri("http://" + App.ViewModel.appSettings.WebserverHostSetting + "/cgi-bin/webmyth.py?op=executeSQL&query64=" + Convert.ToBase64String(App.ViewModel.encoder.GetBytes(query)) + "&rand=" + App.ViewModel.randText()));
-                    webRequest.BeginGetResponse(new AsyncCallback(NeverRecordCallback), webRequest);
-
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error setting to never record: " + ex.ToString());
-                }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error setting to never record: " + ex.ToString());
+            }
+
         }
         private void NeverRecordCallback(IAsyncResult asynchronousResult)
         {
