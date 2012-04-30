@@ -87,7 +87,7 @@ namespace MythMe
                 else if ((!App.ViewModel.appSettings.PromptScriptSetting) && (App.ViewModel.appSettings.UseScriptSetting) && (App.ViewModel.appSettings.AppStartsSetting > 0))
                 {
                     App.ViewModel.appSettings.PromptScriptSetting = true;
-
+                    /*
                     if (MessageBox.Show("If you had previously downloaded the webmyth.py script before January 4th, you will need to upgrade to the latest version (11) for this release of the MythMe app.  You can download the script from the app homepage.", "Script", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
                     {
                         WebBrowserTask webopen = new WebBrowserTask();
@@ -95,6 +95,7 @@ namespace MythMe
                         webopen.Uri = new Uri("http://code.google.com/p/mythme-wp7/downloads/detail?name=webmyth.py");
                         webopen.Show();
                     }
+                     */
                 }
                 else if ((!App.ViewModel.appSettings.ReviewedSetting) && (App.ViewModel.appSettings.AppStartsSetting > 9))
                 {
