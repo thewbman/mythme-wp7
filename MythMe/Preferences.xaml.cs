@@ -60,12 +60,15 @@ namespace MythMe
                 WebserverHost.Text = App.ViewModel.appSettings.MasterBackendIpSetting;
             }
 
+            UseScript.Visibility = System.Windows.Visibility.Visible;
+            scriptcaption.Visibility = System.Windows.Visibility.Visible;
+            PythonFileName.Visibility = System.Windows.Visibility.Visible;
 
             if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
             {
-                UseScript.Visibility = System.Windows.Visibility.Collapsed;
-                scriptcaption.Visibility = System.Windows.Visibility.Collapsed;
-                PythonFileName.Visibility = System.Windows.Visibility.Collapsed;
+                //UseScript.Visibility = System.Windows.Visibility.Collapsed;
+                //scriptcaption.Visibility = System.Windows.Visibility.Collapsed;
+                //PythonFileName.Visibility = System.Windows.Visibility.Collapsed;
 
                 UseServicesUpcoming.Visibility = System.Windows.Visibility.Visible;
 
@@ -73,9 +76,6 @@ namespace MythMe
             }
             else
             {
-                UseScript.Visibility = System.Windows.Visibility.Visible;
-                scriptcaption.Visibility = System.Windows.Visibility.Visible;
-                PythonFileName.Visibility = System.Windows.Visibility.Visible;
 
                 UseServicesUpcoming.Visibility = System.Windows.Visibility.Collapsed;
 
@@ -137,8 +137,8 @@ namespace MythMe
 
             if (((bool)UseScript.IsChecked)&&(App.ViewModel.appSettings.DBSchemaVerSetting > 1269))
             {
-                MessageBox.Show("The script is not compatible with MythTV version 0.25.");
-                UseScript.IsChecked = false;
+                //MessageBox.Show("The script is not compatible with MythTV version 0.25.");
+                //UseScript.IsChecked = false;
             }
 
         }
@@ -155,7 +155,7 @@ namespace MythMe
         private void UseScript_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             if((bool)UseScript.IsChecked)
-                MessageBox.Show("You can download a script to improve the reliability of listing the upcoming recordings.  And in the future the script may also be used for additional functionality.  The script can be found on the app homepage under downloads. ", "Optional script", MessageBoxButton.OK);
+                MessageBox.Show("You can download a script to add additional functionality to the app.  It allows you to search for people, titles and view jobqueue results for recorded programs.  The script can be found on the app homepage under downloads. ", "Optional script", MessageBoxButton.OK);
         }
 
         private void TextBlock_Tap(object sender, System.Windows.Input.GestureEventArgs e)

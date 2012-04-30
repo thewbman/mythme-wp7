@@ -114,10 +114,8 @@
             <shell:ApplicationBarIconButton x:Name="appbarSort" IconUri="/Images/appbar.feature.settings.rest.png" Text="sort" Click="appbarSort_Click" />
             -->
             <shell:ApplicationBar.MenuItems>
-                <!-- 
-                <shell:ApplicationBarMenuItem Text="MenuItem 1"/>
-                <shell:ApplicationBarMenuItem Text="MenuItem 2"/>
-                -->
+                <shell:ApplicationBarMenuItem x:Name="preferences" Text="preferences" Click="preferences_Click"/>
+
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>

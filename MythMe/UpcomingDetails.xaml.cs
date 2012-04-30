@@ -137,6 +137,8 @@ namespace MythMe
                 if (singleProgramElement.Element("HostName").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.hostname = (string)singleProgramElement.Element("HostName").FirstNode.ToString();
                 //App.ViewModel.SelectedUpcomingProgram.cattype = (string)singleProgramElement.Element("CatType").FirstNode.ToString();
                 if (singleProgramElement.Element("ProgramId").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.programid = (string)singleProgramElement.Element("ProgramId").FirstNode.ToString();
+                if (singleProgramElement.Element("Season").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.season = (string)singleProgramElement.Element("Season").FirstNode.ToString();
+                if (singleProgramElement.Element("Episode").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.episode = (string)singleProgramElement.Element("Episode").FirstNode.ToString();
                 //App.ViewModel.SelectedUpcomingProgram.repeat = (string)singleProgramElement.Element("Repeat").FirstNode.ToString();
                 //App.ViewModel.SelectedUpcomingProgram.stars = (string)singleProgramElement.Element("Stars").FirstNode.ToString();
                 if (singleProgramElement.Element("EndTime").FirstNode != null)
@@ -147,7 +149,7 @@ namespace MythMe
                     App.ViewModel.SelectedUpcomingProgram.endtimespace = newEndTime.ToLocalTime().ToString("s").Replace("T", " ");
                 }
                 if (singleProgramElement.Element("Airdate").FirstNode != null) App.ViewModel.SelectedUpcomingProgram.airdate = (string)singleProgramElement.Element("Airdate").FirstNode.ToString();
-                if (singleProgramElement.Element("EndTime").FirstNode != null)
+                if (singleProgramElement.Element("StartTime").FirstNode != null)
                 {
                     DateTime newStartTime = DateTime.Parse((string)singleProgramElement.Element("StartTime").FirstNode.ToString());
 

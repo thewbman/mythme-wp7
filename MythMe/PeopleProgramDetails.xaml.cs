@@ -69,7 +69,10 @@ namespace MythMe
 
             if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
             {
-                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(String.Format(getDetails25String, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting, App.ViewModel.SelectedPeopleProgram.starttime, App.ViewModel.SelectedPeopleProgram.chanid, App.ViewModel.randText())));
+                //0.25 uses UTC time
+                string newStartTime = DateTime.Parse(App.ViewModel.SelectedPeopleProgram.starttime).ToUniversalTime().ToString("s");
+
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(String.Format(getDetails25String, App.ViewModel.appSettings.MasterBackendIpSetting, App.ViewModel.appSettings.MasterBackendXmlPortSetting, newStartTime, App.ViewModel.SelectedPeopleProgram.chanid, App.ViewModel.randText())));
                 webRequest.BeginGetResponse(new AsyncCallback(Details25Callback), webRequest);
             }
             else
@@ -114,7 +117,6 @@ namespace MythMe
 
             try
             {
-
                 XDocument xdoc = XDocument.Parse(resultString, LoadOptions.None);
 
                 XElement singleProgramElement = xdoc.Element("Program");
@@ -126,22 +128,35 @@ namespace MythMe
                 if (singleProgramElement.Element("Category").FirstNode != null) App.ViewModel.SelectedPeopleProgram.category = (string)singleProgramElement.Element("Category").FirstNode.ToString();
                 if (singleProgramElement.Element("FileSize").FirstNode != null) App.ViewModel.SelectedPeopleProgram.filesize = Int64.Parse((string)singleProgramElement.Element("FileSize").FirstNode.ToString());
                 if (singleProgramElement.Element("SeriesId").FirstNode != null) App.ViewModel.SelectedPeopleProgram.seriesid = (string)singleProgramElement.Element("SeriesId").FirstNode.ToString();
-                if (singleProgramElement.Element("Hostname").FirstNode != null) App.ViewModel.SelectedPeopleProgram.hostname = (string)singleProgramElement.Element("Hostname").FirstNode.ToString();
+                if (singleProgramElement.Element("HostName").FirstNode != null) App.ViewModel.SelectedPeopleProgram.hostname = (string)singleProgramElement.Element("HostName").FirstNode.ToString();
                 //App.ViewModel.SelectedPeopleProgram.cattype = (string)singleProgramElement.Element("CatType").FirstNode.ToString();
                 if (singleProgramElement.Element("ProgramId").FirstNode != null) App.ViewModel.SelectedPeopleProgram.programid = (string)singleProgramElement.Element("ProgramId").FirstNode.ToString();
+                if (singleProgramElement.Element("Season").FirstNode != null) App.ViewModel.SelectedPeopleProgram.season = (string)singleProgramElement.Element("Season").FirstNode.ToString();
+                if (singleProgramElement.Element("Episode").FirstNode != null) App.ViewModel.SelectedPeopleProgram.episode = (string)singleProgramElement.Element("Episode").FirstNode.ToString();
                 //App.ViewModel.SelectedPeopleProgram.repeat = (string)singleProgramElement.Element("Repeat").FirstNode.ToString();
                 //App.ViewModel.SelectedPeopleProgram.stars = (string)singleProgramElement.Element("Stars").FirstNode.ToString();
-                if (singleProgramElement.Element("EndTime").FirstNode != null) App.ViewModel.SelectedPeopleProgram.endtime = (string)singleProgramElement.Element("EndTime").FirstNode.ToString();
-                if (singleProgramElement.Element("EndTime").FirstNode != null) App.ViewModel.SelectedPeopleProgram.endtimespace = (string)singleProgramElement.Element("EndTime").FirstNode.ToString().Replace("T", " ");
+                if (singleProgramElement.Element("EndTime").FirstNode != null)
+                {
+                    DateTime newEndTime = DateTime.Parse((string)singleProgramElement.Element("EndTime").FirstNode.ToString());
+
+                    App.ViewModel.SelectedPeopleProgram.endtime = newEndTime.ToLocalTime().ToString("s");
+                    App.ViewModel.SelectedPeopleProgram.endtimespace = newEndTime.ToLocalTime().ToString("s").Replace("T", " ");
+                }
                 if (singleProgramElement.Element("Airdate").FirstNode != null) App.ViewModel.SelectedPeopleProgram.airdate = (string)singleProgramElement.Element("Airdate").FirstNode.ToString();
-                if (singleProgramElement.Element("StartTime").FirstNode != null) App.ViewModel.SelectedPeopleProgram.starttime = (string)singleProgramElement.Element("StartTime").FirstNode.ToString();
-                if (singleProgramElement.Element("StartTime").FirstNode != null) App.ViewModel.SelectedPeopleProgram.starttimespace = (string)singleProgramElement.Element("StartTime").FirstNode.ToString().Replace("T", " ");
+                if (singleProgramElement.Element("StartTime").FirstNode != null)
+                {
+                    DateTime newStartTime = DateTime.Parse((string)singleProgramElement.Element("StartTime").FirstNode.ToString());
+
+                    App.ViewModel.SelectedPeopleProgram.starttime = newStartTime.ToLocalTime().ToString("s");
+                    App.ViewModel.SelectedPeopleProgram.starttimespace = newStartTime.ToLocalTime().ToString("s").Replace("T", " ");
+                }
                 //App.ViewModel.SelectedPeopleProgram.lastmodified = (string)singleProgramElement.Element("lastModified").FirstNode.ToString();
-                /*
-                                    */
+
 
                 App.ViewModel.SelectedPeopleProgram.description = singleProgramElement.Element("Airdate").NextNode.ToString();
+                if (singleProgramElement.Element("Description").FirstNode != null) App.ViewModel.SelectedPeopleProgram.description = (string)singleProgramElement.Element("Description").FirstNode.ToString();
                 if (App.ViewModel.SelectedPeopleProgram.description.Contains("<Inet")) App.ViewModel.SelectedPeopleProgram.description = "";
+                if (App.ViewModel.SelectedPeopleProgram.description.Contains("<Desc")) App.ViewModel.SelectedPeopleProgram.description = "";
 
 
                 if (App.ViewModel.SelectedPeopleProgram.subtitle == "") App.ViewModel.SelectedPeopleProgram.subtitle = ".";
@@ -165,10 +180,23 @@ namespace MythMe
                     if (singleProgramElement.Element("Recording").Element("Status").FirstNode != null) App.ViewModel.SelectedPeopleProgram.recstatus = int.Parse((string)singleProgramElement.Element("Recording").Element("Status").Value);
                     //App.ViewModel.SelectedPeopleProgram.recstatustext = App.ViewModel.functions.RecStatusDecode(App.ViewModel.SelectedPeopleProgram.recstatus);
                     if (singleProgramElement.Element("Recording").Element("RecGroup").FirstNode != null) App.ViewModel.SelectedPeopleProgram.recgroup = (string)singleProgramElement.Element("Recording").Element("RecGroup").Value;
-                    if (singleProgramElement.Element("Recording").Element("StartTs").FirstNode != null) App.ViewModel.SelectedPeopleProgram.recstartts = (string)singleProgramElement.Element("Recording").Element("StartTs").Value;
-                    if (singleProgramElement.Element("Recording").Element("EndTs").FirstNode != null) App.ViewModel.SelectedPeopleProgram.recendts = (string)singleProgramElement.Element("Recording").Element("EndTs").Value;
+                    //if (singleProgramElement.Element("Recording").Element("StartTs").FirstNode != null) App.ViewModel.SelectedPeopleProgram.recstartts = (string)singleProgramElement.Element("Recording").Element("StartTs").Value;
+                    //if (singleProgramElement.Element("Recording").Element("EndTs").FirstNode != null) App.ViewModel.SelectedPeopleProgram.recendts = (string)singleProgramElement.Element("Recording").Element("EndTs").Value;
                     if (singleProgramElement.Element("Recording").Element("RecordId").FirstNode != null) App.ViewModel.SelectedPeopleProgram.recordid = int.Parse((string)singleProgramElement.Element("Recording").Element("RecordId").Value);
 
+                    if (singleProgramElement.Element("Recording").Element("StartTs").FirstNode != null)
+                    {
+                        DateTime newStartTime = DateTime.Parse((string)singleProgramElement.Element("Recording").Element("StartTs").FirstNode.ToString());
+
+                        App.ViewModel.SelectedPeopleProgram.recstartts = newStartTime.ToLocalTime().ToString("s");
+                    }
+
+                    if (singleProgramElement.Element("Recording").Element("EndTs").FirstNode != null)
+                    {
+                        DateTime newEndTime = DateTime.Parse((string)singleProgramElement.Element("Recording").Element("EndTs").FirstNode.ToString());
+
+                        App.ViewModel.SelectedPeopleProgram.recendts = newEndTime.ToLocalTime().ToString("s");
+                    }
                 }
                 else
                 {
@@ -185,6 +213,37 @@ namespace MythMe
                 else
                 {
                     App.ViewModel.SelectedPeopleProgram.recordedfourthline = App.ViewModel.SelectedPeopleProgram.channum + " - " + App.ViewModel.SelectedPeopleProgram.channame;
+                }
+
+
+
+                if (singleProgramElement.Element("Artwork").Element("ArtworkInfos").FirstNode != null)
+                {
+                    foreach (var singleArtworkInfoElement in singleProgramElement.Element("Artwork").Element("ArtworkInfos").Elements("ArtworkInfo"))
+                    {
+                        string arturlbase = "http://" + App.ViewModel.appSettings.MasterBackendIpSetting + ":" + App.ViewModel.appSettings.MasterBackendXmlPortSetting + "/";
+                        //string arturlend = "";
+                        string arturlend = "&Height=800&Width=1024";
+
+                        switch (singleArtworkInfoElement.Element("Type").FirstNode.ToString())
+                        {
+                            case "coverart":
+                                App.ViewModel.SelectedPeopleProgram.coverart = arturlbase + singleArtworkInfoElement.Element("URL").FirstNode.ToString() + arturlend;
+                                break;
+                            case "fanart":
+                                App.ViewModel.SelectedPeopleProgram.fanart = arturlbase + singleArtworkInfoElement.Element("URL").FirstNode.ToString() + arturlend;
+                                break;
+                            case "banner":
+                                App.ViewModel.SelectedPeopleProgram.banner = arturlbase + singleArtworkInfoElement.Element("URL").FirstNode.ToString() + arturlend;
+                                break;
+                            default:
+                                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                                {
+                                    //MessageBox.Show("Unknown Artwork: " + singleArtworkInfoElement.Element("Type").FirstNode.ToString());
+                                });
+                                break;
+                        }
+                    }
                 }
 
 
@@ -208,6 +267,8 @@ namespace MythMe
                     seriesid.Text = App.ViewModel.SelectedPeopleProgram.seriesid;
                     programid.Text = App.ViewModel.SelectedPeopleProgram.programid;
                     airdate.Text = App.ViewModel.SelectedPeopleProgram.airdate;
+                    season.Text = App.ViewModel.SelectedPeopleProgram.season;
+                    episode.Text = App.ViewModel.SelectedPeopleProgram.episode;
 
                     channum.Text = App.ViewModel.SelectedPeopleProgram.channum;
                     channame.Text = App.ViewModel.SelectedPeopleProgram.channame;
@@ -220,6 +281,7 @@ namespace MythMe
                     recgroup.Text = App.ViewModel.SelectedPeopleProgram.recgroup;
 
                 });
+
             }
             catch (Exception ex)
             {

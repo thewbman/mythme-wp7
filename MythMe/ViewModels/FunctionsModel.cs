@@ -563,9 +563,20 @@ namespace MythMe
                 {
                     if (backend.Name == inProgram.hostname) 
                     {
-                        hostaddress = backend.Address;
-                        hostport = backend.XmlPort;
+
+                        if (backend.Master)
+                        {
+                            hostaddress = App.ViewModel.appSettings.MasterBackendIpSetting;
+                            hostport = App.ViewModel.appSettings.MasterBackendXmlPortSetting;
+                        }
+                        else
+                        {
+                            hostaddress = backend.Address;
+                            hostport = backend.XmlPort;
+                        }
+
                     }
+
                 }
 
                 if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)

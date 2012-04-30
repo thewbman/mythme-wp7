@@ -62,7 +62,27 @@ namespace MythMe
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            
+
+            if ("" == App.ViewModel.appSettings.WebserverHostSetting)
+            {
+                App.ViewModel.appSettings.WebserverHostSetting = "" + App.ViewModel.appSettings.MasterBackendIpSetting;
+            }
+
+            if ((App.ViewModel.appSettings.UseScriptScreenshotsSetting) && (!App.ViewModel.appSettings.UseScriptSetting))
+            {
+                App.ViewModel.appSettings.UseScriptScreenshotsSetting = false;
+            }
+
+            if (App.ViewModel.appSettings.DBSchemaVerSetting > 1269)
+            {
+                //App.ViewModel.appSettings.UseScriptSetting = false;
+            }
+            else
+            {
+                App.ViewModel.appSettings.UseServicesUpcomingSetting = false;
+            }
+
+
             //performanceProgressBarCustomized.IsIndeterminate = true;
 
             if (App.ViewModel.appSettings.ProtoVerSetting == 0)
@@ -113,15 +133,16 @@ namespace MythMe
 
             App.ViewModel.Upcoming.Clear();
 
-            if (App.ViewModel.appSettings.UseScriptSetting)
-            {
-                GetUpcomingScript();
-            }
-            else if (App.ViewModel.appSettings.UseServicesUpcomingSetting)
+            if (App.ViewModel.appSettings.UseServicesUpcomingSetting)
             {
                 GetUpcomingServices();
             }
-            else
+            else if ((App.ViewModel.appSettings.UseScriptSetting)&&(App.ViewModel.appSettings.DBSchemaVerSetting <= 1269))
+            {
+                //dont use script for mythtv 0.25
+                GetUpcomingScript();
+            }
+            else 
             {
                 GetUpcomingProtocol();
             }
@@ -2644,7 +2665,9 @@ namespace MythMe
 
             //sorting
 
-            foreach (var item in App.ViewModel.Upcoming)
+            var arr = App.ViewModel.Upcoming.OrderBy(x => x.starttime).ToArray();
+
+            foreach (var item in arr)
             {
 
                 AllUpcoming.Add(item);
@@ -2834,6 +2857,11 @@ namespace MythMe
             NavigationService.Navigate(new Uri("/UpcomingDetails.xaml", UriKind.Relative));
 
             OverridesUpcomingLL.SelectedItem = null;
+        }
+
+        private void preferences_Click(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Preferences.xaml", UriKind.Relative));
         }
 
 

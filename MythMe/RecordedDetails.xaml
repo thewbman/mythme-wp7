@@ -143,6 +143,7 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
 
+                    <!--<Button x:Name="metadata" Content="lookup metadata"  Grid.Row="1" Grid.ColumnSpan="2" Click="metadata_Click" FontSize="20" Foreground="White" BorderBrush="White" />-->
                     <Button x:Name="comflag" Content="commercial flag"  Grid.Row="1" Grid.ColumnSpan="2" Click="comflag_Click" FontSize="20" Foreground="White" BorderBrush="White" />
                     <Button x:Name="userjob1" Content="userjob1" Grid.Row="2" Grid.Column="0" Click="userjob1_Click" FontSize="20" Foreground="White" BorderBrush="White" />
                     <Button x:Name="userjob2" Content="userjob2" Grid.Row="2" Grid.Column="1" Click="userjob2_Click" FontSize="20" Foreground="White" BorderBrush="White" />

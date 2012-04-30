@@ -177,7 +177,8 @@ namespace MythMe
 
                         //streamButton.Visibility = System.Windows.Visibility.Visible;
                     }
-                    else {
+                    else 
+                    {
 
                         peoplePivot.Visibility = System.Windows.Visibility.Collapsed;
                         jobsPivot.Visibility = System.Windows.Visibility.Collapsed;
@@ -511,6 +512,11 @@ namespace MythMe
 
             }
 
+        }
+
+        private void metadata_Click(object sender, RoutedEventArgs e)
+        {
+            callQueueJob("4");
         }
 
         private void comflag_Click(object sender, RoutedEventArgs e)
